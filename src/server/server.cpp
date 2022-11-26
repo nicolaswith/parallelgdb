@@ -138,14 +138,14 @@ void process_session(tcp::socket a_sock, UIWindow &a_window, const int a_port)
 	mi_h *h = nullptr;
 	if (src_is_gdb(a_port))
 	{
-		a_window.m_conns_gdb[process_rank] = &a_sock;
-		a_window.m_conns_open_gdb[process_rank] = true;
+		a_window.set_conns_gdb(process_rank, &a_sock);
+		a_window.set_conns_open_gdb(process_rank, true);
 		h = mi_alloc_h();
 		h->line = (char *)malloc(max_length * sizeof(char));
 	}
 	else
 	{
-		a_window.m_conns_trgt[process_rank] = &a_sock;
+		a_window.set_conns_trgt(process_rank, &a_sock);
 	}
 
 	try
@@ -164,7 +164,7 @@ void process_session(tcp::socket a_sock, UIWindow &a_window, const int a_port)
 			{
 				if (src_is_gdb(a_port))
 				{
-					a_window.m_conns_open_gdb[process_rank] = false;
+					a_window.set_conns_open_gdb(process_rank, false);
 				}
 				break;
 			}
@@ -205,7 +205,7 @@ void start_acceptor(UIWindow &a_window, const asio::ip::port_type a_process_port
 
 void start_servers(UIWindow &a_window)
 {
-	for (int i = 0; i < a_window.m_num_processes; ++i)
+	for (int i = 0; i < a_window.num_processes(); ++i)
 	{
 		std::thread(start_acceptor, std::ref(a_window), (base_port_gdb + i)).detach();
 		std::thread(start_acceptor, std::ref(a_window), (base_port_trgt + i)).detach();

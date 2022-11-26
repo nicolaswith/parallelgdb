@@ -7,13 +7,13 @@ const char *const WHERE_MARK = "where-mark";
 const char *const WHERE_CATEGORY = "where-category";
 
 UIWindow::UIWindow(const int a_num_processes)
-	: m_scrolled_window_top(),
+	: m_num_processes(a_num_processes),
+	  m_scrolled_window_top(),
 	  m_grid(),
 	  m_label_all(),
 	  m_entry_all_gdb(),
 	  m_entry_all_trgt(),
-	  m_button_all(),
-	  m_num_processes(a_num_processes)
+	  m_button_all()
 {
 	m_text_view_buffers_gdb = new char *[m_num_processes];
 	m_text_view_buffers_trgt = new char *[m_num_processes];
@@ -34,7 +34,7 @@ UIWindow::UIWindow(const int a_num_processes)
 	m_conns_trgt = new tcp::socket *[m_num_processes];
 	m_scroll_connections_gdb = new sigc::connection[m_num_processes];
 	m_scroll_connections_trgt = new sigc::connection[m_num_processes];
-	m_conns_open_gdb = new std::atomic_bool[m_num_processes];
+	m_conns_open_gdb = new bool[m_num_processes];
 	for (int i = 0; i < m_num_processes; ++i)
 	{
 		m_text_view_buffers_gdb[i] = (char *)malloc(1);

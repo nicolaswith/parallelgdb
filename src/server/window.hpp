@@ -19,7 +19,8 @@ public:
 
 class UIWindow : public Gtk::Window
 {
-private:
+	const int m_num_processes;
+
 	char **m_text_view_buffers_gdb;
 	char **m_text_view_buffers_trgt;
 	string *m_source_view_path;
@@ -48,15 +49,11 @@ private:
 
 	std::mutex m_mutex_gui;
 
-public:
-	const int m_num_processes;
-
 	tcp::socket **m_conns_gdb;
 	tcp::socket **m_conns_trgt;
 
-	std::atomic_bool *m_conns_open_gdb;
+	volatile bool *m_conns_open_gdb;
 
-private:
 	void do_scroll(Gsv::View *a_source_view, const int a_line) const;
 	void scroll_to_line(Gsv::View *a_source_view, const int a_line) const;
 	void update_source_file(const int a_process_rank, mi_stop *a_stop_record);
@@ -77,6 +74,41 @@ public:
 	void send_input_all_gdb();
 	void send_input_all_trgt();
 	void print_data(mi_h *const a_h, const char *const a_data, const size_t a_length, const int a_port);
+
+	inline int num_processes() const
+	{
+		return m_num_processes;
+	}
+
+	inline tcp::socket *get_conns_gdb(const int a_process_rank) const
+	{
+		return m_conns_gdb[a_process_rank];
+	}
+
+	void set_conns_gdb(const int a_process_rank, tcp::socket *a_socket)
+	{
+		m_conns_gdb[a_process_rank] = a_socket;
+	}
+
+	inline tcp::socket *get_conns_trgt(const int a_process_rank) const
+	{
+		return m_conns_trgt[a_process_rank];
+	}
+
+	void set_conns_trgt(const int a_process_rank, tcp::socket *a_socket)
+	{
+		m_conns_trgt[a_process_rank] = a_socket;
+	}
+
+	inline bool get_conns_open_gdb(const int a_process_rank) const
+	{
+		return m_conns_open_gdb[a_process_rank];
+	}
+
+	void set_conns_open_gdb(const int a_process_rank, bool a_value)
+	{
+		m_conns_open_gdb[a_process_rank] = a_value;
+	}
 };
 
 #endif /* _WINDOW_HPP */

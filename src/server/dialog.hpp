@@ -7,17 +7,14 @@
 
 class UIDialog : public Gtk::Dialog
 {
-public:
 	bool m_is_valid;
-
-private:
+	bool m_srun;
 	int m_num_nodes;
 	int m_num_tasks;
 	int m_num_processes;
 	char *m_client;
 	char *m_target;
 	char *m_ip_address;
-	bool m_srun;
 	char *m_ssh_address;
 	char *m_ssh_user;
 	char *m_ssh_password;
@@ -45,7 +42,6 @@ private:
 	Gtk::Label m_label_partition;
 	Gtk::Entry m_entry_partition;
 
-private:
 	void on_dialog_response(const int a_response_id);
 	void set_sensitivity(bool a_state);
 	void on_toggle_button(Gtk::CheckButton *a_button);

@@ -2,6 +2,7 @@
 
 UIDialog::UIDialog()
 	: m_is_valid(false),
+	  m_srun(false),
 	  m_client(nullptr),
 	  m_target(nullptr),
 	  m_ip_address(nullptr),
