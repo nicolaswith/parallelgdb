@@ -14,6 +14,7 @@ private:
 	int m_num_nodes;
 	int m_num_tasks;
 	int m_num_processes;
+	char *m_client;
 	char *m_target;
 	char *m_ip_address;
 	bool m_srun;
@@ -27,6 +28,8 @@ private:
 	Gtk::Entry m_entry_num_nodes;
 	Gtk::Label m_label_num_tasks;
 	Gtk::Entry m_entry_num_tasks;
+	Gtk::Label m_label_client;
+	Gtk::Entry m_entry_client;
 	Gtk::Label m_label_target;
 	Gtk::Entry m_entry_target;
 	Gtk::Label m_label_srun;
@@ -71,6 +74,11 @@ public:
 	inline int num_processes() const
 	{
 		return m_srun ? m_num_nodes * m_num_tasks : m_num_tasks;
+	}
+
+	inline const char *client() const
+	{
+		return m_client;
 	}
 
 	inline const char *target() const

@@ -2,6 +2,7 @@
 
 UIDialog::UIDialog()
 	: m_is_valid(false),
+	  m_client(nullptr),
 	  m_target(nullptr),
 	  m_ip_address(nullptr),
 	  m_ssh_address(nullptr),
@@ -10,6 +11,7 @@ UIDialog::UIDialog()
 	  m_partition(nullptr),
 	  m_label_num_nodes("Number of nodes:", Gtk::ALIGN_START),
 	  m_label_num_tasks("Number of tasks:", Gtk::ALIGN_START),
+	  m_label_client("Client:", Gtk::ALIGN_START),
 	  m_label_target("Target:", Gtk::ALIGN_START),
 	  m_label_srun("Use srun (ssh):", Gtk::ALIGN_START),
 	  m_label_ip_address("Host IP address:", Gtk::ALIGN_START),
@@ -32,6 +34,8 @@ UIDialog::UIDialog()
 	int row = 0;
 	m_grid.attach(m_label_num_tasks, 0, row);
 	m_grid.attach(m_entry_num_tasks, 1, row++);
+	m_grid.attach(m_label_client, 0, row);
+	m_grid.attach(m_entry_client, 1, row++);
 	m_grid.attach(m_label_target, 0, row);
 	m_grid.attach(m_entry_target, 1, row++);
 	m_grid.attach(m_label_srun, 0, row);
@@ -61,6 +65,8 @@ UIDialog::UIDialog()
 
 UIDialog::~UIDialog()
 {
+	if (m_client)
+		free(m_client);
 	if (m_target)
 		free(m_target);
 	if (m_ip_address)
@@ -81,6 +87,8 @@ void UIDialog::store_line(string a_key, string a_value)
 		m_entry_num_nodes.set_text(a_value);
 	if ("num_tasks" == a_key)
 		m_entry_num_tasks.set_text(a_value);
+	if ("client" == a_key)
+		m_entry_client.set_text(a_value);
 	if ("target" == a_key)
 		m_entry_target.set_text(a_value);
 	if ("ip_address" == a_key)
@@ -164,6 +172,7 @@ void UIDialog::on_dialog_response(const int a_response_id)
 		return;
 	}
 
+	m_client = strdup(m_entry_client.get_text().c_str());
 	m_target = strdup(m_entry_target.get_text().c_str());
 	m_ip_address = strdup(m_entry_ip_address.get_text().c_str());
 	m_ssh_address = strdup(m_entry_ssh_address.get_text().c_str());

@@ -13,12 +13,12 @@ const asio::ip::port_type base_port_trgt = 0xC000;
 
 Gtk::Application *g_app;
 
-int run_cmd(ssh_session &session, UIDialog &dialog)
+int run_cmd(ssh_session &a_session, UIDialog &a_dialog)
 {
 	ssh_channel channel;
 	int rc;
 
-	channel = ssh_channel_new(session);
+	channel = ssh_channel_new(a_session);
 	if (channel == NULL)
 	{
 		return SSH_ERROR;
@@ -32,13 +32,13 @@ int run_cmd(ssh_session &session, UIDialog &dialog)
 	}
 
 	string cmd = string("srun");
-	cmd += string(" --nodes=") + std::to_string(dialog.num_nodes());
-	cmd += string(" --ntasks=") + std::to_string(dialog.num_tasks());
-	cmd += string(" -p ") + dialog.partition();
+	cmd += string(" --nodes=") + std::to_string(a_dialog.num_nodes());
+	cmd += string(" --ntasks=") + std::to_string(a_dialog.num_tasks());
+	cmd += string(" -p ") + a_dialog.partition();
 	cmd += string(" --mpi=pmi2");
-	cmd += string(" ~/client");
-	cmd += string(" -s ") + dialog.ip_address();
-	cmd += string(" ") + dialog.target();
+	cmd += string(" ") + a_dialog.client();
+	cmd += string(" -s ") + a_dialog.ip_address();
+	cmd += string(" ") + a_dialog.target();
 
 	rc = ssh_channel_request_exec(channel, cmd.c_str());
 	if (rc != SSH_OK)
@@ -55,7 +55,7 @@ int run_cmd(ssh_session &session, UIDialog &dialog)
 	return SSH_OK;
 }
 
-bool start_clients_srun(UIDialog &dialog)
+bool start_clients_srun(UIDialog &a_dialog)
 {
 	ssh_session session;
 	int rc;
@@ -66,13 +66,13 @@ bool start_clients_srun(UIDialog &dialog)
 		return false;
 	}
 
-	ssh_options_set(session, SSH_OPTIONS_HOST, dialog.ssh_address());
-	ssh_options_set(session, SSH_OPTIONS_USER, dialog.ssh_user());
+	ssh_options_set(session, SSH_OPTIONS_HOST, a_dialog.ssh_address());
+	ssh_options_set(session, SSH_OPTIONS_USER, a_dialog.ssh_user());
 
 	rc = ssh_connect(session);
 	if (rc != SSH_OK)
 	{
-		fprintf(stderr, "Error connecting to %s: %s\n", dialog.ssh_address(), ssh_get_error(session));
+		fprintf(stderr, "Error connecting to %s: %s\n", a_dialog.ssh_address(), ssh_get_error(session));
 		return false;
 	}
 
@@ -84,7 +84,7 @@ bool start_clients_srun(UIDialog &dialog)
 		return false;
 	}
 
-	rc = ssh_userauth_password(session, NULL, dialog.ssh_password());
+	rc = ssh_userauth_password(session, NULL, a_dialog.ssh_password());
 	if (rc != SSH_AUTH_SUCCESS)
 	{
 		fprintf(stderr, "Error authenticating with password: %s\n", ssh_get_error(session));
@@ -93,7 +93,7 @@ bool start_clients_srun(UIDialog &dialog)
 		return false;
 	}
 
-	rc = run_cmd(session, dialog);
+	rc = run_cmd(session, a_dialog);
 	if (rc != SSH_OK)
 	{
 		fprintf(stderr, "Error starting clients: %s\n", ssh_get_error(session));
@@ -108,12 +108,12 @@ bool start_clients_srun(UIDialog &dialog)
 	return true;
 }
 
-int start_clients_mpi(const int a_num_processes, const char *const a_target)
+int start_clients_mpi(UIDialog &a_dialog)
 {
 	const int pid = fork();
 	if (0 == pid)
 	{
-		const char *np_str = strdup(std::to_string(a_num_processes).c_str());
+		const char *np_str = strdup(std::to_string(a_dialog.num_processes()).c_str());
 
 		char *argv[] = {
 			// (char *)"/usr/bin/xterm",
@@ -122,9 +122,9 @@ int start_clients_mpi(const int a_num_processes, const char *const a_target)
 			(char *)"/usr/bin/mpirun",
 			(char *)"-np",
 			(char *)np_str,
-			(char *)"/home/nicolas/ma/parallelgdb/bin/client",
+			(char *)a_dialog.client(),
 			(char *)"-m",
-			(char *)a_target,
+			(char *)a_dialog.target(),
 			(char *)nullptr};
 		execvp(argv[0], argv);
 		_exit(127);
@@ -249,7 +249,7 @@ int main(int, char const **)
 	}
 	else
 	{
-		ret = start_clients_mpi(dialog->num_processes(), dialog->target()) > 0;
+		ret = start_clients_mpi(*dialog) > 0;
 	}
 
 	if (!ret)
