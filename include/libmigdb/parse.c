@@ -1539,6 +1539,7 @@ mi_stop *mi_get_stopped(mi_results *r)
 	return res;
 }
 
+// original func
 // mi_stop *mi_res_stop(mi_h *h)
 // {
 // 	mi_output *o = mi_retire_response(h);
@@ -1557,7 +1558,6 @@ mi_stop *mi_get_stopped(mi_results *r)
 
 mi_stop *mi_res_stop(mi_output *o)
 {
-	// mi_output *o = mi_retire_response(h);
 	mi_stop *stop = NULL;
 
 	if (o)
@@ -1566,7 +1566,6 @@ mi_stop *mi_res_stop(mi_output *o)
 		if (sr)
 			stop = mi_get_stopped(sr->c);
 	}
-	// mi_free_output(o);
 
 	return stop;
 }

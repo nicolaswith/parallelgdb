@@ -440,49 +440,8 @@ extern int mi_error;
 extern char *mi_error_from_gdb;
 const char *mi_get_error_str();
 
-/* Indicate the name of gdb exe. Default is /usr/bin/gdb */
-void mi_set_gdb_exe(const char *name);
-const char *mi_get_gdb_exe();
-/* Indicate the name of a file containing commands to send at start-up */
-void mi_set_gdb_start(const char *name);
-const char *mi_get_gdb_start();
-/* Indicate the name of a file containing commands to send after connection */
-void mi_set_gdb_conn(const char *name);
-const char *mi_get_gdb_conn();
-void mi_send_target_commands(mi_h *h);
-/* Connect to a local copy of gdb. */
-mi_h *mi_connect_local();
-/* Close connection. You should ask gdb to quit first. */
-void mi_disconnect(mi_h *h);
-/* Force MI version. */
-#define MI_VERSION2U(maj, mid, min) (maj * 0x1000000 + mid * 0x10000 + min)
-void mi_force_version(mi_h *h, unsigned vMajor, unsigned vMiddle, unsigned vMinor);
-void mi_set_workaround(unsigned wa, int enable);
-int mi_get_workaround(unsigned wa);
 /* Parse gdb output. */
 mi_output *mi_parse_gdb_output(const char *str);
-/* Functions to set/get the tunneled streams callbacks. */
-void mi_set_console_cb(mi_h *h, stream_cb cb, void *data);
-void mi_set_target_cb(mi_h *h, stream_cb cb, void *data);
-void mi_set_log_cb(mi_h *h, stream_cb cb, void *data);
-stream_cb mi_get_console_cb(mi_h *h, void **data);
-stream_cb mi_get_target_cb(mi_h *h, void **data);
-stream_cb mi_get_log_cb(mi_h *h, void **data);
-/* The callback to deal with async events. */
-void mi_set_async_cb(mi_h *h, async_cb cb, void *data);
-async_cb mi_get_async_cb(mi_h *h, void **data);
-/* Time out in gdb responses. */
-void mi_set_time_out_cb(mi_h *h, tm_cb cb, void *data);
-tm_cb mi_get_time_out_cb(mi_h *h, void **data);
-void mi_set_time_out(mi_h *h, int to);
-int mi_get_time_out(mi_h *h);
-/* Callbacks to "see" the dialog with gdb. */
-void mi_set_to_gdb_cb(mi_h *h, stream_cb cb, void *data);
-void mi_set_from_gdb_cb(mi_h *h, stream_cb cb, void *data);
-stream_cb mi_get_to_gdb_cb(mi_h *h, void **data);
-stream_cb mi_get_from_gdb_cb(mi_h *h, void **data);
-/* Sends a message to gdb. */
-int mi_send(mi_h *h, const char *format, ...);
 /* Wait until gdb sends a response. */
 mi_output *mi_get_response_blk(mi_h *h);
 /* Check if gdb sent a complete response. Use with mi_retire_response. */
@@ -510,21 +469,6 @@ mi_frames *mi_res_frames_array(mi_h *h, const char *var);
 mi_frames *mi_res_frames_list(mi_h *h);
 mi_frames *mi_parse_frame(mi_results *c);
 mi_frames *mi_res_frame(mi_h *h);
-/* Create an auxiliar terminal using xterm. */
-mi_aux_term *gmi_start_xterm();
-/* Indicate the name of xterm exe. Default is /usr/bin/X11/xterm */
-void mi_set_xterm_exe(const char *name);
-const char *mi_get_xterm_exe();
-/* Kill the auxiliar terminal and release the structure. */
-void gmi_end_aux_term(mi_aux_term *t);
-/* Look for a free Linux VT for the child. */
-mi_aux_term *gmi_look_for_free_vt();
-/* Look for a free and usable Linux VT. */
-int mi_look_for_free_vt();
-/* Close master and release the structure. */
-void gmi_end_pty(mi_pty *p);
-/* Look for a free pseudo terminal. */
-mi_pty *gmi_look_for_free_pty();
 /* Extract a list of thread IDs from response. */
 int mi_res_thread_ids(mi_h *h, int **list);
 int mi_get_thread_ids(mi_output *res, int **list);
@@ -540,21 +484,17 @@ int mi_res_children(mi_h *h, mi_gvar *v);
 mi_bkpt *mi_res_bkpt(mi_h *h);
 mi_wp *mi_res_wp(mi_h *h);
 char *mi_res_value(mi_h *h);
+// mi_stop *mi_res_stop(mi_h *h); // original func
 mi_stop *mi_res_stop(mi_output *o);
-// mi_stop *mi_res_stop(mi_h *h);
 enum mi_stop_reason mi_reason_str_to_enum(const char *s);
 const char *mi_reason_enum_to_str(enum mi_stop_reason r);
 int mi_get_read_memory(mi_h *h, unsigned char *dest, unsigned ws, int *na, unsigned long *addr);
 mi_asm_insns *mi_get_asm_insns(mi_h *h);
-/* Starting point of the program. */
-void mi_set_main_func(const char *name);
-const char *mi_get_main_func();
 mi_chg_reg *mi_get_list_registers(mi_h *h, int *how_many);
 int mi_get_list_registers_l(mi_h *h, mi_chg_reg *l);
 mi_chg_reg *mi_get_list_changed_regs(mi_h *h);
 int mi_get_reg_values(mi_h *h, mi_chg_reg *l);
 mi_chg_reg *mi_get_reg_values_l(mi_h *h, int *how_many);
-int gmi_target_download(mi_h *h);
 
 /* Allocation functions: */
 void *mi_calloc(size_t count, size_t sz);

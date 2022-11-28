@@ -120,6 +120,7 @@ void mi_free_frames(mi_frames *f)
 	{
 		free(f->func);
 		free(f->file);
+		free(f->fullname);
 		free(f->from);
 		mi_free_results(f->args);
 		aux = f->next;
