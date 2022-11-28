@@ -13,6 +13,8 @@ class UIDialog : public Gtk::Dialog
 	int m_num_tasks;
 	int m_num_processes;
 	char *m_client;
+	char *m_gdb;
+	char *m_socat;
 	char *m_target;
 	char *m_ip_address;
 	char *m_ssh_address;
@@ -21,25 +23,31 @@ class UIDialog : public Gtk::Dialog
 	char *m_partition;
 
 	Gtk::Grid m_grid;
-	Gtk::Label m_label_num_nodes;
-	Gtk::Entry m_entry_num_nodes;
+
 	Gtk::Label m_label_num_tasks;
-	Gtk::Entry m_entry_num_tasks;
 	Gtk::Label m_label_client;
-	Gtk::Entry m_entry_client;
+	Gtk::Label m_label_gdb;
+	Gtk::Label m_label_socat;
 	Gtk::Label m_label_target;
-	Gtk::Entry m_entry_target;
-	Gtk::Label m_label_srun;
-	Gtk::CheckButton m_checkbutton_srun;
 	Gtk::Label m_label_ip_address;
-	Gtk::Entry m_entry_ip_address;
+	Gtk::Label m_label_srun;
+	Gtk::Label m_label_num_nodes;
 	Gtk::Label m_label_ssh_address;
-	Gtk::Entry m_entry_ssh_address;
 	Gtk::Label m_label_ssh_user;
-	Gtk::Entry m_entry_ssh_user;
 	Gtk::Label m_label_ssh_password;
-	Gtk::Entry m_entry_ssh_password;
 	Gtk::Label m_label_partition;
+
+	Gtk::Entry m_entry_num_nodes;
+	Gtk::Entry m_entry_client;
+	Gtk::Entry m_entry_gdb;
+	Gtk::Entry m_entry_socat;
+	Gtk::Entry m_entry_target;
+	Gtk::Entry m_entry_ip_address;
+	Gtk::CheckButton m_checkbutton_srun;
+	Gtk::Entry m_entry_num_tasks;
+	Gtk::Entry m_entry_ssh_address;
+	Gtk::Entry m_entry_ssh_user;
+	Gtk::Entry m_entry_ssh_password;
 	Gtk::Entry m_entry_partition;
 
 	void on_dialog_response(const int a_response_id);
@@ -75,6 +83,16 @@ public:
 	inline const char *client() const
 	{
 		return m_client;
+	}
+
+	inline const char *gdb() const
+	{
+		return m_gdb;
+	}
+
+	inline const char *socat() const
+	{
+		return m_socat;
 	}
 
 	inline const char *target() const

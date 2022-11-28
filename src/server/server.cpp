@@ -32,13 +32,37 @@ int run_cmd(ssh_session &a_session, UIDialog &a_dialog)
 	}
 
 	string cmd = string("srun");
-	cmd += string(" --nodes=") + std::to_string(a_dialog.num_nodes());
-	cmd += string(" --ntasks=") + std::to_string(a_dialog.num_tasks());
-	cmd += string(" -p ") + a_dialog.partition();
-	cmd += string(" --mpi=pmi2");
-	cmd += string(" ") + a_dialog.client();
-	cmd += string(" -s ") + a_dialog.ip_address();
-	cmd += string(" ") + a_dialog.target();
+
+	cmd += string(" --nodes=");
+	cmd += std::to_string(a_dialog.num_nodes());
+
+	cmd += string(" --ntasks=");
+	cmd += std::to_string(a_dialog.num_tasks());
+
+	cmd += string(" --partition=");
+	cmd += a_dialog.partition();
+
+	cmd += string(" --mpi=");
+	cmd += string("pmi2");
+
+	cmd += string(" ");
+	cmd += a_dialog.client();
+
+	cmd += string(" -r ");
+
+	cmd += string(" -s ");
+	cmd += a_dialog.socat();
+
+	cmd += string(" -g ");
+	cmd += a_dialog.gdb();
+
+	cmd += string(" -i ");
+	cmd += a_dialog.ip_address();
+
+	cmd += string(" ");
+	cmd += a_dialog.target();
+
+	// std::cout << cmd << "\n";
 
 	rc = ssh_channel_request_exec(channel, cmd.c_str());
 	if (rc != SSH_OK)
@@ -113,7 +137,7 @@ int start_clients_mpi(UIDialog &a_dialog)
 	const int pid = fork();
 	if (0 == pid)
 	{
-		const char *np_str = strdup(std::to_string(a_dialog.num_processes()).c_str());
+		const char *const np_str = strdup(std::to_string(a_dialog.num_processes()).c_str());
 
 		char *argv[] = {
 			// (char *)"/usr/bin/xterm",
@@ -123,7 +147,12 @@ int start_clients_mpi(UIDialog &a_dialog)
 			(char *)"-np",
 			(char *)np_str,
 			(char *)a_dialog.client(),
-			(char *)"-m",
+			(char *)"-s",
+			(char *)a_dialog.socat(),
+			(char *)"-g",
+			(char *)a_dialog.gdb(),
+			(char *)"-i",
+			(char *)a_dialog.ip_address(),
 			(char *)a_dialog.target(),
 			(char *)nullptr};
 		execvp(argv[0], argv);
@@ -135,13 +164,13 @@ int start_clients_mpi(UIDialog &a_dialog)
 void process_session(tcp::socket a_sock, UIWindow &a_window, const int a_port)
 {
 	const int process_rank = get_process_rank(a_port);
-	mi_h *h = nullptr;
+	mi_h *gdb_handle = nullptr;
 	if (src_is_gdb(a_port))
 	{
 		a_window.set_conns_gdb(process_rank, &a_sock);
 		a_window.set_conns_open_gdb(process_rank, true);
-		h = mi_alloc_h();
-		h->line = (char *)malloc(max_length * sizeof(char));
+		gdb_handle = mi_alloc_h();
+		gdb_handle->line = (char *)malloc(max_length * sizeof(char));
 	}
 	else
 	{
@@ -165,6 +194,7 @@ void process_session(tcp::socket a_sock, UIWindow &a_window, const int a_port)
 				if (src_is_gdb(a_port))
 				{
 					a_window.set_conns_open_gdb(process_rank, false);
+					mi_free_h(&gdb_handle);
 				}
 				break;
 			}
@@ -182,7 +212,7 @@ void process_session(tcp::socket a_sock, UIWindow &a_window, const int a_port)
 					sigc::mem_fun(
 						a_window,
 						&UIWindow::print_data),
-					h,
+					gdb_handle,
 					strdup(data),
 					length + 1, // now length+1 chars are valid (inc null termination)
 					a_port));

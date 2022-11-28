@@ -101,7 +101,7 @@ int get_process_rank(const char *const env_name)
 	}
 	catch (const std::exception &e)
 	{
-		std::cerr << e.what() << '\n';
+		std::cerr << "Error reading rank env: " << e.what() << '\n';
 		return -1;
 	}
 }
@@ -112,8 +112,10 @@ void print_help()
 		stderr,
 		"Usage: ./client [OPTIONS] </path/to/target>\n"
 		"Options:\n"
-		"  -m\t\t use mpirun (default)\n"
-		"  -s <ip.addr>\t use srun\n"
+		"  -r\t\t use srun\n"
+		"  -g <path>\t path to gdb\n"
+		"  -s <path>\t path to socat\n"
+		"  -i <addr>\t host IP address\n"
 		"  -h\t\t print this help\n");
 }
 
@@ -121,28 +123,45 @@ int main(const int argc, char **argv)
 {
 	char c;
 	bool use_srun = false;
-	char *ip_addr = strdup("localhost");
+	char *ip_addr = nullptr;
+	char *gdb_path = nullptr;
+	char *socat_path = nullptr;
 	opterr = 0;
 
-	while ((c = getopt(argc, argv, "mhs:")) != -1)
+	while ((c = getopt(argc, argv, "hrg:s:i:")) != -1)
 	{
 		switch (c)
 		{
-		case 'm':
-			use_srun = false;
+		case 'g': // gdb
+			free(gdb_path);
+			gdb_path = strdup(optarg);
 			break;
-		case 's':
-			use_srun = true;
+		case 's': // socat
+			free(socat_path);
+			socat_path = strdup(optarg);
+			break;
+		case 'i': // ip
 			free(ip_addr);
 			ip_addr = strdup(optarg);
 			break;
-		case 'h':
+		case 'r': // remote
+			use_srun = true;
+			break;
+		case 'h': // help
 			print_help();
 			return EXIT_SUCCESS;
 		case '?':
-			if ('s' == optopt)
+			if ('i' == optopt)
 			{
-				fprintf(stderr, "Option -s requires the host ip address.\n");
+				fprintf(stderr, "Option -%c requires the host IP address.\n", optopt);
+			}
+			else if ('s' == optopt)
+			{
+				fprintf(stderr, "Option -%c requires the path to socat.\n", optopt);
+			}
+			else if ('g' == optopt)
+			{
+				fprintf(stderr, "Option -%c requires the path to gdb.\n", optopt);
 			}
 			else if (isprint(optopt))
 			{
@@ -160,32 +179,35 @@ int main(const int argc, char **argv)
 	}
 
 	char *target;
-	if (argc == optind)
-	{
-		fprintf(stderr, "No target specified.\n");
-		print_help();
-		free(ip_addr);
-		return EXIT_FAILURE;
-	}
-	else
+	if (argc - optind == 1)
 	{
 		target = strdup(argv[optind]);
 	}
+	else
+	{
+		if (argc == optind)
+		{
+			fprintf(stderr, "No target specified.\n");
+		}
+		else
+		{
+			fprintf(stderr, "Too many arguments.\n");
+		}
+		free(socat_path);
+		free(gdb_path);
+		free(ip_addr);
+		print_help();
+		return EXIT_FAILURE;
+	}
 
 	char *env_name;
-	char *socat_path;
-	char *gdb_path;
 	if (use_srun)
 	{
 		env_name = strdup("PMI_RANK");
-		socat_path = strdup("/home/urz/with/spack/opt/spack/linux-centos8-x86_64_v3/gcc-8.5.0/socat-1.7.4.4-glonybxmsca7crv7c4vi2s4fnrmg7ebp/bin/socat");
-		gdb_path   = strdup("/home/urz/with/spack/opt/spack/linux-centos8-x86_64_v3/gcc-8.5.0/gdb-12.1-yebecfkufo6ycigccpxnskmicviekwb7/bin/gdb");
 	}
 	else
 	{
 		env_name = strdup("OMPI_COMM_WORLD_RANK");
-		socat_path = strdup("/usr/bin/socat");
-		gdb_path   = strdup("/usr/bin/gdb");
 	}
 
 	int pid = getpid();
@@ -204,12 +226,12 @@ int main(const int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
-	int port_gdb  = 0x8000 + process_rank;
+	int port_gdb = 0x8000 + process_rank;
 	int port_trgt = 0xC000 + process_rank;
 
-	int pid_socat_gdb  = start_socat(tty_gdb,  socat_path, ip_addr, port_gdb);
+	int pid_socat_gdb = start_socat(tty_gdb, socat_path, ip_addr, port_gdb);
 	int pid_socat_trgt = start_socat(tty_trgt, socat_path, ip_addr, port_trgt);
-	int pid_gdb        = start_gdb(tty_gdb, tty_trgt, gdb_path, target, pid_socat_gdb, pid_socat_trgt);
+	int pid_gdb = start_gdb(tty_gdb, tty_trgt, gdb_path, target, pid_socat_gdb, pid_socat_trgt);
 
 	free(target);
 	free(env_name);
@@ -218,12 +240,11 @@ int main(const int argc, char **argv)
 	free(ip_addr);
 
 	int status;
-
 	while (true)
 	{
 		int exited = 0;
-		exited |= waitpid(pid_gdb,        &status, WNOHANG);
-		exited |= waitpid(pid_socat_gdb,  &status, WNOHANG);
+		exited |= waitpid(pid_gdb, &status, WNOHANG);
+		exited |= waitpid(pid_socat_gdb, &status, WNOHANG);
 		exited |= waitpid(pid_socat_trgt, &status, WNOHANG);
 
 		if (exited)
@@ -232,8 +253,8 @@ int main(const int argc, char **argv)
 		sleep(1);
 	}
 
-	kill(pid_gdb,        SIGINT);
-	kill(pid_socat_gdb,  SIGINT);
+	kill(pid_gdb, SIGINT);
+	kill(pid_socat_gdb, SIGINT);
 	kill(pid_socat_trgt, SIGINT);
 
 	return EXIT_SUCCESS;

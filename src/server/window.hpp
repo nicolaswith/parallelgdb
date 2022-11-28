@@ -85,7 +85,7 @@ public:
 		return m_conns_gdb[a_process_rank];
 	}
 
-	void set_conns_gdb(const int a_process_rank, tcp::socket *a_socket)
+	inline void set_conns_gdb(const int a_process_rank, tcp::socket *const a_socket)
 	{
 		m_conns_gdb[a_process_rank] = a_socket;
 	}
@@ -95,7 +95,7 @@ public:
 		return m_conns_trgt[a_process_rank];
 	}
 
-	void set_conns_trgt(const int a_process_rank, tcp::socket *a_socket)
+	inline void set_conns_trgt(const int a_process_rank, tcp::socket *const a_socket)
 	{
 		m_conns_trgt[a_process_rank] = a_socket;
 	}
@@ -105,7 +105,7 @@ public:
 		return m_conns_open_gdb[a_process_rank];
 	}
 
-	void set_conns_open_gdb(const int a_process_rank, bool a_value)
+	inline void set_conns_open_gdb(const int a_process_rank, const bool a_value)
 	{
 		m_conns_open_gdb[a_process_rank] = a_value;
 	}

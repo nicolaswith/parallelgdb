@@ -4,18 +4,22 @@ UIDialog::UIDialog()
 	: m_is_valid(false),
 	  m_srun(false),
 	  m_client(nullptr),
+	  m_gdb(nullptr),
+	  m_socat(nullptr),
 	  m_target(nullptr),
 	  m_ip_address(nullptr),
 	  m_ssh_address(nullptr),
 	  m_ssh_user(nullptr),
 	  m_ssh_password(nullptr),
 	  m_partition(nullptr),
-	  m_label_num_nodes("Number of nodes:", Gtk::ALIGN_START),
 	  m_label_num_tasks("Number of tasks:", Gtk::ALIGN_START),
 	  m_label_client("Client:", Gtk::ALIGN_START),
+	  m_label_gdb("GDB:", Gtk::ALIGN_START),
+	  m_label_socat("Socat:", Gtk::ALIGN_START),
 	  m_label_target("Target:", Gtk::ALIGN_START),
+	  m_label_ip_address("IP address:", Gtk::ALIGN_START),
 	  m_label_srun("Use srun (ssh):", Gtk::ALIGN_START),
-	  m_label_ip_address("Host IP address:", Gtk::ALIGN_START),
+	  m_label_num_nodes("Number of nodes:", Gtk::ALIGN_START),
 	  m_label_ssh_address("SSH address:", Gtk::ALIGN_START),
 	  m_label_ssh_user("SSH user name:", Gtk::ALIGN_START),
 	  m_label_ssh_password("SSH password:", Gtk::ALIGN_START),
@@ -37,14 +41,18 @@ UIDialog::UIDialog()
 	m_grid.attach(m_entry_num_tasks, 1, row++);
 	m_grid.attach(m_label_client, 0, row);
 	m_grid.attach(m_entry_client, 1, row++);
+	m_grid.attach(m_label_gdb, 0, row);
+	m_grid.attach(m_entry_gdb, 1, row++);
+	m_grid.attach(m_label_socat, 0, row);
+	m_grid.attach(m_entry_socat, 1, row++);
 	m_grid.attach(m_label_target, 0, row);
 	m_grid.attach(m_entry_target, 1, row++);
+	m_grid.attach(m_label_ip_address, 0, row);
+	m_grid.attach(m_entry_ip_address, 1, row++);
 	m_grid.attach(m_label_srun, 0, row);
 	m_grid.attach(m_checkbutton_srun, 1, row++);
 	m_grid.attach(m_label_num_nodes, 0, row);
 	m_grid.attach(m_entry_num_nodes, 1, row++);
-	m_grid.attach(m_label_ip_address, 0, row);
-	m_grid.attach(m_entry_ip_address, 1, row++);
 	m_grid.attach(m_label_ssh_address, 0, row);
 	m_grid.attach(m_entry_ssh_address, 1, row++);
 	m_grid.attach(m_label_ssh_user, 0, row);
@@ -66,20 +74,15 @@ UIDialog::UIDialog()
 
 UIDialog::~UIDialog()
 {
-	if (m_client)
-		free(m_client);
-	if (m_target)
-		free(m_target);
-	if (m_ip_address)
-		free(m_ip_address);
-	if (m_ssh_address)
-		free(m_ssh_address);
-	if (m_ssh_user)
-		free(m_ssh_user);
-	if (m_ssh_password)
-		free(m_ssh_password);
-	if (m_partition)
-		free(m_partition);
+	free(m_client);
+	free(m_gdb);
+	free(m_socat);
+	free(m_target);
+	free(m_ip_address);
+	free(m_ssh_address);
+	free(m_ssh_user);
+	free(m_ssh_password);
+	free(m_partition);
 }
 
 void UIDialog::store_line(string a_key, string a_value)
@@ -90,6 +93,10 @@ void UIDialog::store_line(string a_key, string a_value)
 		m_entry_num_tasks.set_text(a_value);
 	if ("client" == a_key)
 		m_entry_client.set_text(a_value);
+	if ("gdb" == a_key)
+		m_entry_gdb.set_text(a_value);
+	if ("socat" == a_key)
+		m_entry_socat.set_text(a_value);
 	if ("target" == a_key)
 		m_entry_target.set_text(a_value);
 	if ("ip_address" == a_key)
@@ -119,8 +126,8 @@ void UIDialog::store_line(string a_key, string a_value)
 void UIDialog::read_config()
 {
 	// file picker ?
-	// FILE *f = fopen("./configs/config_ssh", "r");
-	FILE *f = fopen("./configs/config_mpi", "r");
+	FILE *f = fopen("./configs/config_ssh", "r");
+	// FILE *f = fopen("./configs/config_mpi", "r");
 	if (!f)
 	{
 		return;
@@ -174,6 +181,8 @@ void UIDialog::on_dialog_response(const int a_response_id)
 	}
 
 	m_client = strdup(m_entry_client.get_text().c_str());
+	m_gdb = strdup(m_entry_gdb.get_text().c_str());
+	m_socat = strdup(m_entry_socat.get_text().c_str());
 	m_target = strdup(m_entry_target.get_text().c_str());
 	m_ip_address = strdup(m_entry_ip_address.get_text().c_str());
 	m_ssh_address = strdup(m_entry_ssh_address.get_text().c_str());
@@ -187,7 +196,6 @@ void UIDialog::on_dialog_response(const int a_response_id)
 void UIDialog::set_sensitivity(bool a_state)
 {
 	m_entry_num_nodes.set_sensitive(a_state);
-	m_entry_ip_address.set_sensitive(a_state);
 	m_entry_ssh_address.set_sensitive(a_state);
 	m_entry_ssh_user.set_sensitive(a_state);
 	m_entry_ssh_password.set_sensitive(a_state);
