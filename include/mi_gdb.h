@@ -45,11 +45,6 @@
 #define MI_MISSING_GDB            13
 #define MI_LAST_ERROR             13
 
-#define MI_R_NONE                  0 /* We are no waiting any response. */
-#define MI_R_SKIP                  1 /* We want to discard it. */
-#define MI_R_FE_AND_S              2 /* Wait for done. */
-#define MI_R_E_ARGS                3
-
 enum mi_val_type { t_const, t_tuple, t_list };
 
 /* Types and subtypes. */
@@ -78,16 +73,6 @@ enum mi_val_type { t_const, t_tuple, t_list };
 #define MI_CL_CONNECTED    4
 #define MI_CL_ERROR        5
 #define MI_CL_EXIT         6
-
-#define MI_DEFAULT_TIME_OUT 10
-
-#define MI_DIS_ASM        0
-#define MI_DIS_SRC_ASM    1
-
-/* Implemented workaround for gdb bugs that we can dis/enable. */
-/* At least gdb<=6.1.1 fails to find a source file with absolute path if the
-   name is for a psym instead of a sym. psym==partially loaded symbol table. */
-#define MI_PSYM_SEARCH    0
 
 #define MI_VERSION_STR "0.8.13"
 #define MI_VERSION_MAJOR  0
@@ -128,49 +113,13 @@ typedef int (*tm_cb)(void *);
 /* Values of this structure shouldn't be manipulated by the user. */
 struct mi_h_struct
 {
-	/* Pipes connected to gdb. */
-	int to_gdb[2];
-	int from_gdb[2];
-	/* Streams for the pipes. */
-	FILE *to, *from;
-	/* PID of child gdb. */
-	pid_t pid;
-	char died;
-	/* Which rensponse we are waiting for. */
-	/*int response;*/
 	/* The line we are reading. */
 	char *line;
 	int llen, lread;
 	/* Parsed output. */
 	mi_output *po, *last;
-	/* Tunneled streams callbacks. */
-	stream_cb console;
-	void *console_data;
-	stream_cb target;
-	void *target_data;
-	stream_cb log;
-	void *log_data;
-	/* Async responses callback. */
-	async_cb async;
-	void *async_data;
-	/* Callbacks to get echo of gdb dialog. */
-	stream_cb to_gdb_echo;
-	void *to_gdb_echo_data;
-	stream_cb from_gdb_echo;
-	void *from_gdb_echo_data;
-	/* Time out */
-	tm_cb time_out_cb;
-	void *time_out_cb_data;
-	int time_out;
-	// /* Ugly workaround for some of the show responses :-( */
-	// int catch_console;
-	// char *catched_console;
-	/* MI version, currently unknown but the user can force v2 */
-	unsigned version;
 };
 typedef struct mi_h_struct mi_h;
-
-#define MI_TO(a) ((a)->to_gdb[1])
 
 enum mi_bkp_type
 {

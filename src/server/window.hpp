@@ -1,8 +1,7 @@
+#ifndef WINDOW_HPP
+#define WINDOW_HPP
+
 #include "defs.hpp"
-
-#ifndef _WINDOW_HPP
-#define _WINDOW_HPP
-
 #include "mi_gdb.h"
 
 #pragma GCC diagnostic push
@@ -23,7 +22,10 @@ class UIWindow : public Gtk::Window
 
 	char **m_text_view_buffers_gdb;
 	char **m_text_view_buffers_trgt;
+
+	int *m_current_line;
 	string *m_source_view_path;
+
 	size_t *m_buffer_length_gdb;
 	size_t *m_buffer_length_trgt;
 
@@ -54,8 +56,12 @@ class UIWindow : public Gtk::Window
 
 	volatile bool *m_conns_open_gdb;
 
+	char **m_where_marks;
+	char **m_where_categories;
+
 	void do_scroll(Gsv::View *a_source_view, const int a_line) const;
 	void scroll_to_line(Gsv::View *a_source_view, const int a_line) const;
+	void update_line_markers();
 	void update_source_file(const int a_process_rank, mi_stop *a_stop_record);
 	void print_data_gdb(mi_h *const a_h, const char *const a_data, const int a_process_rank);
 	void print_data_trgt(const char *const a_data, const size_t a_data_length, const int a_process_rank);
@@ -64,7 +70,7 @@ public:
 	UIWindow(const int a_num_processes);
 	virtual ~UIWindow();
 
-	void init();
+	bool init();
 	bool on_delete(GdkEventAny *);
 	void scroll_bottom(Gtk::Allocation &a_allocation, Gtk::ScrolledWindow *a_scrolled_window, const bool a_is_gdb, const int a_process_rank);
 	void send_sig_int(const int a_process_rank) const;
@@ -111,4 +117,4 @@ public:
 	}
 };
 
-#endif /* _WINDOW_HPP */
+#endif /* WINDOW_HPP */

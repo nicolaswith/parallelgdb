@@ -1,5 +1,5 @@
-#ifndef _DEFS_HPP
-#define _DEFS_HPP
+#ifndef DEFS_HPP
+#define DEFS_HPP
 
 #include <iostream>
 
@@ -13,4 +13,4 @@ using std::size_t;
 #define dump(var) std::cout << #var << " = " << var << "\n"
 #define dumpp(var) printf("%s = %p\n", #var, (void *)var)
 
-#endif /* _DEFS_HPP */
+#endif /* DEFS_HPP */

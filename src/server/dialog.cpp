@@ -126,8 +126,8 @@ void UIDialog::store_line(string a_key, string a_value)
 void UIDialog::read_config()
 {
 	// file picker ?
-	FILE *f = fopen("./configs/config_ssh", "r");
-	// FILE *f = fopen("./configs/config_mpi", "r");
+	// FILE *f = fopen("./configs/config_ssh", "r");
+	FILE *f = fopen("./configs/config_mpi", "r");
 	if (!f)
 	{
 		return;

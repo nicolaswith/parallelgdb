@@ -33,36 +33,32 @@ int run_cmd(ssh_session &a_session, UIDialog &a_dialog)
 
 	string cmd = string("srun");
 
-	cmd += string(" --nodes=");
+	cmd += " --nodes=";
 	cmd += std::to_string(a_dialog.num_nodes());
 
-	cmd += string(" --ntasks=");
+	cmd += " --ntasks=";
 	cmd += std::to_string(a_dialog.num_tasks());
 
-	cmd += string(" --partition=");
+	cmd += " --partition=";
 	cmd += a_dialog.partition();
 
-	cmd += string(" --mpi=");
-	cmd += string("pmi2");
+	cmd += " --mpi=";
+	cmd += "pmi2";
 
-	cmd += string(" ");
+	cmd += " ";
 	cmd += a_dialog.client();
 
-	cmd += string(" -r ");
-
-	cmd += string(" -s ");
+	cmd += " -s ";
 	cmd += a_dialog.socat();
 
-	cmd += string(" -g ");
+	cmd += " -g ";
 	cmd += a_dialog.gdb();
 
-	cmd += string(" -i ");
+	cmd += " -i ";
 	cmd += a_dialog.ip_address();
 
-	cmd += string(" ");
+	cmd += " ";
 	cmd += a_dialog.target();
-
-	// std::cout << cmd << "\n";
 
 	rc = ssh_channel_request_exec(channel, cmd.c_str());
 	if (rc != SSH_OK)
@@ -288,8 +284,14 @@ int main(int, char const **)
 	}
 
 	dialog.reset();
-	window.init();
-	app->run(window);
+	if (window.init())
+	{
+		app->run(window);
+	}
+	else
+	{
+		return EXIT_FAILURE;
+	}
 
 	return EXIT_SUCCESS;
 }

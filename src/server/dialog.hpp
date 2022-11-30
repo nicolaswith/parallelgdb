@@ -1,7 +1,7 @@
-#include "defs.hpp"
+#ifndef DIALOG_HPP
+#define DIALOG_HPP
 
-#ifndef _DIALOG_HPP
-#define _DIALOG_HPP
+#include "defs.hpp"
 
 #define RESPONSE_ID_OK 0
 
@@ -131,4 +131,4 @@ public:
 	}
 };
 
-#endif /* _DIALOG_HPP */
+#endif /* DIALOG_HPP */

@@ -60,64 +60,16 @@ mi_h *mi_alloc_h()
 		mi_error = MI_OUT_OF_MEMORY;
 		return NULL;
 	}
-	h->to_gdb[0] = h->to_gdb[1] = h->from_gdb[0] = h->from_gdb[1] = -1;
-	h->pid = -1;
 	return h;
 }
 
 void mi_free_h(mi_h **handle)
 {
 	mi_h *h = *handle;
-	if (h->to_gdb[0] >= 0)
-		close(h->to_gdb[0]);
-	if (h->to)
-		fclose(h->to);
-	else if (h->to_gdb[1] >= 0)
-		close(h->to_gdb[1]);
-	if (h->from)
-		fclose(h->from);
-	else if (h->from_gdb[0] >= 0)
-		close(h->from_gdb[0]);
-	if (h->from_gdb[1] >= 0)
-		close(h->from_gdb[1]);
-	if (h->line)
-		free(h->line);
+	free(h->line);
 	mi_free_output(h->po);
 	free(h);
 	*handle = NULL;
-}
-
-int mi_getline(mi_h *h)
-{
-	char c;
-
-	while (read(h->from_gdb[0], &c, 1) == 1)
-	{
-		if (h->lread >= h->llen)
-		{
-			h->llen = h->lread + 128;
-			h->line = (char *)realloc(h->line, h->llen);
-			if (!h->line)
-			{
-				h->llen = 0;
-				h->lread = 0;
-				return -1;
-			}
-		}
-		if (c == '\n')
-		{
-			int ret = h->lread;
-			h->line[ret] = 0;
-			h->lread = 0;
-			return ret;
-		}
-		if (c != '\r')
-		{
-			h->line[h->lread] = c;
-			h->lread++;
-		}
-	}
-	return 0;
 }
 
 char *get_cstr(mi_output *o)
@@ -129,57 +81,18 @@ char *get_cstr(mi_output *o)
 
 int mi_get_response(mi_h *h)
 {
-	if (h->from_gdb_echo)
-		h->from_gdb_echo(h->line, h->from_gdb_echo_data);
 	if (strncmp(h->line, "(gdb)", 5) == 0)
 	{ /* End of response. */
 		return 1;
 	}
 	else
-	{ /* Add to the response. */
+	{
+		/* Add to the response. */
 		mi_output *o;
 		o = mi_parse_gdb_output(h->line);
 
 		if (!o)
 			return 0;
-		/* Tunneled streams callbacks. */
-		// if (o->type == MI_T_OUT_OF_BAND && o->stype == MI_ST_STREAM)
-		// {
-		// 	char *aux;
-		// 	add = 0;
-		// 	switch (o->sstype)
-		// 	{
-		// 	case MI_SST_CONSOLE:
-		// 		aux = get_cstr(o);
-		// 		if (h->console)
-		// 			h->console(aux, h->console_data);
-		// 		if (h->catch_console && aux)
-		// 		{
-		// 			h->catch_console--;
-		// 			if (!h->catch_console)
-		// 			{
-		// 				free(h->catched_console);
-		// 				h->catched_console = strdup(aux);
-		// 			}
-		// 		}
-		// 		break;
-		// 	case MI_SST_TARGET:
-		// 		/* This one seems to be useless. */
-		// 		if (h->target)
-		// 			h->target(get_cstr(o), h->target_data);
-		// 		break;
-		// 	case MI_SST_LOG:
-		// 		if (h->log)
-		// 			h->log(get_cstr(o), h->log_data);
-		// 		break;
-		// 	}
-		// }
-		// else if (o->type == MI_T_OUT_OF_BAND && o->stype == MI_ST_ASYNC)
-		// {
-		// 	if (h->async)
-		// 		h->async(o, h->async_data);
-		// }
-		// else
 		if (o->type == MI_T_RESULT_RECORD && o->tclass == MI_CL_ERROR)
 		{
 			/* Error from gdb, record it. */
@@ -219,6 +132,7 @@ mi_output *mi_retire_response(mi_h *h)
 mi_output *mi_get_response_blk(mi_h *h)
 {
 	int r;
+	// todo: could cause deadlock... 
 	do
 	{
 		r = mi_get_response(h);

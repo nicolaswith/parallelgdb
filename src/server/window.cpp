@@ -3,8 +3,7 @@
 #include "util.hpp"
 #include "window.hpp"
 
-const char *const WHERE_MARK = "where-mark";
-const char *const WHERE_CATEGORY = "where-category";
+#define NUM_MARKS 4
 
 UIWindow::UIWindow(const int a_num_processes)
 	: m_num_processes(a_num_processes),
@@ -17,6 +16,7 @@ UIWindow::UIWindow(const int a_num_processes)
 {
 	m_text_view_buffers_gdb = new char *[m_num_processes];
 	m_text_view_buffers_trgt = new char *[m_num_processes];
+	m_current_line = new int[m_num_processes];
 	m_source_view_path = new string[m_num_processes];
 	m_buffer_length_gdb = new size_t[m_num_processes];
 	m_buffer_length_trgt = new size_t[m_num_processes];
@@ -35,10 +35,12 @@ UIWindow::UIWindow(const int a_num_processes)
 	m_scroll_connections_gdb = new sigc::connection[m_num_processes];
 	m_scroll_connections_trgt = new sigc::connection[m_num_processes];
 	m_conns_open_gdb = new bool[m_num_processes];
+	m_where_marks = new char *[m_num_processes];
+	m_where_categories = new char *[m_num_processes];
 	for (int i = 0; i < m_num_processes; ++i)
 	{
-		m_text_view_buffers_gdb[i] = (char *)malloc(1);
-		m_text_view_buffers_trgt[i] = (char *)malloc(1);
+		m_text_view_buffers_gdb[i] = (char *)malloc(8 * sizeof(char));
+		m_text_view_buffers_trgt[i] = (char *)malloc(8 * sizeof(char));
 		m_text_view_buffers_gdb[i][0] = '\0';
 		m_text_view_buffers_trgt[i][0] = '\0';
 		m_buffer_length_gdb[i] = 1;
@@ -46,13 +48,30 @@ UIWindow::UIWindow(const int a_num_processes)
 		m_conns_gdb[i] = nullptr;
 		m_conns_trgt[i] = nullptr;
 		m_conns_open_gdb[i] = false;
+		char *mark_name = new char[16];
+		char *cat_name = new char[16];
+		sprintf(mark_name, "mark-%d", i);
+		sprintf(cat_name, "cat-%d", i);
+		m_where_marks[i] = strdup(mark_name);
+		m_where_categories[i] = strdup(cat_name);
+		delete mark_name;
+		delete cat_name;
+		m_current_line[i] = 0;
 	}
 }
 
 UIWindow::~UIWindow()
 {
+	for (int i = 0; i < m_num_processes; ++i)
+	{
+		free(m_text_view_buffers_gdb[i]);
+		free(m_text_view_buffers_trgt[i]);
+		free(m_where_marks[i]);
+		free(m_where_categories[i]);
+	}
 	delete[] m_text_view_buffers_gdb;
 	delete[] m_text_view_buffers_trgt;
+	delete[] m_current_line;
 	delete[] m_source_view_path;
 	delete[] m_buffer_length_gdb;
 	delete[] m_buffer_length_trgt;
@@ -73,12 +92,12 @@ UIWindow::~UIWindow()
 	delete[] m_conns_open_gdb;
 }
 
-void UIWindow::init()
+bool UIWindow::init()
 {
 	Gsv::init();
 
 	this->maximize();
-	this->set_title("GDB MI MPI");
+	this->set_title("Parallel GDB");
 	this->add(m_scrolled_window_top);
 
 	m_grid.set_row_spacing(10);
@@ -122,17 +141,21 @@ void UIWindow::init()
 		source_view->set_source_buffer(source_buffer);
 		source_view->set_show_line_numbers(true);
 		source_view->set_editable(false);
-		char *filename = (char *)"./res/arrow.png";
-		char *path = realpath(filename, NULL);
-		if (path == NULL)
-		{
-			throw std::invalid_argument("Cannot find file: ./res/arrow.png\n");
-		}
-		auto attributes = Gsv::MarkAttributes::create();
-		attributes->set_icon(Gio::Icon::create(path));
-		free(path);
-		source_view->set_mark_attributes(WHERE_CATEGORY, attributes, 100);
 		source_view->set_show_line_marks(true);
+		for (int i = 0; i < m_num_processes && i < NUM_MARKS; ++i)
+		{
+			string filename = "./res/mark_" + std::to_string(i) + ".png";
+			char *path = realpath(filename.c_str(), nullptr);
+			if (path == nullptr)
+			{
+				std::cerr << "Cannot find file: " << filename << "\n";
+				return false;
+			}
+			auto attributes = Gsv::MarkAttributes::create();
+			attributes->set_icon(Gio::Icon::create(path));
+			source_view->set_mark_attributes(m_where_categories[i], attributes, 100);
+			free(path);
+		}
 		m_scrolled_windows_sw[i].set_size_request(width, height);
 		m_scrolled_windows_sw[i].add(m_source_views[i]);
 		m_grid.attach(m_scrolled_windows_sw[i], 3, (2 * i), 1, 1);
@@ -161,6 +184,8 @@ void UIWindow::init()
 		{ send_sig_int_all(); });
 
 	this->show_all();
+
+	return true;
 }
 
 bool UIWindow::on_delete(GdkEventAny *)
@@ -207,7 +232,7 @@ void UIWindow::send_sig_int_all() const
 		send_sig_int(i);
 	}
 
-	// crash application
+	// // crash application
 	// char *a = strdup("a");
 	// free(a);
 	// free(a);
@@ -253,8 +278,46 @@ void UIWindow::send_input_trgt(const int a_process_rank)
 	m_entries_trgt[a_process_rank].set_text("");
 }
 
+void UIWindow::update_line_markers()
+{
+	for (int i = 0; i < m_num_processes && i < NUM_MARKS; ++i)
+	{
+		Gsv::View *source_view = &m_source_views[i];
+		auto source_buffer = source_view->get_source_buffer();
+		Gtk::TextIter line_iter = source_buffer->get_iter_at_line(m_current_line[i] - 1);
+		if (!line_iter)
+		{
+			std::cerr << "No iter. File: " << m_source_view_path[i] << "\n";
+			continue;
+		}
+		for (int j = 0; j < m_num_processes && j < NUM_MARKS; j++)
+		{
+			Glib::RefPtr<Gtk::TextMark> where_marker = source_view->get_source_buffer()->get_mark(m_where_marks[j]);
+			if (m_source_view_path[i] == m_source_view_path[j] && m_current_line[i] == m_current_line[j])
+			{
+				if (!where_marker)
+				{
+					source_view->get_source_buffer()->create_source_mark(m_where_marks[j], m_where_categories[j], line_iter);
+				}
+				else
+				{
+					source_view->get_source_buffer()->move_mark(where_marker, line_iter);
+				}
+			}
+			else
+			{
+				if (where_marker)
+				{
+					source_view->get_source_buffer()->delete_mark(where_marker);
+				}
+			}
+		}
+	}
+}
+
 void UIWindow::update_source_file(const int a_process_rank, mi_stop *a_stop_record)
 {
+	m_current_line[a_process_rank] = a_stop_record->frame->line;
 	auto source_view = &m_source_views[a_process_rank];
 	auto source_buffer = source_view->get_source_buffer();
 	char *content;
@@ -268,20 +331,6 @@ void UIWindow::update_source_file(const int a_process_rank, mi_stop *a_stop_reco
 			m_labels_sw[a_process_rank].set_text(a_stop_record->frame->fullname);
 			source_buffer->set_text(content);
 		}
-	}
-	Gtk::TextIter line_iter = source_buffer->get_iter_at_line(a_stop_record->frame->line - 1);
-	if (!line_iter)
-	{
-		std::cerr << "No iter. File: " << m_source_view_path[a_process_rank] << "\n";
-	}
-	Glib::RefPtr<Gtk::TextMark> where_marker = source_view->get_source_buffer()->get_mark(WHERE_MARK);
-	if (!where_marker)
-	{
-		source_view->get_source_buffer()->create_source_mark(WHERE_MARK, WHERE_CATEGORY, line_iter);
-	}
-	else
-	{
-		source_view->get_source_buffer()->move_mark(where_marker, line_iter);
 	}
 }
 
@@ -344,18 +393,20 @@ void UIWindow::print_data_gdb(mi_h *const a_h, const char *const a_data, const i
 				output = output->next;
 			}
 
-			mi_stop *sr;
-			sr = mi_res_stop(o);
-			if (sr)
+			mi_stop *stop_record;
+			stop_record = mi_res_stop(o);
+			if (stop_record)
 			{
-				printf("Stopped, reason: %s\n", mi_reason_enum_to_str(sr->reason));
-				if (sr->frame && sr->frame->fullname && sr->frame->func)
+				printf("Stopped, reason: %s\n", mi_reason_enum_to_str(stop_record->reason));
+				if (stop_record->frame && stop_record->frame->fullname && stop_record->frame->func)
 				{
-					printf("\tat %s:%d in function: %s\n", sr->frame->fullname, sr->frame->line, sr->frame->func);
-					update_source_file(a_process_rank, sr);
-					scroll_to_line(&m_source_views[a_process_rank], sr->frame->line);
+					printf("\tat %s:%d in function: %s\n", stop_record->frame->fullname, stop_record->frame->line, stop_record->frame->func);
+
+					update_source_file(a_process_rank, stop_record);
+					update_line_markers();
+					scroll_to_line(&m_source_views[a_process_rank], stop_record->frame->line);
 				}
-				mi_free_stop(sr);
+				mi_free_stop(stop_record);
 			}
 			mi_free_output(o);
 		}

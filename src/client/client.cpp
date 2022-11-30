@@ -57,9 +57,11 @@ int start_gdb(string tty_gdb, string tty_trgt, const char *const gdb_path, const
 
 		char *argv[] = {
 			(char *)gdb_path,
-			(char *)"--interpreter=mi",
-			// evil hack for now... TODO
-			(char *)"-ex=set auto-load safe-path /",
+			(char *)"-q",
+			(char *)"-i",
+			(char *)"mi3",
+			(char *)"-ex=set auto-load safe-path /", // evil hack for now... todo
+			(char *)"-ex=b main",
 			(char *)tty.c_str(),
 			(char *)target,
 			(char *)nullptr};
@@ -89,12 +91,17 @@ int start_socat(string tty_name, const char *const socat_path, const char *const
 	return pid;
 }
 
-int get_process_rank(const char *const env_name)
+int get_process_rank()
 {
-	const char *process_rank = getenv(env_name);
-
+	const char *process_rank = getenv("PMI_RANK");
 	if (!process_rank)
+	{
+		process_rank = getenv("OMPI_COMM_WORLD_RANK");
+	}
+	if (!process_rank)
+	{
 		return -1;
+	}
 	try
 	{
 		return stoi(process_rank);
@@ -112,7 +119,6 @@ void print_help()
 		stderr,
 		"Usage: ./client [OPTIONS] </path/to/target>\n"
 		"Options:\n"
-		"  -r\t\t use srun\n"
 		"  -g <path>\t path to gdb\n"
 		"  -s <path>\t path to socat\n"
 		"  -i <addr>\t host IP address\n"
@@ -122,7 +128,6 @@ void print_help()
 int main(const int argc, char **argv)
 {
 	char c;
-	bool use_srun = false;
 	char *ip_addr = nullptr;
 	char *gdb_path = nullptr;
 	char *socat_path = nullptr;
@@ -143,9 +148,6 @@ int main(const int argc, char **argv)
 		case 'i': // ip
 			free(ip_addr);
 			ip_addr = strdup(optarg);
-			break;
-		case 'r': // remote
-			use_srun = true;
 			break;
 		case 'h': // help
 			print_help();
@@ -200,25 +202,14 @@ int main(const int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
-	char *env_name;
-	if (use_srun)
-	{
-		env_name = strdup("PMI_RANK");
-	}
-	else
-	{
-		env_name = strdup("OMPI_COMM_WORLD_RANK");
-	}
-
 	int pid = getpid();
 	string tty_gdb = "/tmp/ttyGDB_" + to_string(pid);
 	string tty_trgt = "/tmp/ttyTRGT_" + to_string(pid);
 
-	int process_rank = get_process_rank(env_name);
+	int process_rank = get_process_rank();
 	if (process_rank < 0)
 	{
 		free(target);
-		free(env_name);
 		free(socat_path);
 		free(gdb_path);
 		free(ip_addr);
@@ -234,7 +225,6 @@ int main(const int argc, char **argv)
 	int pid_gdb = start_gdb(tty_gdb, tty_trgt, gdb_path, target, pid_socat_gdb, pid_socat_trgt);
 
 	free(target);
-	free(env_name);
 	free(socat_path);
 	free(gdb_path);
 	free(ip_addr);
