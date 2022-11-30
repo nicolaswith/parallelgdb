@@ -24,6 +24,7 @@ class UIDialog : public Gtk::Dialog
 
 	Gtk::Grid m_grid;
 
+	Gtk::Label m_label_file_chooser_button;
 	Gtk::Label m_label_num_tasks;
 	Gtk::Label m_label_client;
 	Gtk::Label m_label_gdb;
@@ -37,6 +38,7 @@ class UIDialog : public Gtk::Dialog
 	Gtk::Label m_label_ssh_password;
 	Gtk::Label m_label_partition;
 
+	Gtk::FileChooserButton m_file_chooser_button;
 	Gtk::Entry m_entry_num_nodes;
 	Gtk::Entry m_entry_client;
 	Gtk::Entry m_entry_gdb;
@@ -53,7 +55,8 @@ class UIDialog : public Gtk::Dialog
 	void on_dialog_response(const int a_response_id);
 	void set_sensitivity(bool a_state);
 	void on_toggle_button(Gtk::CheckButton *a_button);
-	void store_line(string a_key, string a_value);
+	void clear_dialog();
+	void set_value(string a_key, string a_value);
 	void read_config();
 
 public:

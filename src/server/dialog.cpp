@@ -12,6 +12,7 @@ UIDialog::UIDialog()
 	  m_ssh_user(nullptr),
 	  m_ssh_password(nullptr),
 	  m_partition(nullptr),
+	  m_label_file_chooser_button("Config File:", Gtk::ALIGN_START),
 	  m_label_num_tasks("Number of tasks:", Gtk::ALIGN_START),
 	  m_label_client("Client:", Gtk::ALIGN_START),
 	  m_label_gdb("GDB:", Gtk::ALIGN_START),
@@ -37,6 +38,8 @@ UIDialog::UIDialog()
 	m_entry_ssh_password.set_visibility(false);
 
 	int row = 0;
+	m_grid.attach(m_label_file_chooser_button, 0, row);
+	m_grid.attach(m_file_chooser_button, 1, row++);
 	m_grid.attach(m_label_num_tasks, 0, row);
 	m_grid.attach(m_entry_num_tasks, 1, row++);
 	m_grid.attach(m_label_client, 0, row);
@@ -62,8 +65,13 @@ UIDialog::UIDialog()
 	m_grid.attach(m_label_partition, 0, row);
 	m_grid.attach(m_entry_partition, 1, row++);
 
+	m_file_chooser_button.set_title("Select Config File");
+	m_file_chooser_button.signal_selection_changed().connect(sigc::mem_fun(*this, &UIDialog::read_config));
+	m_file_chooser_button.set_filename("/home/nicolas/ma/parallelgdb/configs/config_mpi");
+	// m_file_chooser_button.set_filename("/home/nicolas/ma/parallelgdb/configs/config_ssh");
+	// m_file_chooser_button.set_filename("/home/nicolas/ma/parallelgdb/configs/config_ants");
+
 	set_sensitivity(false);
-	read_config();
 	this->add_button("Ok", RESPONSE_ID_OK);
 
 	this->signal_response().connect(sigc::mem_fun(*this, &UIDialog::on_dialog_response));
@@ -85,7 +93,24 @@ UIDialog::~UIDialog()
 	free(m_partition);
 }
 
-void UIDialog::store_line(string a_key, string a_value)
+void UIDialog::clear_dialog()
+{
+	m_entry_num_nodes.set_text("");
+	m_entry_num_tasks.set_text("");
+	m_entry_client.set_text("");
+	m_entry_gdb.set_text("");
+	m_entry_socat.set_text("");
+	m_entry_target.set_text("");
+	m_entry_ip_address.set_text("");
+	m_entry_ssh_address.set_text("");
+	m_entry_ssh_user.set_text("");
+	m_entry_ssh_password.set_text("");
+	m_entry_partition.set_text("");
+	m_checkbutton_srun.set_active(false);
+	set_sensitivity(false);
+}
+
+void UIDialog::set_value(string a_key, string a_value)
 {
 	if ("num_nodes" == a_key)
 		m_entry_num_nodes.set_text(a_value);
@@ -125,13 +150,12 @@ void UIDialog::store_line(string a_key, string a_value)
 
 void UIDialog::read_config()
 {
-	// file picker ?
-	// FILE *f = fopen("./configs/config_ssh", "r");
-	FILE *f = fopen("./configs/config_mpi", "r");
+	FILE *f = fopen(m_file_chooser_button.get_filename().c_str(), "r");
 	if (!f)
 	{
 		return;
 	}
+	clear_dialog();
 	fseek(f, 0, SEEK_END);
 	size_t size = ftell(f);
 	char *config = new char[size + 8];
@@ -150,7 +174,7 @@ void UIDialog::read_config()
 			std::string value;
 			if (std::getline(is_line, value))
 			{
-				store_line(key, value);
+				set_value(key, value);
 			}
 		}
 	}
