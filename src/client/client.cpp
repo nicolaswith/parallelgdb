@@ -125,14 +125,10 @@ void print_help()
 		"  -h\t\t print this help\n");
 }
 
-int main(const int argc, char **argv)
+bool parse_cl_args(int argc, char *const *argv, char *ip_addr, char *gdb_path, char *socat_path, char *target)
 {
 	char c;
-	char *ip_addr = nullptr;
-	char *gdb_path = nullptr;
-	char *socat_path = nullptr;
 	opterr = 0;
-
 	while ((c = getopt(argc, argv, "hrg:s:i:")) != -1)
 	{
 		switch (c)
@@ -151,7 +147,11 @@ int main(const int argc, char **argv)
 			break;
 		case 'h': // help
 			print_help();
-			return EXIT_SUCCESS;
+			free(target);
+			free(socat_path);
+			free(gdb_path);
+			free(ip_addr);
+			exit(0);
 		case '?':
 			if ('i' == optopt)
 			{
@@ -176,11 +176,10 @@ int main(const int argc, char **argv)
 			[[fallthrough]];
 		default:
 			print_help();
-			return EXIT_FAILURE;
+			return false;
 		}
 	}
 
-	char *target;
 	if (argc - optind == 1)
 	{
 		target = strdup(argv[optind]);
@@ -195,10 +194,25 @@ int main(const int argc, char **argv)
 		{
 			fprintf(stderr, "Too many arguments.\n");
 		}
+		print_help();
+		return false;
+	}
+
+	return true;
+}
+
+int main(const int argc, char **argv)
+{
+	char *ip_addr = nullptr;
+	char *gdb_path = nullptr;
+	char *socat_path = nullptr;
+	char *target = nullptr;
+	if (!parse_cl_args(argc, argv, ip_addr, gdb_path, socat_path, target))
+	{
+		free(target);
 		free(socat_path);
 		free(gdb_path);
 		free(ip_addr);
-		print_help();
 		return EXIT_FAILURE;
 	}
 
