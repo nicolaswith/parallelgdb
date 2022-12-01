@@ -125,7 +125,7 @@ void print_help()
 		"  -h\t\t print this help\n");
 }
 
-bool parse_cl_args(int argc, char *const *argv, char *ip_addr, char *gdb_path, char *socat_path, char *target)
+bool parse_cl_args(const int argc, char **argv, char **ip_addr, char **gdb_path, char **socat_path, char **target)
 {
 	char c;
 	opterr = 0;
@@ -134,24 +134,25 @@ bool parse_cl_args(int argc, char *const *argv, char *ip_addr, char *gdb_path, c
 		switch (c)
 		{
 		case 'g': // gdb
-			free(gdb_path);
-			gdb_path = strdup(optarg);
+			free(*gdb_path);
+			*gdb_path = strdup(optarg);
 			break;
 		case 's': // socat
-			free(socat_path);
-			socat_path = strdup(optarg);
+			free(*socat_path);
+			*socat_path = strdup(optarg);
 			break;
 		case 'i': // ip
-			free(ip_addr);
-			ip_addr = strdup(optarg);
+			free(*ip_addr);
+			*ip_addr = strdup(optarg);
 			break;
 		case 'h': // help
 			print_help();
-			free(target);
-			free(socat_path);
-			free(gdb_path);
-			free(ip_addr);
-			exit(0);
+			free(*target);
+			free(*socat_path);
+			free(*gdb_path);
+			free(*ip_addr);
+			exit(EXIT_SUCCESS);
+			break;
 		case '?':
 			if ('i' == optopt)
 			{
@@ -182,7 +183,7 @@ bool parse_cl_args(int argc, char *const *argv, char *ip_addr, char *gdb_path, c
 
 	if (argc - optind == 1)
 	{
-		target = strdup(argv[optind]);
+		*target = strdup(argv[optind]);
 	}
 	else
 	{
@@ -207,7 +208,7 @@ int main(const int argc, char **argv)
 	char *gdb_path = nullptr;
 	char *socat_path = nullptr;
 	char *target = nullptr;
-	if (!parse_cl_args(argc, argv, ip_addr, gdb_path, socat_path, target))
+	if (!parse_cl_args(argc, argv, &ip_addr, &gdb_path, &socat_path, &target))
 	{
 		free(target);
 		free(socat_path);
