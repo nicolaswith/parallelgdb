@@ -25,6 +25,7 @@ UIWindow::UIWindow(const int a_num_processes)
 	m_scrolled_windows_sw = new Gtk::ScrolledWindow[m_num_processes];
 	m_text_views_gdb = new Gtk::TextView[m_num_processes];
 	m_text_views_trgt = new Gtk::TextView[m_num_processes];
+	m_draw_areas = new UIDrawingArea *[m_num_processes];
 	m_source_views = new Gsv::View[m_num_processes];
 	m_entries_gdb = new Gtk::Entry[m_num_processes];
 	m_entries_trgt = new Gtk::Entry[m_num_processes];
@@ -57,6 +58,7 @@ UIWindow::UIWindow(const int a_num_processes)
 		delete mark_name;
 		delete cat_name;
 		m_current_line[i] = 0;
+		m_draw_areas[i] = new UIDrawingArea{m_num_processes, i};
 	}
 }
 
@@ -80,6 +82,7 @@ UIWindow::~UIWindow()
 	delete[] m_scrolled_windows_sw;
 	delete[] m_text_views_gdb;
 	delete[] m_text_views_trgt;
+	delete[] m_draw_areas;
 	delete[] m_source_views;
 	delete[] m_entries_gdb;
 	delete[] m_entries_trgt;
@@ -132,6 +135,10 @@ bool UIWindow::init()
 			[&, i]
 			{ send_sig_int(i); });
 
+		// draw_areas
+		m_draw_areas[i]->set_size_request(100, 200);
+		m_grid.attach(*m_draw_areas[i], 3, (2 * i), 1, 1);
+
 		// source_views
 		Gsv::View *source_view = &m_source_views[i];
 		auto source_buffer = source_view->get_source_buffer();
@@ -158,8 +165,24 @@ bool UIWindow::init()
 		}
 		m_scrolled_windows_sw[i].set_size_request(width, height);
 		m_scrolled_windows_sw[i].add(m_source_views[i]);
-		m_grid.attach(m_scrolled_windows_sw[i], 3, (2 * i), 1, 1);
-		m_grid.attach(m_labels_sw[i], 3, (2 * i + 1), 1, 1);
+		m_grid.attach(m_scrolled_windows_sw[i], 4, (2 * i), 1, 1);
+		m_grid.attach(m_labels_sw[i], 4, (2 * i + 1), 1, 1);
+
+		m_scrolled_windows_sw[i].get_vadjustment()->signal_value_changed().connect(
+			sigc::bind(
+				sigc::mem_fun(
+					*this,
+					&UIWindow::on_scroll_sw),
+				i));
+		source_buffer->signal_source_mark_updated().connect(
+			sigc::bind(
+				sigc::mem_fun(
+					*this,
+					&UIWindow::on_marker_update),
+				i));
+
+		Gtk::TextIter line_iter = source_buffer->get_iter_at_line(0);
+		auto where_marker = source_buffer->create_source_mark(m_where_marks[i], m_where_categories[i], line_iter);
 	}
 
 	int last_row_idx = 2 * m_num_processes + 2;
@@ -186,6 +209,41 @@ bool UIWindow::init()
 	this->show_all();
 
 	return true;
+}
+
+void UIWindow::get_mark_pos(const int a_process_rank)
+{
+	auto source_view = &m_source_views[a_process_rank];
+	auto source_buffer = source_view->get_source_buffer();
+	auto where_marker = source_view->get_source_buffer()->get_mark(m_where_marks[a_process_rank]);
+	auto line_iter = source_buffer->get_iter_at_line(m_current_line[a_process_rank] - 1);
+	if (!line_iter || !where_marker)
+	{
+		return;
+	}
+	Gdk::Rectangle rect;
+	source_view->get_iter_location(line_iter, rect);
+
+	auto adjustment = m_scrolled_windows_sw[a_process_rank].get_vadjustment();
+	int draw_pos = rect.get_y() - adjustment->get_value();
+
+	m_draw_areas[a_process_rank]->draw_pos(draw_pos);
+	m_draw_areas[a_process_rank]->queue_draw();
+
+	// rect.get_y();
+	// adjustment->get_value();
+	// adjustment->get_upper();
+	// m_scrolled_windows_sw[a_process_rank].get_height();
+}
+
+void UIWindow::on_scroll_sw(const int a_process_rank)
+{
+	get_mark_pos(a_process_rank);
+}
+
+void UIWindow::on_marker_update(const Glib::RefPtr<Gtk::TextMark> &, const int a_process_rank)
+{
+	get_mark_pos(a_process_rank);
 }
 
 bool UIWindow::on_delete(GdkEventAny *)
@@ -278,41 +336,18 @@ void UIWindow::send_input_trgt(const int a_process_rank)
 	m_entries_trgt[a_process_rank].set_text("");
 }
 
-void UIWindow::update_line_markers()
+void UIWindow::update_line_mark(const int a_process_rank)
 {
-	for (int i = 0; i < m_num_processes && i < NUM_MARKS; ++i)
+	Gsv::View *source_view = &m_source_views[a_process_rank];
+	auto source_buffer = source_view->get_source_buffer();
+	Gtk::TextIter line_iter = source_buffer->get_iter_at_line(m_current_line[a_process_rank] - 1);
+	if (!line_iter)
 	{
-		Gsv::View *source_view = &m_source_views[i];
-		auto source_buffer = source_view->get_source_buffer();
-		Gtk::TextIter line_iter = source_buffer->get_iter_at_line(m_current_line[i] - 1);
-		if (!line_iter)
-		{
-			std::cerr << "No iter. File: " << m_source_view_path[i] << "\n";
-			continue;
-		}
-		for (int j = 0; j < m_num_processes && j < NUM_MARKS; j++)
-		{
-			Glib::RefPtr<Gtk::TextMark> where_marker = source_view->get_source_buffer()->get_mark(m_where_marks[j]);
-			if (m_source_view_path[i] == m_source_view_path[j] && m_current_line[i] == m_current_line[j])
-			{
-				if (!where_marker)
-				{
-					source_view->get_source_buffer()->create_source_mark(m_where_marks[j], m_where_categories[j], line_iter);
-				}
-				else
-				{
-					source_view->get_source_buffer()->move_mark(where_marker, line_iter);
-				}
-			}
-			else
-			{
-				if (where_marker)
-				{
-					source_view->get_source_buffer()->delete_mark(where_marker);
-				}
-			}
-		}
+		std::cerr << "No iter. File: " << m_source_view_path[a_process_rank] << "\n";
+		return;
 	}
+	auto where_marker = source_buffer->get_mark(m_where_marks[a_process_rank]);
+	source_buffer->move_mark(where_marker, line_iter);
 }
 
 void UIWindow::update_source_file(const int a_process_rank, mi_stop *a_stop_record)
@@ -356,7 +391,7 @@ void UIWindow::scroll_to_line(Gsv::View *a_source_view, const int a_line) const
 			a_line - 1));
 }
 
-void UIWindow::print_data_gdb(mi_h *const a_h, const char *const a_data, const int a_process_rank)
+void UIWindow::print_data_gdb(mi_h *const a_gdb_handle, const char *const a_data, const int a_process_rank)
 {
 	char **buffer = &m_text_view_buffers_gdb[a_process_rank];
 	size_t *buffer_length = &m_buffer_length_gdb[a_process_rank];
@@ -370,13 +405,13 @@ void UIWindow::print_data_gdb(mi_h *const a_h, const char *const a_data, const i
 		// replace '\r' with '\0' -> new end for strcpy
 		token[token_length - 1] = '\0';
 		// '\0' now included in token_length, so no +1 needed
-		a_h->line = (char *)realloc(a_h->line, token_length);
-		strcpy(a_h->line, token);
+		a_gdb_handle->line = (char *)realloc(a_gdb_handle->line, token_length);
+		strcpy(a_gdb_handle->line, token);
 
-		int r = mi_get_response(a_h);
-		if (0 != r)
+		int response = mi_get_response(a_gdb_handle);
+		if (0 != response)
 		{
-			mi_output *o = mi_retire_response(a_h);
+			mi_output *o = mi_retire_response(a_gdb_handle);
 			mi_output *output = o;
 
 			while (NULL != output)
@@ -397,13 +432,13 @@ void UIWindow::print_data_gdb(mi_h *const a_h, const char *const a_data, const i
 			stop_record = mi_res_stop(o);
 			if (stop_record)
 			{
-				printf("Stopped, reason: %s\n", mi_reason_enum_to_str(stop_record->reason));
+				// printf("Stopped, reason: %s\n", mi_reason_enum_to_str(stop_record->reason));
 				if (stop_record->frame && stop_record->frame->fullname && stop_record->frame->func)
 				{
-					printf("\tat %s:%d in function: %s\n", stop_record->frame->fullname, stop_record->frame->line, stop_record->frame->func);
+					// printf("\tat %s:%d in function: %s\n", stop_record->frame->fullname, stop_record->frame->line, stop_record->frame->func);
 
 					update_source_file(a_process_rank, stop_record);
-					update_line_markers();
+					update_line_mark(a_process_rank);
 					scroll_to_line(&m_source_views[a_process_rank], stop_record->frame->line);
 				}
 				mi_free_stop(stop_record);
@@ -429,7 +464,7 @@ void UIWindow::print_data_trgt(const char *const a_data, const size_t a_data_len
 	gtk_buffer->set_text(*buffer); // Glib::convert_with_fallback(*buffer, "UTF-8", "ISO-8859-1")
 }
 
-void UIWindow::print_data(mi_h *const a_h, const char *const a_data, const size_t a_length, const int a_port)
+void UIWindow::print_data(mi_h *const a_gdb_handle, const char *const a_data, const size_t a_length, const int a_port)
 {
 	const int process_rank = get_process_rank(a_port);
 	const bool is_gdb = src_is_gdb(a_port);
@@ -439,7 +474,7 @@ void UIWindow::print_data(mi_h *const a_h, const char *const a_data, const size_
 	if (is_gdb)
 	{
 		Gtk::ScrolledWindow *scrolled_window = &m_scrolled_windows_gdb[process_rank];
-		print_data_gdb(a_h, a_data, process_rank);
+		print_data_gdb(a_gdb_handle, a_data, process_rank);
 		if (m_scroll_connections_gdb[process_rank].empty())
 		{
 			m_scroll_connections_gdb[process_rank] = scrolled_window->signal_size_allocate().connect(

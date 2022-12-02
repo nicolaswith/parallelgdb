@@ -18,7 +18,7 @@ OBJS = $(addprefix $(BUILDDIR)/, $(SRCS:.cpp=.o))
 all: $(PRGS)
 	+$(MAKE) -C $(INCLUDEDIR)/libmigdb
 
-$(BUILDDIR)/server: $(addprefix $(BUILDDIR)/, $(addsuffix .o, util dialog window server))
+$(BUILDDIR)/server: $(addprefix $(BUILDDIR)/, $(addsuffix .o, util dialog canvas window server))
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(GTKLIBS)
 
 $(BUILDDIR)/%.o: %.cpp

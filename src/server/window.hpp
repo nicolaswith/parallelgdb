@@ -3,6 +3,7 @@
 
 #include "defs.hpp"
 #include "mi_gdb.h"
+#include "canvas.hpp"
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
@@ -36,6 +37,7 @@ class UIWindow : public Gtk::Window
 	Gtk::ScrolledWindow *m_scrolled_windows_sw;
 	Gtk::TextView *m_text_views_gdb;
 	Gtk::TextView *m_text_views_trgt;
+	UIDrawingArea **m_draw_areas;
 	Gsv::View *m_source_views;
 	Gtk::Entry *m_entries_gdb;
 	Gtk::Entry *m_entries_trgt;
@@ -61,10 +63,14 @@ class UIWindow : public Gtk::Window
 
 	void do_scroll(Gsv::View *a_source_view, const int a_line) const;
 	void scroll_to_line(Gsv::View *a_source_view, const int a_line) const;
-	void update_line_markers();
+	void update_line_mark(const int a_process_rank);
 	void update_source_file(const int a_process_rank, mi_stop *a_stop_record);
 	void print_data_gdb(mi_h *const a_h, const char *const a_data, const int a_process_rank);
 	void print_data_trgt(const char *const a_data, const size_t a_data_length, const int a_process_rank);
+	void on_marker_update(const Glib::RefPtr<Gtk::TextMark> &, const int a_process_rank);
+	void get_mark_pos(const int a_process_rank);
+	void on_scroll_sw(const int a_process_rank);
+	void scroll_bottom(Gtk::Allocation &a_allocation, Gtk::ScrolledWindow *a_scrolled_window, const bool a_is_gdb, const int a_process_rank);
 
 public:
 	UIWindow(const int a_num_processes);
@@ -72,7 +78,6 @@ public:
 
 	bool init();
 	bool on_delete(GdkEventAny *);
-	void scroll_bottom(Gtk::Allocation &a_allocation, Gtk::ScrolledWindow *a_scrolled_window, const bool a_is_gdb, const int a_process_rank);
 	void send_sig_int(const int a_process_rank) const;
 	void send_sig_int_all() const;
 	void send_input_gdb(const int a_process_rank);
