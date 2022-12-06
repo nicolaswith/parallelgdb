@@ -95,6 +95,46 @@ UIWindow::~UIWindow()
 	delete[] m_conns_open_gdb;
 }
 
+int colors[][3] = {
+	{255, 0, 0},
+	{0, 255, 0},
+	{0, 0, 255},
+	{255, 255, 0}};
+
+unsigned char *create_pixbuf(int width, int height, const int a_process_rank, const int a_num_processes)
+{
+	unsigned char *data = new unsigned char[4 * width * height];
+	unsigned char *p = data;
+
+	for (int row = 0; row < height; ++row)
+	{
+		for (int col = 0; col < width; ++col)
+		{
+			if ((row - width / 2) * (row - width / 2) + (col - height / 2) * (col - height / 2) < (width / 2) * (width / 2))
+			{
+				*p++ = guint8(colors[a_process_rank][0]); // r
+				*p++ = guint8(colors[a_process_rank][1]); // g
+				*p++ = guint8(colors[a_process_rank][2]); // b
+				*p++ = guint8(255);						  // a
+			}
+			else
+			{
+				*p++ = guint8(0); // r
+				*p++ = guint8(0); // g
+				*p++ = guint8(0); // b
+				*p++ = guint8(0); // a
+			}
+		}
+	}
+
+	return data;
+}
+
+void free_pixbuf(const guint8 *data)
+{
+	delete[] data;
+}
+
 bool UIWindow::init()
 {
 	Gsv::init();
@@ -149,18 +189,21 @@ bool UIWindow::init()
 		source_view->set_show_line_numbers(true);
 		source_view->set_editable(false);
 		source_view->set_show_line_marks(true);
-		string filename = "./res/arrow.png";
-		// string filename = "./res/mark_" + std::to_string(i) + ".png";
-		char *path = realpath(filename.c_str(), nullptr);
-		if (path == nullptr)
-		{
-			std::cerr << "Cannot find file: " << filename << "\n";
-			return false;
-		}
 		auto attributes = Gsv::MarkAttributes::create();
-		attributes->set_icon(Gio::Icon::create(path));
-		source_view->set_mark_attributes(m_where_categories[i], attributes, 100);
-		free(path);
+		int pixbuf_width = 32;
+		int pixbuf_height = 32;
+		unsigned char *data = create_pixbuf(pixbuf_width, pixbuf_height, i, m_num_processes);
+		auto pixbuf = Gdk::Pixbuf::create_from_data(
+			data,
+			Gdk::Colorspace::COLORSPACE_RGB,
+			true,
+			8,
+			pixbuf_width,
+			pixbuf_height,
+			4 * pixbuf_width,
+			&free_pixbuf);
+		attributes->set_pixbuf(pixbuf);
+		source_view->set_mark_attributes(m_where_categories[i], attributes, 0);
 		m_scrolled_windows_sw[i].set_size_request(width, height);
 		m_scrolled_windows_sw[i].add(m_source_views[i]);
 		m_grid.attach(m_scrolled_windows_sw[i], 4, (2 * i), 1, 1);
