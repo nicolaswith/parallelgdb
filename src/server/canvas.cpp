@@ -1,27 +1,50 @@
 #include <string>
 #include "canvas.hpp"
+#include "window.hpp"
+
+const Gdk::RGBA UIDrawingArea::colors[] = {
+	Gdk::RGBA("#FF0000"),
+	Gdk::RGBA("#00FF00"),
+	Gdk::RGBA("#0000FF"),
+	Gdk::RGBA("#FFFF00")};
+
+const int UIDrawingArea::m_radius = 8;
+const int UIDrawingArea::m_spacing = 4;
 
 UIDrawingArea::UIDrawingArea(const int a_num_processes, const int a_process_rank)
 	: m_num_processes(a_num_processes),
 	  m_process_rank(a_process_rank),
-	  m_draw_pos(0)
+	  m_y_offsets(new int[m_num_processes])
 {
-	m_images = new Glib::RefPtr<Gdk::Pixbuf>[m_num_processes];
-	string filename = string("./res/arrow.png");
-	// string filename = string("./res/mark_") + std::to_string(m_process_rank) + string(".png");
-	try
-	{
-		m_images[m_process_rank] = Gdk::Pixbuf::create_from_file(filename);
-	}
-	catch (const std::exception &e)
-	{
-		std::cerr << e.what() << '\n';
-	}
+}
+
+void UIDrawingArea::set_y_offset(const int a_process_rank, const int a_offset)
+{
+	m_y_offsets[a_process_rank] = a_offset;
 }
 
 bool UIDrawingArea::on_draw(const Cairo::RefPtr<Cairo::Context> &a_context)
 {
-	Gdk::Cairo::set_source_pixbuf(a_context, m_images[m_process_rank], 0, m_draw_pos);
-	a_context->paint();
+	for (int rank = 0; rank < m_num_processes; ++rank)
+	{
+		if (m_y_offsets[rank] > -2 * m_radius - 1)
+		{
+			a_context->save();
+			a_context->arc(
+				rank * (2 * m_radius + m_spacing) + m_radius,
+				m_y_offsets[rank] + m_radius,
+				m_radius,
+				0.0,
+				2.0 * M_PI);
+			a_context->set_source_rgba(
+				colors[rank].get_red(),
+				colors[rank].get_green(),
+				colors[rank].get_blue(),
+				colors[rank].get_alpha());
+			a_context->fill();
+			a_context->restore();
+		}
+	}
+
 	return true;
 }

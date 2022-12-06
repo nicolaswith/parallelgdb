@@ -149,20 +149,18 @@ bool UIWindow::init()
 		source_view->set_show_line_numbers(true);
 		source_view->set_editable(false);
 		source_view->set_show_line_marks(true);
-		for (int i = 0; i < m_num_processes && i < NUM_MARKS; ++i)
+		string filename = "./res/arrow.png";
+		// string filename = "./res/mark_" + std::to_string(i) + ".png";
+		char *path = realpath(filename.c_str(), nullptr);
+		if (path == nullptr)
 		{
-			string filename = "./res/mark_" + std::to_string(i) + ".png";
-			char *path = realpath(filename.c_str(), nullptr);
-			if (path == nullptr)
-			{
-				std::cerr << "Cannot find file: " << filename << "\n";
-				return false;
-			}
-			auto attributes = Gsv::MarkAttributes::create();
-			attributes->set_icon(Gio::Icon::create(path));
-			source_view->set_mark_attributes(m_where_categories[i], attributes, 100);
-			free(path);
+			std::cerr << "Cannot find file: " << filename << "\n";
+			return false;
 		}
+		auto attributes = Gsv::MarkAttributes::create();
+		attributes->set_icon(Gio::Icon::create(path));
+		source_view->set_mark_attributes(m_where_categories[i], attributes, 100);
+		free(path);
 		m_scrolled_windows_sw[i].set_size_request(width, height);
 		m_scrolled_windows_sw[i].add(m_source_views[i]);
 		m_grid.attach(m_scrolled_windows_sw[i], 4, (2 * i), 1, 1);
@@ -211,24 +209,31 @@ bool UIWindow::init()
 	return true;
 }
 
-void UIWindow::get_mark_pos(const int a_process_rank)
+void UIWindow::get_mark_pos(const int)
 {
-	auto source_view = &m_source_views[a_process_rank];
-	auto source_buffer = source_view->get_source_buffer();
-	auto where_marker = source_view->get_source_buffer()->get_mark(m_where_marks[a_process_rank]);
-	auto line_iter = source_buffer->get_iter_at_line(m_current_line[a_process_rank] - 1);
-	if (!line_iter || !where_marker)
+	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
-		return;
+		auto source_view = &m_source_views[rank];
+		auto source_buffer = source_view->get_source_buffer();
+		auto adjustment = m_scrolled_windows_sw[rank].get_vadjustment();
+
+		for (int i = 0; i < m_num_processes; ++i)
+		{
+			auto line_iter = source_buffer->get_iter_at_line(m_current_line[rank] - 1);
+			if (!line_iter || m_source_view_path[rank] != m_source_view_path[rank])
+			{
+				m_draw_areas[rank]->set_y_offset(rank, -2 * UIDrawingArea::radius() - 1); // set out of visible area
+				continue;
+			}
+
+			Gdk::Rectangle rect;
+			source_view->get_iter_location(line_iter, rect);
+
+			int draw_pos = rect.get_y() - int(adjustment->get_value());
+			m_draw_areas[rank]->set_y_offset(rank, draw_pos);
+		}
+		m_draw_areas[rank]->queue_draw();
 	}
-	Gdk::Rectangle rect;
-	source_view->get_iter_location(line_iter, rect);
-
-	auto adjustment = m_scrolled_windows_sw[a_process_rank].get_vadjustment();
-	int draw_pos = rect.get_y() - adjustment->get_value();
-
-	m_draw_areas[a_process_rank]->draw_pos(draw_pos);
-	m_draw_areas[a_process_rank]->queue_draw();
 
 	// rect.get_y();
 	// adjustment->get_value();
