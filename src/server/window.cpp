@@ -219,10 +219,10 @@ void UIWindow::get_mark_pos(const int)
 
 		for (int i = 0; i < m_num_processes; ++i)
 		{
-			auto line_iter = source_buffer->get_iter_at_line(m_current_line[rank] - 1);
-			if (!line_iter || m_source_view_path[rank] != m_source_view_path[rank])
+			auto line_iter = source_buffer->get_iter_at_line(m_current_line[i] - 1);
+			if (!line_iter || m_source_view_path[rank] != m_source_view_path[i])
 			{
-				m_draw_areas[rank]->set_y_offset(rank, -2 * UIDrawingArea::radius() - 1); // set out of visible area
+				m_draw_areas[rank]->set_y_offset(i, -2 * UIDrawingArea::radius() - 1); // set out of visible area
 				continue;
 			}
 
@@ -230,7 +230,7 @@ void UIWindow::get_mark_pos(const int)
 			source_view->get_iter_location(line_iter, rect);
 
 			int draw_pos = rect.get_y() - int(adjustment->get_value());
-			m_draw_areas[rank]->set_y_offset(rank, draw_pos);
+			m_draw_areas[rank]->set_y_offset(i, draw_pos);
 		}
 		m_draw_areas[rank]->queue_draw();
 	}
