@@ -84,7 +84,7 @@ public:
 	void send_input_trgt(const int a_process_rank);
 	void send_input_all_gdb();
 	void send_input_all_trgt();
-	void print_data(mi_h *const a_h, const char *const a_data, const size_t a_length, const int a_port);
+	void print_data(mi_h *const a_gdb_handle, const char *const a_data, const size_t a_length, const int a_port);
 
 	inline int num_processes() const
 	{

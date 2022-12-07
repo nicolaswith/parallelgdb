@@ -49,14 +49,10 @@ UIWindow::UIWindow(const int a_num_processes)
 		m_conns_gdb[i] = nullptr;
 		m_conns_trgt[i] = nullptr;
 		m_conns_open_gdb[i] = false;
-		char *mark_name = new char[16];
-		char *cat_name = new char[16];
-		sprintf(mark_name, "mark-%d", i);
-		sprintf(cat_name, "cat-%d", i);
-		m_where_marks[i] = strdup(mark_name);
-		m_where_categories[i] = strdup(cat_name);
-		delete mark_name;
-		delete cat_name;
+		string mark_name = "mark-" + std::to_string(i);
+		string cat_name = "cat-" + std::to_string(i);
+		m_where_marks[i] = strdup(mark_name.c_str());
+		m_where_categories[i] = strdup(cat_name.c_str());
 		m_current_line[i] = 0;
 		m_draw_areas[i] = new UIDrawingArea{m_num_processes, i};
 	}
@@ -96,10 +92,15 @@ UIWindow::~UIWindow()
 }
 
 int colors[][3] = {
-	{255, 0, 0},
-	{0, 255, 0},
-	{0, 0, 255},
-	{255, 255, 0}};
+	{0xff, 0x00, 0x00},
+	{0x00, 0x80, 0x00},
+	{0x00, 0x00, 0xff},
+	{0xff, 0xd7, 0x00},
+	{0xc7, 0x15, 0x85},
+	{0x00, 0xff, 0x00},
+	{0x00, 0xff, 0xff},
+	{0x1e, 0x90, 0xff}
+};
 
 unsigned char *create_pixbuf(int width, int height, const int a_process_rank, const int a_num_processes)
 {
@@ -176,7 +177,7 @@ bool UIWindow::init()
 			{ send_sig_int(i); });
 
 		// draw_areas
-		m_draw_areas[i]->set_size_request(100, 200);
+		m_draw_areas[i]->set_size_request((2 * UIDrawingArea::radius() + UIDrawingArea::spacing()) * m_num_processes, 200);
 		m_grid.attach(*m_draw_areas[i], 3, (2 * i), 1, 1);
 
 		// source_views
@@ -439,6 +440,7 @@ void UIWindow::scroll_to_line(Gsv::View *a_source_view, const int a_line) const
 			a_line - 1));
 }
 
+// todo refactor...
 void UIWindow::print_data_gdb(mi_h *const a_gdb_handle, const char *const a_data, const int a_process_rank)
 {
 	char **buffer = &m_text_view_buffers_gdb[a_process_rank];
@@ -509,7 +511,7 @@ void UIWindow::print_data_trgt(const char *const a_data, const size_t a_data_len
 
 	Gtk::TextView *text_view = &m_text_views_trgt[a_process_rank];
 	auto gtk_buffer = text_view->get_buffer();
-	gtk_buffer->set_text(*buffer); // Glib::convert_with_fallback(*buffer, "UTF-8", "ISO-8859-1")
+	gtk_buffer->set_text(*buffer);
 }
 
 void UIWindow::print_data(mi_h *const a_gdb_handle, const char *const a_data, const size_t a_length, const int a_port)

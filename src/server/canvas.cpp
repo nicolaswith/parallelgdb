@@ -3,10 +3,15 @@
 #include "window.hpp"
 
 const Gdk::RGBA UIDrawingArea::colors[] = {
-	Gdk::RGBA("#FF0000"),
-	Gdk::RGBA("#00FF00"),
-	Gdk::RGBA("#0000FF"),
-	Gdk::RGBA("#FFFF00")};
+	Gdk::RGBA("#ff0000"),
+	Gdk::RGBA("#008000"),
+	Gdk::RGBA("#0000ff"),
+	Gdk::RGBA("#ffd700"),
+	Gdk::RGBA("#c71585"),
+	Gdk::RGBA("#00ff00"),
+	Gdk::RGBA("#00ffff"),
+	Gdk::RGBA("#1e90ff"),
+};
 
 const int UIDrawingArea::m_radius = 8;
 const int UIDrawingArea::m_spacing = 4;
@@ -27,6 +32,10 @@ bool UIDrawingArea::on_draw(const Cairo::RefPtr<Cairo::Context> &a_context)
 {
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
+		if (rank == m_process_rank)
+		{
+			continue;
+		}
 		if (m_y_offsets[rank] > -2 * m_radius - 1)
 		{
 			a_context->save();

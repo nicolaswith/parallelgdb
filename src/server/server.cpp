@@ -177,7 +177,7 @@ void process_session(tcp::socket a_sock, UIWindow &a_window, const int a_port)
 	{
 		for (;;)
 		{
-			char *data = (char *)malloc((max_length + 8) * sizeof(char));
+			char *data = new char[max_length + 8];
 			if (nullptr == data)
 			{
 				throw std::bad_alloc();
@@ -213,7 +213,7 @@ void process_session(tcp::socket a_sock, UIWindow &a_window, const int a_port)
 					length + 1, // now length+1 chars are valid (inc null termination)
 					a_port));
 
-			free(data);
+			delete[] data;
 		}
 	}
 	catch (std::exception &e)

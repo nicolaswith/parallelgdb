@@ -27,6 +27,11 @@ public:
 	{
 		return m_radius;
 	}
+
+	inline static int spacing()
+	{
+		return m_spacing;
+	}
 };
 
 #endif /* CANVAS_HPP */
