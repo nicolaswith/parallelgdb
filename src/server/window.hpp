@@ -17,7 +17,7 @@ public:
 	SIGINTButton() : Gtk::Button("Send SIGINT") {}
 };
 
-class UIWindow : public Gtk::Window
+class UIWindow
 {
 	const int m_num_processes;
 
@@ -30,23 +30,8 @@ class UIWindow : public Gtk::Window
 	size_t *m_buffer_length_gdb;
 	size_t *m_buffer_length_trgt;
 
-	Gtk::ScrolledWindow m_scrolled_window_top;
-	Gtk::Grid m_grid;
-	Gtk::ScrolledWindow *m_scrolled_windows_gdb;
-	Gtk::ScrolledWindow *m_scrolled_windows_trgt;
-	Gtk::ScrolledWindow *m_scrolled_windows_sw;
-	Gtk::TextView *m_text_views_gdb;
-	Gtk::TextView *m_text_views_trgt;
-	UIDrawingArea **m_draw_areas;
-	Gsv::View *m_source_views;
-	Gtk::Entry *m_entries_gdb;
-	Gtk::Entry *m_entries_trgt;
-	Gtk::Button *m_buttons_trgt;
-	Gtk::Label *m_labels_sw;
-	Gtk::Label m_label_all;
-	Gtk::Entry m_entry_all_gdb;
-	Gtk::Entry m_entry_all_trgt;
-	Gtk::Button m_button_all;
+	Glib::RefPtr<Gtk::Builder> m_builder;
+	Gtk::Window *m_root_window;
 
 	sigc::connection *m_scroll_connections_gdb;
 	sigc::connection *m_scroll_connections_trgt;
@@ -85,6 +70,11 @@ public:
 	void send_input_all_gdb();
 	void send_input_all_trgt();
 	void print_data(mi_h *const a_gdb_handle, const char *const a_data, const size_t a_length, const int a_port);
+
+	inline Gtk::Window *root_window() const
+	{
+		return m_root_window;
+	}
 
 	inline int num_processes() const
 	{

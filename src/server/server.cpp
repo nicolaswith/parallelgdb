@@ -262,10 +262,7 @@ int main(int, char const **)
 	} while (!dialog->is_valid());
 
 	signal(SIGINT, sigint_handler);
-
 	UIWindow window{dialog->num_processes()};
-	window.signal_delete_event().connect(sigc::mem_fun(window, &UIWindow::on_delete));
-
 	start_servers(window);
 
 	bool ret = false;
@@ -277,7 +274,6 @@ int main(int, char const **)
 	{
 		ret = start_clients_mpi(*dialog) > 0;
 	}
-
 	if (!ret)
 	{
 		return EXIT_FAILURE;
@@ -286,7 +282,7 @@ int main(int, char const **)
 	dialog.reset();
 	if (window.init())
 	{
-		app->run(window);
+		app->run(*window.root_window());
 	}
 	else
 	{

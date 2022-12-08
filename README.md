@@ -12,7 +12,11 @@ To build these two separate executables you can use the following command from t
 	mkdir bin
 	make
 
-This will generate a `server` and a `client` executable in the `bin` folder. 
+This will generate a `server` and a `client` executable in the `bin` folder.
+
+If you want to edit the glade file you might need to copy the file `./ui/gtksourceview.xml` to `/usr/share/glade/catalogs/gtksourceview.xml` as installing the `libgtksourceview-3.0-dev` package did not create this file (on my machine...).
+
+I created this file by building the gtksourceview package [gtksourceview-3.24.11.tar.xz](https://download.gnome.org/sources/gtksourceview/3.24/gtksourceview-3.24.11.tar.xz) from source.
 
 # Dependencies
 The following dependencies must be available for building:
