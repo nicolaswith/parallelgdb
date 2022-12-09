@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "util.hpp"
 #include "server.hpp"
 
 const int max_length = 0x2000; // socat default
@@ -159,9 +158,9 @@ int start_clients_mpi(UIDialog &a_dialog)
 
 void process_session(tcp::socket a_sock, UIWindow &a_window, const int a_port)
 {
-	const int process_rank = get_process_rank(a_port);
+	const int process_rank = UIWindow::get_process_rank(a_port);
 	mi_h *gdb_handle = nullptr;
-	if (src_is_gdb(a_port))
+	if (UIWindow::src_is_gdb(a_port))
 	{
 		a_window.set_conns_gdb(process_rank, &a_sock);
 		a_window.set_conns_open_gdb(process_rank, true);
@@ -187,7 +186,7 @@ void process_session(tcp::socket a_sock, UIWindow &a_window, const int a_port)
 			const size_t length = a_sock.read_some(asio::buffer(data, max_length), error);
 			if (asio::error::eof == error)
 			{
-				if (src_is_gdb(a_port))
+				if (UIWindow::src_is_gdb(a_port))
 				{
 					a_window.set_conns_open_gdb(process_rank, false);
 					mi_free_h(&gdb_handle);

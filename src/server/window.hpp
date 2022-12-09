@@ -21,17 +21,21 @@ class UIWindow
 {
 	const int m_num_processes;
 
-	char **m_text_view_buffers_gdb;
-	char **m_text_view_buffers_trgt;
-
 	int *m_current_line;
 	string *m_source_view_path;
 
-	size_t *m_buffer_length_gdb;
-	size_t *m_buffer_length_trgt;
-
 	Glib::RefPtr<Gtk::Builder> m_builder;
 	Gtk::Window *m_root_window;
+
+	Gtk::TextBuffer **m_text_buffers_gdb;
+	Gtk::TextBuffer **m_text_buffers_trgt;
+	Gtk::ScrolledWindow **m_scrolled_windows_gdb;
+	Gtk::ScrolledWindow **m_scrolled_windows_trgt;
+
+	std::set<string> m_opened_files;
+
+	// std::map<string, int> path_2_pagenum_map;
+	// std::map<int, string> pagenum_2_path_map;
 
 	sigc::connection *m_scroll_connections_gdb;
 	sigc::connection *m_scroll_connections_trgt;
@@ -49,13 +53,24 @@ class UIWindow
 	void do_scroll(Gsv::View *a_source_view, const int a_line) const;
 	void scroll_to_line(Gsv::View *a_source_view, const int a_line) const;
 	void update_line_mark(const int a_process_rank);
-	void update_source_file(const int a_process_rank, mi_stop *a_stop_record);
+	void append_source_file(const int a_process_rank, mi_stop *a_stop_record);
 	void print_data_gdb(mi_h *const a_h, const char *const a_data, const int a_process_rank);
-	void print_data_trgt(const char *const a_data, const size_t a_data_length, const int a_process_rank);
+	void print_data_trgt(const char *const a_data, const int a_process_rank);
 	void on_marker_update(const Glib::RefPtr<Gtk::TextMark> &, const int a_process_rank);
 	void get_mark_pos(const int a_process_rank);
+	void on_page_switch(Gtk::Widget *a_page, const int a_page_num);
 	void on_scroll_sw(const int a_process_rank);
 	void scroll_bottom(Gtk::Allocation &a_allocation, Gtk::ScrolledWindow *a_scrolled_window, const bool a_is_gdb, const int a_process_rank);
+	void send_input(const string &a_entry_name, const string &a_wrapper_name, tcp::socket **a_socket);
+	void send_sig_int();
+	void send_input_gdb();
+	void send_input_trgt();
+	void toggle_all(const string &a_box_name);
+	void toggle_all_gdb();
+	void toggle_all_trgt();
+
+	template <class T>
+	T *get_widget(const string &a_widget_name);
 
 public:
 	UIWindow(const int a_num_processes);
@@ -63,12 +78,6 @@ public:
 
 	bool init();
 	bool on_delete(GdkEventAny *);
-	void send_sig_int(const int a_process_rank) const;
-	void send_sig_int_all() const;
-	void send_input_gdb(const int a_process_rank);
-	void send_input_trgt(const int a_process_rank);
-	void send_input_all_gdb();
-	void send_input_all_trgt();
 	void print_data(mi_h *const a_gdb_handle, const char *const a_data, const size_t a_length, const int a_port);
 
 	inline Gtk::Window *root_window() const
@@ -109,6 +118,16 @@ public:
 	inline void set_conns_open_gdb(const int a_process_rank, const bool a_value)
 	{
 		m_conns_open_gdb[a_process_rank] = a_value;
+	}
+
+	inline static bool src_is_gdb(const int a_port)
+	{
+		return (0 == (a_port & 0x4000));
+	}
+
+	inline static int get_process_rank(const int a_port)
+	{
+		return (0x3FFF & a_port);
 	}
 };
 
