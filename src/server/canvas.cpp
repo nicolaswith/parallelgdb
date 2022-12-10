@@ -16,9 +16,8 @@ const Gdk::RGBA UIDrawingArea::colors[] = {
 const int UIDrawingArea::m_radius = 8;
 const int UIDrawingArea::m_spacing = 4;
 
-UIDrawingArea::UIDrawingArea(const int a_num_processes, const int a_process_rank)
+UIDrawingArea::UIDrawingArea(const int a_num_processes)
 	: m_num_processes(a_num_processes),
-	  m_process_rank(a_process_rank),
 	  m_y_offsets(new int[m_num_processes])
 {
 }
@@ -32,15 +31,11 @@ bool UIDrawingArea::on_draw(const Cairo::RefPtr<Cairo::Context> &a_context)
 {
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
-		if (rank == m_process_rank)
-		{
-			continue;
-		}
 		if (m_y_offsets[rank] > -2 * m_radius - 1)
 		{
 			a_context->save();
 			a_context->arc(
-				rank * (2 * m_radius + m_spacing) + m_radius,
+				rank * (2 * m_radius + m_spacing) + m_radius + m_spacing,
 				m_y_offsets[rank] + m_radius,
 				m_radius,
 				0.0,

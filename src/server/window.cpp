@@ -2,18 +2,6 @@
 
 #include "window.hpp"
 
-#define NUM_MARKS 4
-
-int colors[][3] = {
-	{0xff, 0x00, 0x00},
-	{0x00, 0x80, 0x00},
-	{0x00, 0x00, 0xff},
-	{0xff, 0xd7, 0x00},
-	{0xc7, 0x15, 0x85},
-	{0x00, 0xff, 0x00},
-	{0x00, 0xff, 0xff},
-	{0x1e, 0x90, 0xff}};
-
 UIWindow::UIWindow(const int a_num_processes)
 	: m_num_processes(a_num_processes)
 {
@@ -89,6 +77,10 @@ bool UIWindow::init()
 	get_widget<Gtk::Button>("target-send-select-all-button")->signal_clicked().connect(sigc::mem_fun(*this, &UIWindow::toggle_all_trgt));
 	get_widget<Gtk::Notebook>("files-notebook")->signal_switch_page().connect(sigc::mem_fun(*this, &UIWindow::on_page_switch));
 
+	m_drawing_area = Gtk::manage(new UIDrawingArea(m_num_processes));
+	m_drawing_area->set_size_request(UIDrawingArea::spacing() + (2 * UIDrawingArea::radius() + UIDrawingArea::spacing()) * m_num_processes, -1);
+	get_widget<Gtk::Box>("files-canvas-box")->pack_start(*m_drawing_area);
+
 	Gtk::Notebook *notebook_gdb = get_widget<Gtk::Notebook>("gdb-output-notebook");
 	Gtk::Notebook *notebook_trgt = get_widget<Gtk::Notebook>("target-output-notebook");
 	Gtk::Box *send_select_gdb = get_widget<Gtk::Box>("gdb-send-select-wrapper-box");
@@ -134,10 +126,6 @@ bool UIWindow::init()
 
 	m_root_window->show_all();
 	return true;
-}
-
-void UIWindow::on_page_switch(Gtk::Widget *a_page, const int a_page_num)
-{
 }
 
 bool UIWindow::on_delete(GdkEventAny *)
@@ -231,7 +219,7 @@ void UIWindow::toggle_all(const string &a_box_name)
 {
 	Gtk::Box *box = get_widget<Gtk::Box>(a_box_name);
 	bool one_checked = false;
-	for (auto &&check_button_widget : box->get_children())
+	for (Gtk::Widget *check_button_widget : box->get_children())
 	{
 		Gtk::CheckButton *check_button = dynamic_cast<Gtk::CheckButton *>(check_button_widget);
 		if (check_button->get_active())
@@ -241,7 +229,7 @@ void UIWindow::toggle_all(const string &a_box_name)
 		}
 	}
 	bool state = !one_checked;
-	for (auto &&check_button_widget : box->get_children())
+	for (Gtk::Widget *check_button_widget : box->get_children())
 	{
 		Gtk::CheckButton *check_button = dynamic_cast<Gtk::CheckButton *>(check_button_widget);
 		check_button->set_active(state);
@@ -258,16 +246,16 @@ void UIWindow::toggle_all_trgt()
 	toggle_all("target-send-select-wrapper-box");
 }
 
-void UIWindow::append_source_file(const int a_process_rank, mi_stop *a_stop_record)
+void UIWindow::append_source_file(const int a_process_rank, const string &a_fullpath, const int a_line)
 {
-	m_current_line[a_process_rank] = a_stop_record->frame->line;
-	string fullpath = a_stop_record->frame->fullname;
-	m_source_view_path[a_process_rank] = fullpath;
+	m_source_view_path[a_process_rank] = a_fullpath;
+	m_current_line[a_process_rank] = a_line;
 	Gtk::Notebook *notebook = get_widget<Gtk::Notebook>("files-notebook");
-	if (m_opened_files.find(fullpath) == m_opened_files.end())
+	int page_num;
+	if (m_opened_files.find(a_fullpath) == m_opened_files.end())
 	{
-		m_opened_files.insert(fullpath);
-		string basename = Glib::path_get_basename(fullpath);
+		m_opened_files.insert(a_fullpath);
+		string basename = Glib::path_get_basename(a_fullpath);
 		Gtk::Label *label = Gtk::manage(new Gtk::Label(basename));
 		Gtk::ScrolledWindow *scrolled_window = Gtk::manage(new Gtk::ScrolledWindow());
 		Gsv::View *source_view = Gtk::manage(new Gsv::View());
@@ -277,8 +265,9 @@ void UIWindow::append_source_file(const int a_process_rank, mi_stop *a_stop_reco
 		scrolled_window->add(*source_view);
 		char *content;
 		size_t content_length;
-		if (g_file_get_contents(fullpath.c_str(), &content, &content_length, nullptr))
+		if (g_file_get_contents(a_fullpath.c_str(), &content, &content_length, nullptr))
 		{
+			scrolled_window->get_vadjustment()->signal_value_changed().connect(sigc::mem_fun(*this, &UIWindow::on_scroll_file));
 			source_view->set_show_line_numbers(true);
 			source_buffer->set_language(Gsv::LanguageManager::get_default()->get_language("cpp"));
 			source_buffer->set_highlight_matching_brackets(true);
@@ -287,97 +276,82 @@ void UIWindow::append_source_file(const int a_process_rank, mi_stop *a_stop_reco
 		}
 		else
 		{
-			source_buffer->set_text("Could not load file: " + fullpath);
+			source_buffer->set_text(string("Could not load file: ") + a_fullpath);
 		}
-		int page_num = notebook->append_page(*scrolled_window, *label);
-		notebook->show_all();
+		scrolled_window->show_all();
+		page_num = notebook->append_page(*scrolled_window, *label);
 		notebook->set_current_page(page_num);
-		m_path_2_pagenum[fullpath] = page_num;
-		m_pagenum_2_path[page_num] = fullpath;
+		m_path_2_pagenum[a_fullpath] = page_num;
+		m_pagenum_2_path[page_num] = a_fullpath;
+		m_path_2_view[a_fullpath] = source_view;
 	}
 	else
 	{
-		notebook->set_current_page(m_path_2_pagenum[fullpath]);
+		page_num = m_path_2_pagenum[a_fullpath];
+		notebook->set_current_page(page_num);
 	}
 }
 
-void UIWindow::get_mark_pos(const int)
+void UIWindow::update_markers(const int a_page_num)
 {
-	// for (int rank = 0; rank < m_num_processes; ++rank)
-	// {
-	// 	auto source_view = &m_source_views[rank];
-	// 	auto source_buffer = source_view->get_source_buffer();
-	// 	auto adjustment = m_scrolled_windows_sw[rank].get_vadjustment();
+	Gtk::Notebook *notebook = get_widget<Gtk::Notebook>("files-notebook");
+	Gtk::ScrolledWindow *scrolled_window = dynamic_cast<Gtk::ScrolledWindow *>(notebook->get_nth_page(a_page_num));
+	Gsv::View *source_view = dynamic_cast<Gsv::View *>(scrolled_window->get_child());
+	string page_path = m_pagenum_2_path[a_page_num];
+	int offset = notebook->get_height() - scrolled_window->get_height();
 
-	// 	for (int i = 0; i < m_num_processes; ++i)
-	// 	{
-	// 		auto line_iter = source_buffer->get_iter_at_line(m_current_line[i] - 1);
-	// 		if (!line_iter || m_source_view_path[rank] != m_source_view_path[i])
-	// 		{
-	// 			m_draw_areas[rank]->set_y_offset(i, -2 * UIDrawingArea::radius() - 1); // set out of visible area
-	// 			continue;
-	// 		}
+	for (int i = 0; i < m_num_processes; ++i)
+	{
+		Glib::RefPtr<Gsv::Buffer> source_buffer = source_view->get_source_buffer();
+		Glib::RefPtr<Gtk::Adjustment> adjustment = scrolled_window->get_vadjustment();
+		Gtk::TextIter line_iter = source_buffer->get_iter_at_line(m_current_line[i] - 1);
+		if (!line_iter || page_path != m_source_view_path[i])
+		{
+			m_drawing_area->set_y_offset(i, -3 * UIDrawingArea::radius()); // set out of visible area
+			continue;
+		}
 
-	// 		Gdk::Rectangle rect;
-	// 		source_view->get_iter_location(line_iter, rect);
+		Gdk::Rectangle rect;
+		source_view->get_iter_location(line_iter, rect);
 
-	// 		int draw_pos = rect.get_y() - int(adjustment->get_value());
-	// 		m_draw_areas[rank]->set_y_offset(i, draw_pos);
-	// 	}
-	// 	m_draw_areas[rank]->queue_draw();
-	// }
+		int draw_pos = offset + rect.get_y() - int(adjustment->get_value());
+		m_drawing_area->set_y_offset(i, draw_pos);
+	}
 
-	// rect.get_y();
-	// adjustment->get_value();
-	// adjustment->get_upper();
-	// m_scrolled_windows_sw[a_process_rank].get_height();
+	m_drawing_area->queue_draw();
 }
 
-void UIWindow::on_scroll_sw(const int a_process_rank)
+void UIWindow::on_page_switch(Gtk::Widget *a_page, const int a_page_num)
 {
-	// get_mark_pos(a_process_rank);
+	update_markers(a_page_num);
 }
 
-void UIWindow::on_marker_update(const Glib::RefPtr<Gtk::TextMark> &, const int a_process_rank)
+void UIWindow::on_scroll_file()
 {
-	// get_mark_pos(a_process_rank);
+	int page_num = get_widget<Gtk::Notebook>("files-notebook")->get_current_page();
+	update_markers(page_num);
 }
 
-
-void UIWindow::update_line_mark(const int a_process_rank)
+void UIWindow::do_scroll(const int a_process_rank) const
 {
-	// Gsv::View *source_view = &m_source_views[a_process_rank];
-	// auto source_buffer = source_view->get_source_buffer();
-	// Gtk::TextIter line_iter = source_buffer->get_iter_at_line(m_current_line[a_process_rank] - 1);
-	// if (!line_iter)
-	// {
-	// 	std::cerr << "No iter. File: " << m_source_view_path[a_process_rank] << "\n";
-	// 	return;
-	// }
-	// auto where_marker = source_buffer->get_mark(m_where_marks[a_process_rank]);
-	// source_buffer->move_mark(where_marker, line_iter);
+	Gsv::View *source_view = m_path_2_view.at(m_source_view_path[a_process_rank]);
+	Gtk::TextIter iter = source_view->get_buffer()->get_iter_at_line(m_current_line[a_process_rank] - 1);
+	if (!iter)
+	{
+		std::cerr << "No iter. Line: " << m_current_line[a_process_rank] - 1 << "\n";
+		return;
+	}
+	source_view->scroll_to(iter, 0.1);
 }
 
-void UIWindow::do_scroll(Gsv::View *a_source_view, const int a_line) const
+void UIWindow::scroll_to_line(const int a_process_rank) const
 {
-	// Gtk::TextIter iter = a_source_view->get_buffer()->get_iter_at_line(a_line);
-	// if (!iter)
-	// {
-	// 	std::cerr << "No iter. Line: " << a_line << "\n";
-	// 	return;
-	// }
-	// a_source_view->scroll_to(iter, 0.1);
-}
-
-void UIWindow::scroll_to_line(Gsv::View *a_source_view, const int a_line) const
-{
-	// Glib::signal_idle().connect_once(
-	// 	sigc::bind(
-	// 		sigc::mem_fun(
-	// 			this,
-	// 			&UIWindow::do_scroll),
-	// 		a_source_view,
-	// 		a_line - 1));
+	Glib::signal_idle().connect_once(
+		sigc::bind(
+			sigc::mem_fun(
+				this,
+				&UIWindow::do_scroll),
+			a_process_rank));
 }
 
 // todo refactor...
@@ -426,9 +400,10 @@ void UIWindow::print_data_gdb(mi_h *const a_gdb_handle, const char *const a_data
 				{
 					// printf("\tat %s:%d in function: %s\n", stop_record->frame->fullname, stop_record->frame->line, stop_record->frame->func);
 
-					append_source_file(a_process_rank, stop_record);
-					// update_line_mark(a_process_rank);
-					// scroll_to_line(&m_source_views[a_process_rank], stop_record->frame->line);
+					append_source_file(a_process_rank, stop_record->frame->fullname, stop_record->frame->line);
+					scroll_to_line(a_process_rank);
+					int page_num = get_widget<Gtk::Notebook>("files-notebook")->get_current_page();
+					update_markers(page_num);
 				}
 				mi_free_stop(stop_record);
 			}

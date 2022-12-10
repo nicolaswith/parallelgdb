@@ -31,11 +31,12 @@ class UIWindow
 	Gtk::TextBuffer **m_text_buffers_trgt;
 	Gtk::ScrolledWindow **m_scrolled_windows_gdb;
 	Gtk::ScrolledWindow **m_scrolled_windows_trgt;
+	UIDrawingArea *m_drawing_area;
 
 	std::set<string> m_opened_files;
-
 	std::map<string, int> m_path_2_pagenum;
 	std::map<int, string> m_pagenum_2_path;
+	std::map<string, Gsv::View *> m_path_2_view;
 
 	sigc::connection *m_scroll_connections_gdb;
 	sigc::connection *m_scroll_connections_trgt;
@@ -50,16 +51,14 @@ class UIWindow
 	char **m_where_marks;
 	char **m_where_categories;
 
-	void do_scroll(Gsv::View *a_source_view, const int a_line) const;
-	void scroll_to_line(Gsv::View *a_source_view, const int a_line) const;
-	void update_line_mark(const int a_process_rank);
-	void append_source_file(const int a_process_rank, mi_stop *a_stop_record);
+	void do_scroll(const int a_process_rank) const;
+	void scroll_to_line(const int a_process_rank) const;
+	void append_source_file(const int a_process_rank, const string &a_fullpath, const int a_line);
 	void print_data_gdb(mi_h *const a_h, const char *const a_data, const int a_process_rank);
 	void print_data_trgt(const char *const a_data, const int a_process_rank);
-	void on_marker_update(const Glib::RefPtr<Gtk::TextMark> &, const int a_process_rank);
-	void get_mark_pos(const int a_process_rank);
+	void update_markers(const int a_page_num);
 	void on_page_switch(Gtk::Widget *a_page, const int a_page_num);
-	void on_scroll_sw(const int a_process_rank);
+	void on_scroll_file();
 	void scroll_bottom(Gtk::Allocation &a_allocation, Gtk::ScrolledWindow *a_scrolled_window, const bool a_is_gdb, const int a_process_rank);
 	void send_input(const string &a_entry_name, const string &a_wrapper_name, tcp::socket **a_socket);
 	void send_sig_int();
