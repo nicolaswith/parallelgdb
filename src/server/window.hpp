@@ -34,8 +34,8 @@ class UIWindow
 
 	std::set<string> m_opened_files;
 
-	// std::map<string, int> path_2_pagenum_map;
-	// std::map<int, string> pagenum_2_path_map;
+	std::map<string, int> m_path_2_pagenum;
+	std::map<int, string> m_pagenum_2_path;
 
 	sigc::connection *m_scroll_connections_gdb;
 	sigc::connection *m_scroll_connections_trgt;
