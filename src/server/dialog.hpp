@@ -52,11 +52,11 @@ class UIDialog : public Gtk::Dialog
 	Gtk::Entry m_entry_ssh_password;
 	Gtk::Entry m_entry_partition;
 
-	void on_dialog_response(const int a_response_id);
-	void set_sensitivity(bool a_state);
-	void on_toggle_button(Gtk::CheckButton *a_button);
+	void on_dialog_response(const int response_id);
+	void set_sensitivity(bool state);
+	void on_toggle_button(Gtk::CheckButton *button);
 	void clear_dialog();
-	void set_value(string a_key, string a_value);
+	void set_value(string key, string value);
 	void read_config();
 
 public:

@@ -110,33 +110,33 @@ void UIDialog::clear_dialog()
 	set_sensitivity(false);
 }
 
-void UIDialog::set_value(string a_key, string a_value)
+void UIDialog::set_value(string key, string value)
 {
-	if ("num_nodes" == a_key)
-		m_entry_num_nodes.set_text(a_value);
-	if ("num_tasks" == a_key)
-		m_entry_num_tasks.set_text(a_value);
-	if ("client" == a_key)
-		m_entry_client.set_text(a_value);
-	if ("gdb" == a_key)
-		m_entry_gdb.set_text(a_value);
-	if ("socat" == a_key)
-		m_entry_socat.set_text(a_value);
-	if ("target" == a_key)
-		m_entry_target.set_text(a_value);
-	if ("ip_address" == a_key)
-		m_entry_ip_address.set_text(a_value);
-	if ("ssh_address" == a_key)
-		m_entry_ssh_address.set_text(a_value);
-	if ("ssh_user" == a_key)
-		m_entry_ssh_user.set_text(a_value);
-	if ("ssh_password" == a_key)
-		m_entry_ssh_password.set_text(a_value);
-	if ("partition" == a_key)
-		m_entry_partition.set_text(a_value);
-	if ("srun" == a_key)
+	if ("num_nodes" == key)
+		m_entry_num_nodes.set_text(value);
+	if ("num_tasks" == key)
+		m_entry_num_tasks.set_text(value);
+	if ("client" == key)
+		m_entry_client.set_text(value);
+	if ("gdb" == key)
+		m_entry_gdb.set_text(value);
+	if ("socat" == key)
+		m_entry_socat.set_text(value);
+	if ("target" == key)
+		m_entry_target.set_text(value);
+	if ("ip_address" == key)
+		m_entry_ip_address.set_text(value);
+	if ("ssh_address" == key)
+		m_entry_ssh_address.set_text(value);
+	if ("ssh_user" == key)
+		m_entry_ssh_user.set_text(value);
+	if ("ssh_password" == key)
+		m_entry_ssh_password.set_text(value);
+	if ("partition" == key)
+		m_entry_partition.set_text(value);
+	if ("srun" == key)
 	{
-		if ("true" == a_value)
+		if ("true" == value)
 		{
 			m_checkbutton_srun.set_active(true);
 			set_sensitivity(true);
@@ -181,9 +181,9 @@ void UIDialog::read_config()
 	delete[] config;
 }
 
-void UIDialog::on_dialog_response(const int a_response_id)
+void UIDialog::on_dialog_response(const int response_id)
 {
-	if (RESPONSE_ID_OK != a_response_id)
+	if (RESPONSE_ID_OK != response_id)
 	{
 		return;
 	}
@@ -217,16 +217,16 @@ void UIDialog::on_dialog_response(const int a_response_id)
 	m_is_valid = true;
 }
 
-void UIDialog::set_sensitivity(bool a_state)
+void UIDialog::set_sensitivity(bool state)
 {
-	m_entry_num_nodes.set_sensitive(a_state);
-	m_entry_ssh_address.set_sensitive(a_state);
-	m_entry_ssh_user.set_sensitive(a_state);
-	m_entry_ssh_password.set_sensitive(a_state);
-	m_entry_partition.set_sensitive(a_state);
+	m_entry_num_nodes.set_sensitive(state);
+	m_entry_ssh_address.set_sensitive(state);
+	m_entry_ssh_user.set_sensitive(state);
+	m_entry_ssh_password.set_sensitive(state);
+	m_entry_partition.set_sensitive(state);
 }
 
-void UIDialog::on_toggle_button(Gtk::CheckButton *a_button)
+void UIDialog::on_toggle_button(Gtk::CheckButton *button)
 {
-	set_sensitivity(a_button->get_active());
+	set_sensitivity(button->get_active());
 }
