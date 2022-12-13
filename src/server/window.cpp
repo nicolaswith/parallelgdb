@@ -64,11 +64,13 @@ bool UIWindow::init()
 	get_widget<Gtk::Button>("target-send-sigint-button")->signal_clicked().connect(sigc::mem_fun(*this, &UIWindow::send_sig_int));
 	get_widget<Gtk::Button>("gdb-send-select-all-button")->signal_clicked().connect(sigc::mem_fun(*this, &UIWindow::toggle_all_gdb));
 	get_widget<Gtk::Button>("target-send-select-all-button")->signal_clicked().connect(sigc::mem_fun(*this, &UIWindow::toggle_all_trgt));
-	Glib::signal_timeout().connect(sigc::mem_fun(*this, &UIWindow::update_markers_timeout), 10);
 
 	m_drawing_area = Gtk::manage(new UIDrawingArea(m_num_processes));
 	m_drawing_area->set_size_request(UIDrawingArea::spacing() + (2 * UIDrawingArea::radius() + UIDrawingArea::spacing()) * m_num_processes, -1);
 	get_widget<Gtk::Box>("files-canvas-box")->pack_start(*m_drawing_area);
+
+	m_files_notebook = get_widget<Gtk::Notebook>("files-notebook");
+	Glib::signal_timeout().connect(sigc::mem_fun(*this, &UIWindow::update_markers_timeout), 10);
 
 	Gtk::Notebook *notebook_gdb = get_widget<Gtk::Notebook>("gdb-output-notebook");
 	Gtk::Notebook *notebook_trgt = get_widget<Gtk::Notebook>("target-output-notebook");
@@ -238,7 +240,6 @@ void UIWindow::append_source_file(const int process_rank, const string &fullpath
 {
 	m_source_view_path[process_rank] = fullpath;
 	m_current_line[process_rank] = line;
-	Gtk::Notebook *notebook = get_widget<Gtk::Notebook>("files-notebook");
 	if (m_opened_files.find(fullpath) == m_opened_files.end())
 	{
 		m_opened_files.insert(fullpath);
@@ -254,7 +255,6 @@ void UIWindow::append_source_file(const int process_rank, const string &fullpath
 		size_t content_length;
 		if (g_file_get_contents(fullpath.c_str(), &content, &content_length, nullptr))
 		{
-			// scrolled_window->get_vadjustment()->signal_value_changed().connect(sigc::mem_fun(*this, &UIWindow::on_scroll_file));
 			source_view->set_show_line_numbers(true);
 			source_buffer->set_language(Gsv::LanguageManager::get_default()->get_language("cpp"));
 			source_buffer->set_highlight_matching_brackets(true);
@@ -266,27 +266,26 @@ void UIWindow::append_source_file(const int process_rank, const string &fullpath
 			source_buffer->set_text(string("Could not load file: ") + fullpath);
 		}
 		scrolled_window->show_all();
-		int page_num = notebook->append_page(*scrolled_window, *label);
-		notebook->set_current_page(page_num);
+		int page_num = m_files_notebook->append_page(*scrolled_window, *label);
+		m_files_notebook->set_current_page(page_num);
 		m_path_2_pagenum[fullpath] = page_num;
 		m_pagenum_2_path[page_num] = fullpath;
 		m_path_2_view[fullpath] = source_view;
 	}
 	else
 	{
-		notebook->set_current_page(m_path_2_pagenum[fullpath]);
+		m_files_notebook->set_current_page(m_path_2_pagenum[fullpath]);
 	}
 }
 
 void UIWindow::update_markers(const int page_num)
 {
-	Gtk::Notebook *notebook = get_widget<Gtk::Notebook>("files-notebook");
-	Gtk::ScrolledWindow *scrolled_window = dynamic_cast<Gtk::ScrolledWindow *>(notebook->get_nth_page(page_num));
+	Gtk::ScrolledWindow *scrolled_window = dynamic_cast<Gtk::ScrolledWindow *>(m_files_notebook->get_nth_page(page_num));
 	Gsv::View *source_view = dynamic_cast<Gsv::View *>(scrolled_window->get_child());
 	Glib::RefPtr<Gsv::Buffer> source_buffer = source_view->get_source_buffer();
 	Glib::RefPtr<Gtk::Adjustment> adjustment = scrolled_window->get_vadjustment();
 	string page_path = m_pagenum_2_path[page_num];
-	int offset = notebook->get_height() - scrolled_window->get_height();
+	int offset = m_files_notebook->get_height() - scrolled_window->get_height();
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
 		Gtk::TextIter line_iter = source_buffer->get_iter_at_line(m_current_line[rank] - 1);
@@ -300,13 +299,12 @@ void UIWindow::update_markers(const int page_num)
 		int draw_pos = offset + rect.get_y() - int(adjustment->get_value());
 		m_drawing_area->set_y_offset(rank, draw_pos);
 	}
-
 	m_drawing_area->queue_draw();
 }
 
 bool UIWindow::update_markers_timeout()
 {
-	int page_num = get_widget<Gtk::Notebook>("files-notebook")->get_current_page();
+	int page_num = m_files_notebook->get_current_page();
 	if (page_num >= 0)
 	{
 		update_markers(page_num);
@@ -344,14 +342,13 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, co
 	while (NULL != token)
 	{
 		int token_length = strlen(token);
-		// token[l]: '\n' replaced with '\0' by strtok
-		// token[l-1]: is '\r'
-		// replace '\r' with '\0' -> new end for strcpy
-		token[token_length - 1] = '\0';
-		// '\0' now included in token_length, so no +1 needed
-		gdb_handle->line = (char *)realloc(gdb_handle->line, token_length);
-		strcpy(gdb_handle->line, token);
-
+		// token[token_length]: '\n', replaced with '\0' by strtok
+		if (token[token_length - 1] == '\r')
+		{
+			token[token_length - 1] = '\0';
+		}
+		free(gdb_handle->line);
+		gdb_handle->line = strdup(token);
 		int response = mi_get_response(gdb_handle);
 		if (0 != response)
 		{
@@ -376,7 +373,7 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, co
 			stop_record = mi_res_stop(o);
 			if (stop_record)
 			{
-				// printf("Stopped, reason: %s\n", mi_reason_enum_to_str(stop_record->reason));
+				// printf("Rank: %d stopped, reason: %s\n", process_rank, mi_reason_enum_to_str(stop_record->reason));
 				if (stop_record->frame && stop_record->frame->fullname && stop_record->frame->func)
 				{
 					// printf("\tat %s:%d in function: %s\n", stop_record->frame->fullname, stop_record->frame->line, stop_record->frame->func);

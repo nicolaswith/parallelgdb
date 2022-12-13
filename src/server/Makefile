@@ -16,9 +16,9 @@ SRCS = $(shell find ./ -name '*.cpp')
 OBJS = $(addprefix $(BUILDDIR)/, $(SRCS:.cpp=.o))
 
 all: $(PRGS)
-	+$(MAKE) -C $(INCLUDEDIR)/libmigdb
 
 $(BUILDDIR)/server: $(addprefix $(BUILDDIR)/, $(addsuffix .o, dialog canvas window server))
+	+$(MAKE) -C $(INCLUDEDIR)/libmigdb
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(GTKLIBS)
 
 $(BUILDDIR)/%.o: %.cpp

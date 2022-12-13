@@ -11,12 +11,6 @@
 #include <gtksourceviewmm.h>
 #pragma GCC diagnostic pop
 
-class SIGINTButton : public Gtk::Button
-{
-public:
-	SIGINTButton() : Gtk::Button("Send SIGINT") {}
-};
-
 class UIWindow
 {
 	const int m_num_processes;
@@ -26,12 +20,14 @@ class UIWindow
 
 	Glib::RefPtr<Gtk::Builder> m_builder;
 	Gtk::Window *m_root_window;
+	
+	Gtk::Notebook *m_files_notebook;
+	UIDrawingArea *m_drawing_area;
 
 	Gtk::TextBuffer **m_text_buffers_gdb;
 	Gtk::TextBuffer **m_text_buffers_trgt;
 	Gtk::ScrolledWindow **m_scrolled_windows_gdb;
 	Gtk::ScrolledWindow **m_scrolled_windows_trgt;
-	UIDrawingArea *m_drawing_area;
 
 	std::set<string> m_opened_files;
 	std::map<string, int> m_path_2_pagenum;
