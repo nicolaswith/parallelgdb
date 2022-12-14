@@ -13,14 +13,22 @@
 
 class UIWindow
 {
+	enum TargetState
+	{
+		UNKNOWN,
+		STOPPED,
+		RUNNING
+	};
+
 	const int m_num_processes;
 
 	int *m_current_line;
 	string *m_source_view_path;
+	TargetState *m_state;
 
 	Glib::RefPtr<Gtk::Builder> m_builder;
 	Gtk::Window *m_root_window;
-	
+
 	Gtk::Notebook *m_files_notebook;
 	UIDrawingArea *m_drawing_area;
 
@@ -59,6 +67,10 @@ class UIWindow
 	void toggle_all(const string &box_name);
 	void toggle_all_gdb();
 	void toggle_all_trgt();
+	void create_mark(Gtk::TextIter &iter, Glib::RefPtr<Gsv::Buffer> &source_buffer, string &full_path);
+	void edit_mark(Glib::RefPtr<Gtk::TextMark> &mark);
+	void delete_mark(Glib::RefPtr<Gsv::Buffer> &source_buffer, Glib::RefPtr<Gtk::TextMark> &mark);
+	void on_line_mark_clicked(Gtk::TextIter &iter, GdkEvent *event, string &full_path);
 
 	template <class T>
 	T *get_widget(const string &widget_name);

@@ -17,7 +17,7 @@ OBJS = $(addprefix $(BUILDDIR)/, $(SRCS:.cpp=.o))
 
 all: $(PRGS)
 
-$(BUILDDIR)/server: $(addprefix $(BUILDDIR)/, $(addsuffix .o, dialog canvas window server))
+$(BUILDDIR)/server: $(addprefix $(BUILDDIR)/, $(addsuffix .o, startup breakpoint breakpoint_dialog canvas window server))
 	+$(MAKE) -C $(INCLUDEDIR)/libmigdb
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(GTKLIBS)
 

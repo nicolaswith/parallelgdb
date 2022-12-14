@@ -1,11 +1,11 @@
-#ifndef DIALOG_HPP
-#define DIALOG_HPP
+#ifndef STARTUP_HPP
+#define STARTUP_HPP
 
 #include "defs.hpp"
 
 #define RESPONSE_ID_OK 0
 
-class UIDialog : public Gtk::Dialog
+class StartupDialog : public Gtk::Dialog
 {
 	bool m_is_valid;
 	bool m_srun;
@@ -60,8 +60,8 @@ class UIDialog : public Gtk::Dialog
 	void read_config();
 
 public:
-	UIDialog();
-	virtual ~UIDialog();
+	StartupDialog();
+	virtual ~StartupDialog();
 
 	inline bool is_valid() const
 	{
@@ -134,4 +134,4 @@ public:
 	}
 };
 
-#endif /* DIALOG_HPP */
+#endif /* STARTUP_HPP */

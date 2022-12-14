@@ -1,6 +1,6 @@
-#include "dialog.hpp"
+#include "startup.hpp"
 
-UIDialog::UIDialog()
+StartupDialog::StartupDialog()
 	: m_is_valid(false),
 	  m_srun(false),
 	  m_client(nullptr),
@@ -66,7 +66,7 @@ UIDialog::UIDialog()
 	m_grid.attach(m_entry_partition, 1, row++);
 
 	m_file_chooser_button.set_title("Select Config File");
-	m_file_chooser_button.signal_selection_changed().connect(sigc::mem_fun(*this, &UIDialog::read_config));
+	m_file_chooser_button.signal_selection_changed().connect(sigc::mem_fun(*this, &StartupDialog::read_config));
 	m_file_chooser_button.set_filename("/home/nicolas/ma/parallelgdb/configs/config_mpi");
 	// m_file_chooser_button.set_filename("/home/nicolas/ma/parallelgdb/configs/config_ssh");
 	// m_file_chooser_button.set_filename("/home/nicolas/ma/parallelgdb/configs/config_ants");
@@ -74,13 +74,13 @@ UIDialog::UIDialog()
 	set_sensitivity(false);
 	this->add_button("Ok", RESPONSE_ID_OK);
 
-	this->signal_response().connect(sigc::mem_fun(*this, &UIDialog::on_dialog_response));
-	m_checkbutton_srun.signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &UIDialog::on_toggle_button), &m_checkbutton_srun));
+	this->signal_response().connect(sigc::mem_fun(*this, &StartupDialog::on_dialog_response));
+	m_checkbutton_srun.signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &StartupDialog::on_toggle_button), &m_checkbutton_srun));
 
 	this->show_all();
 }
 
-UIDialog::~UIDialog()
+StartupDialog::~StartupDialog()
 {
 	free(m_client);
 	free(m_gdb);
@@ -93,7 +93,7 @@ UIDialog::~UIDialog()
 	free(m_partition);
 }
 
-void UIDialog::clear_dialog()
+void StartupDialog::clear_dialog()
 {
 	m_entry_num_nodes.set_text("");
 	m_entry_num_tasks.set_text("");
@@ -110,7 +110,7 @@ void UIDialog::clear_dialog()
 	set_sensitivity(false);
 }
 
-void UIDialog::set_value(string key, string value)
+void StartupDialog::set_value(string key, string value)
 {
 	if ("num_nodes" == key)
 		m_entry_num_nodes.set_text(value);
@@ -148,7 +148,7 @@ void UIDialog::set_value(string key, string value)
 	}
 }
 
-void UIDialog::read_config()
+void StartupDialog::read_config()
 {
 	FILE *f = fopen(m_file_chooser_button.get_filename().c_str(), "r");
 	if (!f)
@@ -181,7 +181,7 @@ void UIDialog::read_config()
 	delete[] config;
 }
 
-void UIDialog::on_dialog_response(const int response_id)
+void StartupDialog::on_dialog_response(const int response_id)
 {
 	if (RESPONSE_ID_OK != response_id)
 	{
@@ -217,7 +217,7 @@ void UIDialog::on_dialog_response(const int response_id)
 	m_is_valid = true;
 }
 
-void UIDialog::set_sensitivity(bool state)
+void StartupDialog::set_sensitivity(bool state)
 {
 	m_entry_num_nodes.set_sensitive(state);
 	m_entry_ssh_address.set_sensitive(state);
@@ -226,7 +226,7 @@ void UIDialog::set_sensitivity(bool state)
 	m_entry_partition.set_sensitive(state);
 }
 
-void UIDialog::on_toggle_button(Gtk::CheckButton *button)
+void StartupDialog::on_toggle_button(Gtk::CheckButton *button)
 {
 	set_sensitivity(button->get_active());
 }

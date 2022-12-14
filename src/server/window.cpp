@@ -1,12 +1,18 @@
 #include <string>
 
 #include "window.hpp"
+#include "breakpoint.hpp"
+#include "breakpoint_dialog.hpp"
+
+const char *const breakpoint_category = "breakpoint-category";
+const char *const data_id = "line-number";
 
 UIWindow::UIWindow(const int num_processes)
 	: m_num_processes(num_processes)
 {
 	m_current_line = new int[m_num_processes];
 	m_source_view_path = new string[m_num_processes];
+	m_state = new TargetState[m_num_processes];
 	m_conns_gdb = new tcp::socket *[m_num_processes];
 	m_conns_trgt = new tcp::socket *[m_num_processes];
 	m_text_buffers_gdb = new Gtk::TextBuffer *[m_num_processes];
@@ -115,6 +121,8 @@ bool UIWindow::init()
 		send_select_trgt->pack_start(*check_button_trgt);
 	}
 
+	get_widget<Gtk::Entry>("gdb-send-entry")->set_text("run");
+
 	m_root_window->show_all();
 	return true;
 }
@@ -142,7 +150,7 @@ bool UIWindow::on_delete(GdkEventAny *)
 
 void UIWindow::scroll_bottom(Gtk::Allocation &, Gtk::ScrolledWindow *scrolled_window, const bool is_gdb, const int process_rank)
 {
-	auto adjustment = scrolled_window->get_vadjustment();
+	Glib::RefPtr<Gtk::Adjustment> adjustment = scrolled_window->get_vadjustment();
 	adjustment->set_value(adjustment->get_upper());
 	if (is_gdb)
 	{
@@ -236,6 +244,80 @@ void UIWindow::toggle_all_trgt()
 	toggle_all("target-send-select-wrapper-box");
 }
 
+void UIWindow::create_mark(Gtk::TextIter &iter, Glib::RefPtr<Gsv::Buffer> &source_buffer, string &full_path)
+{
+	const int line = iter.get_line();
+	Breakpoint *breakpoint = new Breakpoint{m_num_processes, line + 1, full_path};
+	std::unique_ptr<BreakpointDialog> dialog = std::make_unique<BreakpointDialog>(m_num_processes, breakpoint);
+	if (RESPONSE_ID_OK != dialog->run())
+	{
+		return;
+	}
+	dialog.reset();
+	Glib::RefPtr<Gsv::Mark> new_mark = source_buffer->create_source_mark(std::to_string(line), breakpoint_category, iter);
+	new_mark->set_data(data_id, (void *)breakpoint);
+}
+
+void UIWindow::edit_mark(Glib::RefPtr<Gtk::TextMark> &mark)
+{
+	Breakpoint *breakpoint = (Breakpoint *)mark->get_data(data_id);
+	Gtk::MessageDialog dialog(*m_root_window, breakpoint->get_description(), false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
+	dialog.run();
+}
+
+void UIWindow::delete_mark(Glib::RefPtr<Gsv::Buffer> &source_buffer, Glib::RefPtr<Gtk::TextMark> &mark)
+{
+	Breakpoint *breakpoint = (Breakpoint *)mark->get_data(data_id);
+	if (breakpoint->delete_breakpoints())
+	{
+		delete breakpoint;
+		mark->remove_data(data_id);
+		source_buffer->delete_mark(mark);
+	}
+	else
+	{
+		Gtk::MessageDialog dialog(*m_root_window, string("Could not delete breakpoint on rank(s): ") + breakpoint->get_description(), false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
+		dialog.run();
+	}
+}
+
+void UIWindow::on_line_mark_clicked(Gtk::TextIter &iter, GdkEvent *event, string &full_path)
+{
+	const int line = iter.get_line();
+	bool line_has_mark = false;
+	Glib::RefPtr<Gtk::TextMark> mark;
+	for (Glib::RefPtr<Gtk::TextMark> &current_mark : iter.get_marks())
+	{
+		if (current_mark->get_name() == std::to_string(line))
+		{
+			line_has_mark = true;
+			mark = current_mark;
+			break;
+		}
+	}
+
+	int page_num = m_files_notebook->get_current_page();
+	Gtk::ScrolledWindow *scrolled_window = dynamic_cast<Gtk::ScrolledWindow *>(m_files_notebook->get_nth_page(page_num));
+	Gsv::View *source_view = dynamic_cast<Gsv::View *>(scrolled_window->get_child());
+	Glib::RefPtr<Gsv::Buffer> source_buffer = source_view->get_source_buffer();
+
+	if (event->type == GDK_BUTTON_PRESS && event->button.button == GDK_BUTTON_SECONDARY)
+	{
+		if (line_has_mark)
+		{
+			edit_mark(mark);
+		}
+	}
+	else if (!line_has_mark)
+	{
+		create_mark(iter, source_buffer, full_path);
+	}
+	else
+	{
+		delete_mark(source_buffer, mark);
+	}
+}
+
 void UIWindow::append_source_file(const int process_rank, const string &fullpath, const int line)
 {
 	m_source_view_path[process_rank] = fullpath;
@@ -256,10 +338,23 @@ void UIWindow::append_source_file(const int process_rank, const string &fullpath
 		if (g_file_get_contents(fullpath.c_str(), &content, &content_length, nullptr))
 		{
 			source_view->set_show_line_numbers(true);
+			source_view->set_show_line_marks(true);
 			source_buffer->set_language(Gsv::LanguageManager::get_default()->get_language("cpp"));
 			source_buffer->set_highlight_matching_brackets(true);
 			source_buffer->set_highlight_syntax(true);
 			source_buffer->set_text(content);
+			source_view->signal_line_mark_activated().connect(sigc::bind(sigc::mem_fun(*this, &UIWindow::on_line_mark_clicked), fullpath));
+			string filename = "./res/breakpoint.png";
+			char *path = realpath(filename.c_str(), nullptr);
+			if (path == nullptr)
+			{
+				std::cerr << "Cannot find file: " << filename << "\n";
+				return;
+			}
+			Glib::RefPtr<Gsv::MarkAttributes> attributes = Gsv::MarkAttributes::create();
+			attributes->set_icon(Gio::Icon::create(path));
+			source_view->set_mark_attributes(breakpoint_category, attributes, 0);
+			free(path);
 		}
 		else
 		{
@@ -357,6 +452,14 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, co
 
 			while (NULL != output)
 			{
+				if (MI_CL_RUNNING == output->tclass)
+				{
+					m_state[process_rank] = RUNNING;
+				}
+				else if (MI_CL_STOPPED == output->tclass)
+				{
+					m_state[process_rank] = STOPPED;
+				}
 				if (output->type == MI_T_OUT_OF_BAND && output->stype == MI_ST_STREAM /* && output->sstype == MI_SST_CONSOLE */)
 				{
 					char *text = get_cstr(output);

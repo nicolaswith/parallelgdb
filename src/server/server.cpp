@@ -12,7 +12,7 @@ const asio::ip::port_type base_port_trgt = 0xC000;
 
 Gtk::Application *g_app;
 
-int run_cmd(ssh_session &session, UIDialog &dialog)
+int run_cmd(ssh_session &session, StartupDialog &dialog)
 {
 	ssh_channel channel;
 	int rc;
@@ -74,7 +74,7 @@ int run_cmd(ssh_session &session, UIDialog &dialog)
 	return SSH_OK;
 }
 
-bool start_clients_srun(UIDialog &dialog)
+bool start_clients_srun(StartupDialog &dialog)
 {
 	ssh_session session;
 	int rc;
@@ -127,7 +127,7 @@ bool start_clients_srun(UIDialog &dialog)
 	return true;
 }
 
-int start_clients_mpi(UIDialog &dialog)
+int start_clients_mpi(StartupDialog &dialog)
 {
 	const int pid = fork();
 	if (0 == pid)
@@ -247,7 +247,7 @@ int main(int, char const **)
 	Glib::RefPtr<Gtk::Application> app = Gtk::Application::create();
 	g_app = app.get();
 
-	std::unique_ptr<UIDialog> dialog = std::make_unique<UIDialog>();
+	std::unique_ptr<StartupDialog> dialog = std::make_unique<StartupDialog>();
 	do
 	{
 		if (RESPONSE_ID_OK != dialog->run())
