@@ -3,26 +3,49 @@
 
 #include "defs.hpp"
 
-#define RESPONSE_ID_OK 0
+class UIWindow;
+
+enum BreakpointState
+{
+	NO_ACTION,
+	CREATE,
+	DELETE,
+	CREATED,
+	ERROR_CREATING,
+	ERROR_DELETING
+};
 
 class Breakpoint
 {
 	const int m_num_processes;
 
-	int m_line;
-	string m_full_path;
+	const int m_line;
+	const string m_full_path;
 
-	bool *m_active_for_rank;
-
-public:
-	Breakpoint(const int num_processes, int line, string full_path);
-	~Breakpoint();
+	const UIWindow *const m_window;
+	BreakpointState *const m_breakpoint_state;
 
 	bool create_breakpoint(const int rank);
 	bool delete_breakpoint(const int rank);
+	string get_list(const BreakpointState state) const;
+
+public:
+	Breakpoint(const int num_processes, const int line, const string &full_path, const UIWindow *const window);
+	~Breakpoint();
+
+	void update_breakpoints(const bool *const button_states);
 	bool delete_breakpoints();
-	void set_active(const int rank, const bool valid);
-	string get_description() const;
+	bool one_created() const;
+
+	inline BreakpointState get_state(const int rank) const
+	{
+		return m_breakpoint_state[rank];
+	}
+
+	inline void set_state(const int rank, const BreakpointState state)
+	{
+		m_breakpoint_state[rank] = state;
+	}
 };
 
 #endif /* BREAKPOINT_HPP */

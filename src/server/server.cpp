@@ -12,7 +12,7 @@ const asio::ip::port_type base_port_trgt = 0xC000;
 
 Gtk::Application *g_app;
 
-int run_cmd(ssh_session &session, StartupDialog &dialog)
+int run_cmd(ssh_session &session, const StartupDialog &dialog)
 {
 	ssh_channel channel;
 	int rc;
@@ -250,7 +250,7 @@ int main(int, char const **)
 	std::unique_ptr<StartupDialog> dialog = std::make_unique<StartupDialog>();
 	do
 	{
-		if (RESPONSE_ID_OK != dialog->run())
+		if (Gtk::RESPONSE_OK != dialog->run())
 		{
 			return EXIT_FAILURE;
 		}

@@ -72,7 +72,7 @@ StartupDialog::StartupDialog()
 	// m_file_chooser_button.set_filename("/home/nicolas/ma/parallelgdb/configs/config_ants");
 
 	set_sensitivity(false);
-	this->add_button("Ok", RESPONSE_ID_OK);
+	this->add_button("Ok", Gtk::RESPONSE_OK);
 
 	this->signal_response().connect(sigc::mem_fun(*this, &StartupDialog::on_dialog_response));
 	m_checkbutton_srun.signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &StartupDialog::on_toggle_button), &m_checkbutton_srun));
@@ -183,7 +183,7 @@ void StartupDialog::read_config()
 
 void StartupDialog::on_dialog_response(const int response_id)
 {
-	if (RESPONSE_ID_OK != response_id)
+	if (Gtk::RESPONSE_OK != response_id)
 	{
 		return;
 	}

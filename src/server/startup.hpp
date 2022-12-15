@@ -3,8 +3,6 @@
 
 #include "defs.hpp"
 
-#define RESPONSE_ID_OK 0
-
 class StartupDialog : public Gtk::Dialog
 {
 	bool m_is_valid;

@@ -12,7 +12,7 @@ UIWindow::UIWindow(const int num_processes)
 {
 	m_current_line = new int[m_num_processes];
 	m_source_view_path = new string[m_num_processes];
-	m_state = new TargetState[m_num_processes];
+	m_target_state = new TargetState[m_num_processes];
 	m_conns_gdb = new tcp::socket *[m_num_processes];
 	m_conns_trgt = new tcp::socket *[m_num_processes];
 	m_text_buffers_gdb = new Gtk::TextBuffer *[m_num_processes];
@@ -148,7 +148,7 @@ bool UIWindow::on_delete(GdkEventAny *)
 	return false;
 }
 
-void UIWindow::scroll_bottom(Gtk::Allocation &, Gtk::ScrolledWindow *scrolled_window, const bool is_gdb, const int process_rank)
+void UIWindow::scroll_bottom(Gtk::Allocation &, Gtk::ScrolledWindow *const scrolled_window, const bool is_gdb, const int process_rank)
 {
 	Glib::RefPtr<Gtk::Adjustment> adjustment = scrolled_window->get_vadjustment();
 	adjustment->set_value(adjustment->get_upper());
@@ -176,7 +176,7 @@ void UIWindow::send_sig_int()
 	}
 }
 
-void UIWindow::send_input(const string &entry_name, const string &wrapper_name, tcp::socket **socket)
+void UIWindow::send_input(const string &entry_name, const string &wrapper_name, tcp::socket *const *const socket)
 {
 	Gtk::Entry *entry = get_widget<Gtk::Entry>(entry_name);
 	string cmd = string(entry->get_text()) + string("\n");
@@ -244,28 +244,45 @@ void UIWindow::toggle_all_trgt()
 	toggle_all("target-send-select-wrapper-box");
 }
 
-void UIWindow::create_mark(Gtk::TextIter &iter, Glib::RefPtr<Gsv::Buffer> &source_buffer, string &full_path)
+void UIWindow::create_mark(Gtk::TextIter &iter, Glib::RefPtr<Gsv::Buffer> &source_buffer, const string &fullpath)
 {
 	const int line = iter.get_line();
-	Breakpoint *breakpoint = new Breakpoint{m_num_processes, line + 1, full_path};
+	Breakpoint *breakpoint = new Breakpoint{m_num_processes, line + 1, fullpath, this};
 	std::unique_ptr<BreakpointDialog> dialog = std::make_unique<BreakpointDialog>(m_num_processes, breakpoint);
-	if (RESPONSE_ID_OK != dialog->run())
+	if (Gtk::RESPONSE_OK != dialog->run())
 	{
 		return;
 	}
-	dialog.reset();
-	Glib::RefPtr<Gsv::Mark> new_mark = source_buffer->create_source_mark(std::to_string(line), breakpoint_category, iter);
-	new_mark->set_data(data_id, (void *)breakpoint);
+	breakpoint->update_breakpoints(dialog->get_button_states());
+	if (breakpoint->one_created())
+	{
+		Glib::RefPtr<Gsv::Mark> new_mark = source_buffer->create_source_mark(std::to_string(line), breakpoint_category, iter);
+		new_mark->set_data(data_id, (void *)breakpoint);
+	}
+	else
+	{
+		delete breakpoint;
+	}
 }
 
-void UIWindow::edit_mark(Glib::RefPtr<Gtk::TextMark> &mark)
+void UIWindow::edit_mark(Glib::RefPtr<Gtk::TextMark> &mark, Glib::RefPtr<Gsv::Buffer> &source_buffer)
 {
 	Breakpoint *breakpoint = (Breakpoint *)mark->get_data(data_id);
-	Gtk::MessageDialog dialog(*m_root_window, breakpoint->get_description(), false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
-	dialog.run();
+	std::unique_ptr<BreakpointDialog> dialog = std::make_unique<BreakpointDialog>(m_num_processes, breakpoint);
+	if (Gtk::RESPONSE_OK != dialog->run())
+	{
+		return;
+	}
+	breakpoint->update_breakpoints(dialog->get_button_states());
+	if (!breakpoint->one_created())
+	{
+		delete breakpoint;
+		mark->remove_data(data_id);
+		source_buffer->delete_mark(mark);
+	}
 }
 
-void UIWindow::delete_mark(Glib::RefPtr<Gsv::Buffer> &source_buffer, Glib::RefPtr<Gtk::TextMark> &mark)
+void UIWindow::delete_mark(Glib::RefPtr<Gtk::TextMark> &mark, Glib::RefPtr<Gsv::Buffer> &source_buffer)
 {
 	Breakpoint *breakpoint = (Breakpoint *)mark->get_data(data_id);
 	if (breakpoint->delete_breakpoints())
@@ -274,14 +291,9 @@ void UIWindow::delete_mark(Glib::RefPtr<Gsv::Buffer> &source_buffer, Glib::RefPt
 		mark->remove_data(data_id);
 		source_buffer->delete_mark(mark);
 	}
-	else
-	{
-		Gtk::MessageDialog dialog(*m_root_window, string("Could not delete breakpoint on rank(s): ") + breakpoint->get_description(), false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
-		dialog.run();
-	}
 }
 
-void UIWindow::on_line_mark_clicked(Gtk::TextIter &iter, GdkEvent *event, string &full_path)
+void UIWindow::on_line_mark_clicked(Gtk::TextIter &iter, GdkEvent *const event, const string &fullpath)
 {
 	const int line = iter.get_line();
 	bool line_has_mark = false;
@@ -305,16 +317,16 @@ void UIWindow::on_line_mark_clicked(Gtk::TextIter &iter, GdkEvent *event, string
 	{
 		if (line_has_mark)
 		{
-			edit_mark(mark);
+			edit_mark(mark, source_buffer);
 		}
 	}
 	else if (!line_has_mark)
 	{
-		create_mark(iter, source_buffer, full_path);
+		create_mark(iter, source_buffer, fullpath);
 	}
 	else
 	{
-		delete_mark(source_buffer, mark);
+		delete_mark(mark, source_buffer);
 	}
 }
 
@@ -454,11 +466,11 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, co
 			{
 				if (MI_CL_RUNNING == output->tclass)
 				{
-					m_state[process_rank] = RUNNING;
+					m_target_state[process_rank] = RUNNING;
 				}
 				else if (MI_CL_STOPPED == output->tclass)
 				{
-					m_state[process_rank] = STOPPED;
+					m_target_state[process_rank] = STOPPED;
 				}
 				if (output->type == MI_T_OUT_OF_BAND && output->stype == MI_ST_STREAM /* && output->sstype == MI_SST_CONSOLE */)
 				{

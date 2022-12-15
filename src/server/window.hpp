@@ -11,20 +11,20 @@
 #include <gtksourceviewmm.h>
 #pragma GCC diagnostic pop
 
+enum TargetState
+{
+	UNKNOWN,
+	STOPPED,
+	RUNNING
+};
+
 class UIWindow
 {
-	enum TargetState
-	{
-		UNKNOWN,
-		STOPPED,
-		RUNNING
-	};
-
 	const int m_num_processes;
 
 	int *m_current_line;
 	string *m_source_view_path;
-	TargetState *m_state;
+	TargetState *m_target_state;
 
 	Glib::RefPtr<Gtk::Builder> m_builder;
 	Gtk::Window *m_root_window;
@@ -59,18 +59,18 @@ class UIWindow
 	void print_data_trgt(const char *const data, const int process_rank);
 	void update_markers(const int page_num);
 	bool update_markers_timeout();
-	void scroll_bottom(Gtk::Allocation &, Gtk::ScrolledWindow *scrolled_window, const bool is_gdb, const int process_rank);
-	void send_input(const string &entry_name, const string &wrapper_name, tcp::socket **socket);
+	void scroll_bottom(Gtk::Allocation &, Gtk::ScrolledWindow *const scrolled_window, const bool is_gdb, const int process_rank);
+	void send_input(const string &entry_name, const string &wrapper_name, tcp::socket *const *const socket);
 	void send_sig_int();
 	void send_input_gdb();
 	void send_input_trgt();
 	void toggle_all(const string &box_name);
 	void toggle_all_gdb();
 	void toggle_all_trgt();
-	void create_mark(Gtk::TextIter &iter, Glib::RefPtr<Gsv::Buffer> &source_buffer, string &full_path);
-	void edit_mark(Glib::RefPtr<Gtk::TextMark> &mark);
-	void delete_mark(Glib::RefPtr<Gsv::Buffer> &source_buffer, Glib::RefPtr<Gtk::TextMark> &mark);
-	void on_line_mark_clicked(Gtk::TextIter &iter, GdkEvent *event, string &full_path);
+	void create_mark(Gtk::TextIter &iter, Glib::RefPtr<Gsv::Buffer> &source_buffer, const string &fullpath);
+	void edit_mark(Glib::RefPtr<Gtk::TextMark> &mark, Glib::RefPtr<Gsv::Buffer> &source_buffer);
+	void delete_mark(Glib::RefPtr<Gtk::TextMark> &mark, Glib::RefPtr<Gsv::Buffer> &source_buffer);
+	void on_line_mark_clicked(Gtk::TextIter &iter, GdkEvent *const event, const string &fullpath);
 
 	template <class T>
 	T *get_widget(const string &widget_name);
@@ -91,6 +91,11 @@ public:
 	inline int num_processes() const
 	{
 		return m_num_processes;
+	}
+
+	inline TargetState target_state(const int rank) const
+	{
+		return m_target_state[rank];
 	}
 
 	inline tcp::socket *get_conns_gdb(const int process_rank) const

@@ -12,5 +12,6 @@ using std::size_t;
 
 #define dump(var) std::cout << #var << " = " << var << "\n"
 #define dumpp(var) printf("%s = %p\n", #var, (void *)var)
+#define dumpb(var) std::cout << #var << " = " << std::boolalpha << var << "\n"
 
 #endif /* DEFS_HPP */
