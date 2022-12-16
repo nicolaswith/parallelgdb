@@ -162,11 +162,11 @@ void UIWindow::scroll_bottom(Gtk::Allocation &, Gtk::ScrolledWindow *const scrol
 	}
 }
 
-// bool UIWindow::send_data(const int rank, const string &data) const
-// {
-// 	std::size_t bytes_sent = asio::write(*m_conns_gdb[rank], asio::buffer(data, data.length()));
-// 	return bytes_sent == data.length();
-// }
+bool UIWindow::send_data(const int rank, const string &data) const
+{
+	std::size_t bytes_sent = asio::write(*m_conns_gdb[rank], asio::buffer(data, data.length()));
+	return bytes_sent == data.length();
+}
 
 void UIWindow::send_sig_int()
 {
@@ -478,6 +478,10 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, co
 				{
 					m_target_state[rank] = TargetState::STOPPED;
 				}
+				else if (MI_CL_EXIT == output->tclass)
+				{
+					m_target_state[rank] = TargetState::EXITED;
+				}
 				if (output->type == MI_T_OUT_OF_BAND && output->stype == MI_ST_STREAM /* && output->sstype == MI_SST_CONSOLE */)
 				{
 					char *text = get_cstr(output);
@@ -490,8 +494,7 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, co
 				output = output->next;
 			}
 
-			mi_stop *stop_record;
-			stop_record = mi_res_stop(o);
+			mi_stop *stop_record = mi_res_stop(o);
 			if (stop_record)
 			{
 				// printf("Rank: %d stopped, reason: %s\n", rank, mi_reason_enum_to_str(stop_record->reason));

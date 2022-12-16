@@ -15,7 +15,8 @@ enum TargetState
 {
 	UNKNOWN,
 	STOPPED,
-	RUNNING
+	RUNNING,
+	EXITED
 };
 
 class UIWindow
@@ -82,7 +83,7 @@ public:
 	bool init();
 	bool on_delete(GdkEventAny *);
 	void print_data(mi_h *const gdb_handle, const char *const data, const int port);
-	// bool send_data(const int rank, const string &data) const;
+	bool send_data(const int rank, const string &data) const;
 
 	inline Gtk::Window *root_window() const
 	{

@@ -22,12 +22,13 @@ Breakpoint::~Breakpoint()
 bool Breakpoint::create_breakpoint(const int rank)
 {
 	m_breakpoint_state[rank] = ERROR_CREATING;
-	if (m_window->target_state(rank) == TargetState::RUNNING)
+	if (m_window->target_state(rank) != TargetState::STOPPED)
 	{
 		return false;
 	}
 
-	// printf("setting breakpoint for rank %d on %s:%d\n", rank, m_full_path.c_str(), m_line);
+	string cmd = "-break-insert " + m_full_path + ":" + std::to_string(m_line) + "\n";
+	m_window->send_data(rank, cmd);
 
 	m_breakpoint_state[rank] = CREATED;
 	return true;
@@ -36,7 +37,7 @@ bool Breakpoint::create_breakpoint(const int rank)
 bool Breakpoint::delete_breakpoint(const int rank)
 {
 	m_breakpoint_state[rank] = ERROR_DELETING;
-	if (m_window->target_state(rank) == TargetState::RUNNING)
+	if (m_window->target_state(rank) != TargetState::STOPPED)
 	{
 		return false;
 	}
@@ -57,62 +58,52 @@ bool Breakpoint::delete_breakpoints()
 			all_deleted &= delete_breakpoint(rank);
 		}
 	}
-
 	if (!all_deleted)
 	{
 		Gtk::MessageDialog dialog(*m_window->root_window(), string("Could not delete breakpoint for some ranks.\nNot deleted for rank(s): ") + get_list(ERROR_DELETING), false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
 		dialog.run();
 	}
-
-	for (int rank = 0; rank < m_num_processes; ++rank)
-	{
-		if (m_breakpoint_state[rank] == ERROR_DELETING)
-		{
-			m_breakpoint_state[rank] = CREATED;
-		}
-	}
-
+	update_states();
 	return all_deleted;
 }
 
 void Breakpoint::update_breakpoints(const bool *const button_states)
 {
-	bool all_done = true;
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
 		if (!button_states[rank] && m_breakpoint_state[rank] == BreakpointState::CREATED)
 		{
-			m_breakpoint_state[rank] = BreakpointState::DELETE;
+			delete_breakpoint(rank);
 		}
 		if (button_states[rank] && m_breakpoint_state[rank] != BreakpointState::CREATED)
 		{
-			m_breakpoint_state[rank] = BreakpointState::CREATE;
-		}
-
-		if (m_breakpoint_state[rank] == DELETE)
-		{
-			all_done &= delete_breakpoint(rank);
-		}
-		if (m_breakpoint_state[rank] == CREATE)
-		{
-			all_done &= create_breakpoint(rank);
+			create_breakpoint(rank);
 		}
 	}
-
-	string creating_desc = "Could not create breakpoints for some ranks. (";
-	string deleting_desc = "Could not delete breakpoints for some ranks. (";
-	string rank_list_desc = "Active breakpoints for rank(s): ";
-	string creating_str = get_list(ERROR_CREATING);
-	string deleting_str = get_list(ERROR_DELETING);
-	if (!creating_str.empty() || !deleting_str.empty())
+	string error_creating_list = get_list(ERROR_CREATING);
+	string error_deleting_list = get_list(ERROR_DELETING);
+	string created_list = get_list(CREATED);
+	if (!error_creating_list.empty() || !error_deleting_list.empty())
 	{
-		string message = "" + ((!creating_str.empty()) ? creating_desc + creating_str + ")\n" : "") + ((!deleting_str.empty()) ? deleting_desc + deleting_str + ")\n" : "") + rank_list_desc + get_list(CREATED);
+		string message = "";
+		if (!error_creating_list.empty())
+		{
+			message += "Could not create breakpoints for some ranks. [ ";
+			message += error_creating_list + "]\n";
+		}
+		if (!error_deleting_list.empty())
+		{
+			message += "Could not delete breakpoints for some ranks. [ ";
+			message += error_deleting_list + "]\n";
+		}
+		message += "Active breakpoints for rank(s): " + (created_list.empty() ? "<None>" : created_list);
 		Gtk::MessageDialog info_dialog(
 			*m_window->root_window(),
 			message,
 			false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
 		info_dialog.run();
 	}
+	update_states();
 }
 
 string Breakpoint::get_list(const BreakpointState state) const
@@ -142,4 +133,19 @@ bool Breakpoint::one_created() const
 		}
 	}
 	return false;
+}
+
+void Breakpoint::update_states()
+{
+	for (int rank = 0; rank < m_num_processes; ++rank)
+	{
+		if (m_breakpoint_state[rank] == ERROR_DELETING)
+		{
+			m_breakpoint_state[rank] = CREATED;
+		}
+		else if (m_breakpoint_state[rank] == ERROR_CREATING)
+		{
+			m_breakpoint_state[rank] = NO_ACTION;
+		}
+	}
 }
