@@ -38,7 +38,7 @@ void wait_for_socat(const int pid_socat_gdb, const int pid_socat_trgt)
 	}
 }
 
-int start_gdb(string tty_gdb, string tty_trgt, const char *const gdb_path, const char *const target, const int pid_socat_gdb, const int pid_socat_trgt)
+int start_gdb(const string &tty_gdb, const string &tty_trgt, const char *const gdb_path, const char *const target, const int pid_socat_gdb, const int pid_socat_trgt)
 {
 	wait_for_socat(pid_socat_gdb, pid_socat_trgt);
 	usleep(500000); // 500ms
@@ -72,7 +72,7 @@ int start_gdb(string tty_gdb, string tty_trgt, const char *const gdb_path, const
 	return pid;
 }
 
-int start_socat(string tty_name, const char *const socat_path, const char *const ip_addr, const int port)
+int start_socat(const string &tty_name, const char *const socat_path, const char *const ip_addr, const int port)
 {
 	int pid = fork();
 	if (0 == pid)
@@ -91,20 +91,20 @@ int start_socat(string tty_name, const char *const socat_path, const char *const
 	return pid;
 }
 
-int get_process_rank()
+int get_rank()
 {
-	const char *process_rank = getenv("PMI_RANK");
-	if (!process_rank)
+	const char *rank = getenv("PMI_RANK");
+	if (!rank)
 	{
-		process_rank = getenv("OMPI_COMM_WORLD_RANK");
+		rank = getenv("OMPI_COMM_WORLD_RANK");
 	}
-	if (!process_rank)
+	if (!rank)
 	{
 		return -1;
 	}
 	try
 	{
-		return stoi(process_rank);
+		return stoi(rank);
 	}
 	catch (const std::exception &e)
 	{
@@ -221,19 +221,19 @@ int main(const int argc, char **argv)
 	string tty_gdb = "/tmp/ttyGDB_" + to_string(pid);
 	string tty_trgt = "/tmp/ttyTRGT_" + to_string(pid);
 
-	int process_rank = get_process_rank();
-	if (process_rank < 0)
+	int rank = get_rank();
+	if (rank < 0)
 	{
 		free(target);
 		free(socat_path);
 		free(gdb_path);
 		free(ip_addr);
-		fprintf(stderr, "Could not read process_rank.\n");
+		fprintf(stderr, "Could not read rank.\n");
 		return EXIT_FAILURE;
 	}
 
-	int port_gdb = 0x8000 + process_rank;
-	int port_trgt = 0xC000 + process_rank;
+	int port_gdb = 0x8000 + rank;
+	int port_trgt = 0xC000 + rank;
 
 	int pid_socat_gdb = start_socat(tty_gdb, socat_path, ip_addr, port_gdb);
 	int pid_socat_trgt = start_socat(tty_trgt, socat_path, ip_addr, port_trgt);
