@@ -1,6 +1,6 @@
-num_tasks=4
+num_tasks=8
 client=/home/nicolas/ma/parallelgdb/bin/client
 ip_address=127.0.0.1
 gdb=/usr/bin/gdb
 socat=/usr/bin/socat
-target=/home/nicolas/ma/mpi/bin/mpi
+target=/home/nicolas/ma/target/bin/target

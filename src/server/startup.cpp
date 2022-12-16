@@ -67,7 +67,8 @@ StartupDialog::StartupDialog()
 
 	m_file_chooser_button.set_title("Select Config File");
 	m_file_chooser_button.signal_selection_changed().connect(sigc::mem_fun(*this, &StartupDialog::read_config));
-	m_file_chooser_button.set_filename("/home/nicolas/ma/parallelgdb/configs/config_mpi");
+	m_file_chooser_button.set_filename("/home/nicolas/ma/parallelgdb/configs/config_mpirun");
+	// m_file_chooser_button.set_filename("/home/nicolas/ma/parallelgdb/configs/config_mpi");
 	// m_file_chooser_button.set_filename("/home/nicolas/ma/parallelgdb/configs/config_ssh");
 	// m_file_chooser_button.set_filename("/home/nicolas/ma/parallelgdb/configs/config_ants");
 
