@@ -26,9 +26,9 @@ UIDrawingArea::UIDrawingArea(const int num_processes)
 	}
 }
 
-void UIDrawingArea::set_y_offset(const int process_rank, const int offset)
+void UIDrawingArea::set_y_offset(const int rank, const int offset)
 {
-	m_y_offsets[process_rank] = offset;
+	m_y_offsets[rank] = offset;
 }
 
 bool UIDrawingArea::on_draw(const Cairo::RefPtr<Cairo::Context> &context)

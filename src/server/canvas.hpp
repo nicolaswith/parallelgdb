@@ -20,7 +20,7 @@ public:
 	UIDrawingArea(const int num_processes);
 	virtual ~UIDrawingArea() {}
 
-	void set_y_offset(const int process_rank, const int offset);
+	void set_y_offset(const int rank, const int offset);
 
 	inline static int radius()
 	{

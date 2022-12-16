@@ -148,19 +148,25 @@ bool UIWindow::on_delete(GdkEventAny *)
 	return false;
 }
 
-void UIWindow::scroll_bottom(Gtk::Allocation &, Gtk::ScrolledWindow *const scrolled_window, const bool is_gdb, const int process_rank)
+void UIWindow::scroll_bottom(Gtk::Allocation &, Gtk::ScrolledWindow *const scrolled_window, const bool is_gdb, const int rank)
 {
 	Glib::RefPtr<Gtk::Adjustment> adjustment = scrolled_window->get_vadjustment();
 	adjustment->set_value(adjustment->get_upper());
 	if (is_gdb)
 	{
-		m_scroll_connections_gdb[process_rank].disconnect();
+		m_scroll_connections_gdb[rank].disconnect();
 	}
 	else
 	{
-		m_scroll_connections_trgt[process_rank].disconnect();
+		m_scroll_connections_trgt[rank].disconnect();
 	}
 }
+
+// bool UIWindow::send_data(const int rank, const string &data) const
+// {
+// 	std::size_t bytes_sent = asio::write(*m_conns_gdb[rank], asio::buffer(data, data.length()));
+// 	return bytes_sent == data.length();
+// }
 
 void UIWindow::send_sig_int()
 {
@@ -330,10 +336,10 @@ void UIWindow::on_line_mark_clicked(Gtk::TextIter &iter, GdkEvent *const event, 
 	}
 }
 
-void UIWindow::append_source_file(const int process_rank, const string &fullpath, const int line)
+void UIWindow::append_source_file(const int rank, const string &fullpath, const int line)
 {
-	m_source_view_path[process_rank] = fullpath;
-	m_current_line[process_rank] = line;
+	m_source_view_path[rank] = fullpath;
+	m_current_line[rank] = line;
 	if (m_opened_files.find(fullpath) == m_opened_files.end())
 	{
 		m_opened_files.insert(fullpath);
@@ -419,10 +425,10 @@ bool UIWindow::update_markers_timeout()
 	return true;
 }
 
-void UIWindow::do_scroll(const int process_rank) const
+void UIWindow::do_scroll(const int rank) const
 {
-	Gsv::View *source_view = m_path_2_view.at(m_source_view_path[process_rank]);
-	Gtk::TextIter iter = source_view->get_buffer()->get_iter_at_line(m_current_line[process_rank] - 1);
+	Gsv::View *source_view = m_path_2_view.at(m_source_view_path[rank]);
+	Gtk::TextIter iter = source_view->get_buffer()->get_iter_at_line(m_current_line[rank] - 1);
 	if (!iter)
 	{
 		return;
@@ -430,20 +436,20 @@ void UIWindow::do_scroll(const int process_rank) const
 	source_view->scroll_to(iter, 0.1);
 }
 
-void UIWindow::scroll_to_line(const int process_rank) const
+void UIWindow::scroll_to_line(const int rank) const
 {
 	Glib::signal_idle().connect_once(
 		sigc::bind(
 			sigc::mem_fun(
 				this,
 				&UIWindow::do_scroll),
-			process_rank));
+			rank));
 }
 
 // todo refactor...
-void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, const int process_rank)
+void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, const int rank)
 {
-	Gtk::TextBuffer *buffer = m_text_buffers_gdb[process_rank];
+	Gtk::TextBuffer *buffer = m_text_buffers_gdb[rank];
 
 	char *token = strtok((char *)data, "\n");
 	while (NULL != token)
@@ -466,11 +472,11 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, co
 			{
 				if (MI_CL_RUNNING == output->tclass)
 				{
-					m_target_state[process_rank] = RUNNING;
+					m_target_state[rank] = TargetState::RUNNING;
 				}
 				else if (MI_CL_STOPPED == output->tclass)
 				{
-					m_target_state[process_rank] = STOPPED;
+					m_target_state[rank] = TargetState::STOPPED;
 				}
 				if (output->type == MI_T_OUT_OF_BAND && output->stype == MI_ST_STREAM /* && output->sstype == MI_SST_CONSOLE */)
 				{
@@ -488,12 +494,12 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, co
 			stop_record = mi_res_stop(o);
 			if (stop_record)
 			{
-				// printf("Rank: %d stopped, reason: %s\n", process_rank, mi_reason_enum_to_str(stop_record->reason));
+				// printf("Rank: %d stopped, reason: %s\n", rank, mi_reason_enum_to_str(stop_record->reason));
 				if (stop_record->frame && stop_record->frame->fullname && stop_record->frame->func)
 				{
 					// printf("\tat %s:%d in function: %s\n", stop_record->frame->fullname, stop_record->frame->line, stop_record->frame->func);
-					append_source_file(process_rank, stop_record->frame->fullname, stop_record->frame->line);
-					scroll_to_line(process_rank);
+					append_source_file(rank, stop_record->frame->fullname, stop_record->frame->line);
+					scroll_to_line(rank);
 				}
 				mi_free_stop(stop_record);
 			}
@@ -503,49 +509,49 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, co
 	}
 }
 
-void UIWindow::print_data_trgt(const char *const data, const int process_rank)
+void UIWindow::print_data_trgt(const char *const data, const int rank)
 {
-	Gtk::TextBuffer *buffer = m_text_buffers_trgt[process_rank];
+	Gtk::TextBuffer *buffer = m_text_buffers_trgt[rank];
 	buffer->insert(buffer->end(), data);
 }
 
 void UIWindow::print_data(mi_h *const gdb_handle, const char *const data, const int port)
 {
-	const int process_rank = get_process_rank(port);
+	const int rank = get_rank(port);
 	const bool is_gdb = src_is_gdb(port);
 
 	m_mutex_gui.lock();
 
 	if (is_gdb)
 	{
-		print_data_gdb(gdb_handle, data, process_rank);
-		Gtk::ScrolledWindow *scrolled_window = m_scrolled_windows_gdb[process_rank];
-		if (m_scroll_connections_gdb[process_rank].empty())
+		print_data_gdb(gdb_handle, data, rank);
+		Gtk::ScrolledWindow *scrolled_window = m_scrolled_windows_gdb[rank];
+		if (m_scroll_connections_gdb[rank].empty())
 		{
-			m_scroll_connections_gdb[process_rank] = scrolled_window->signal_size_allocate().connect(
+			m_scroll_connections_gdb[rank] = scrolled_window->signal_size_allocate().connect(
 				sigc::bind(
 					sigc::mem_fun(
 						*this,
 						&UIWindow::scroll_bottom),
 					scrolled_window,
 					is_gdb,
-					process_rank));
+					rank));
 		}
 	}
 	else
 	{
-		print_data_trgt(data, process_rank);
-		Gtk::ScrolledWindow *scrolled_window = m_scrolled_windows_trgt[process_rank];
-		if (m_scroll_connections_trgt[process_rank].empty())
+		print_data_trgt(data, rank);
+		Gtk::ScrolledWindow *scrolled_window = m_scrolled_windows_trgt[rank];
+		if (m_scroll_connections_trgt[rank].empty())
 		{
-			m_scroll_connections_trgt[process_rank] = scrolled_window->signal_size_allocate().connect(
+			m_scroll_connections_trgt[rank] = scrolled_window->signal_size_allocate().connect(
 				sigc::bind(
 					sigc::mem_fun(
 						*this,
 						&UIWindow::scroll_bottom),
 					scrolled_window,
 					is_gdb,
-					process_rank));
+					rank));
 		}
 	}
 

@@ -52,14 +52,14 @@ class UIWindow
 
 	volatile bool *m_conns_open_gdb;
 
-	void do_scroll(const int process_rank) const;
-	void scroll_to_line(const int process_rank) const;
-	void append_source_file(const int process_rank, const string &fullpath, const int line);
-	void print_data_gdb(mi_h *const gdb_handle, const char *const data, const int process_rank);
-	void print_data_trgt(const char *const data, const int process_rank);
+	void do_scroll(const int rank) const;
+	void scroll_to_line(const int rank) const;
+	void append_source_file(const int rank, const string &fullpath, const int line);
+	void print_data_gdb(mi_h *const gdb_handle, const char *const data, const int rank);
+	void print_data_trgt(const char *const data, const int rank);
 	void update_markers(const int page_num);
 	bool update_markers_timeout();
-	void scroll_bottom(Gtk::Allocation &, Gtk::ScrolledWindow *const scrolled_window, const bool is_gdb, const int process_rank);
+	void scroll_bottom(Gtk::Allocation &, Gtk::ScrolledWindow *const scrolled_window, const bool is_gdb, const int rank);
 	void send_input(const string &entry_name, const string &wrapper_name, tcp::socket *const *const socket);
 	void send_sig_int();
 	void send_input_gdb();
@@ -82,6 +82,7 @@ public:
 	bool init();
 	bool on_delete(GdkEventAny *);
 	void print_data(mi_h *const gdb_handle, const char *const data, const int port);
+	// bool send_data(const int rank, const string &data) const;
 
 	inline Gtk::Window *root_window() const
 	{
@@ -98,34 +99,34 @@ public:
 		return m_target_state[rank];
 	}
 
-	inline tcp::socket *get_conns_gdb(const int process_rank) const
+	inline tcp::socket *get_conns_gdb(const int rank) const
 	{
-		return m_conns_gdb[process_rank];
+		return m_conns_gdb[rank];
 	}
 
-	inline void set_conns_gdb(const int process_rank, tcp::socket *const socket)
+	inline void set_conns_gdb(const int rank, tcp::socket *const socket)
 	{
-		m_conns_gdb[process_rank] = socket;
+		m_conns_gdb[rank] = socket;
 	}
 
-	inline tcp::socket *get_conns_trgt(const int process_rank) const
+	inline tcp::socket *get_conns_trgt(const int rank) const
 	{
-		return m_conns_trgt[process_rank];
+		return m_conns_trgt[rank];
 	}
 
-	inline void set_conns_trgt(const int process_rank, tcp::socket *const socket)
+	inline void set_conns_trgt(const int rank, tcp::socket *const socket)
 	{
-		m_conns_trgt[process_rank] = socket;
+		m_conns_trgt[rank] = socket;
 	}
 
-	inline bool get_conns_open_gdb(const int process_rank) const
+	inline bool get_conns_open_gdb(const int rank) const
 	{
-		return m_conns_open_gdb[process_rank];
+		return m_conns_open_gdb[rank];
 	}
 
-	inline void set_conns_open_gdb(const int process_rank, const bool value)
+	inline void set_conns_open_gdb(const int rank, const bool value)
 	{
-		m_conns_open_gdb[process_rank] = value;
+		m_conns_open_gdb[rank] = value;
 	}
 
 	inline static bool src_is_gdb(const int port)
@@ -133,7 +134,7 @@ public:
 		return (0 == (port & 0x4000));
 	}
 
-	inline static int get_process_rank(const int port)
+	inline static int get_rank(const int port)
 	{
 		return (0x3FFF & port);
 	}

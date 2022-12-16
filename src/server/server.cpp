@@ -158,18 +158,18 @@ int start_clients_mpi(StartupDialog &dialog)
 
 void process_session(tcp::socket socket, UIWindow &window, const int port)
 {
-	const int process_rank = UIWindow::get_process_rank(port);
+	const int rank = UIWindow::get_rank(port);
 	mi_h *gdb_handle = nullptr;
 	if (UIWindow::src_is_gdb(port))
 	{
-		window.set_conns_gdb(process_rank, &socket);
-		window.set_conns_open_gdb(process_rank, true);
+		window.set_conns_gdb(rank, &socket);
+		window.set_conns_open_gdb(rank, true);
 		gdb_handle = mi_alloc_h();
 		gdb_handle->line = nullptr;
 	}
 	else
 	{
-		window.set_conns_trgt(process_rank, &socket);
+		window.set_conns_trgt(rank, &socket);
 	}
 
 	try
@@ -187,7 +187,7 @@ void process_session(tcp::socket socket, UIWindow &window, const int port)
 			{
 				if (UIWindow::src_is_gdb(port))
 				{
-					window.set_conns_open_gdb(process_rank, false);
+					window.set_conns_open_gdb(rank, false);
 					delete[] data;
 					mi_free_h(&gdb_handle);
 				}
@@ -217,11 +217,11 @@ void process_session(tcp::socket socket, UIWindow &window, const int port)
 	}
 }
 
-void start_acceptor(UIWindow &window, const asio::ip::port_type process_port)
+void start_acceptor(UIWindow &window, const asio::ip::port_type port)
 {
 	asio::io_context io_context;
-	tcp::acceptor acceptor(io_context, tcp::endpoint(tcp::v4(), process_port));
-	process_session(acceptor.accept(), window, process_port);
+	tcp::acceptor acceptor(io_context, tcp::endpoint(tcp::v4(), port));
+	process_session(acceptor.accept(), window, port);
 }
 
 void start_servers(UIWindow &window)
