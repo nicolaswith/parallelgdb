@@ -29,7 +29,7 @@ bool Breakpoint::create_breakpoint(const int rank)
 
 	string cmd = "-break-insert " + m_full_path + ":" + std::to_string(m_line) + "\n";
 	m_window->set_breakpoint(rank, this);
-	m_window->send_data(rank, cmd);
+	m_window->send_data(m_window->get_conns_gdb(rank), cmd);
 
 	m_breakpoint_state[rank] = CREATED;
 	return true;
@@ -44,7 +44,7 @@ bool Breakpoint::delete_breakpoint(const int rank)
 	}
 
 	string cmd = "-break-delete " + std::to_string(m_number) + "\n";
-	m_window->send_data(rank, cmd);
+	m_window->send_data(m_window->get_conns_gdb(rank), cmd);
 
 	m_breakpoint_state[rank] = NO_ACTION;
 	return true;

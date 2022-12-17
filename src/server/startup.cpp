@@ -78,6 +78,7 @@ StartupDialog::StartupDialog()
 	this->signal_response().connect(sigc::mem_fun(*this, &StartupDialog::on_dialog_response));
 	m_checkbutton_srun.signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &StartupDialog::on_toggle_button), &m_checkbutton_srun));
 
+	this->set_title("Parallel GDB");
 	this->show_all();
 }
 

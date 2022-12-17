@@ -66,7 +66,6 @@ class UIWindow
 	bool update_markers_timeout();
 	void scroll_bottom(Gtk::Allocation &, Gtk::ScrolledWindow *const scrolled_window, const bool is_gdb, const int rank);
 	void send_input(const string &entry_name, const string &wrapper_name, tcp::socket *const *const socket);
-	void send_sig_int();
 	void send_input_gdb();
 	void send_input_trgt();
 	void toggle_all(const string &box_name);
@@ -76,6 +75,10 @@ class UIWindow
 	void edit_mark(Glib::RefPtr<Gtk::TextMark> &mark, Glib::RefPtr<Gsv::Buffer> &source_buffer);
 	void delete_mark(Glib::RefPtr<Gtk::TextMark> &mark, Glib::RefPtr<Gsv::Buffer> &source_buffer);
 	void on_line_mark_clicked(Gtk::TextIter &iter, GdkEvent *const event, const string &fullpath);
+	void send_data_to_active(tcp::socket *const *const socket, const string &data);
+	void interact_with_gdb(const int key_value);
+	void on_interaction_button_clicked(const int key_value);
+	bool on_key_press(GdkEventKey *event);
 
 	template <class T>
 	T *get_widget(const string &widget_name);
@@ -87,7 +90,7 @@ public:
 	bool init();
 	bool on_delete(GdkEventAny *);
 	void print_data(mi_h *const gdb_handle, const char *const data, const int port);
-	bool send_data(const int rank, const string &data);
+	bool send_data(tcp::socket *const socket, const string &data);
 
 	inline Gtk::Window *root_window() const
 	{

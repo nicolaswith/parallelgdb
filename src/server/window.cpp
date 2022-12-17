@@ -69,9 +69,14 @@ bool UIWindow::init()
 	get_widget<Gtk::Entry>("gdb-send-entry")->signal_activate().connect(sigc::mem_fun(*this, &UIWindow::send_input_gdb));
 	get_widget<Gtk::Button>("target-send-button")->signal_clicked().connect(sigc::mem_fun(*this, &UIWindow::send_input_trgt));
 	get_widget<Gtk::Entry>("target-send-entry")->signal_activate().connect(sigc::mem_fun(*this, &UIWindow::send_input_trgt));
-	get_widget<Gtk::Button>("target-send-sigint-button")->signal_clicked().connect(sigc::mem_fun(*this, &UIWindow::send_sig_int));
 	get_widget<Gtk::Button>("gdb-send-select-all-button")->signal_clicked().connect(sigc::mem_fun(*this, &UIWindow::toggle_all_gdb));
 	get_widget<Gtk::Button>("target-send-select-all-button")->signal_clicked().connect(sigc::mem_fun(*this, &UIWindow::toggle_all_trgt));
+	m_root_window->signal_key_press_event().connect(sigc::mem_fun(*this, &UIWindow::on_key_press), false);
+	get_widget<Gtk::Button>("step-over-button")->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &UIWindow::on_interaction_button_clicked), GDK_KEY_F5));
+	get_widget<Gtk::Button>("step-in-button")->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &UIWindow::on_interaction_button_clicked), GDK_KEY_F6));
+	get_widget<Gtk::Button>("step-out-button")->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &UIWindow::on_interaction_button_clicked), GDK_KEY_F7));
+	get_widget<Gtk::Button>("continue-button")->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &UIWindow::on_interaction_button_clicked), GDK_KEY_F8));
+	get_widget<Gtk::Button>("stop-button")->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &UIWindow::on_interaction_button_clicked), GDK_KEY_F9));
 
 	m_drawing_area = Gtk::manage(new UIDrawingArea(m_num_processes));
 	m_drawing_area->set_size_request(UIDrawingArea::spacing() + (2 * UIDrawingArea::radius() + UIDrawingArea::spacing()) * m_num_processes, -1);
@@ -125,6 +130,7 @@ bool UIWindow::init()
 
 	get_widget<Gtk::Entry>("gdb-send-entry")->set_text("run");
 
+	m_root_window->maximize();
 	m_root_window->show_all();
 	return true;
 }
@@ -164,24 +170,73 @@ void UIWindow::scroll_bottom(Gtk::Allocation &, Gtk::ScrolledWindow *const scrol
 	}
 }
 
-bool UIWindow::send_data(const int rank, const string &data)
+bool UIWindow::send_data(tcp::socket *const socket, const string &data)
 {
-	std::size_t bytes_sent = asio::write(*m_conns_gdb[rank], asio::buffer(data, data.length()));
+	std::size_t bytes_sent = asio::write(*socket, asio::buffer(data, data.length()));
 	return bytes_sent == data.length();
 }
 
-void UIWindow::send_sig_int()
+void UIWindow::send_data_to_active(tcp::socket *const *const socket, const string &cmd)
 {
-	string cmd = "\3"; // ^C
-	Gtk::Box *box = get_widget<Gtk::Box>("target-send-select-wrapper-box");
+	Gtk::Box *box = get_widget<Gtk::Box>("gdb-send-select-wrapper-box");
 	std::vector<Gtk::Widget *> check_buttons = box->get_children();
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
 		Gtk::CheckButton *check_button = dynamic_cast<Gtk::CheckButton *>(check_buttons.at(rank));
 		if (!check_button->get_active())
+		{
 			continue;
-		asio::write(*m_conns_trgt[rank], asio::buffer(cmd, cmd.length()));
+		}
+		if (socket == m_conns_trgt || m_target_state[rank] == TargetState::STOPPED)
+		{
+			send_data(socket[rank], cmd);
+		}
 	}
+}
+
+void UIWindow::interact_with_gdb(const int key_value)
+{
+	string cmd;
+	tcp::socket **socket;
+	switch (key_value)
+	{
+	case GDK_KEY_F5:
+		cmd = "n\n";
+		socket = m_conns_gdb;
+		break;
+	case GDK_KEY_F6:
+		cmd = "s\n";
+		socket = m_conns_gdb;
+		break;
+	case GDK_KEY_F7:
+		cmd = "finish\n";
+		socket = m_conns_gdb;
+		break;
+	case GDK_KEY_F8:
+		cmd = "continue\n";
+		socket = m_conns_gdb;
+		break;
+	case GDK_KEY_F9:
+		cmd = "\3"; // Stop: ^C
+		socket = m_conns_trgt;
+		break;
+
+	default:
+		return;
+	}
+
+	send_data_to_active(socket, cmd);
+}
+
+void UIWindow::on_interaction_button_clicked(const int key_value)
+{
+	interact_with_gdb(key_value);
+}
+
+bool UIWindow::on_key_press(GdkEventKey *event)
+{
+	interact_with_gdb(event->keyval);
+	return false;
 }
 
 void UIWindow::send_input(const string &entry_name, const string &wrapper_name, tcp::socket *const *const socket)
