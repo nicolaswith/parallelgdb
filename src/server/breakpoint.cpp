@@ -1,7 +1,7 @@
 #include "breakpoint.hpp"
 #include "window.hpp"
 
-Breakpoint::Breakpoint(const int num_processes, const int line, const string &full_path, const UIWindow *const window)
+Breakpoint::Breakpoint(const int num_processes, const int line, const string &full_path, UIWindow *const window)
 	: m_num_processes(num_processes),
 	  m_line(line),
 	  m_full_path(full_path),
@@ -28,6 +28,7 @@ bool Breakpoint::create_breakpoint(const int rank)
 	}
 
 	string cmd = "-break-insert " + m_full_path + ":" + std::to_string(m_line) + "\n";
+	m_window->set_breakpoint(rank, this);
 	m_window->send_data(rank, cmd);
 
 	m_breakpoint_state[rank] = CREATED;
@@ -42,7 +43,8 @@ bool Breakpoint::delete_breakpoint(const int rank)
 		return false;
 	}
 
-	// printf("deleting breakpoint for rank %d on %s:%d\n", rank, m_full_path.c_str(), m_line);
+	string cmd = "-break-delete " + std::to_string(m_number) + "\n";
+	m_window->send_data(rank, cmd);
 
 	m_breakpoint_state[rank] = NO_ACTION;
 	return true;
@@ -97,10 +99,7 @@ void Breakpoint::update_breakpoints(const bool *const button_states)
 			message += error_deleting_list + "]\n";
 		}
 		message += "Active breakpoints for rank(s): " + (created_list.empty() ? "<None>" : created_list);
-		Gtk::MessageDialog info_dialog(
-			*m_window->root_window(),
-			message,
-			false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
+		Gtk::MessageDialog info_dialog(*m_window->root_window(), message, false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
 		info_dialog.run();
 	}
 	update_states();

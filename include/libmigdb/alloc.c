@@ -47,6 +47,17 @@ char *mi_malloc(size_t sz)
 	return res;
 }
 
+mi_h *mi_alloc_h()
+{
+	mi_h *h = (mi_h *)calloc(1, sizeof(mi_h));
+	if (!h)
+	{
+		mi_error = MI_OUT_OF_MEMORY;
+		return NULL;
+	}
+	return h;
+}
+
 mi_results *mi_alloc_results(void)
 {
 	return (mi_results *)mi_calloc1(sizeof(mi_results));
@@ -111,6 +122,15 @@ mi_chg_reg *mi_alloc_chg_reg(void)
 /*****************************************************************************
   Free functions
 *****************************************************************************/
+
+void mi_free_h(mi_h **handle)
+{
+	mi_h *h = *handle;
+	free(h->line);
+	mi_free_output(h->po);
+	free(h);
+	*handle = NULL;
+}
 
 void mi_free_frames(mi_frames *f)
 {

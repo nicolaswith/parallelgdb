@@ -21,6 +21,7 @@ UIWindow::UIWindow(const int num_processes)
 	m_scrolled_windows_trgt = new Gtk::ScrolledWindow *[m_num_processes];
 	m_scroll_connections_gdb = new sigc::connection[m_num_processes];
 	m_scroll_connections_trgt = new sigc::connection[m_num_processes];
+	m_breakpoints = new Breakpoint *[m_num_processes];
 	m_conns_open_gdb = new bool[m_num_processes];
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
@@ -28,6 +29,7 @@ UIWindow::UIWindow(const int num_processes)
 		m_conns_trgt[rank] = nullptr;
 		m_conns_open_gdb[rank] = false;
 		m_current_line[rank] = 0;
+		m_breakpoints[rank] = nullptr;
 	}
 }
 
@@ -162,7 +164,7 @@ void UIWindow::scroll_bottom(Gtk::Allocation &, Gtk::ScrolledWindow *const scrol
 	}
 }
 
-bool UIWindow::send_data(const int rank, const string &data) const
+bool UIWindow::send_data(const int rank, const string &data)
 {
 	std::size_t bytes_sent = asio::write(*m_conns_gdb[rank], asio::buffer(data, data.length()));
 	return bytes_sent == data.length();
@@ -462,39 +464,52 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, co
 		}
 		free(gdb_handle->line);
 		gdb_handle->line = strdup(token);
+
 		int response = mi_get_response(gdb_handle);
 		if (0 != response)
 		{
-			mi_output *o = mi_retire_response(gdb_handle);
-			mi_output *output = o;
+			mi_output *first_output = mi_retire_response(gdb_handle);
+			mi_output *current_output = first_output;
 
-			while (NULL != output)
+			while (NULL != current_output)
 			{
-				if (MI_CL_RUNNING == output->tclass)
+				if (MI_CL_RUNNING == current_output->tclass)
 				{
 					m_target_state[rank] = TargetState::RUNNING;
 				}
-				else if (MI_CL_STOPPED == output->tclass)
+				else if (MI_CL_STOPPED == current_output->tclass)
 				{
 					m_target_state[rank] = TargetState::STOPPED;
 				}
-				else if (MI_CL_EXIT == output->tclass)
+				else if (MI_CL_EXIT == current_output->tclass)
 				{
 					m_target_state[rank] = TargetState::EXITED;
 				}
-				if (output->type == MI_T_OUT_OF_BAND && output->stype == MI_ST_STREAM /* && output->sstype == MI_SST_CONSOLE */)
+				if (current_output->type == MI_T_OUT_OF_BAND && current_output->stype == MI_ST_STREAM /* && current_output->sstype == MI_SST_CONSOLE */)
 				{
-					char *text = get_cstr(output);
+					char *text = get_cstr(current_output);
 					buffer->insert(buffer->end(), text);
 				}
 				else
 				{
-					// printf("%d,%d,%d,%d\n", output->type, output->stype, output->sstype, output->tclass);
+					// printf("%d,%d,%d,%d\n", current_output->type, current_output->stype, current_output->sstype, current_output->tclass);
 				}
-				output = output->next;
+
+				current_output = current_output->next;
 			}
 
-			mi_stop *stop_record = mi_res_stop(o);
+			if (nullptr != m_breakpoints[rank])
+			{
+				mi_bkpt *breakpoint = mi_res_bkpt(first_output);
+				if (breakpoint)
+				{
+					m_breakpoints[rank]->set_number(breakpoint->number);
+					m_breakpoints[rank] = nullptr;
+				}
+				mi_free_bkpt(breakpoint);
+			}
+
+			mi_stop *stop_record = mi_res_stop(first_output);
 			if (stop_record)
 			{
 				// printf("Rank: %d stopped, reason: %s\n", rank, mi_reason_enum_to_str(stop_record->reason));
@@ -506,7 +521,8 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, co
 				}
 				mi_free_stop(stop_record);
 			}
-			mi_free_output(o);
+
+			mi_free_output(first_output);
 		}
 		token = strtok(NULL, "\n");
 	}

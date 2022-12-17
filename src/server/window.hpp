@@ -19,6 +19,8 @@ enum TargetState
 	EXITED
 };
 
+class Breakpoint;
+
 class UIWindow
 {
 	const int m_num_processes;
@@ -50,6 +52,8 @@ class UIWindow
 
 	tcp::socket **m_conns_gdb;
 	tcp::socket **m_conns_trgt;
+
+	Breakpoint **m_breakpoints;
 
 	volatile bool *m_conns_open_gdb;
 
@@ -83,7 +87,7 @@ public:
 	bool init();
 	bool on_delete(GdkEventAny *);
 	void print_data(mi_h *const gdb_handle, const char *const data, const int port);
-	bool send_data(const int rank, const string &data) const;
+	bool send_data(const int rank, const string &data);
 
 	inline Gtk::Window *root_window() const
 	{
@@ -128,6 +132,11 @@ public:
 	inline void set_conns_open_gdb(const int rank, const bool value)
 	{
 		m_conns_open_gdb[rank] = value;
+	}
+
+	inline void set_breakpoint(const int rank, Breakpoint *const breakpoint)
+	{
+		m_breakpoints[rank] = breakpoint;
 	}
 
 	inline static bool src_is_gdb(const int port)

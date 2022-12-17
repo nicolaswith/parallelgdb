@@ -21,8 +21,9 @@ class Breakpoint
 
 	const int m_line;
 	const string m_full_path;
+	int m_number;
 
-	const UIWindow *const m_window;
+	UIWindow *const m_window;
 	BreakpointState *const m_breakpoint_state;
 
 	bool create_breakpoint(const int rank);
@@ -31,7 +32,7 @@ class Breakpoint
 	void update_states();
 
 public:
-	Breakpoint(const int num_processes, const int line, const string &full_path, const UIWindow *const window);
+	Breakpoint(const int num_processes, const int line, const string &full_path, UIWindow *const window);
 	~Breakpoint();
 
 	void update_breakpoints(const bool *const button_states);
@@ -41,6 +42,11 @@ public:
 	inline bool is_created(const int rank) const
 	{
 		return m_breakpoint_state[rank] == BreakpointState::CREATED;
+	}
+
+	inline void set_number(const int number)
+	{
+		m_number = number;
 	}
 };
 
