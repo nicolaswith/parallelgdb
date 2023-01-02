@@ -319,7 +319,7 @@ void UIWindow::create_mark(Gtk::TextIter &iter, Glib::RefPtr<Gsv::Buffer> &sourc
 {
 	const int line = iter.get_line();
 	Breakpoint *breakpoint = new Breakpoint{m_num_processes, line + 1, fullpath, this};
-	std::unique_ptr<BreakpointDialog> dialog = std::make_unique<BreakpointDialog>(m_num_processes, breakpoint);
+	std::unique_ptr<BreakpointDialog> dialog = std::make_unique<BreakpointDialog>(m_num_processes, breakpoint, true);
 	if (Gtk::RESPONSE_OK != dialog->run())
 	{
 		return;
@@ -339,7 +339,7 @@ void UIWindow::create_mark(Gtk::TextIter &iter, Glib::RefPtr<Gsv::Buffer> &sourc
 void UIWindow::edit_mark(Glib::RefPtr<Gtk::TextMark> &mark, Glib::RefPtr<Gsv::Buffer> &source_buffer)
 {
 	Breakpoint *breakpoint = (Breakpoint *)mark->get_data(data_id);
-	std::unique_ptr<BreakpointDialog> dialog = std::make_unique<BreakpointDialog>(m_num_processes, breakpoint);
+	std::unique_ptr<BreakpointDialog> dialog = std::make_unique<BreakpointDialog>(m_num_processes, breakpoint, false);
 	if (Gtk::RESPONSE_OK != dialog->run())
 	{
 		return;

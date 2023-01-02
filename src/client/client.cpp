@@ -41,7 +41,7 @@ void wait_for_socat(const int pid_socat_gdb, const int pid_socat_trgt)
 int start_gdb(const string &tty_gdb, const string &tty_trgt, const char *const gdb_path, const char *const target, const int pid_socat_gdb, const int pid_socat_trgt)
 {
 	wait_for_socat(pid_socat_gdb, pid_socat_trgt);
-	sleep(1);
+	usleep(500000);
 
 	int pid = fork();
 	if (0 == pid)

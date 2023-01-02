@@ -22,7 +22,7 @@ class BreakpointDialog
 	T *get_widget(const string &widget_name);
 
 public:
-	BreakpointDialog(const int num_processes, Breakpoint *const breakpoint);
+	BreakpointDialog(const int num_processes, Breakpoint *const breakpoint, const bool init);
 	~BreakpointDialog();
 
 	inline int run()

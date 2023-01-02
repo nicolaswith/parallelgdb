@@ -10,7 +10,7 @@ T *BreakpointDialog::get_widget(const string &widget_name)
 	return widget;
 }
 
-BreakpointDialog::BreakpointDialog(const int num_processes, Breakpoint *const breakpoint)
+BreakpointDialog::BreakpointDialog(const int num_processes, Breakpoint *const breakpoint, const bool init)
 	: m_num_processes(num_processes),
 	  m_breakpoint(breakpoint),
 	  m_button_states(new bool[m_num_processes])
@@ -24,7 +24,14 @@ BreakpointDialog::BreakpointDialog(const int num_processes, Breakpoint *const br
 		Gtk::CheckButton *check_button = Gtk::manage(new Gtk::CheckButton(std::to_string(rank)));
 		check_button->set_data(rank_id, new int(rank));
 
-		check_button->set_active(m_breakpoint->is_created(rank));
+		if (init)
+		{
+			check_button->set_active(true);
+		}
+		else
+		{
+			check_button->set_active(m_breakpoint->is_created(rank));
+		}
 		m_check_buttons_box->pack_start(*check_button);
 	}
 	get_widget<Gtk::Button>("toggle-all-button")->signal_clicked().connect(sigc::mem_fun(*this, &BreakpointDialog::toggle_all));

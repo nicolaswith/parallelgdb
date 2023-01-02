@@ -315,6 +315,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="margin-end">10</property>
+                <property name="scrollable">True</property>
               </object>
               <packing>
                 <property name="expand">True</property>
