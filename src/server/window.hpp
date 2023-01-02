@@ -55,6 +55,9 @@ class UIWindow
 
 	Breakpoint **m_breakpoints;
 
+	volatile bool *m_started;
+	volatile bool m_sent_run;
+
 	volatile bool *m_conns_open_gdb;
 
 	void do_scroll(const int rank) const;

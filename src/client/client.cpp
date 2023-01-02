@@ -41,7 +41,7 @@ void wait_for_socat(const int pid_socat_gdb, const int pid_socat_trgt)
 int start_gdb(const string &tty_gdb, const string &tty_trgt, const char *const gdb_path, const char *const target, const int pid_socat_gdb, const int pid_socat_trgt)
 {
 	wait_for_socat(pid_socat_gdb, pid_socat_trgt);
-	usleep(500000); // 500ms
+	sleep(1);
 
 	int pid = fork();
 	if (0 == pid)
@@ -60,7 +60,7 @@ int start_gdb(const string &tty_gdb, const string &tty_trgt, const char *const g
 			(char *)"-q",
 			(char *)"-i",
 			(char *)"mi3",
-			(char *)"-ex=set auto-load safe-path /", // evil hack for now... todo
+			(char *)"-ex=set auto-load safe-path /",
 			(char *)"-ex=b main",
 			(char *)tty.c_str(),
 			(char *)target,
@@ -129,7 +129,7 @@ bool parse_cl_args(const int argc, char **argv, char **ip_addr, char **gdb_path,
 {
 	char c;
 	opterr = 0;
-	while ((c = getopt(argc, argv, "hrg:s:i:")) != -1)
+	while ((c = getopt(argc, argv, "hg:s:i:")) != -1)
 	{
 		switch (c)
 		{

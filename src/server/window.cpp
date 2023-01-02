@@ -8,7 +8,8 @@ const char *const breakpoint_category = "breakpoint-category";
 const char *const data_id = "line-number";
 
 UIWindow::UIWindow(const int num_processes)
-	: m_num_processes(num_processes)
+	: m_num_processes(num_processes),
+	  m_sent_run(false)
 {
 	m_current_line = new int[m_num_processes];
 	m_source_view_path = new string[m_num_processes];
@@ -22,14 +23,17 @@ UIWindow::UIWindow(const int num_processes)
 	m_scroll_connections_gdb = new sigc::connection[m_num_processes];
 	m_scroll_connections_trgt = new sigc::connection[m_num_processes];
 	m_breakpoints = new Breakpoint *[m_num_processes];
+	m_started = new bool[m_num_processes];
 	m_conns_open_gdb = new bool[m_num_processes];
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
+		m_target_state[rank] = TargetState::UNKNOWN;
 		m_conns_gdb[rank] = nullptr;
 		m_conns_trgt[rank] = nullptr;
 		m_conns_open_gdb[rank] = false;
 		m_current_line[rank] = 0;
 		m_breakpoints[rank] = nullptr;
+		m_started[rank] = false;
 	}
 }
 
@@ -45,6 +49,7 @@ UIWindow::~UIWindow()
 	delete[] m_scrolled_windows_trgt;
 	delete[] m_scroll_connections_gdb;
 	delete[] m_scroll_connections_trgt;
+	delete[] m_started;
 	delete[] m_conns_open_gdb;
 }
 
@@ -77,6 +82,7 @@ bool UIWindow::init()
 	get_widget<Gtk::Button>("step-out-button")->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &UIWindow::on_interaction_button_clicked), GDK_KEY_F7));
 	get_widget<Gtk::Button>("continue-button")->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &UIWindow::on_interaction_button_clicked), GDK_KEY_F8));
 	get_widget<Gtk::Button>("stop-button")->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &UIWindow::on_interaction_button_clicked), GDK_KEY_F9));
+	get_widget<Gtk::Button>("restart-button")->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &UIWindow::on_interaction_button_clicked), GDK_KEY_F12));
 
 	m_drawing_area = Gtk::manage(new UIDrawingArea(m_num_processes));
 	m_drawing_area->set_size_request(UIDrawingArea::spacing() + (2 * UIDrawingArea::radius() + UIDrawingArea::spacing()) * m_num_processes, -1);
@@ -128,8 +134,6 @@ bool UIWindow::init()
 		send_select_trgt->pack_start(*check_button_trgt);
 	}
 
-	get_widget<Gtk::Entry>("gdb-send-entry")->set_text("run");
-
 	m_root_window->maximize();
 	m_root_window->show_all();
 	return true;
@@ -143,7 +147,7 @@ bool UIWindow::on_delete(GdkEventAny *)
 		{
 			continue;
 		}
-		string cmd = "\4";
+		string cmd = "\4"; // EOF: ^D
 		asio::write(*m_conns_gdb[rank], asio::buffer(cmd, cmd.length()));
 	}
 	for (int rank = 0; rank < m_num_processes; ++rank)
@@ -187,7 +191,7 @@ void UIWindow::send_data_to_active(tcp::socket *const *const socket, const strin
 		{
 			continue;
 		}
-		if (socket == m_conns_trgt || m_target_state[rank] == TargetState::STOPPED)
+		if (socket == m_conns_trgt || m_target_state[rank] == TargetState::STOPPED || m_target_state[rank] == TargetState::UNKNOWN)
 		{
 			send_data(socket[rank], cmd);
 		}
@@ -201,11 +205,11 @@ void UIWindow::interact_with_gdb(const int key_value)
 	switch (key_value)
 	{
 	case GDK_KEY_F5:
-		cmd = "n\n";
+		cmd = "next\n";
 		socket = m_conns_gdb;
 		break;
 	case GDK_KEY_F6:
-		cmd = "s\n";
+		cmd = "step\n";
 		socket = m_conns_gdb;
 		break;
 	case GDK_KEY_F7:
@@ -219,6 +223,10 @@ void UIWindow::interact_with_gdb(const int key_value)
 	case GDK_KEY_F9:
 		cmd = "\3"; // Stop: ^C
 		socket = m_conns_trgt;
+		break;
+	case GDK_KEY_F12:
+		cmd = "run\n";
+		socket = m_conns_gdb;
 		break;
 
 	default:
@@ -523,6 +531,11 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, co
 		int response = mi_get_response(gdb_handle);
 		if (0 != response)
 		{
+			if (!m_started[rank])
+			{
+				m_started[rank] = true;
+			}
+
 			mi_output *first_output = mi_retire_response(gdb_handle);
 			mi_output *current_output = first_output;
 
@@ -626,6 +639,20 @@ void UIWindow::print_data(mi_h *const gdb_handle, const char *const data, const 
 					scrolled_window,
 					is_gdb,
 					rank));
+		}
+	}
+
+	if (!m_sent_run)
+	{
+		bool all_started = true;
+		for (int rank = 0; rank < m_num_processes; ++rank)
+		{
+			all_started &= m_started[rank];
+		}
+		if (all_started)
+		{
+			send_data_to_active(m_conns_gdb, "run\n");
+			m_sent_run = true;
 		}
 	}
 
