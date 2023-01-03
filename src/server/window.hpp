@@ -62,7 +62,7 @@ class UIWindow
 
 	void do_scroll(const int rank) const;
 	void scroll_to_line(const int rank) const;
-	void append_source_file(const int rank, const string &fullpath, const int line);
+	void append_source_file(const string &fullpath);
 	void print_data_gdb(mi_h *const gdb_handle, const char *const data, const int rank);
 	void print_data_trgt(const char *const data, const int rank);
 	void update_markers(const int page_num);
@@ -82,6 +82,9 @@ class UIWindow
 	void interact_with_gdb(const int key_value);
 	void on_interaction_button_clicked(const int key_value);
 	bool on_key_press(GdkEventKey *event);
+	void set_position(const int rank, const string &fullpath, const int line);
+	void open_file();
+	void close_unused_tabs();
 
 	template <class T>
 	T *get_widget(const string &widget_name);

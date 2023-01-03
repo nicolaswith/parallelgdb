@@ -95,6 +95,8 @@ bool UIWindow::init()
 	get_widget<Gtk::Button>("continue-button")->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &UIWindow::on_interaction_button_clicked), GDK_KEY_F8));
 	get_widget<Gtk::Button>("stop-button")->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &UIWindow::on_interaction_button_clicked), GDK_KEY_F9));
 	get_widget<Gtk::Button>("restart-button")->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &UIWindow::on_interaction_button_clicked), GDK_KEY_F12));
+	get_widget<Gtk::Button>("open-file-button")->signal_clicked().connect(sigc::mem_fun(*this, &UIWindow::open_file));
+	get_widget<Gtk::Button>("close-unused-button")->signal_clicked().connect(sigc::mem_fun(*this, &UIWindow::close_unused_tabs));
 	get_widget<Gtk::MenuItem>("quit-menu-item")->signal_activate().connect(sigc::ptr_fun(&on_quit_clicked));
 
 	m_drawing_area = Gtk::manage(new UIDrawingArea(m_num_processes, this));
@@ -217,6 +219,9 @@ void UIWindow::interact_with_gdb(const int key_value)
 	tcp::socket **socket;
 	switch (key_value)
 	{
+	case GDK_KEY_F4:
+		close_unused_tabs();
+		return;
 	case GDK_KEY_F5:
 		cmd = "next\n";
 		socket = m_conns_gdb;
@@ -414,15 +419,14 @@ void UIWindow::on_line_mark_clicked(Gtk::TextIter &iter, GdkEvent *const event, 
 	}
 }
 
-void UIWindow::append_source_file(const int rank, const string &fullpath, const int line)
+void UIWindow::append_source_file(const string &fullpath)
 {
-	m_source_view_path[rank] = fullpath;
-	m_current_line[rank] = line;
 	if (m_opened_files.find(fullpath) == m_opened_files.end())
 	{
 		m_opened_files.insert(fullpath);
 		string basename = Glib::path_get_basename(fullpath);
 		Gtk::Label *label = Gtk::manage(new Gtk::Label(basename));
+		label->set_tooltip_text(fullpath);
 		Gtk::ScrolledWindow *scrolled_window = Gtk::manage(new Gtk::ScrolledWindow());
 		Gsv::View *source_view = Gtk::manage(new Gsv::View());
 		Glib::RefPtr<Gsv::Buffer> source_buffer = source_view->get_source_buffer();
@@ -466,6 +470,102 @@ void UIWindow::append_source_file(const int rank, const string &fullpath, const 
 	else
 	{
 		m_files_notebook->set_current_page(m_path_2_pagenum[fullpath]);
+	}
+}
+
+void UIWindow::open_file()
+{
+	string fullpath = "";
+	if (m_opened_files.find(fullpath) == m_opened_files.end())
+	{
+		std::unique_ptr<Gtk::FileChooserDialog> dialog = std::make_unique<Gtk::FileChooserDialog>(*m_root_window, "Open Source File");
+		dialog->add_button("Cancel", Gtk::RESPONSE_CANCEL);
+		dialog->add_button("Open", Gtk::RESPONSE_OK);
+		int res = dialog->run();
+		if (res == Gtk::RESPONSE_OK)
+		{
+			string fullpath = dialog->get_filename();
+			append_source_file(fullpath);
+		}
+		dialog.reset();
+	}
+	else
+	{
+		m_files_notebook->set_current_page(m_path_2_pagenum[fullpath]);
+	}
+}
+
+void UIWindow::close_unused_tabs()
+{
+	int num_pages;
+	std::set<int> pages_to_close;
+
+	num_pages = m_files_notebook->get_n_pages();
+	for (int page_num = 0; page_num < num_pages; ++page_num)
+	{
+		bool is_used = false;
+		string fullpath = m_pagenum_2_path[page_num];
+		for (int rank = 0; rank < m_num_processes; ++rank)
+		{
+			if (m_source_view_path[rank] == fullpath && target_state(rank) != TargetState::EXITED)
+			{
+				is_used = true;
+				break;
+			}
+		}
+		if (!is_used)
+		{
+			Gtk::Widget *page = m_files_notebook->get_nth_page(page_num);
+			Gtk::ScrolledWindow *scrolled_window = dynamic_cast<Gtk::ScrolledWindow *>(page);
+			Gsv::View *source_view = dynamic_cast<Gsv::View *>(scrolled_window->get_child());
+			Glib::RefPtr<Gsv::Buffer> source_buffer = source_view->get_source_buffer();
+
+			for (int line = 0; line < source_buffer->get_line_count(); ++line)
+			{
+				Gtk::TextBuffer::iterator iter = source_view->get_source_buffer()->get_iter_at_line(line);
+				for (Glib::RefPtr<Gtk::TextMark> &mark : iter.get_marks())
+				{
+					if (mark->get_name() == std::to_string(line))
+					{
+						is_used = true;
+						goto next_page;
+					}
+				}
+			}
+		}
+	next_page:
+		if (!is_used)
+		{
+			pages_to_close.insert(page_num);
+		}
+	}
+
+	// reversed order to keep indexeis valid
+	std::set<int>::reverse_iterator rit;
+	for (rit = pages_to_close.rbegin(); rit != pages_to_close.rend(); ++rit)
+	{
+		int page_num = *rit;
+		m_files_notebook->remove_page(page_num);
+	}
+
+	m_path_2_pagenum.clear();
+	m_pagenum_2_path.clear();
+	m_path_2_view.clear();
+	m_opened_files.clear();
+
+	num_pages = m_files_notebook->get_n_pages();
+	for (int page_num = 0; page_num < num_pages; ++page_num)
+	{
+		Gtk::Widget *page = m_files_notebook->get_nth_page(page_num);
+		Gtk::Label *label = dynamic_cast<Gtk::Label *>(m_files_notebook->get_tab_label(*page));
+		Gtk::ScrolledWindow *scrolled_window = dynamic_cast<Gtk::ScrolledWindow *>(page);
+		Gsv::View *source_view = dynamic_cast<Gsv::View *>(scrolled_window->get_child());
+		string fullpath = label->get_tooltip_text();
+
+		m_path_2_pagenum[fullpath] = page_num;
+		m_pagenum_2_path[page_num] = fullpath;
+		m_path_2_view[fullpath] = source_view;
+		m_opened_files.insert(fullpath);
 	}
 }
 
@@ -522,6 +622,12 @@ void UIWindow::scroll_to_line(const int rank) const
 				this,
 				&UIWindow::do_scroll),
 			rank));
+}
+
+void UIWindow::set_position(const int rank, const string &fullpath, const int line)
+{
+	m_source_view_path[rank] = fullpath;
+	m_current_line[rank] = line;
 }
 
 // todo refactor...
@@ -593,7 +699,10 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, co
 				if (stop_record->frame && stop_record->frame->fullname && stop_record->frame->func)
 				{
 					// printf("\tat %s:%d in function: %s\n", stop_record->frame->fullname, stop_record->frame->line, stop_record->frame->func);
-					append_source_file(rank, stop_record->frame->fullname, stop_record->frame->line);
+					const string fullpath = stop_record->frame->fullname;
+					const int line = stop_record->frame->line;
+					set_position(rank, fullpath, line);
+					append_source_file(fullpath);
 					scroll_to_line(rank);
 				}
 				if (mi_stop_reason::sr_exited_normally == stop_record->reason)
