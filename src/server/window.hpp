@@ -156,4 +156,7 @@ public:
 	}
 };
 
+void set_application(Gtk::Application *app);
+void on_quit_clicked();
+
 #endif /* WINDOW_HPP */

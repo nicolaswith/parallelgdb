@@ -8,14 +8,14 @@ class UIWindow;
 
 class UIDrawingArea : public Gtk::DrawingArea
 {
-	UIWindow *const m_window;
-	
 	static const Gdk::RGBA s_colors[];
 	static const int s_radius;
 	static const int s_spacing;
 
 	const int m_num_processes;
 	int *const m_y_offsets;
+	
+	UIWindow *const m_window;
 
 protected:
 	virtual bool on_draw(const Cairo::RefPtr<Cairo::Context> &context);

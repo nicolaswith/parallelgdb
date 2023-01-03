@@ -10,7 +10,7 @@ const int max_length = 0x2000; // socat default
 const asio::ip::port_type base_port_gdb = 0x8000;
 const asio::ip::port_type base_port_trgt = 0xC000;
 
-Gtk::Application *g_app;
+static Gtk::Application *g_app;
 
 int run_cmd(ssh_session &session, const StartupDialog &dialog)
 {
@@ -246,6 +246,7 @@ int main(int, char const **)
 {
 	Glib::RefPtr<Gtk::Application> app = Gtk::Application::create();
 	g_app = app.get();
+	set_application(app.get());
 
 	std::unique_ptr<StartupDialog> dialog = std::make_unique<StartupDialog>();
 	do
