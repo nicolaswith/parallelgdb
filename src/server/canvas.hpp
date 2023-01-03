@@ -4,8 +4,12 @@
 #include "defs.hpp"
 #include "mi_gdb.h"
 
+class UIWindow;
+
 class UIDrawingArea : public Gtk::DrawingArea
 {
+	UIWindow *const m_window;
+	
 	static const Gdk::RGBA s_colors[];
 	static const int s_radius;
 	static const int s_spacing;
@@ -17,10 +21,13 @@ protected:
 	virtual bool on_draw(const Cairo::RefPtr<Cairo::Context> &context);
 
 public:
-	UIDrawingArea(const int num_processes);
+	UIDrawingArea(const int num_processes, UIWindow *const window);
 	virtual ~UIDrawingArea() {}
 
-	void set_y_offset(const int rank, const int offset);
+	void set_y_offset(const int rank, const int offset)
+	{
+		m_y_offsets[rank] = offset;
+	}
 
 	inline static int radius()
 	{

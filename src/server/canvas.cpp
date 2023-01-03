@@ -16,9 +16,10 @@ const Gdk::RGBA UIDrawingArea::s_colors[] = {
 const int UIDrawingArea::s_radius = 8;
 const int UIDrawingArea::s_spacing = 4;
 
-UIDrawingArea::UIDrawingArea(const int num_processes)
+UIDrawingArea::UIDrawingArea(const int num_processes, UIWindow *const window)
 	: m_num_processes(num_processes),
-	  m_y_offsets(new int[m_num_processes])
+	  m_y_offsets(new int[m_num_processes]),
+	  m_window(window)
 {
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
@@ -26,16 +27,11 @@ UIDrawingArea::UIDrawingArea(const int num_processes)
 	}
 }
 
-void UIDrawingArea::set_y_offset(const int rank, const int offset)
-{
-	m_y_offsets[rank] = offset;
-}
-
 bool UIDrawingArea::on_draw(const Cairo::RefPtr<Cairo::Context> &context)
 {
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
-		if (m_y_offsets[rank] > -2 * s_radius - 1)
+		if (m_y_offsets[rank] > -2 * s_radius - 1 && m_window->target_state(rank) != TargetState::EXITED)
 		{
 			context->save();
 			context->arc(
@@ -45,10 +41,10 @@ bool UIDrawingArea::on_draw(const Cairo::RefPtr<Cairo::Context> &context)
 				0.0,
 				2.0 * M_PI);
 			context->set_source_rgba(
-				s_colors[rank].get_red(),
-				s_colors[rank].get_green(),
-				s_colors[rank].get_blue(),
-				s_colors[rank].get_alpha());
+				s_colors[rank % 8].get_red(),
+				s_colors[rank % 8].get_green(),
+				s_colors[rank % 8].get_blue(),
+				s_colors[rank % 8].get_alpha());
 			context->fill();
 			context->restore();
 		}

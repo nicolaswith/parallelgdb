@@ -84,7 +84,7 @@ bool UIWindow::init()
 	get_widget<Gtk::Button>("stop-button")->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &UIWindow::on_interaction_button_clicked), GDK_KEY_F9));
 	get_widget<Gtk::Button>("restart-button")->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &UIWindow::on_interaction_button_clicked), GDK_KEY_F12));
 
-	m_drawing_area = Gtk::manage(new UIDrawingArea(m_num_processes));
+	m_drawing_area = Gtk::manage(new UIDrawingArea(m_num_processes, this));
 	m_drawing_area->set_size_request(UIDrawingArea::spacing() + (2 * UIDrawingArea::radius() + UIDrawingArea::spacing()) * m_num_processes, -1);
 	get_widget<Gtk::Box>("files-canvas-box")->pack_start(*m_drawing_area);
 
@@ -191,7 +191,7 @@ void UIWindow::send_data_to_active(tcp::socket *const *const socket, const strin
 		{
 			continue;
 		}
-		if (socket == m_conns_trgt || m_target_state[rank] == TargetState::STOPPED || m_target_state[rank] == TargetState::UNKNOWN)
+		if (socket == m_conns_trgt || m_target_state[rank] != TargetState::RUNNING)
 		{
 			send_data(socket[rank], cmd);
 		}
@@ -549,10 +549,6 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, co
 				{
 					m_target_state[rank] = TargetState::STOPPED;
 				}
-				else if (MI_CL_EXIT == current_output->tclass)
-				{
-					m_target_state[rank] = TargetState::EXITED;
-				}
 				if (current_output->type == MI_T_OUT_OF_BAND && current_output->stype == MI_ST_STREAM /* && current_output->sstype == MI_SST_CONSOLE */)
 				{
 					char *text = get_cstr(current_output);
@@ -586,6 +582,10 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, co
 					// printf("\tat %s:%d in function: %s\n", stop_record->frame->fullname, stop_record->frame->line, stop_record->frame->func);
 					append_source_file(rank, stop_record->frame->fullname, stop_record->frame->line);
 					scroll_to_line(rank);
+				}
+				if (mi_stop_reason::sr_exited_normally == stop_record->reason)
+				{
+					m_target_state[rank] = TargetState::EXITED;
 				}
 				mi_free_stop(stop_record);
 			}
