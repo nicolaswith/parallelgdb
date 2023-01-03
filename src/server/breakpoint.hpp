@@ -44,6 +44,11 @@ public:
 		return m_breakpoint_state[rank] == BreakpointState::CREATED;
 	}
 
+	inline int get_line_number() const
+	{
+		return m_line;
+	}
+
 	inline void set_number(const int number)
 	{
 		m_number = number;

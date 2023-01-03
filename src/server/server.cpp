@@ -135,9 +135,6 @@ int start_clients_mpi(StartupDialog &dialog)
 		const char *const np_str = strdup(std::to_string(dialog.num_processes()).c_str());
 
 		char *argv[] = {
-			// (char *)"/usr/bin/xterm",
-			// (char *)"-hold",
-			// (char *)"-e",
 			(char *)"/usr/bin/mpirun",
 			(char *)"-np",
 			(char *)np_str,
@@ -197,7 +194,6 @@ void process_session(tcp::socket socket, UIWindow &window, const int port)
 			{
 				throw asio::system_error(error);
 			}
-			// idx 0 to (length-1) is valid data.
 			// add null termination to received data.
 			data[length] = '\0';
 			Glib::signal_idle().connect_once(

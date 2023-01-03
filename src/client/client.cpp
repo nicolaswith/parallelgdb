@@ -48,7 +48,6 @@ int start_gdb(const string &tty_gdb, const string &tty_trgt, const char *const g
 	{
 		int tty_fd = open(tty_gdb.c_str(), O_RDWR);
 
-		// connect to virtual io
 		dup2(tty_fd, STDIN_FILENO);
 		dup2(tty_fd, STDOUT_FILENO);
 		dup2(tty_fd, STDERR_FILENO);

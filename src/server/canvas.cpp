@@ -10,7 +10,7 @@ const Gdk::RGBA UIDrawingArea::s_colors[] = {
 	Gdk::RGBA("#c71585"),
 	Gdk::RGBA("#00ff00"),
 	Gdk::RGBA("#00ffff"),
-	Gdk::RGBA("#1e90ff"),
+	Gdk::RGBA("#1e90ff")
 };
 
 const int UIDrawingArea::s_radius = 8;

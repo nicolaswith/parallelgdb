@@ -5,7 +5,8 @@
 #include "breakpoint_dialog.hpp"
 
 const char *const breakpoint_category = "breakpoint-category";
-const char *const data_id = "line-number";
+const char *const line_number_id = "line-number";
+const char *const marks_id = "marks";
 
 static Gtk::Application *g_app;
 
@@ -333,6 +334,15 @@ void UIWindow::toggle_all_trgt()
 	toggle_all("target-send-select-wrapper-box");
 }
 
+void UIWindow::clear_mark(Glib::RefPtr<Gtk::TextMark> &mark, Glib::RefPtr<Gsv::Buffer> &source_buffer, Breakpoint *breakpoint)
+{
+	std::set<int> *set = (std::set<int> *)source_buffer->get_data(marks_id);
+	set->erase(breakpoint->get_line_number() - 1);
+	delete breakpoint;
+	mark->remove_data(line_number_id);
+	source_buffer->delete_mark(mark);
+}
+
 void UIWindow::create_mark(Gtk::TextIter &iter, Glib::RefPtr<Gsv::Buffer> &source_buffer, const string &fullpath)
 {
 	const int line = iter.get_line();
@@ -346,7 +356,10 @@ void UIWindow::create_mark(Gtk::TextIter &iter, Glib::RefPtr<Gsv::Buffer> &sourc
 	if (breakpoint->one_created())
 	{
 		Glib::RefPtr<Gsv::Mark> new_mark = source_buffer->create_source_mark(std::to_string(line), breakpoint_category, iter);
-		new_mark->set_data(data_id, (void *)breakpoint);
+		new_mark->set_data(line_number_id, (void *)breakpoint);
+		std::set<int> *set = new std::set<int>;
+		set->insert(line);
+		source_buffer->set_data(marks_id, (void *)set);
 	}
 	else
 	{
@@ -356,7 +369,7 @@ void UIWindow::create_mark(Gtk::TextIter &iter, Glib::RefPtr<Gsv::Buffer> &sourc
 
 void UIWindow::edit_mark(Glib::RefPtr<Gtk::TextMark> &mark, Glib::RefPtr<Gsv::Buffer> &source_buffer)
 {
-	Breakpoint *breakpoint = (Breakpoint *)mark->get_data(data_id);
+	Breakpoint *breakpoint = (Breakpoint *)mark->get_data(line_number_id);
 	std::unique_ptr<BreakpointDialog> dialog = std::make_unique<BreakpointDialog>(m_num_processes, breakpoint, false);
 	if (Gtk::RESPONSE_OK != dialog->run())
 	{
@@ -365,20 +378,16 @@ void UIWindow::edit_mark(Glib::RefPtr<Gtk::TextMark> &mark, Glib::RefPtr<Gsv::Bu
 	breakpoint->update_breakpoints(dialog->get_button_states());
 	if (!breakpoint->one_created())
 	{
-		delete breakpoint;
-		mark->remove_data(data_id);
-		source_buffer->delete_mark(mark);
+		clear_mark(mark, source_buffer, breakpoint);
 	}
 }
 
 void UIWindow::delete_mark(Glib::RefPtr<Gtk::TextMark> &mark, Glib::RefPtr<Gsv::Buffer> &source_buffer)
 {
-	Breakpoint *breakpoint = (Breakpoint *)mark->get_data(data_id);
+	Breakpoint *breakpoint = (Breakpoint *)mark->get_data(line_number_id);
 	if (breakpoint->delete_breakpoints())
 	{
-		delete breakpoint;
-		mark->remove_data(data_id);
-		source_buffer->delete_mark(mark);
+		clear_mark(mark, source_buffer, breakpoint);
 	}
 }
 
@@ -519,21 +528,19 @@ void UIWindow::close_unused_tabs()
 			Gtk::ScrolledWindow *scrolled_window = dynamic_cast<Gtk::ScrolledWindow *>(page);
 			Gsv::View *source_view = dynamic_cast<Gsv::View *>(scrolled_window->get_child());
 			Glib::RefPtr<Gsv::Buffer> source_buffer = source_view->get_source_buffer();
-
-			for (int line = 0; line < source_buffer->get_line_count(); ++line)
+			std::set<int> *set = (std::set<int> *)source_buffer->get_data(marks_id);
+			if (set)
 			{
-				Gtk::TextBuffer::iterator iter = source_view->get_source_buffer()->get_iter_at_line(line);
-				for (Glib::RefPtr<Gtk::TextMark> &mark : iter.get_marks())
+				if (set->empty())
 				{
-					if (mark->get_name() == std::to_string(line))
-					{
-						is_used = true;
-						goto next_page;
-					}
+					delete set;
+				}
+				else
+				{
+					is_used = true;
 				}
 			}
 		}
-	next_page:
 		if (!is_used)
 		{
 			pages_to_close.insert(page_num);
@@ -630,7 +637,6 @@ void UIWindow::set_position(const int rank, const string &fullpath, const int li
 	m_current_line[rank] = line;
 }
 
-// todo refactor...
 void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, const int rank)
 {
 	Gtk::TextBuffer *buffer = m_text_buffers_gdb[rank];
@@ -673,11 +679,6 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, co
 					char *text = get_cstr(current_output);
 					buffer->insert(buffer->end(), text);
 				}
-				else
-				{
-					// printf("%d,%d,%d,%d\n", current_output->type, current_output->stype, current_output->sstype, current_output->tclass);
-				}
-
 				current_output = current_output->next;
 			}
 
@@ -695,10 +696,8 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, co
 			mi_stop *stop_record = mi_res_stop(first_output);
 			if (stop_record)
 			{
-				// printf("Rank: %d stopped, reason: %s\n", rank, mi_reason_enum_to_str(stop_record->reason));
 				if (stop_record->frame && stop_record->frame->fullname && stop_record->frame->func)
 				{
-					// printf("\tat %s:%d in function: %s\n", stop_record->frame->fullname, stop_record->frame->line, stop_record->frame->func);
 					const string fullpath = stop_record->frame->fullname;
 					const int line = stop_record->frame->line;
 					set_position(rank, fullpath, line);

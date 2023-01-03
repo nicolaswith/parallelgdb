@@ -74,6 +74,7 @@ class UIWindow
 	void toggle_all(const string &box_name);
 	void toggle_all_gdb();
 	void toggle_all_trgt();
+	void clear_mark(Glib::RefPtr<Gtk::TextMark> &mark, Glib::RefPtr<Gsv::Buffer> &source_buffer, Breakpoint *breakpoint);
 	void create_mark(Gtk::TextIter &iter, Glib::RefPtr<Gsv::Buffer> &source_buffer, const string &fullpath);
 	void edit_mark(Glib::RefPtr<Gtk::TextMark> &mark, Glib::RefPtr<Gsv::Buffer> &source_buffer);
 	void delete_mark(Glib::RefPtr<Gtk::TextMark> &mark, Glib::RefPtr<Gsv::Buffer> &source_buffer);
