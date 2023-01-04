@@ -674,7 +674,7 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, co
 				{
 					m_target_state[rank] = TargetState::STOPPED;
 				}
-				if (current_output->type == MI_T_OUT_OF_BAND && current_output->stype == MI_ST_STREAM /* && current_output->sstype == MI_SST_CONSOLE */)
+				if (current_output->type == MI_T_OUT_OF_BAND && current_output->stype == MI_ST_STREAM)
 				{
 					char *text = get_cstr(current_output);
 					buffer->insert(buffer->end(), text);
@@ -704,7 +704,9 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, co
 					append_source_file(fullpath);
 					scroll_to_line(rank);
 				}
-				if (mi_stop_reason::sr_exited_normally == stop_record->reason)
+				if (mi_stop_reason::sr_exited_signalled == stop_record->reason ||
+					mi_stop_reason::sr_exited == stop_record->reason ||
+					mi_stop_reason::sr_exited_normally == stop_record->reason)
 				{
 					m_target_state[rank] = TargetState::EXITED;
 				}
