@@ -7,7 +7,7 @@ RM = rm
 BUILDDIR = ../../bin
 INCLUDEDIR = ../../include
 
-CFLAGS  = -std=c++17 -Wall -Wextra -Wpedantic -I./ -I$(INCLUDEDIR) -O3
+CFLAGS  = -std=c++17 -Wall -Wextra -Wpedantic -Werror -I./ -I$(INCLUDEDIR) -O3
 LDFLAGS = 
 GTKLIBS = $(shell pkg-config --cflags --libs gtkmm-3.0 gtksourceviewmm-3.0 libssh)
 
