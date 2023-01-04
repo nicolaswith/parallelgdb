@@ -7,13 +7,15 @@
 class BreakpointDialog
 {
 	const int m_num_processes;
+	const int m_max_buttons_per_row;
+
 	Breakpoint *const m_breakpoint;
 
 	bool *const m_button_states;
 
 	Glib::RefPtr<Gtk::Builder> m_builder;
 	Gtk::Dialog *m_dialog;
-	Gtk::Box *m_check_buttons_box;
+	Gtk::Grid *m_grid;
 
 	void on_dialog_response(const int response_id);
 	void toggle_all();
@@ -22,7 +24,7 @@ class BreakpointDialog
 	T *get_widget(const string &widget_name);
 
 public:
-	BreakpointDialog(const int num_processes, Breakpoint *const breakpoint, const bool init);
+	BreakpointDialog(const int num_processes, const int max_buttons_per_row, Breakpoint *const breakpoint, const bool init);
 	~BreakpointDialog();
 
 	inline int run()

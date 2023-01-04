@@ -35,7 +35,7 @@ bool UIDrawingArea::on_draw(const Cairo::RefPtr<Cairo::Context> &context)
 		{
 			context->save();
 			context->arc(
-				rank * (2 * s_radius + s_spacing) + s_radius + s_spacing,
+				rank * (2 * s_radius + s_spacing) + s_radius,
 				m_y_offsets[rank] + s_radius,
 				s_radius,
 				0.0,

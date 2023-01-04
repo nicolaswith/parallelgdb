@@ -136,6 +136,7 @@ int start_clients_mpi(StartupDialog &dialog)
 
 		char *argv[] = {
 			(char *)"/usr/bin/mpirun",
+			(char *)"--oversubscribe", // todo: only for local testing
 			(char *)"-np",
 			(char *)np_str,
 			(char *)dialog.client(),

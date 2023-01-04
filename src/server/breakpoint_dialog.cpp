@@ -10,20 +10,19 @@ T *BreakpointDialog::get_widget(const string &widget_name)
 	return widget;
 }
 
-BreakpointDialog::BreakpointDialog(const int num_processes, Breakpoint *const breakpoint, const bool init)
+BreakpointDialog::BreakpointDialog(const int num_processes, const int max_buttons_per_row, Breakpoint *const breakpoint, const bool init)
 	: m_num_processes(num_processes),
+	  m_max_buttons_per_row(max_buttons_per_row),
 	  m_breakpoint(breakpoint),
 	  m_button_states(new bool[m_num_processes])
 {
 	m_builder = Gtk::Builder::create_from_file("./ui/breakpoint_dialog.glade");
 	m_dialog = get_widget<Gtk::Dialog>("dialog");
 
-	m_check_buttons_box = get_widget<Gtk::Box>("check-buttons-box");
+	m_grid = get_widget<Gtk::Grid>("check-buttons-grid");
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
 		Gtk::CheckButton *check_button = Gtk::manage(new Gtk::CheckButton(std::to_string(rank)));
-		check_button->set_data(rank_id, new int(rank));
-
 		if (init)
 		{
 			check_button->set_active(true);
@@ -32,7 +31,7 @@ BreakpointDialog::BreakpointDialog(const int num_processes, Breakpoint *const br
 		{
 			check_button->set_active(m_breakpoint->is_created(rank));
 		}
-		m_check_buttons_box->pack_start(*check_button);
+		m_grid->attach(*check_button, rank % max_buttons_per_row, rank / max_buttons_per_row);
 	}
 	get_widget<Gtk::Button>("toggle-all-button")->signal_clicked().connect(sigc::mem_fun(*this, &BreakpointDialog::toggle_all));
 	m_dialog->signal_response().connect(sigc::mem_fun(*this, &BreakpointDialog::on_dialog_response));
@@ -42,12 +41,6 @@ BreakpointDialog::BreakpointDialog(const int num_processes, Breakpoint *const br
 
 BreakpointDialog::~BreakpointDialog()
 {
-	for (Gtk::Widget *check_button_widget : m_check_buttons_box->get_children())
-	{
-		Gtk::CheckButton *check_button = dynamic_cast<Gtk::CheckButton *>(check_button_widget);
-		delete (int *)check_button->get_data(rank_id);
-		check_button->remove_data(rank_id);
-	}
 	delete[] m_button_states;
 	delete m_dialog;
 }
@@ -58,11 +51,9 @@ void BreakpointDialog::on_dialog_response(const int response_id)
 	{
 		return;
 	}
-	for (Gtk::Widget *check_button_widget : m_check_buttons_box->get_children())
+	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
-		Gtk::CheckButton *check_button = dynamic_cast<Gtk::CheckButton *>(check_button_widget);
-		int rank = *(int *)check_button->get_data(rank_id);
-
+		Gtk::CheckButton *check_button = dynamic_cast<Gtk::CheckButton *>(m_grid->get_child_at(rank % m_max_buttons_per_row, rank / m_max_buttons_per_row));
 		m_button_states[rank] = check_button->get_active();
 	}
 }
@@ -70,13 +61,9 @@ void BreakpointDialog::on_dialog_response(const int response_id)
 void BreakpointDialog::toggle_all()
 {
 	bool one_checked = false;
-	for (Gtk::Widget *check_button_widget : m_check_buttons_box->get_children())
+	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
-		Gtk::CheckButton *check_button = dynamic_cast<Gtk::CheckButton *>(check_button_widget);
-		if (!check_button)
-		{
-			continue;
-		}
+		Gtk::CheckButton *check_button = dynamic_cast<Gtk::CheckButton *>(m_grid->get_child_at(rank % m_max_buttons_per_row, rank / m_max_buttons_per_row));
 		if (check_button->get_active())
 		{
 			one_checked = true;
@@ -84,13 +71,9 @@ void BreakpointDialog::toggle_all()
 		}
 	}
 	bool state = !one_checked;
-	for (Gtk::Widget *check_button_widget : m_check_buttons_box->get_children())
+	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
-		Gtk::CheckButton *check_button = dynamic_cast<Gtk::CheckButton *>(check_button_widget);
-		if (!check_button)
-		{
-			continue;
-		}
+		Gtk::CheckButton *check_button = dynamic_cast<Gtk::CheckButton *>(m_grid->get_child_at(rank % m_max_buttons_per_row, rank / m_max_buttons_per_row));
 		check_button->set_active(state);
 	}
 }

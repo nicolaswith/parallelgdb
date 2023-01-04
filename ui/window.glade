@@ -238,6 +238,7 @@
               <object class="GtkBox" id="files-canvas-box">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="margin-start">10</property>
                 <child>
                   <placeholder/>
                 </child>
@@ -341,12 +342,9 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkBox" id="gdb-send-select-wrapper-box">
+                      <object class="GtkEntry" id="gdb-send-select-entry">
                         <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <child>
-                          <placeholder/>
-                        </child>
+                        <property name="can-focus">True</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -355,8 +353,8 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton" id="gdb-send-select-all-button">
-                        <property name="label" translatable="yes">Toggle all</property>
+                      <object class="GtkButton" id="gdb-send-select-ok-button">
+                        <property name="label" translatable="yes">Ok</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
@@ -367,11 +365,39 @@
                         <property name="position">2</property>
                       </packing>
                     </child>
+                    <child>
+                      <object class="GtkButton" id="gdb-send-select-toggle-button">
+                        <property name="label" translatable="yes">Toggle all</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">3</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
                     <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <!-- n-columns=1 n-rows=1 -->
+                  <object class="GtkGrid" id="gdb-send-select-grid">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">3</property>
                   </packing>
                 </child>
                 <child>
@@ -407,7 +433,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">3</property>
+                    <property name="position">4</property>
                   </packing>
                 </child>
               </object>
@@ -480,12 +506,9 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkBox" id="target-send-select-wrapper-box">
+                      <object class="GtkEntry" id="target-send-select-entry">
                         <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <child>
-                          <placeholder/>
-                        </child>
+                        <property name="can-focus">True</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -494,8 +517,8 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton" id="target-send-select-all-button">
-                        <property name="label" translatable="yes">Toggle all</property>
+                      <object class="GtkButton" id="target-send-select-ok-button">
+                        <property name="label" translatable="yes">Ok</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
@@ -506,11 +529,39 @@
                         <property name="position">2</property>
                       </packing>
                     </child>
+                    <child>
+                      <object class="GtkButton" id="target-send-select-toggle-button">
+                        <property name="label" translatable="yes">Toggle all</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">3</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
                     <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <!-- n-columns=1 n-rows=1 -->
+                  <object class="GtkGrid" id="target-send-select-grid">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">3</property>
                   </packing>
                 </child>
                 <child>
@@ -546,7 +597,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">3</property>
+                    <property name="position">4</property>
                   </packing>
                 </child>
               </object>

@@ -60,6 +60,8 @@ class UIWindow
 
 	volatile bool *m_conns_open_gdb;
 
+	void init_grid(Gtk::Grid *grid);
+	void init_notebook(Gtk::Notebook *notebook, Gtk::ScrolledWindow **scrolled_windows, Gtk::TextBuffer **text_buffers);
 	void do_scroll(const int rank) const;
 	void scroll_to_line(const int rank) const;
 	void append_source_file(const string &fullpath);

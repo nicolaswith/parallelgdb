@@ -8,6 +8,8 @@ const char *const breakpoint_category = "breakpoint-category";
 const char *const line_number_id = "line-number";
 const char *const marks_id = "marks";
 
+int max_buttons_per_row = 8;
+
 static Gtk::Application *g_app;
 
 void set_application(Gtk::Application *app)
@@ -74,9 +76,44 @@ T *UIWindow::get_widget(const string &widget_name)
 	return widget;
 }
 
+void UIWindow::init_grid(Gtk::Grid *grid)
+{
+	for (int rank = 0; rank < m_num_processes; ++rank)
+	{
+		Gtk::CheckButton *check_button = Gtk::manage(new Gtk::CheckButton(std::to_string(rank)));
+		check_button->set_active(true);
+		grid->attach(*check_button, rank % max_buttons_per_row, rank / max_buttons_per_row);
+	}
+}
+
+void UIWindow::init_notebook(Gtk::Notebook *notebook, Gtk::ScrolledWindow **scrolled_windows, Gtk::TextBuffer **text_buffers)
+{
+	for (int rank = 0; rank < m_num_processes; ++rank)
+	{
+		Gtk::Label *tab = Gtk::manage(new Gtk::Label(std::to_string(rank)));
+		Gtk::ScrolledWindow *scrolled_window = Gtk::manage(new Gtk::ScrolledWindow());
+		scrolled_windows[rank] = scrolled_window;
+		Gtk::TextView *text_view = Gtk::manage(new Gtk::TextView());
+		text_view->set_editable(false);
+		text_buffers[rank] = text_view->get_buffer().get();
+		scrolled_window->add(*text_view);
+		scrolled_window->set_size_request(-1, 200);
+		notebook->append_page(*scrolled_window, *tab);
+	}
+}
+
 bool UIWindow::init()
 {
 	Gsv::init();
+
+	if (m_num_processes % 10 == 0)
+	{
+		max_buttons_per_row = 10;
+	}
+	if (m_num_processes > 32)
+	{
+		max_buttons_per_row *= 2;
+	}
 
 	m_builder = Gtk::Builder::create_from_file("./ui/window.glade");
 	m_root_window = get_widget<Gtk::Window>("window");
@@ -87,8 +124,8 @@ bool UIWindow::init()
 	get_widget<Gtk::Entry>("gdb-send-entry")->signal_activate().connect(sigc::mem_fun(*this, &UIWindow::send_input_gdb));
 	get_widget<Gtk::Button>("target-send-button")->signal_clicked().connect(sigc::mem_fun(*this, &UIWindow::send_input_trgt));
 	get_widget<Gtk::Entry>("target-send-entry")->signal_activate().connect(sigc::mem_fun(*this, &UIWindow::send_input_trgt));
-	get_widget<Gtk::Button>("gdb-send-select-all-button")->signal_clicked().connect(sigc::mem_fun(*this, &UIWindow::toggle_all_gdb));
-	get_widget<Gtk::Button>("target-send-select-all-button")->signal_clicked().connect(sigc::mem_fun(*this, &UIWindow::toggle_all_trgt));
+	get_widget<Gtk::Button>("gdb-send-select-toggle-button")->signal_clicked().connect(sigc::mem_fun(*this, &UIWindow::toggle_all_gdb));
+	get_widget<Gtk::Button>("target-send-select-toggle-button")->signal_clicked().connect(sigc::mem_fun(*this, &UIWindow::toggle_all_trgt));
 	m_root_window->signal_key_press_event().connect(sigc::mem_fun(*this, &UIWindow::on_key_press), false);
 	get_widget<Gtk::Button>("step-over-button")->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &UIWindow::on_interaction_button_clicked), GDK_KEY_F5));
 	get_widget<Gtk::Button>("step-in-button")->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &UIWindow::on_interaction_button_clicked), GDK_KEY_F6));
@@ -101,54 +138,21 @@ bool UIWindow::init()
 	get_widget<Gtk::MenuItem>("quit-menu-item")->signal_activate().connect(sigc::ptr_fun(&on_quit_clicked));
 
 	m_drawing_area = Gtk::manage(new UIDrawingArea(m_num_processes, this));
-	m_drawing_area->set_size_request(UIDrawingArea::spacing() + (2 * UIDrawingArea::radius() + UIDrawingArea::spacing()) * m_num_processes, -1);
+	m_drawing_area->set_size_request((2 * UIDrawingArea::radius() + UIDrawingArea::spacing()) * m_num_processes, -1);
 	get_widget<Gtk::Box>("files-canvas-box")->pack_start(*m_drawing_area);
 
 	m_files_notebook = get_widget<Gtk::Notebook>("files-notebook");
 	Glib::signal_timeout().connect(sigc::mem_fun(*this, &UIWindow::update_markers_timeout), 10);
 
 	Gtk::Notebook *notebook_gdb = get_widget<Gtk::Notebook>("gdb-output-notebook");
+	Gtk::Grid *grid_gdb = get_widget<Gtk::Grid>("gdb-send-select-grid");
+	init_notebook(notebook_gdb, m_scrolled_windows_gdb, m_text_buffers_gdb);
+	init_grid(grid_gdb);
+
 	Gtk::Notebook *notebook_trgt = get_widget<Gtk::Notebook>("target-output-notebook");
-	Gtk::Box *send_select_gdb = get_widget<Gtk::Box>("gdb-send-select-wrapper-box");
-	Gtk::Box *send_select_trgt = get_widget<Gtk::Box>("target-send-select-wrapper-box");
-	for (int rank = 0; rank < m_num_processes; ++rank)
-	{
-		// gdb output notebook
-		{
-			Gtk::Label *tab = Gtk::manage(new Gtk::Label(std::to_string(rank)));
-			Gtk::ScrolledWindow *scrolled_window = Gtk::manage(new Gtk::ScrolledWindow());
-			m_scrolled_windows_gdb[rank] = scrolled_window;
-			Gtk::TextView *text_view = Gtk::manage(new Gtk::TextView());
-			text_view->set_editable(false);
-			m_text_buffers_gdb[rank] = text_view->get_buffer().get();
-			scrolled_window->add(*text_view);
-			scrolled_window->set_size_request(-1, 200);
-			notebook_gdb->append_page(*scrolled_window, *tab);
-		}
-
-		// target output notebook
-		{
-			Gtk::Label *tab = Gtk::manage(new Gtk::Label(std::to_string(rank)));
-			Gtk::ScrolledWindow *scrolled_window = Gtk::manage(new Gtk::ScrolledWindow());
-			m_scrolled_windows_trgt[rank] = scrolled_window;
-			Gtk::TextView *text_view = Gtk::manage(new Gtk::TextView());
-			text_view->set_editable(false);
-			m_text_buffers_trgt[rank] = text_view->get_buffer().get();
-			scrolled_window->add(*text_view);
-			scrolled_window->set_size_request(-1, 200);
-			notebook_trgt->append_page(*scrolled_window, *tab);
-		}
-
-		// gdb send buttons
-		Gtk::CheckButton *check_button_gdb = Gtk::manage(new Gtk::CheckButton(std::to_string(rank)));
-		check_button_gdb->set_active(true);
-		send_select_gdb->pack_start(*check_button_gdb);
-
-		// target send buttons
-		Gtk::CheckButton *check_button_trgt = Gtk::manage(new Gtk::CheckButton(std::to_string(rank)));
-		check_button_trgt->set_active(true);
-		send_select_trgt->pack_start(*check_button_trgt);
-	}
+	Gtk::Grid *grid_trgt = get_widget<Gtk::Grid>("target-send-select-grid");
+	init_notebook(notebook_trgt, m_scrolled_windows_trgt, m_text_buffers_trgt);
+	init_grid(grid_trgt);
 
 	m_root_window->maximize();
 	m_root_window->show_all();
@@ -198,11 +202,10 @@ bool UIWindow::send_data(tcp::socket *const socket, const string &data)
 
 void UIWindow::send_data_to_active(tcp::socket *const *const socket, const string &cmd)
 {
-	Gtk::Box *box = get_widget<Gtk::Box>("gdb-send-select-wrapper-box");
-	std::vector<Gtk::Widget *> check_buttons = box->get_children();
+	Gtk::Grid *grid = get_widget<Gtk::Grid>("gdb-send-select-grid");
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
-		Gtk::CheckButton *check_button = dynamic_cast<Gtk::CheckButton *>(check_buttons.at(rank));
+		Gtk::CheckButton *check_button = dynamic_cast<Gtk::CheckButton *>(grid->get_child_at(rank % max_buttons_per_row, rank / max_buttons_per_row));
 		if (!check_button->get_active())
 		{
 			continue;
@@ -266,16 +269,15 @@ bool UIWindow::on_key_press(GdkEventKey *event)
 	return false;
 }
 
-void UIWindow::send_input(const string &entry_name, const string &wrapper_name, tcp::socket *const *const socket)
+void UIWindow::send_input(const string &entry_name, const string &grid_name, tcp::socket *const *const socket)
 {
 	Gtk::Entry *entry = get_widget<Gtk::Entry>(entry_name);
 	string cmd = string(entry->get_text()) + string("\n");
-	Gtk::Box *box = get_widget<Gtk::Box>(wrapper_name);
-	std::vector<Gtk::Widget *> check_buttons = box->get_children();
+	Gtk::Grid *grid = get_widget<Gtk::Grid>(grid_name);
 	bool one_selected = false;
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
-		Gtk::CheckButton *check_button = dynamic_cast<Gtk::CheckButton *>(check_buttons.at(rank));
+		Gtk::CheckButton *check_button = dynamic_cast<Gtk::CheckButton *>(grid->get_child_at(rank % max_buttons_per_row, rank / max_buttons_per_row));
 		if (check_button->get_active())
 		{
 			one_selected = true;
@@ -295,21 +297,21 @@ void UIWindow::send_input(const string &entry_name, const string &wrapper_name, 
 
 void UIWindow::send_input_gdb()
 {
-	send_input("gdb-send-entry", "gdb-send-select-wrapper-box", m_conns_gdb);
+	send_input("gdb-send-entry", "gdb-send-select-grid", m_conns_gdb);
 }
 
 void UIWindow::send_input_trgt()
 {
-	send_input("target-send-entry", "target-send-select-wrapper-box", m_conns_trgt);
+	send_input("target-send-entry", "target-send-select-grid", m_conns_trgt);
 }
 
-void UIWindow::toggle_all(const string &box_name)
+void UIWindow::toggle_all(const string &grid_name)
 {
-	Gtk::Box *box = get_widget<Gtk::Box>(box_name);
+	Gtk::Grid *grid = get_widget<Gtk::Grid>(grid_name);
 	bool one_checked = false;
-	for (Gtk::Widget *check_button_widget : box->get_children())
+	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
-		Gtk::CheckButton *check_button = dynamic_cast<Gtk::CheckButton *>(check_button_widget);
+		Gtk::CheckButton *check_button = dynamic_cast<Gtk::CheckButton *>(grid->get_child_at(rank % max_buttons_per_row, rank / max_buttons_per_row));
 		if (check_button->get_active())
 		{
 			one_checked = true;
@@ -317,21 +319,21 @@ void UIWindow::toggle_all(const string &box_name)
 		}
 	}
 	bool state = !one_checked;
-	for (Gtk::Widget *check_button_widget : box->get_children())
+	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
-		Gtk::CheckButton *check_button = dynamic_cast<Gtk::CheckButton *>(check_button_widget);
+		Gtk::CheckButton *check_button = dynamic_cast<Gtk::CheckButton *>(grid->get_child_at(rank % max_buttons_per_row, rank / max_buttons_per_row));
 		check_button->set_active(state);
 	}
 }
 
 void UIWindow::toggle_all_gdb()
 {
-	toggle_all("gdb-send-select-wrapper-box");
+	toggle_all("gdb-send-select-grid");
 }
 
 void UIWindow::toggle_all_trgt()
 {
-	toggle_all("target-send-select-wrapper-box");
+	toggle_all("target-send-select-grid");
 }
 
 void UIWindow::clear_mark(Glib::RefPtr<Gtk::TextMark> &mark, Glib::RefPtr<Gsv::Buffer> &source_buffer, Breakpoint *breakpoint)
@@ -347,7 +349,7 @@ void UIWindow::create_mark(Gtk::TextIter &iter, Glib::RefPtr<Gsv::Buffer> &sourc
 {
 	const int line = iter.get_line();
 	Breakpoint *breakpoint = new Breakpoint{m_num_processes, line + 1, fullpath, this};
-	std::unique_ptr<BreakpointDialog> dialog = std::make_unique<BreakpointDialog>(m_num_processes, breakpoint, true);
+	std::unique_ptr<BreakpointDialog> dialog = std::make_unique<BreakpointDialog>(m_num_processes, max_buttons_per_row, breakpoint, true);
 	if (Gtk::RESPONSE_OK != dialog->run())
 	{
 		return;
@@ -370,7 +372,7 @@ void UIWindow::create_mark(Gtk::TextIter &iter, Glib::RefPtr<Gsv::Buffer> &sourc
 void UIWindow::edit_mark(Glib::RefPtr<Gtk::TextMark> &mark, Glib::RefPtr<Gsv::Buffer> &source_buffer)
 {
 	Breakpoint *breakpoint = (Breakpoint *)mark->get_data(line_number_id);
-	std::unique_ptr<BreakpointDialog> dialog = std::make_unique<BreakpointDialog>(m_num_processes, breakpoint, false);
+	std::unique_ptr<BreakpointDialog> dialog = std::make_unique<BreakpointDialog>(m_num_processes, max_buttons_per_row, breakpoint, false);
 	if (Gtk::RESPONSE_OK != dialog->run())
 	{
 		return;
