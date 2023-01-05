@@ -76,8 +76,6 @@
                 <property name="can-focus">False</property>
                 <property name="margin-start">10</property>
                 <property name="margin-end">10</property>
-                <property name="margin-top">10</property>
-                <property name="margin-bottom">10</property>
                 <property name="spacing">10</property>
                 <child>
                   <object class="GtkButton" id="step-over-button">
@@ -86,6 +84,8 @@
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
                     <property name="tooltip-text" translatable="yes">(F5)</property>
+                    <property name="margin-top">10</property>
+                    <property name="margin-bottom">10</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -100,6 +100,8 @@
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
                     <property name="tooltip-text" translatable="yes">(F6)</property>
+                    <property name="margin-top">10</property>
+                    <property name="margin-bottom">10</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -114,6 +116,8 @@
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
                     <property name="tooltip-text" translatable="yes">(F7)</property>
+                    <property name="margin-top">10</property>
+                    <property name="margin-bottom">10</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -128,6 +132,8 @@
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
                     <property name="tooltip-text" translatable="yes">(F8)</property>
+                    <property name="margin-top">10</property>
+                    <property name="margin-bottom">10</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -142,6 +148,8 @@
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
                     <property name="tooltip-text" translatable="yes">(F9)</property>
+                    <property name="margin-top">10</property>
+                    <property name="margin-bottom">10</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -156,6 +164,8 @@
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
                     <property name="tooltip-text" translatable="yes">(F12)</property>
+                    <property name="margin-top">10</property>
+                    <property name="margin-bottom">10</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -181,6 +191,8 @@
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
+                    <property name="margin-top">10</property>
+                    <property name="margin-bottom">10</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -195,6 +207,8 @@
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
                     <property name="tooltip-text" translatable="yes">Used files contain processes or breakpoints. (F4)</property>
+                    <property name="margin-top">10</property>
+                    <property name="margin-bottom">10</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -343,7 +357,7 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="gdb-send-select-toggle-button">
-                        <property name="label" translatable="yes">Toggle all</property>
+                        <property name="label" translatable="yes">Toggle All</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
@@ -485,7 +499,7 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="target-send-select-toggle-button">
-                        <property name="label" translatable="yes">Toggle all</property>
+                        <property name="label" translatable="yes">Toggle All</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>

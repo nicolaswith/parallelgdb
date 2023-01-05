@@ -24,7 +24,6 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="margin-start">10</property>
                 <property name="margin-top">10</property>
                 <property name="margin-bottom">10</property>
               </object>
@@ -51,14 +50,14 @@
             <property name="margin-top">10</property>
             <property name="margin-bottom">10</property>
             <property name="row-spacing">10</property>
-            <property name="column-spacing">10</property>
+            <property name="column-spacing">25</property>
             <property name="row-homogeneous">True</property>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes">Config File</property>
+                <property name="label" translatable="yes">Load Config File</property>
               </object>
               <packing>
                 <property name="left-attach">0</property>
@@ -214,7 +213,8 @@
               <object class="GtkFileChooserButton" id="file-chooser-button">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="title" translatable="yes"/>
+                <property name="create-folders">False</property>
+                <property name="title" translatable="yes">Open Config File</property>
               </object>
               <packing>
                 <property name="left-attach">1</property>
@@ -223,6 +223,7 @@
             </child>
             <child>
               <object class="GtkEntry" id="num-processes-entry">
+                <property name="width-request">500</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
               </object>

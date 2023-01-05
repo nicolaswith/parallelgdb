@@ -59,7 +59,7 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="toggle-all-button">
-                    <property name="label" translatable="yes">Toggle all</property>
+                    <property name="label" translatable="yes">Toggle All</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
