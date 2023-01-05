@@ -136,7 +136,7 @@ int start_clients_mpi(StartupDialog &dialog)
 
 		char *argv[] = {
 			(char *)"/usr/bin/mpirun",
-			(char *)"--oversubscribe", // todo: only for local testing
+			(char *)"--oversubscribe",
 			(char *)"-np",
 			(char *)np_str,
 			(char *)dialog.client(),
@@ -250,7 +250,7 @@ int main(int, char const **)
 	{
 		if (Gtk::RESPONSE_OK != dialog->run())
 		{
-			return EXIT_FAILURE;
+			return EXIT_SUCCESS;
 		}
 	} while (!dialog->is_valid());
 
