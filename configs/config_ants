@@ -1,9 +1,9 @@
-num_nodes=1
-num_tasks=4
+num_nodes=2
+num_processes=4
 client=/home/urz/with/client
 gdb=/opt/spack/20221019/spack/opt/spack/linux-centos8-x86_64_v3/gcc-12.2.0/gdb-12.1-jqnjr2yu5a5hon2om6qdbmi3dia2tfuh/bin/gdb
 socat=/home/urz/with/spack/opt/spack/linux-centos8-x86_64_v3/gcc-8.5.0/socat-1.7.4.4-glonybxmsca7crv7c4vi2s4fnrmg7ebp/bin/socat
 target=/home/urz/with/target
-srun=true
+ssh=true
 ssh_address=ants.cs.ovgu.de
 partition=parcio

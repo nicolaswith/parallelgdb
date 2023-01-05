@@ -35,8 +35,8 @@ int run_cmd(ssh_session &session, const StartupDialog &dialog)
 	cmd += " --nodes=";
 	cmd += std::to_string(dialog.num_nodes());
 
-	cmd += " --ntasks=";
-	cmd += std::to_string(dialog.num_tasks());
+	cmd += " --ntasks-per-node=";
+	cmd += std::to_string(dialog.num_processes_per_node());
 
 	cmd += " --partition=";
 	cmd += dialog.partition();
@@ -74,7 +74,7 @@ int run_cmd(ssh_session &session, const StartupDialog &dialog)
 	return SSH_OK;
 }
 
-bool start_clients_srun(StartupDialog &dialog)
+bool start_clients_ssh(StartupDialog &dialog)
 {
 	ssh_session session;
 	int rc;
@@ -259,9 +259,9 @@ int main(int, char const **)
 	start_servers(window);
 
 	bool ret = false;
-	if (dialog->srun())
+	if (dialog->ssh())
 	{
-		ret = start_clients_srun(*dialog);
+		ret = start_clients_ssh(*dialog);
 	}
 	else
 	{
