@@ -31,6 +31,7 @@ class UIWindow
 
 	Glib::RefPtr<Gtk::Builder> m_builder;
 	Gtk::Window *m_root_window;
+	Glib::RefPtr<Gtk::Application> m_app;
 
 	Gtk::Notebook *m_files_notebook;
 	UIDrawingArea *m_drawing_area;
@@ -83,6 +84,7 @@ class UIWindow
 	void on_line_mark_clicked(Gtk::TextIter &iter, GdkEvent *const event, const string &fullpath);
 	void send_data_to_active(tcp::socket *const *const socket, const string &data);
 	void interact_with_gdb(const int key_value);
+	void on_quit_clicked();
 	void on_interaction_button_clicked(const int key_value);
 	bool on_key_press(GdkEventKey *event);
 	void set_position(const int rank, const string &fullpath, const int line);
@@ -96,7 +98,7 @@ public:
 	UIWindow(const int num_processes);
 	virtual ~UIWindow();
 
-	bool init();
+	bool init(Glib::RefPtr<Gtk::Application> app);
 	bool on_delete(GdkEventAny *);
 	void print_data(mi_h *const gdb_handle, const char *const data, const int port);
 	bool send_data(tcp::socket *const socket, const string &data);

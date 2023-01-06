@@ -10,18 +10,6 @@ const char *const marks_id = "marks";
 
 int max_buttons_per_row = 8;
 
-static Gtk::Application *g_app;
-
-void set_application(Gtk::Application *app)
-{
-	g_app = app;
-}
-
-void on_quit_clicked()
-{
-	g_app->quit();
-}
-
 UIWindow::UIWindow(const int num_processes)
 	: m_num_processes(num_processes),
 	  m_sent_run(false)
@@ -102,7 +90,7 @@ void UIWindow::init_notebook(Gtk::Notebook *notebook, Gtk::ScrolledWindow **scro
 	}
 }
 
-bool UIWindow::init()
+bool UIWindow::init(Glib::RefPtr<Gtk::Application> app)
 {
 	Gsv::init();
 
@@ -117,6 +105,7 @@ bool UIWindow::init()
 
 	m_builder = Gtk::Builder::create_from_file("./ui/window.glade");
 	m_root_window = get_widget<Gtk::Window>("window");
+	m_app = app;
 
 	// Signal are not compatible with glade and gtkmm ...
 	// So connect them the old-fashioned way.
@@ -135,7 +124,7 @@ bool UIWindow::init()
 	get_widget<Gtk::Button>("restart-button")->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &UIWindow::on_interaction_button_clicked), GDK_KEY_F12));
 	get_widget<Gtk::Button>("open-file-button")->signal_clicked().connect(sigc::mem_fun(*this, &UIWindow::open_file));
 	get_widget<Gtk::Button>("close-unused-button")->signal_clicked().connect(sigc::mem_fun(*this, &UIWindow::close_unused_tabs));
-	get_widget<Gtk::MenuItem>("quit-menu-item")->signal_activate().connect(sigc::ptr_fun(&on_quit_clicked));
+	get_widget<Gtk::MenuItem>("quit-menu-item")->signal_activate().connect(sigc::mem_fun(*this, &UIWindow::on_quit_clicked));
 
 	m_drawing_area = Gtk::manage(new UIDrawingArea(m_num_processes, this));
 	m_drawing_area->set_size_request((2 * UIDrawingArea::radius() + UIDrawingArea::spacing()) * m_num_processes, -1);
@@ -157,6 +146,11 @@ bool UIWindow::init()
 	m_root_window->maximize();
 	m_root_window->show_all();
 	return true;
+}
+
+void UIWindow::on_quit_clicked()
+{
+	m_app->quit();
 }
 
 bool UIWindow::on_delete(GdkEventAny *)
