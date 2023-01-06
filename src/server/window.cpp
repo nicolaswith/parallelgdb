@@ -197,6 +197,7 @@ bool UIWindow::send_data(tcp::socket *const socket, const string &data)
 void UIWindow::send_data_to_active(tcp::socket *const *const socket, const string &cmd)
 {
 	Gtk::Grid *grid = get_widget<Gtk::Grid>("gdb-send-select-grid");
+	bool one_selected = false;
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
 		Gtk::CheckButton *check_button = dynamic_cast<Gtk::CheckButton *>(grid->get_child_at(rank % max_buttons_per_row, rank / max_buttons_per_row));
@@ -204,10 +205,16 @@ void UIWindow::send_data_to_active(tcp::socket *const *const socket, const strin
 		{
 			continue;
 		}
+		one_selected = true;
 		if (socket == m_conns_trgt || m_target_state[rank] != TargetState::RUNNING)
 		{
 			send_data(socket[rank], cmd);
 		}
+	}
+	if (!one_selected)
+	{
+		Gtk::MessageDialog dialog(*m_root_window, "No process selected.", false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
+		dialog.run();
 	}
 }
 
@@ -284,7 +291,7 @@ void UIWindow::send_input(const string &entry_name, const string &grid_name, tcp
 	}
 	else
 	{
-		Gtk::MessageDialog dialog(*m_root_window, "No Process selected.\nNoting has been sent.", false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
+		Gtk::MessageDialog dialog(*m_root_window, "No process selected.\nNoting has been sent.", false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
 		dialog.run();
 	}
 }
