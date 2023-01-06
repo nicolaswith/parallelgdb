@@ -1,19 +1,19 @@
 #include <string>
+#include <cmath>
 #include "canvas.hpp"
 #include "window.hpp"
 
 const Gdk::RGBA UIDrawingArea::s_colors[] = {
 	Gdk::RGBA("#ff0000"),
 	Gdk::RGBA("#008000"),
-	Gdk::RGBA("#0000ff"),
+	Gdk::RGBA("#0000bb"),
 	Gdk::RGBA("#ffd700"),
 	Gdk::RGBA("#c71585"),
 	Gdk::RGBA("#00ff00"),
 	Gdk::RGBA("#00ffff"),
-	Gdk::RGBA("#1e90ff")
-};
+	Gdk::RGBA("#1e90ff")};
 
-const int UIDrawingArea::s_radius = 8;
+const int UIDrawingArea::s_radius = 10;
 const int UIDrawingArea::s_spacing = 4;
 
 UIDrawingArea::UIDrawingArea(const int num_processes, UIWindow *const window)
@@ -27,26 +27,39 @@ UIDrawingArea::UIDrawingArea(const int num_processes, UIWindow *const window)
 	}
 }
 
-bool UIDrawingArea::on_draw(const Cairo::RefPtr<Cairo::Context> &context)
+bool UIDrawingArea::on_draw(const Cairo::RefPtr<Cairo::Context> &c)
 {
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
 		if (m_y_offsets[rank] > -2 * s_radius - 1 && m_window->target_state(rank) != TargetState::EXITED)
 		{
-			context->save();
-			context->arc(
-				rank * (2 * s_radius + s_spacing) + s_radius,
-				m_y_offsets[rank] + s_radius,
-				s_radius,
-				0.0,
-				2.0 * M_PI);
-			context->set_source_rgba(
+			int x = rank * (2 * s_radius + s_spacing);
+			int y = m_y_offsets[rank];
+
+			c->save();
+
+			c->set_source_rgba(
 				s_colors[rank % 8].get_red(),
 				s_colors[rank % 8].get_green(),
 				s_colors[rank % 8].get_blue(),
 				s_colors[rank % 8].get_alpha());
-			context->fill();
-			context->restore();
+
+			c->arc(x + s_radius, y + s_radius, s_radius, 0.0, 2.0 * M_PI);
+			c->fill();
+
+			Pango::FontDescription font;
+			font.set_family("Monospace");
+			Glib::RefPtr<Pango::Layout> layout = create_pango_layout(std::to_string(rank));
+			layout->set_font_description(font);
+
+			int text_width;
+			int text_height;
+			layout->get_pixel_size(text_width, text_height);
+
+			c->move_to(x + s_radius - (text_width / 2), y + pow(-1, rank) * (2 * s_radius + 1));
+			layout->show_in_cairo_context(c);
+
+			c->restore();
 		}
 	}
 

@@ -18,7 +18,7 @@ class UIDrawingArea : public Gtk::DrawingArea
 	UIWindow *const m_window;
 
 protected:
-	virtual bool on_draw(const Cairo::RefPtr<Cairo::Context> &context);
+	virtual bool on_draw(const Cairo::RefPtr<Cairo::Context> &c);
 
 public:
 	UIDrawingArea(const int num_processes, UIWindow *const window);
