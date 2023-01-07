@@ -36,6 +36,10 @@ class UIWindow
 	Gtk::Notebook *m_files_notebook;
 	UIDrawingArea *m_drawing_area;
 
+	Gtk::Grid *m_overview_grid;
+	Gtk::Separator **m_separators;
+	int m_last_row_idx;
+
 	Gtk::TextBuffer **m_text_buffers_gdb;
 	Gtk::TextBuffer **m_text_buffers_trgt;
 	Gtk::ScrolledWindow **m_scrolled_windows_gdb;
@@ -45,6 +49,7 @@ class UIWindow
 	std::map<string, int> m_path_2_pagenum;
 	std::map<int, string> m_pagenum_2_path;
 	std::map<string, Gsv::View *> m_path_2_view;
+	std::map<string, int> m_path_2_row;
 
 	sigc::connection *m_scroll_connections_gdb;
 	sigc::connection *m_scroll_connections_trgt;
@@ -61,10 +66,12 @@ class UIWindow
 
 	volatile bool *m_conns_open_gdb;
 
+	void init_overview();
 	void init_grid(Gtk::Grid *grid);
 	void init_notebook(Gtk::Notebook *notebook, Gtk::ScrolledWindow **scrolled_windows, Gtk::TextBuffer **text_buffers);
 	void do_scroll(const int rank) const;
 	void scroll_to_line(const int rank) const;
+	void append_overview_row(const string &basename, const string &fullpath);
 	void append_source_file(const string &fullpath);
 	void print_data_gdb(mi_h *const gdb_handle, const char *const data, const int rank);
 	void print_data_trgt(const char *const data, const int rank);
@@ -87,6 +94,7 @@ class UIWindow
 	void on_quit_clicked();
 	void on_interaction_button_clicked(const int key_value);
 	bool on_key_press(GdkEventKey *event);
+	void update_overview(const int rank, const string &fullpath, const int line);
 	void set_position(const int rank, const string &fullpath, const int line);
 	void open_file();
 	void close_unused_tabs();

@@ -19,6 +19,7 @@ UIWindow::UIWindow(const int num_processes)
 	m_target_state = new TargetState[m_num_processes];
 	m_conns_gdb = new tcp::socket *[m_num_processes];
 	m_conns_trgt = new tcp::socket *[m_num_processes];
+	m_separators = new Gtk::Separator *[m_num_processes];
 	m_text_buffers_gdb = new Gtk::TextBuffer *[m_num_processes];
 	m_text_buffers_trgt = new Gtk::TextBuffer *[m_num_processes];
 	m_scrolled_windows_gdb = new Gtk::ScrolledWindow *[m_num_processes];
@@ -46,6 +47,7 @@ UIWindow::~UIWindow()
 	delete[] m_source_view_path;
 	delete[] m_conns_gdb;
 	delete[] m_conns_trgt;
+	delete[] m_separators;
 	delete[] m_text_buffers_gdb;
 	delete[] m_text_buffers_trgt;
 	delete[] m_scrolled_windows_gdb;
@@ -88,6 +90,29 @@ void UIWindow::init_notebook(Gtk::Notebook *notebook, Gtk::ScrolledWindow **scro
 		scrolled_window->set_size_request(-1, 200);
 		notebook->append_page(*scrolled_window, *tab);
 	}
+}
+
+void UIWindow::init_overview()
+{
+	m_overview_grid = get_widget<Gtk::Grid>("overview-grid");
+
+	Gtk::Label *process_label = Gtk::manage(new Gtk::Label("Process"));
+	process_label->set_size_request(100, -1);
+	m_overview_grid->attach(*process_label, 0, 0);
+
+	for (int rank = 0; rank < m_num_processes; ++rank)
+	{
+		Gtk::Separator *separator = Gtk::manage(new Gtk::Separator);
+		separator->set_size_request(2, -1);
+		m_overview_grid->attach(*separator, 2 * rank + 1, 0, 1, 1);
+		m_separators[rank] = separator;
+
+		Gtk::Label *process_num = Gtk::manage(new Gtk::Label(std::to_string(rank)));
+		process_num->set_size_request(35, -1);
+		m_overview_grid->attach(*process_num, 2 * rank + 2, 0);
+	}
+
+	m_last_row_idx = 1;
 }
 
 bool UIWindow::init(Glib::RefPtr<Gtk::Application> app)
@@ -142,6 +167,8 @@ bool UIWindow::init(Glib::RefPtr<Gtk::Application> app)
 	Gtk::Grid *grid_trgt = get_widget<Gtk::Grid>("target-send-select-grid");
 	init_notebook(notebook_trgt, m_scrolled_windows_trgt, m_text_buffers_trgt);
 	init_grid(grid_trgt);
+
+	init_overview();
 
 	m_root_window->maximize();
 	m_root_window->show_all();
@@ -431,6 +458,74 @@ void UIWindow::on_line_mark_clicked(Gtk::TextIter &iter, GdkEvent *const event, 
 	}
 }
 
+void UIWindow::update_overview(const int rank, const string &fullpath, const int line)
+{
+	for (std::pair<const string, int> &pair : m_path_2_row)
+	{
+		const string &path = pair.first;
+		const int row = pair.second;
+
+		Gtk::Label *label = dynamic_cast<Gtk::Label *>(m_overview_grid->get_child_at(2 * rank + 2, row));
+		if (label)
+		{
+			if (m_path_2_view.find(fullpath) != m_path_2_view.end())
+			{
+				Gtk::TextIter iter = m_path_2_view[fullpath]->get_buffer()->get_iter_at_line(line - 1);
+				if (iter)
+				{
+					Gtk::TextIter end = m_path_2_view[fullpath]->get_buffer()->get_iter_at_line(line - 1);
+					end.forward_to_line_end();
+					label->set_tooltip_text(iter.get_text(end));
+				}
+			}
+
+			if (fullpath == path)
+			{
+				label->set_text(std::to_string(line));
+			}
+			else
+			{
+				label->set_text("");
+			}
+		}
+		else
+		{
+			throw std::invalid_argument("Invalid row.");
+		}
+	}
+}
+
+void UIWindow::append_overview_row(const string &basename, const string &fullpath)
+{
+	Gtk::Separator *separator = Gtk::manage(new Gtk::Separator);
+	separator->set_size_request(-1, 2);
+	m_overview_grid->attach(*separator, 0, m_last_row_idx, 2 * m_num_processes + 1, 1);
+	m_last_row_idx++;
+
+	Gtk::Label *basename_label = Gtk::manage(new Gtk::Label(basename));
+	basename_label->set_tooltip_text(fullpath);
+	m_overview_grid->attach(*basename_label, 0, m_last_row_idx);
+
+	for (int rank = 0; rank < m_num_processes; ++rank)
+	{
+		m_path_2_row[fullpath] = m_last_row_idx;
+
+		string text = "";
+		if (fullpath == m_source_view_path[rank])
+		{
+			text = std::to_string(m_current_line[rank]);
+		}
+		Gtk::Label *row_num = Gtk::manage(new Gtk::Label(text));
+		m_overview_grid->attach(*row_num, 2 * rank + 2, m_last_row_idx);
+
+		m_overview_grid->remove(*dynamic_cast<Gtk::Widget *>(m_separators[rank]));
+		m_overview_grid->attach(*m_separators[rank], 2 * rank + 1, 0, 1, m_last_row_idx + 1);
+	}
+	m_last_row_idx++;
+
+	m_overview_grid->show_all();
+}
+
 void UIWindow::append_source_file(const string &fullpath)
 {
 	if (m_opened_files.find(fullpath) == m_opened_files.end())
@@ -478,6 +573,7 @@ void UIWindow::append_source_file(const string &fullpath)
 		m_path_2_pagenum[fullpath] = page_num;
 		m_pagenum_2_path[page_num] = fullpath;
 		m_path_2_view[fullpath] = source_view;
+		append_overview_row(basename, fullpath);
 	}
 	else
 	{
@@ -554,11 +650,15 @@ void UIWindow::close_unused_tabs()
 	std::set<int>::reverse_iterator rit;
 	for (rit = pages_to_close.rbegin(); rit != pages_to_close.rend(); ++rit)
 	{
-		int page_num = *rit;
+		const int page_num = *rit;
 		m_files_notebook->remove_page(page_num);
+		m_overview_grid->remove_row(2 * page_num + 2);
+		m_overview_grid->remove_row(2 * page_num + 1);
+		m_last_row_idx -= 2;
 	}
 
 	m_path_2_pagenum.clear();
+	m_path_2_row.clear();
 	m_pagenum_2_path.clear();
 	m_path_2_view.clear();
 	m_opened_files.clear();
@@ -573,6 +673,7 @@ void UIWindow::close_unused_tabs()
 		string fullpath = label->get_tooltip_text();
 
 		m_path_2_pagenum[fullpath] = page_num;
+		m_path_2_row[fullpath] = 2 * page_num + 2;
 		m_pagenum_2_path[page_num] = fullpath;
 		m_path_2_view[fullpath] = source_view;
 		m_opened_files.insert(fullpath);
@@ -638,6 +739,7 @@ void UIWindow::set_position(const int rank, const string &fullpath, const int li
 {
 	m_source_view_path[rank] = fullpath;
 	m_current_line[rank] = line;
+	update_overview(rank, fullpath, line);
 }
 
 void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, const int rank)
