@@ -3,7 +3,6 @@
 
 #include "defs.hpp"
 #include "mi_gdb.h"
-#include "canvas.hpp"
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
@@ -20,6 +19,7 @@ enum TargetState
 };
 
 class Breakpoint;
+class UIDrawingArea;
 
 class UIWindow
 {
@@ -94,6 +94,8 @@ class UIWindow
 	void on_quit_clicked();
 	void on_interaction_button_clicked(const int key_value);
 	bool on_key_press(GdkEventKey *event);
+	void remove_label_overview(const int rank);
+	void color_overview();
 	void update_overview(const int rank, const string &fullpath, const int line);
 	void set_position(const int rank, const string &fullpath, const int line);
 	void open_file();

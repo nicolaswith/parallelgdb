@@ -3,6 +3,7 @@
 #include "window.hpp"
 #include "breakpoint.hpp"
 #include "breakpoint_dialog.hpp"
+#include "canvas.hpp"
 
 const char *const breakpoint_category = "breakpoint-category";
 const char *const line_number_id = "line-number";
@@ -458,6 +459,46 @@ void UIWindow::on_line_mark_clicked(Gtk::TextIter &iter, GdkEvent *const event, 
 	}
 }
 
+void UIWindow::color_overview()
+{
+	for (std::pair<const string, int> &pair : m_path_2_row)
+	{
+		const string &path = pair.first;
+		const int row = pair.second;
+
+		std::map<int, int> line_2_offset;
+		int color_offset = 0;
+		for (int rank = 0; rank < m_num_processes; ++rank)
+		{
+			Gtk::Label *label = dynamic_cast<Gtk::Label *>(m_overview_grid->get_child_at(2 * rank + 2, row));
+			label->unset_color();
+
+			if (m_source_view_path[rank] == path)
+			{
+				if (line_2_offset.find(m_current_line[rank]) == line_2_offset.end())
+				{
+					line_2_offset[m_current_line[rank]] = color_offset;
+					color_offset = (color_offset + 1) % 8;
+				}
+				label->override_color(UIDrawingArea::s_colors[line_2_offset[m_current_line[rank]]]);
+			}
+		}
+	}
+}
+
+void UIWindow::remove_label_overview(const int rank)
+{
+	for (std::pair<const string, int> &pair : m_path_2_row)
+	{
+		const int row = pair.second;
+		Gtk::Label *label = dynamic_cast<Gtk::Label *>(m_overview_grid->get_child_at(2 * rank + 2, row));
+		if (label)
+		{
+			label->set_text("");
+		}
+	}
+}
+
 void UIWindow::update_overview(const int rank, const string &fullpath, const int line)
 {
 	for (std::pair<const string, int> &pair : m_path_2_row)
@@ -493,6 +534,8 @@ void UIWindow::update_overview(const int rank, const string &fullpath, const int
 			throw std::invalid_argument("Invalid row.");
 		}
 	}
+
+	color_overview();
 }
 
 void UIWindow::append_overview_row(const string &basename, const string &fullpath)
@@ -801,6 +844,13 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, co
 			mi_stop *stop_record = mi_res_stop(first_output);
 			if (stop_record)
 			{
+				if (mi_stop_reason::sr_exited_signalled == stop_record->reason ||
+					mi_stop_reason::sr_exited == stop_record->reason ||
+					mi_stop_reason::sr_exited_normally == stop_record->reason)
+				{
+					m_target_state[rank] = TargetState::EXITED;
+					remove_label_overview(rank);
+				}
 				if (stop_record->frame && stop_record->frame->fullname && stop_record->frame->func)
 				{
 					const string fullpath = stop_record->frame->fullname;
@@ -808,12 +858,6 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, co
 					set_position(rank, fullpath, line);
 					append_source_file(fullpath);
 					scroll_to_line(rank);
-				}
-				if (mi_stop_reason::sr_exited_signalled == stop_record->reason ||
-					mi_stop_reason::sr_exited == stop_record->reason ||
-					mi_stop_reason::sr_exited_normally == stop_record->reason)
-				{
-					m_target_state[rank] = TargetState::EXITED;
 				}
 				mi_free_stop(stop_record);
 			}
