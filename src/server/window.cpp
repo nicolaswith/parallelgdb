@@ -151,6 +151,7 @@ bool UIWindow::init(Glib::RefPtr<Gtk::Application> app)
 	get_widget<Gtk::Button>("open-file-button")->signal_clicked().connect(sigc::mem_fun(*this, &UIWindow::open_file));
 	get_widget<Gtk::Button>("close-unused-button")->signal_clicked().connect(sigc::mem_fun(*this, &UIWindow::close_unused_tabs));
 	get_widget<Gtk::MenuItem>("quit-menu-item")->signal_activate().connect(sigc::mem_fun(*this, &UIWindow::on_quit_clicked));
+	get_widget<Gtk::MenuItem>("about-menu-item")->signal_activate().connect(sigc::mem_fun(*this, &UIWindow::on_about_clicked));
 
 	m_drawing_area = Gtk::manage(new UIDrawingArea(m_num_processes, this));
 	m_drawing_area->set_size_request((2 * UIDrawingArea::radius() + UIDrawingArea::spacing()) * m_num_processes, -1);
@@ -174,6 +175,15 @@ bool UIWindow::init(Glib::RefPtr<Gtk::Application> app)
 	m_root_window->maximize();
 	m_root_window->show_all();
 	return true;
+}
+
+void UIWindow::on_about_clicked()
+{
+	Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create_from_file("./ui/about_dialog.glade");
+	Gtk::AboutDialog *dialog = new Gtk::AboutDialog;
+	builder->get_widget<Gtk::AboutDialog>("dialog", dialog);
+	dialog->run();
+	delete dialog;
 }
 
 void UIWindow::on_quit_clicked()
@@ -495,6 +505,7 @@ void UIWindow::remove_label_overview(const int rank)
 		if (label)
 		{
 			label->set_text("");
+			label->set_tooltip_text("");
 		}
 	}
 }
@@ -509,6 +520,7 @@ void UIWindow::update_overview(const int rank, const string &fullpath, const int
 		Gtk::Label *label = dynamic_cast<Gtk::Label *>(m_overview_grid->get_child_at(2 * rank + 2, row));
 		if (label)
 		{
+			string text = "";
 			if (m_path_2_view.find(fullpath) != m_path_2_view.end())
 			{
 				Gtk::TextIter iter = m_path_2_view[fullpath]->get_buffer()->get_iter_at_line(line - 1);
@@ -516,9 +528,10 @@ void UIWindow::update_overview(const int rank, const string &fullpath, const int
 				{
 					Gtk::TextIter end = m_path_2_view[fullpath]->get_buffer()->get_iter_at_line(line - 1);
 					end.forward_to_line_end();
-					label->set_tooltip_text(iter.get_text(end));
+					text = iter.get_text(end);
 				}
 			}
+			label->set_tooltip_text(text);
 
 			if (fullpath == path)
 			{
@@ -589,7 +602,7 @@ void UIWindow::append_source_file(const string &fullpath)
 		{
 			source_view->set_show_line_numbers(true);
 			source_view->set_show_line_marks(true);
-			source_buffer->set_language(Gsv::LanguageManager::get_default()->get_language("cpp"));
+			source_buffer->set_language(Gsv::LanguageManager::get_default()->guess_language(fullpath, Glib::ustring()));
 			source_buffer->set_highlight_matching_brackets(true);
 			source_buffer->set_highlight_syntax(true);
 			source_buffer->set_text(content);

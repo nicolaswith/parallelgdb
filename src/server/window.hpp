@@ -91,6 +91,7 @@ class UIWindow
 	void on_line_mark_clicked(Gtk::TextIter &iter, GdkEvent *const event, const string &fullpath);
 	void send_data_to_active(tcp::socket *const *const socket, const string &data);
 	void interact_with_gdb(const int key_value);
+	void on_about_clicked();
 	void on_quit_clicked();
 	void on_interaction_button_clicked(const int key_value);
 	bool on_key_press(GdkEventKey *event);
