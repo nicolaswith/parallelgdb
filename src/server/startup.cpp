@@ -258,7 +258,7 @@ void StartupDialog::on_save_dialog_response(const int response_id)
 	}
 
 	string filename = m_file_chooser_dialog->get_filename();
-	
+
 	std::ofstream file(filename);
 	file << m_config;
 	file.close();
@@ -268,21 +268,35 @@ bool StartupDialog::read_values()
 {
 	try
 	{
-		m_processes_per_node = std::stoi(m_entry_processes_per_node->get_text());
+		std::size_t pos;
+		string text = m_entry_processes_per_node->get_text();
+		m_processes_per_node = std::stoi(text, &pos, 10);
+		if (pos != text.size())
+		{
+			throw std::exception();
+		}
 	}
 	catch (const std::exception &e)
 	{
-		std::cerr << "Invalid value in input: Processes per Node\n";
+		Gtk::MessageDialog dialog(*dynamic_cast<Gtk::Window *>(m_dialog), "Invalid Number: Processes per Node.", false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
+		dialog.run();
 		return false;
 	}
 
 	try
 	{
-		m_num_nodes = std::stoi(m_entry_num_nodes->get_text());
+		std::size_t pos;
+		string text = m_entry_num_nodes->get_text();
+		m_num_nodes = std::stoi(text, &pos, 10);
+		if (pos != text.size())
+		{
+			throw std::exception();
+		}
 	}
 	catch (const std::exception &e)
 	{
-		std::cerr << "Invalid value in input: Number of Nodes.\n";
+		Gtk::MessageDialog dialog(*dynamic_cast<Gtk::Window *>(m_dialog), "Invalid Number: Number of Nodes.", false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
+		dialog.run();
 		return false;
 	}
 
