@@ -520,7 +520,7 @@ void UIWindow::update_overview(const int rank, const string &fullpath, const int
 		Gtk::Label *label = dynamic_cast<Gtk::Label *>(m_overview_grid->get_child_at(2 * rank + 2, row));
 		if (label)
 		{
-			string text = "";
+			string text = "File not loaded.";
 			if (m_path_2_view.find(fullpath) != m_path_2_view.end())
 			{
 				Gtk::TextIter iter = m_path_2_view[fullpath]->get_buffer()->get_iter_at_line(line - 1);
