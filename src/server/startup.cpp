@@ -1,3 +1,5 @@
+#include <fstream>
+
 #include "startup.hpp"
 
 template <class T>
@@ -47,6 +49,9 @@ StartupDialog::StartupDialog()
 
 	set_sensitivity(false);
 
+	get_widget<Gtk::Button>("clear-config-button")->signal_clicked().connect(sigc::mem_fun(*this, &StartupDialog::clear_all));
+	get_widget<Gtk::Button>("export-config-button")->signal_clicked().connect(sigc::mem_fun(*this, &StartupDialog::export_config));
+
 	m_dialog->signal_response().connect(sigc::mem_fun(*this, &StartupDialog::on_dialog_response));
 	m_checkbutton_ssh->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &StartupDialog::on_toggle_button), m_checkbutton_ssh));
 
@@ -84,6 +89,12 @@ void StartupDialog::clear_dialog()
 	m_entry_ssh_password->set_text("");
 	m_entry_partition->set_text("");
 	set_sensitivity(false);
+}
+
+void StartupDialog::clear_all()
+{
+	clear_dialog();
+	m_file_chooser_button->unselect_all();
 }
 
 void StartupDialog::set_value(string key, string value)
@@ -171,13 +182,90 @@ void StartupDialog::read_config()
 	delete[] config;
 }
 
-void StartupDialog::on_dialog_response(const int response_id)
+void StartupDialog::export_config()
+{
+	if (!read_values())
+	{
+		return;
+	}
+
+	m_config = "";
+
+	m_config += "processes_per_node=";
+	m_config += std::to_string(m_processes_per_node);
+	m_config += "\n";
+
+	m_config += "num_nodes=";
+	m_config += std::to_string(m_num_nodes);
+	m_config += "\n";
+
+	m_config += "launcher=";
+	m_config += m_mpirun ? "mpirun" : "srun";
+	m_config += "\n";
+
+	m_config += "client=";
+	m_config += m_client ? m_client : "";
+	m_config += "\n";
+
+	m_config += "gdb=";
+	m_config += m_gdb ? m_gdb : "";
+	m_config += "\n";
+
+	m_config += "socat=";
+	m_config += m_socat ? m_socat : "";
+	m_config += "\n";
+
+	m_config += "target=";
+	m_config += m_target ? m_target : "";
+	m_config += "\n";
+
+	m_config += "ip_address=";
+	m_config += m_ip_address ? m_ip_address : "";
+	m_config += "\n";
+
+	m_config += "ssh=";
+	m_config += m_ssh ? "true" : "false";
+	m_config += "\n";
+
+	m_config += "ssh_address=";
+	m_config += m_ssh_address ? m_ssh_address : "";
+	m_config += "\n";
+
+	m_config += "ssh_user=";
+	m_config += m_ssh_user ? m_ssh_user : "";
+	m_config += "\n";
+
+	m_config += "ssh_password=";
+	m_config += m_ssh_password ? m_ssh_password : "";
+	m_config += "\n";
+
+	m_config += "partition=";
+	m_config += m_partition ? m_partition : "";
+	m_config += "\n\n";
+
+	m_file_chooser_dialog = new Gtk::FileChooserDialog(*dynamic_cast<Gtk::Window *>(m_dialog), string("Select Save Location"), Gtk::FILE_CHOOSER_ACTION_SAVE);
+	m_file_chooser_dialog->add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_OK);
+	m_file_chooser_dialog->signal_response().connect(sigc::mem_fun(*this, &StartupDialog::on_save_dialog_response));
+	m_file_chooser_dialog->run();
+	delete m_file_chooser_dialog;
+}
+
+void StartupDialog::on_save_dialog_response(const int response_id)
 {
 	if (Gtk::RESPONSE_OK != response_id)
 	{
 		return;
 	}
 
+	string filename = m_file_chooser_dialog->get_filename();
+	
+	std::ofstream file(filename);
+	file << m_config;
+	file.close();
+}
+
+bool StartupDialog::read_values()
+{
 	try
 	{
 		m_processes_per_node = std::stoi(m_entry_processes_per_node->get_text());
@@ -185,7 +273,7 @@ void StartupDialog::on_dialog_response(const int response_id)
 	catch (const std::exception &e)
 	{
 		std::cerr << "Invalid value in input: Processes per Node\n";
-		return;
+		return false;
 	}
 
 	try
@@ -195,12 +283,17 @@ void StartupDialog::on_dialog_response(const int response_id)
 	catch (const std::exception &e)
 	{
 		std::cerr << "Invalid value in input: Number of Nodes.\n";
-		return;
+		return false;
 	}
 
 	m_mpirun = m_radiobutton_mpirun->get_active();
 	m_srun = m_radiobutton_srun->get_active();
 
+	free(m_client);
+	free(m_gdb);
+	free(m_socat);
+	free(m_target);
+	free(m_ip_address);
 	m_client = strdup(m_entry_client->get_text().c_str());
 	m_gdb = strdup(m_entry_gdb->get_text().c_str());
 	m_socat = strdup(m_entry_socat->get_text().c_str());
@@ -209,12 +302,26 @@ void StartupDialog::on_dialog_response(const int response_id)
 
 	m_ssh = m_checkbutton_ssh->get_active();
 
+	free(m_ssh_address);
+	free(m_ssh_user);
+	free(m_ssh_password);
+	free(m_partition);
 	m_ssh_address = strdup(m_entry_ssh_address->get_text().c_str());
 	m_ssh_user = strdup(m_entry_ssh_user->get_text().c_str());
 	m_ssh_password = strdup(m_entry_ssh_password->get_text().c_str());
 	m_partition = strdup(m_entry_partition->get_text().c_str());
 
-	m_is_valid = true;
+	return true;
+}
+
+void StartupDialog::on_dialog_response(const int response_id)
+{
+	if (Gtk::RESPONSE_OK != response_id)
+	{
+		return;
+	}
+
+	m_is_valid = read_values();
 }
 
 void StartupDialog::set_sensitivity(bool state)

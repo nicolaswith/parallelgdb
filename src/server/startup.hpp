@@ -25,6 +25,9 @@ class StartupDialog
 	Glib::RefPtr<Gtk::Builder> m_builder;
 	Gtk::Dialog *m_dialog;
 
+	Gtk::FileChooserDialog *m_file_chooser_dialog;
+	string m_config;
+
 	Gtk::FileChooserButton *m_file_chooser_button;
 	Gtk::Entry *m_entry_processes_per_node;
 	Gtk::Entry *m_entry_num_nodes;
@@ -47,6 +50,10 @@ class StartupDialog
 	void clear_dialog();
 	void set_value(string key, string value);
 	void read_config();
+	void export_config();
+	bool read_values();
+	void on_save_dialog_response(const int response_id);
+	void clear_all();
 
 	template <class T>
 	T *get_widget(const string &widget_name);
