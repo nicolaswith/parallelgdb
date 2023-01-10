@@ -12,6 +12,53 @@ const asio::ip::port_type base_port_trgt = 0xC000;
 
 Gtk::Application *g_app;
 
+string get_cmd(const StartupDialog &dialog)
+{
+	string cmd = "";
+
+	if (dialog.mpirun())
+	{
+		cmd += "/usr/bin/mpirun";
+		cmd += " --oversubscribe";
+
+		cmd += " -np ";
+		cmd += std::to_string(dialog.num_processes());
+	}
+	else if (dialog.srun())
+	{
+		cmd += "/usr/bin/srun";
+
+		cmd += " --nodes=";
+		cmd += std::to_string(dialog.num_nodes());
+
+		cmd += " --ntasks-per-node=";
+		cmd += std::to_string(dialog.processes_per_node());
+
+		cmd += " --partition=";
+		cmd += dialog.partition();
+
+		cmd += " --mpi=";
+		cmd += "pmi2";
+	}
+
+	cmd += " ";
+	cmd += dialog.client();
+
+	cmd += " -s ";
+	cmd += dialog.socat();
+
+	cmd += " -g ";
+	cmd += dialog.gdb();
+
+	cmd += " -i ";
+	cmd += dialog.ip_address();
+
+	cmd += " ";
+	cmd += dialog.target();
+
+	return cmd;
+}
+
 int run_cmd(ssh_session &session, const StartupDialog &dialog)
 {
 	ssh_channel channel;
@@ -30,35 +77,7 @@ int run_cmd(ssh_session &session, const StartupDialog &dialog)
 		return rc;
 	}
 
-	string cmd = string("srun");
-
-	cmd += " --nodes=";
-	cmd += std::to_string(dialog.num_nodes());
-
-	cmd += " --ntasks-per-node=";
-	cmd += std::to_string(dialog.num_processes_per_node());
-
-	cmd += " --partition=";
-	cmd += dialog.partition();
-
-	cmd += " --mpi=";
-	cmd += "pmi2";
-
-	cmd += " ";
-	cmd += dialog.client();
-
-	cmd += " -s ";
-	cmd += dialog.socat();
-
-	cmd += " -g ";
-	cmd += dialog.gdb();
-
-	cmd += " -i ";
-	cmd += dialog.ip_address();
-
-	cmd += " ";
-	cmd += dialog.target();
-
+	string cmd = get_cmd(dialog);
 	rc = ssh_channel_request_exec(channel, cmd.c_str());
 	if (rc != SSH_OK)
 	{
@@ -132,22 +151,17 @@ int start_clients_mpi(StartupDialog &dialog)
 	const int pid = fork();
 	if (0 == pid)
 	{
-		const char *const np_str = strdup(std::to_string(dialog.num_processes()).c_str());
+		char **argv = new char *[20];
+		string cmd = get_cmd(dialog);
+		int idx = 0;
+		std::istringstream iss(cmd);
+		string opt;
+		while (std::getline(iss, opt, ' '))
+		{
+			argv[idx++] = strdup(opt.c_str());
+		}
+		argv[idx] = nullptr;
 
-		char *argv[] = {
-			(char *)"/usr/bin/mpirun",
-			(char *)"--oversubscribe",
-			(char *)"-np",
-			(char *)np_str,
-			(char *)dialog.client(),
-			(char *)"-s",
-			(char *)dialog.socat(),
-			(char *)"-g",
-			(char *)dialog.gdb(),
-			(char *)"-i",
-			(char *)dialog.ip_address(),
-			(char *)dialog.target(),
-			(char *)nullptr};
 		execvp(argv[0], argv);
 		_exit(127);
 	}

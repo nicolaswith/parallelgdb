@@ -1,4 +1,6 @@
-num_processes=4
+processes_per_node=4
+num_nodes=4
+launcher=mpirun
 client=/home/nicolas/ma/parallelgdb/bin/client
 ip_address=127.0.0.1
 gdb=/usr/bin/gdb

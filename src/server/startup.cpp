@@ -21,17 +21,19 @@ StartupDialog::StartupDialog()
 	  m_partition(nullptr)
 {
 	m_builder = Gtk::Builder::create_from_file("./ui/startup_dialog.glade");
-
 	m_dialog = get_widget<Gtk::Dialog>("dialog");
+
 	m_file_chooser_button = get_widget<Gtk::FileChooserButton>("file-chooser-button");
-	m_entry_num_processes = get_widget<Gtk::Entry>("num-processes-entry");
+	m_entry_processes_per_node = get_widget<Gtk::Entry>("processes-per-node-entry");
+	m_entry_num_nodes = get_widget<Gtk::Entry>("num-nodes-entry");
+	m_radiobutton_mpirun = get_widget<Gtk::RadioButton>("mpirun-radiobutton");
+	m_radiobutton_srun = get_widget<Gtk::RadioButton>("srun-radiobutton");
 	m_entry_client = get_widget<Gtk::Entry>("client-entry");
 	m_entry_gdb = get_widget<Gtk::Entry>("gdb-entry");
 	m_entry_socat = get_widget<Gtk::Entry>("socat-entry");
 	m_entry_target = get_widget<Gtk::Entry>("target-entry");
 	m_entry_ip_address = get_widget<Gtk::Entry>("ip-address-entry");
-	m_checkbutton_ssh = get_widget<Gtk::CheckButton>("ssh-check-button");
-	m_entry_num_nodes = get_widget<Gtk::Entry>("num-nodes-entry");
+	m_checkbutton_ssh = get_widget<Gtk::CheckButton>("ssh-checkbutton");
 	m_entry_ssh_address = get_widget<Gtk::Entry>("ssh-address-entry");
 	m_entry_ssh_user = get_widget<Gtk::Entry>("ssh-user-entry");
 	m_entry_ssh_password = get_widget<Gtk::Entry>("ssh-password-entry");
@@ -67,14 +69,16 @@ StartupDialog::~StartupDialog()
 
 void StartupDialog::clear_dialog()
 {
-	m_entry_num_processes->set_text("");
+	m_entry_processes_per_node->set_text("");
+	m_entry_num_nodes->set_text("");
+	m_radiobutton_mpirun->set_active(true);
+	m_radiobutton_srun->set_active(false);
 	m_entry_client->set_text("");
 	m_entry_gdb->set_text("");
 	m_entry_socat->set_text("");
 	m_entry_target->set_text("");
 	m_entry_ip_address->set_text("");
 	m_checkbutton_ssh->set_active(false);
-	m_entry_num_nodes->set_text("");
 	m_entry_ssh_address->set_text("");
 	m_entry_ssh_user->set_text("");
 	m_entry_ssh_password->set_text("");
@@ -84,10 +88,10 @@ void StartupDialog::clear_dialog()
 
 void StartupDialog::set_value(string key, string value)
 {
+	if ("processes_per_node" == key)
+		m_entry_processes_per_node->set_text(value);
 	if ("num_nodes" == key)
 		m_entry_num_nodes->set_text(value);
-	if ("num_processes" == key)
-		m_entry_num_processes->set_text(value);
 	if ("client" == key)
 		m_entry_client->set_text(value);
 	if ("gdb" == key)
@@ -115,7 +119,21 @@ void StartupDialog::set_value(string key, string value)
 		}
 		else
 		{
+			m_checkbutton_ssh->set_active(false);
 			set_sensitivity(false);
+		}
+	}
+	if ("launcher" == key)
+	{
+		if ("mpirun" == value)
+		{
+			m_radiobutton_mpirun->set_active(true);
+			m_radiobutton_srun->set_active(false);
+		}
+		else if ("srun" == value)
+		{
+			m_radiobutton_mpirun->set_active(false);
+			m_radiobutton_srun->set_active(true);
 		}
 	}
 }
@@ -160,27 +178,37 @@ void StartupDialog::on_dialog_response(const int response_id)
 		return;
 	}
 
-	m_ssh = m_checkbutton_ssh->get_active();
-
 	try
 	{
-		m_num_processes = std::stoi(m_entry_num_processes->get_text());
-		if (m_ssh)
-		{
-			m_num_nodes = std::stoi(m_entry_num_nodes->get_text());
-		}
+		m_processes_per_node = std::stoi(m_entry_processes_per_node->get_text());
 	}
 	catch (const std::exception &e)
 	{
-		std::cerr << e.what() << '\n';
+		std::cerr << "Invalid value in input: Processes per Node\n";
 		return;
 	}
+
+	try
+	{
+		m_num_nodes = std::stoi(m_entry_num_nodes->get_text());
+	}
+	catch (const std::exception &e)
+	{
+		std::cerr << "Invalid value in input: Number of Nodes.\n";
+		return;
+	}
+
+	m_mpirun = m_radiobutton_mpirun->get_active();
+	m_srun = m_radiobutton_srun->get_active();
 
 	m_client = strdup(m_entry_client->get_text().c_str());
 	m_gdb = strdup(m_entry_gdb->get_text().c_str());
 	m_socat = strdup(m_entry_socat->get_text().c_str());
 	m_target = strdup(m_entry_target->get_text().c_str());
 	m_ip_address = strdup(m_entry_ip_address->get_text().c_str());
+
+	m_ssh = m_checkbutton_ssh->get_active();
+
 	m_ssh_address = strdup(m_entry_ssh_address->get_text().c_str());
 	m_ssh_user = strdup(m_entry_ssh_user->get_text().c_str());
 	m_ssh_password = strdup(m_entry_ssh_password->get_text().c_str());
@@ -191,7 +219,6 @@ void StartupDialog::on_dialog_response(const int response_id)
 
 void StartupDialog::set_sensitivity(bool state)
 {
-	m_entry_num_nodes->set_sensitive(state);
 	m_entry_ssh_address->set_sensitive(state);
 	m_entry_ssh_user->set_sensitive(state);
 	m_entry_ssh_password->set_sensitive(state);
