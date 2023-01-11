@@ -4,6 +4,8 @@
 #include "defs.hpp"
 #include "mi_gdb.h"
 
+const int NUM_COLORS = 8;
+
 class UIWindow;
 
 class UIDrawingArea : public Gtk::DrawingArea

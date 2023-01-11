@@ -31,7 +31,7 @@ BreakpointDialog::BreakpointDialog(const int num_processes, const int max_button
 		{
 			check_button->set_active(m_breakpoint->is_created(rank));
 		}
-		m_grid->attach(*check_button, rank % max_buttons_per_row, rank / max_buttons_per_row);
+		m_grid->attach(*check_button, rank % m_max_buttons_per_row, rank / m_max_buttons_per_row);
 	}
 	get_widget<Gtk::Button>("toggle-all-button")->signal_clicked().connect(sigc::mem_fun(*this, &BreakpointDialog::toggle_all));
 	m_dialog->signal_response().connect(sigc::mem_fun(*this, &BreakpointDialog::on_dialog_response));

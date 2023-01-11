@@ -487,10 +487,12 @@ void UIWindow::color_overview()
 			{
 				if (line_2_offset.find(m_current_line[rank]) == line_2_offset.end())
 				{
-					line_2_offset[m_current_line[rank]] = color_offset;
-					color_offset = (color_offset + 1) % 8;
+					line_2_offset[m_current_line[rank]] = color_offset++;
 				}
-				label->override_color(UIDrawingArea::s_colors[line_2_offset[m_current_line[rank]]]);
+				if (color_offset <= NUM_COLORS)
+				{
+					label->override_color(UIDrawingArea::s_colors[line_2_offset[m_current_line[rank]]]);
+				}
 			}
 		}
 	}
@@ -747,7 +749,7 @@ void UIWindow::update_markers(const int page_num)
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
 		Gtk::TextIter line_iter = source_buffer->get_iter_at_line(m_current_line[rank] - 1);
-		if (!line_iter || page_path != m_source_view_path[rank])
+		if (!line_iter || page_path != m_source_view_path[rank] || m_target_state[rank] != TargetState::STOPPED)
 		{
 			m_drawing_area->set_y_offset(rank, -3 * UIDrawingArea::radius()); // set out of visible area
 			continue;

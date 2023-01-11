@@ -3,7 +3,7 @@
 #include "canvas.hpp"
 #include "window.hpp"
 
-const Gdk::RGBA UIDrawingArea::s_colors[] = {
+const Gdk::RGBA UIDrawingArea::s_colors[NUM_COLORS] = {
 	Gdk::RGBA("#ff0000"),
 	Gdk::RGBA("#008000"),
 	Gdk::RGBA("#0000bb"),
@@ -39,10 +39,10 @@ bool UIDrawingArea::on_draw(const Cairo::RefPtr<Cairo::Context> &c)
 			c->save();
 
 			c->set_source_rgba(
-				s_colors[rank % 8].get_red(),
-				s_colors[rank % 8].get_green(),
-				s_colors[rank % 8].get_blue(),
-				s_colors[rank % 8].get_alpha());
+				s_colors[rank % NUM_COLORS].get_red(),
+				s_colors[rank % NUM_COLORS].get_green(),
+				s_colors[rank % NUM_COLORS].get_blue(),
+				s_colors[rank % NUM_COLORS].get_alpha());
 
 			c->arc(x + s_radius, y + s_radius, s_radius, 0.0, 2.0 * M_PI);
 			c->fill();
