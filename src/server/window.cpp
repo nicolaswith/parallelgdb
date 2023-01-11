@@ -512,6 +512,33 @@ void UIWindow::remove_label_overview(const int rank)
 	}
 }
 
+void UIWindow::check_overview()
+{
+	for (std::pair<const string, int> &pair : m_path_2_row)
+	{
+		const string &path = pair.first;
+		const int row = pair.second;
+
+		for (int rank = 0; rank < m_num_processes; ++rank)
+		{
+			Gtk::Label *label = dynamic_cast<Gtk::Label *>(m_overview_grid->get_child_at(2 * rank + 2, row));
+			if (label && path == m_source_view_path[rank])
+			{
+				if (m_target_state[rank] == TargetState::RUNNING)
+				{
+					label->set_text("R");
+					label->set_tooltip_text("Running");
+				}
+				else if (m_target_state[rank] == TargetState::EXITED)
+				{
+					label->set_text("E");
+					label->set_tooltip_text("Exited");
+				}
+			}
+		}
+	}
+}
+
 void UIWindow::update_overview(const int rank, const string &fullpath, const int line)
 {
 	for (std::pair<const string, int> &pair : m_path_2_row)
@@ -881,6 +908,7 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, co
 		}
 		token = strtok(NULL, "\n");
 	}
+	check_overview();
 }
 
 void UIWindow::print_data_trgt(const char *const data, const int rank)

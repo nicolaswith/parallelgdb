@@ -101,6 +101,7 @@ class UIWindow
 	void set_position(const int rank, const string &fullpath, const int line);
 	void open_file();
 	void close_unused_tabs();
+	void check_overview();
 
 	template <class T>
 	T *get_widget(const string &widget_name);
