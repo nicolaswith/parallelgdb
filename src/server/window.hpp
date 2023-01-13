@@ -70,6 +70,8 @@ class UIWindow
 	std::map<string, Gsv::View *> m_path_2_view;
 	std::map<string, int> m_path_2_row;
 
+	std::map<int, Breakpoint *> m_bkptno_2_bkpt;
+
 	sigc::connection *m_scroll_connections_gdb;
 	sigc::connection *m_scroll_connections_trgt;
 
@@ -100,6 +102,7 @@ class UIWindow
 	void send_input(const string &entry_name, const string &wrapper_name, tcp::socket *const *const socket);
 	void send_input_gdb();
 	void send_input_trgt();
+	void stop_all();
 	void toggle_all(const string &box_name);
 	void toggle_all_gdb();
 	void toggle_all_trgt();

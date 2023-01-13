@@ -363,6 +363,17 @@ void UIWindow::send_input_trgt()
 	send_input("target-send-entry", "target-send-select-grid", m_conns_trgt);
 }
 
+void UIWindow::stop_all()
+{
+	for (int rank = 0; rank < m_num_processes; ++rank)
+	{
+		if (m_target_state[rank] == TargetState::RUNNING)
+		{
+			send_data(m_conns_trgt[rank], "\3");
+		}
+	}
+}
+
 void UIWindow::toggle_all(const string &grid_name)
 {
 	Gtk::Grid *grid = get_widget<Gtk::Grid>(grid_name);
@@ -897,6 +908,7 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, co
 				if (breakpoint)
 				{
 					m_breakpoints[rank]->set_number(breakpoint->number);
+					m_bkptno_2_bkpt[breakpoint->number] = m_breakpoints[rank];
 					m_breakpoints[rank] = nullptr;
 				}
 				mi_free_bkpt(breakpoint);
@@ -905,6 +917,10 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, co
 			mi_stop *stop_record = mi_res_stop(first_output);
 			if (stop_record)
 			{
+				if (stop_record->have_bkptno && stop_record->bkptno > 1 && m_bkptno_2_bkpt[stop_record->bkptno]->get_stop_all())
+				{
+					stop_all();
+				}
 				if (mi_stop_reason::sr_exited_signalled == stop_record->reason ||
 					mi_stop_reason::sr_exited == stop_record->reason ||
 					mi_stop_reason::sr_exited_normally == stop_record->reason)

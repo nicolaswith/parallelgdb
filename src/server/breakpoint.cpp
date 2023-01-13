@@ -24,6 +24,8 @@ Breakpoint::Breakpoint(const int num_processes, const int line, const string &fu
 	: m_num_processes(num_processes),
 	  m_line(line),
 	  m_full_path(full_path),
+	  m_number(-1),
+	  m_stop_all(false),
 	  m_window(window),
 	  m_breakpoint_state(new BreakpointState[m_num_processes])
 {

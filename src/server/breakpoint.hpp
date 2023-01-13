@@ -42,6 +42,8 @@ class Breakpoint
 	const string m_full_path;
 	int m_number;
 
+	bool m_stop_all;
+
 	UIWindow *const m_window;
 	BreakpointState *const m_breakpoint_state;
 
@@ -71,6 +73,16 @@ public:
 	inline void set_number(const int number)
 	{
 		m_number = number;
+	}
+
+	inline void set_stop_all(const bool stop_all)
+	{
+		m_stop_all = stop_all;
+	}
+
+	inline bool get_stop_all() const
+	{
+		return m_stop_all;
 	}
 };
 

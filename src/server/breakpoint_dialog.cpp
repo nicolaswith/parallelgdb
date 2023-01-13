@@ -52,6 +52,7 @@ BreakpointDialog::BreakpointDialog(const int num_processes, const int max_button
 		}
 		m_grid->attach(*check_button, rank % m_max_buttons_per_row, rank / m_max_buttons_per_row);
 	}
+	get_widget<Gtk::CheckButton>("stop-all-checkbutton")->set_active(m_breakpoint->get_stop_all());
 	get_widget<Gtk::Button>("toggle-all-button")->signal_clicked().connect(sigc::mem_fun(*this, &BreakpointDialog::toggle_all));
 	m_dialog->signal_response().connect(sigc::mem_fun(*this, &BreakpointDialog::on_dialog_response));
 	m_dialog->add_button("Ok", Gtk::RESPONSE_OK);
@@ -75,6 +76,7 @@ void BreakpointDialog::on_dialog_response(const int response_id)
 		Gtk::CheckButton *check_button = dynamic_cast<Gtk::CheckButton *>(m_grid->get_child_at(rank % m_max_buttons_per_row, rank / m_max_buttons_per_row));
 		m_button_states[rank] = check_button->get_active();
 	}
+	m_breakpoint->set_stop_all(get_widget<Gtk::CheckButton>("stop-all-checkbutton")->get_active());
 }
 
 void BreakpointDialog::toggle_all()
