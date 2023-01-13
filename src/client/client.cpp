@@ -1,3 +1,22 @@
+/*
+	This file is part of ParallelGDB.
+
+	Copyright (c) 2023 by Nicolas With
+
+	ParallelGDB is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+
+	ParallelGDB is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with ParallelGDB.  If not, see <https://www.gnu.org/licenses/gpl-3.0.txt>.
+*/
+
 #include <cstdlib>
 #include <iostream>
 #include <string>
@@ -38,17 +57,16 @@ void wait_for_socat(const int pid_socat_gdb, const int pid_socat_trgt)
 	}
 }
 
-int start_gdb(string tty_gdb, string tty_trgt, const char *const gdb_path, const char *const target, const int pid_socat_gdb, const int pid_socat_trgt)
+int start_gdb(const string &tty_gdb, const string &tty_trgt, const char *const gdb_path, const char *const target, const int pid_socat_gdb, const int pid_socat_trgt)
 {
 	wait_for_socat(pid_socat_gdb, pid_socat_trgt);
-	usleep(500000); // 500ms
+	usleep(500000);
 
 	int pid = fork();
 	if (0 == pid)
 	{
 		int tty_fd = open(tty_gdb.c_str(), O_RDWR);
 
-		// connect to virtual io
 		dup2(tty_fd, STDIN_FILENO);
 		dup2(tty_fd, STDOUT_FILENO);
 		dup2(tty_fd, STDERR_FILENO);
@@ -60,7 +78,7 @@ int start_gdb(string tty_gdb, string tty_trgt, const char *const gdb_path, const
 			(char *)"-q",
 			(char *)"-i",
 			(char *)"mi3",
-			(char *)"-ex=set auto-load safe-path /", // evil hack for now... todo
+			(char *)"-ex=set auto-load safe-path /",
 			(char *)"-ex=b main",
 			(char *)tty.c_str(),
 			(char *)target,
@@ -72,7 +90,7 @@ int start_gdb(string tty_gdb, string tty_trgt, const char *const gdb_path, const
 	return pid;
 }
 
-int start_socat(string tty_name, const char *const socat_path, const char *const ip_addr, const int port)
+int start_socat(const string &tty_name, const char *const socat_path, const char *const ip_addr, const int port)
 {
 	int pid = fork();
 	if (0 == pid)
@@ -91,20 +109,20 @@ int start_socat(string tty_name, const char *const socat_path, const char *const
 	return pid;
 }
 
-int get_process_rank()
+int get_rank()
 {
-	const char *process_rank = getenv("PMI_RANK");
-	if (!process_rank)
+	const char *rank = getenv("PMI_RANK");
+	if (!rank)
 	{
-		process_rank = getenv("OMPI_COMM_WORLD_RANK");
+		rank = getenv("OMPI_COMM_WORLD_RANK");
 	}
-	if (!process_rank)
+	if (!rank)
 	{
 		return -1;
 	}
 	try
 	{
-		return stoi(process_rank);
+		return stoi(rank);
 	}
 	catch (const std::exception &e)
 	{
@@ -129,7 +147,7 @@ bool parse_cl_args(const int argc, char **argv, char **ip_addr, char **gdb_path,
 {
 	char c;
 	opterr = 0;
-	while ((c = getopt(argc, argv, "hrg:s:i:")) != -1)
+	while ((c = getopt(argc, argv, "hg:s:i:")) != -1)
 	{
 		switch (c)
 		{
@@ -221,19 +239,19 @@ int main(const int argc, char **argv)
 	string tty_gdb = "/tmp/ttyGDB_" + to_string(pid);
 	string tty_trgt = "/tmp/ttyTRGT_" + to_string(pid);
 
-	int process_rank = get_process_rank();
-	if (process_rank < 0)
+	int rank = get_rank();
+	if (rank < 0)
 	{
 		free(target);
 		free(socat_path);
 		free(gdb_path);
 		free(ip_addr);
-		fprintf(stderr, "Could not read process_rank.\n");
+		fprintf(stderr, "Could not read rank.\n");
 		return EXIT_FAILURE;
 	}
 
-	int port_gdb = 0x8000 + process_rank;
-	int port_trgt = 0xC000 + process_rank;
+	int port_gdb = 0x8000 + rank;
+	int port_trgt = 0xC000 + rank;
 
 	int pid_socat_gdb = start_socat(tty_gdb, socat_path, ip_addr, port_gdb);
 	int pid_socat_trgt = start_socat(tty_trgt, socat_path, ip_addr, port_trgt);

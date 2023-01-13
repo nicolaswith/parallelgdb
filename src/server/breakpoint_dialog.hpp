@@ -17,50 +17,44 @@
 	along with ParallelGDB.  If not, see <https://www.gnu.org/licenses/gpl-3.0.txt>.
 */
 
-#ifndef CANVAS_HPP
-#define CANVAS_HPP
+#ifndef BREAKPOINT_DIALOG_HPP
+#define BREAKPOINT_DIALOG_HPP
 
 #include "defs.hpp"
-#include "mi_gdb.h"
+#include "breakpoint.hpp"
 
-const int NUM_COLORS = 8;
-
-class UIWindow;
-
-class UIDrawingArea : public Gtk::DrawingArea
+class BreakpointDialog
 {
-	static const int s_radius;
-	static const int s_spacing;
-
 	const int m_num_processes;
-	int *const m_y_offsets;
-	
-	UIWindow *const m_window;
+	const int m_max_buttons_per_row;
+
+	Breakpoint *const m_breakpoint;
+
+	bool *const m_button_states;
+
+	Glib::RefPtr<Gtk::Builder> m_builder;
+	Gtk::Dialog *m_dialog;
+	Gtk::Grid *m_grid;
+
+	void on_dialog_response(const int response_id);
+	void toggle_all();
+
+	template <class T>
+	T *get_widget(const string &widget_name);
 
 public:
-	static const Gdk::RGBA s_colors[];
+	BreakpointDialog(const int num_processes, const int max_buttons_per_row, Breakpoint *const breakpoint, const bool init);
+	~BreakpointDialog();
 
-protected:
-	virtual bool on_draw(const Cairo::RefPtr<Cairo::Context> &c);
-
-public:
-	UIDrawingArea(const int num_processes, UIWindow *const window);
-	virtual ~UIDrawingArea() {}
-
-	void set_y_offset(const int rank, const int offset)
+	inline int run()
 	{
-		m_y_offsets[rank] = offset;
+		return m_dialog->run();
 	}
 
-	inline static int radius()
+	inline const bool *get_button_states() const
 	{
-		return s_radius;
-	}
-
-	inline static int spacing()
-	{
-		return s_spacing;
+		return m_button_states;
 	}
 };
 
-#endif /* CANVAS_HPP */
+#endif /* BREAKPOINT_DIALOG_HPP */

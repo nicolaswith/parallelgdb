@@ -1,3 +1,9 @@
+/*
+
+	Modified by Nicolas With
+
+*/
+
 /**[txh]********************************************************************
 
 	GDB/MI interface library
@@ -1286,14 +1292,30 @@ mi_bkpt *mi_get_bkpt(mi_results *p)
 	return res;
 }
 
-mi_bkpt *mi_res_bkpt(mi_h *h)
-{
-	mi_results *r = mi_res_done_var(h, "bkpt");
-	mi_bkpt *b = NULL;
+// // original func
+// mi_bkpt *mi_res_bkpt(mi_h *h)
+// {
+// 	mi_results *r = mi_res_done_var(h, "bkpt");
+// 	mi_bkpt *b = NULL;
 
+// 	if (r && r->type == t_tuple)
+// 		b = mi_get_bkpt(r->v.rs);
+// 	mi_free_results(r);
+// 	return b;
+// }
+
+mi_bkpt *mi_res_bkpt(mi_output *output)
+{
+	mi_output *res = mi_get_rrecord(output);
+
+	mi_results *r = NULL;
+	if (res && res->tclass == MI_CL_DONE)
+		r = mi_get_var(res, "bkpt");
+
+	mi_bkpt *b = NULL;
 	if (r && r->type == t_tuple)
 		b = mi_get_bkpt(r->v.rs);
-	mi_free_results(r);
+
 	return b;
 }
 
@@ -1539,7 +1561,7 @@ mi_stop *mi_get_stopped(mi_results *r)
 	return res;
 }
 
-// original func
+// // original func
 // mi_stop *mi_res_stop(mi_h *h)
 // {
 // 	mi_output *o = mi_retire_response(h);

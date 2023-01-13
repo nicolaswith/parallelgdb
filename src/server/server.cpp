@@ -1,10 +1,28 @@
+/*
+	This file is part of ParallelGDB.
+
+	Copyright (c) 2023 by Nicolas With
+
+	ParallelGDB is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+
+	ParallelGDB is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with ParallelGDB.  If not, see <https://www.gnu.org/licenses/gpl-3.0.txt>.
+*/
+
 #include <iostream>
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "util.hpp"
 #include "server.hpp"
 
 const int max_length = 0x2000; // socat default
@@ -13,12 +31,59 @@ const asio::ip::port_type base_port_trgt = 0xC000;
 
 Gtk::Application *g_app;
 
-int run_cmd(ssh_session &a_session, UIDialog &a_dialog)
+string get_cmd(const StartupDialog &dialog)
+{
+	string cmd = "";
+
+	if (dialog.mpirun())
+	{
+		cmd += "/usr/bin/mpirun";
+		cmd += " --oversubscribe";
+
+		cmd += " -np ";
+		cmd += std::to_string(dialog.num_processes());
+	}
+	else if (dialog.srun())
+	{
+		cmd += "/usr/bin/srun";
+
+		cmd += " --nodes=";
+		cmd += std::to_string(dialog.num_nodes());
+
+		cmd += " --ntasks-per-node=";
+		cmd += std::to_string(dialog.processes_per_node());
+
+		cmd += " --partition=";
+		cmd += dialog.partition();
+
+		cmd += " --mpi=";
+		cmd += "pmi2";
+	}
+
+	cmd += " ";
+	cmd += dialog.client();
+
+	cmd += " -s ";
+	cmd += dialog.socat();
+
+	cmd += " -g ";
+	cmd += dialog.gdb();
+
+	cmd += " -i ";
+	cmd += dialog.ip_address();
+
+	cmd += " ";
+	cmd += dialog.target();
+
+	return cmd;
+}
+
+int run_cmd(ssh_session &session, const StartupDialog &dialog)
 {
 	ssh_channel channel;
 	int rc;
 
-	channel = ssh_channel_new(a_session);
+	channel = ssh_channel_new(session);
 	if (channel == NULL)
 	{
 		return SSH_ERROR;
@@ -31,35 +96,7 @@ int run_cmd(ssh_session &a_session, UIDialog &a_dialog)
 		return rc;
 	}
 
-	string cmd = string("srun");
-
-	cmd += " --nodes=";
-	cmd += std::to_string(a_dialog.num_nodes());
-
-	cmd += " --ntasks=";
-	cmd += std::to_string(a_dialog.num_tasks());
-
-	cmd += " --partition=";
-	cmd += a_dialog.partition();
-
-	cmd += " --mpi=";
-	cmd += "pmi2";
-
-	cmd += " ";
-	cmd += a_dialog.client();
-
-	cmd += " -s ";
-	cmd += a_dialog.socat();
-
-	cmd += " -g ";
-	cmd += a_dialog.gdb();
-
-	cmd += " -i ";
-	cmd += a_dialog.ip_address();
-
-	cmd += " ";
-	cmd += a_dialog.target();
-
+	string cmd = get_cmd(dialog);
 	rc = ssh_channel_request_exec(channel, cmd.c_str());
 	if (rc != SSH_OK)
 	{
@@ -75,7 +112,7 @@ int run_cmd(ssh_session &a_session, UIDialog &a_dialog)
 	return SSH_OK;
 }
 
-bool start_clients_srun(UIDialog &a_dialog)
+bool start_clients_ssh(StartupDialog &dialog)
 {
 	ssh_session session;
 	int rc;
@@ -86,13 +123,13 @@ bool start_clients_srun(UIDialog &a_dialog)
 		return false;
 	}
 
-	ssh_options_set(session, SSH_OPTIONS_HOST, a_dialog.ssh_address());
-	ssh_options_set(session, SSH_OPTIONS_USER, a_dialog.ssh_user());
+	ssh_options_set(session, SSH_OPTIONS_HOST, dialog.ssh_address());
+	ssh_options_set(session, SSH_OPTIONS_USER, dialog.ssh_user());
 
 	rc = ssh_connect(session);
 	if (rc != SSH_OK)
 	{
-		fprintf(stderr, "Error connecting to %s: %s\n", a_dialog.ssh_address(), ssh_get_error(session));
+		fprintf(stderr, "Error connecting to %s: %s\n", dialog.ssh_address(), ssh_get_error(session));
 		return false;
 	}
 
@@ -104,7 +141,7 @@ bool start_clients_srun(UIDialog &a_dialog)
 		return false;
 	}
 
-	rc = ssh_userauth_password(session, NULL, a_dialog.ssh_password());
+	rc = ssh_userauth_password(session, NULL, dialog.ssh_password());
 	if (rc != SSH_AUTH_SUCCESS)
 	{
 		fprintf(stderr, "Error authenticating with password: %s\n", ssh_get_error(session));
@@ -113,7 +150,7 @@ bool start_clients_srun(UIDialog &a_dialog)
 		return false;
 	}
 
-	rc = run_cmd(session, a_dialog);
+	rc = run_cmd(session, dialog);
 	if (rc != SSH_OK)
 	{
 		fprintf(stderr, "Error starting clients: %s\n", ssh_get_error(session));
@@ -128,68 +165,61 @@ bool start_clients_srun(UIDialog &a_dialog)
 	return true;
 }
 
-int start_clients_mpi(UIDialog &a_dialog)
+int start_clients_mpi(StartupDialog &dialog)
 {
 	const int pid = fork();
 	if (0 == pid)
 	{
-		const char *const np_str = strdup(std::to_string(a_dialog.num_processes()).c_str());
+		char **argv = new char *[20];
+		string cmd = get_cmd(dialog);
+		int idx = 0;
+		std::istringstream iss(cmd);
+		string opt;
+		while (std::getline(iss, opt, ' '))
+		{
+			argv[idx++] = strdup(opt.c_str());
+		}
+		argv[idx] = nullptr;
 
-		char *argv[] = {
-			// (char *)"/usr/bin/xterm",
-			// (char *)"-hold",
-			// (char *)"-e",
-			(char *)"/usr/bin/mpirun",
-			(char *)"-np",
-			(char *)np_str,
-			(char *)a_dialog.client(),
-			(char *)"-s",
-			(char *)a_dialog.socat(),
-			(char *)"-g",
-			(char *)a_dialog.gdb(),
-			(char *)"-i",
-			(char *)a_dialog.ip_address(),
-			(char *)a_dialog.target(),
-			(char *)nullptr};
 		execvp(argv[0], argv);
 		_exit(127);
 	}
 	return pid;
 }
 
-void process_session(tcp::socket a_sock, UIWindow &a_window, const int a_port)
+void process_session(tcp::socket socket, UIWindow &window, const int port)
 {
-	const int process_rank = get_process_rank(a_port);
+	const int rank = UIWindow::get_rank(port);
 	mi_h *gdb_handle = nullptr;
-	if (src_is_gdb(a_port))
+	if (UIWindow::src_is_gdb(port))
 	{
-		a_window.set_conns_gdb(process_rank, &a_sock);
-		a_window.set_conns_open_gdb(process_rank, true);
+		window.set_conns_gdb(rank, &socket);
+		window.set_conns_open_gdb(rank, true);
 		gdb_handle = mi_alloc_h();
-		gdb_handle->line = (char *)malloc(max_length * sizeof(char));
+		gdb_handle->line = nullptr;
 	}
 	else
 	{
-		a_window.set_conns_trgt(process_rank, &a_sock);
+		window.set_conns_trgt(rank, &socket);
 	}
 
 	try
 	{
+		char *data = new char[max_length + 8];
 		for (;;)
 		{
-			char *data = new char[max_length + 8];
 			if (nullptr == data)
 			{
 				throw std::bad_alloc();
 			}
-
 			asio::error_code error;
-			const size_t length = a_sock.read_some(asio::buffer(data, max_length), error);
+			const size_t length = socket.read_some(asio::buffer(data, max_length), error);
 			if (asio::error::eof == error)
 			{
-				if (src_is_gdb(a_port))
+				if (UIWindow::src_is_gdb(port))
 				{
-					a_window.set_conns_open_gdb(process_rank, false);
+					window.set_conns_open_gdb(rank, false);
+					delete[] data;
 					mi_free_h(&gdb_handle);
 				}
 				break;
@@ -198,23 +228,18 @@ void process_session(tcp::socket a_sock, UIWindow &a_window, const int a_port)
 			{
 				throw asio::system_error(error);
 			}
-
-			// idx 0 to (length-1) is valid data.
 			// add null termination to received data.
 			data[length] = '\0';
-
 			Glib::signal_idle().connect_once(
 				sigc::bind(
 					sigc::mem_fun(
-						a_window,
+						window,
 						&UIWindow::print_data),
 					gdb_handle,
 					strdup(data),
-					length + 1, // now length+1 chars are valid (inc null termination)
-					a_port));
-
-			delete[] data;
+					port));
 		}
+		delete[] data;
 	}
 	catch (std::exception &e)
 	{
@@ -222,25 +247,25 @@ void process_session(tcp::socket a_sock, UIWindow &a_window, const int a_port)
 	}
 }
 
-void start_acceptor(UIWindow &a_window, const asio::ip::port_type a_process_port)
+void start_acceptor(UIWindow &window, const asio::ip::port_type port)
 {
 	asio::io_context io_context;
-	tcp::acceptor acceptor(io_context, tcp::endpoint(tcp::v4(), a_process_port));
-	process_session(acceptor.accept(), a_window, a_process_port);
+	tcp::acceptor acceptor(io_context, tcp::endpoint(tcp::v4(), port));
+	process_session(acceptor.accept(), window, port);
 }
 
-void start_servers(UIWindow &a_window)
+void start_servers(UIWindow &window)
 {
-	for (int i = 0; i < a_window.num_processes(); ++i)
+	for (int rank = 0; rank < window.num_processes(); ++rank)
 	{
-		std::thread(start_acceptor, std::ref(a_window), (base_port_gdb + i)).detach();
-		std::thread(start_acceptor, std::ref(a_window), (base_port_trgt + i)).detach();
+		std::thread(start_acceptor, std::ref(window), (base_port_gdb + rank)).detach();
+		std::thread(start_acceptor, std::ref(window), (base_port_trgt + rank)).detach();
 	}
 }
 
-void sigint_handler(int a_signum)
+void sigint_handler(int signum)
 {
-	if (a_signum != SIGINT)
+	if (signum != SIGINT)
 	{
 		return;
 	}
@@ -249,49 +274,42 @@ void sigint_handler(int a_signum)
 
 int main(int, char const **)
 {
-	auto app = Gtk::Application::create();
+	Glib::RefPtr<Gtk::Application> app = Gtk::Application::create();
 	g_app = app.get();
 
-	std::unique_ptr<UIDialog> dialog = std::make_unique<UIDialog>();
+	std::unique_ptr<StartupDialog> dialog = std::make_unique<StartupDialog>();
 	do
 	{
-		if (RESPONSE_ID_OK != dialog->run())
+		if (Gtk::RESPONSE_OK != dialog->run())
 		{
-			return EXIT_FAILURE;
+			return EXIT_SUCCESS;
 		}
 	} while (!dialog->is_valid());
 
 	signal(SIGINT, sigint_handler);
-
 	UIWindow window{dialog->num_processes()};
-	window.signal_delete_event().connect(sigc::mem_fun(window, &UIWindow::on_delete));
-
 	start_servers(window);
 
 	bool ret = false;
-	if (dialog->srun())
+	if (dialog->ssh())
 	{
-		ret = start_clients_srun(*dialog);
+		ret = start_clients_ssh(*dialog);
 	}
 	else
 	{
 		ret = start_clients_mpi(*dialog) > 0;
 	}
-
 	if (!ret)
 	{
 		return EXIT_FAILURE;
 	}
 
 	dialog.reset();
-	if (window.init())
-	{
-		app->run(window);
-	}
-	else
+	if (!window.init(app))
 	{
 		return EXIT_FAILURE;
 	}
+	app->run(*window.root_window());
 
 	return EXIT_SUCCESS;
 }

@@ -1,8 +1,8 @@
-processes_per_node=4
-num_nodes=4
+processes_per_node=32
+num_nodes=1
 launcher=mpirun
 client=/home/nicolas/ma/parallelgdb/bin/client
-ip_address=127.0.0.1
 gdb=/usr/bin/gdb
 socat=/usr/bin/socat
-target=/home/nicolas/ma/mpi/bin/mpi
+target=/home/nicolas/ma/target/bin/target
+ip_address=127.0.0.1

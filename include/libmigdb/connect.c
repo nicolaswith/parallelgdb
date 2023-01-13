@@ -1,3 +1,9 @@
+/*
+
+	Modified by Nicolas With
+
+*/
+
 /**[txh]********************************************************************
 
   GDB/MI interface library
@@ -52,26 +58,6 @@ in a row.
 int mi_error = MI_OK;
 char *mi_error_from_gdb = NULL;
 
-mi_h *mi_alloc_h()
-{
-	mi_h *h = (mi_h *)calloc(1, sizeof(mi_h));
-	if (!h)
-	{
-		mi_error = MI_OUT_OF_MEMORY;
-		return NULL;
-	}
-	return h;
-}
-
-void mi_free_h(mi_h **handle)
-{
-	mi_h *h = *handle;
-	free(h->line);
-	mi_free_output(h->po);
-	free(h);
-	*handle = NULL;
-}
-
 char *get_cstr(mi_output *o)
 {
 	if (!o->c || o->c->type != t_const)
@@ -104,16 +90,11 @@ int mi_get_response(mi_h *h)
 		}
 		int is_exit = (o->type == MI_T_RESULT_RECORD && o->tclass == MI_CL_EXIT);
 		/* Add to the list of responses. */
-		// if (add)
-		{
-			if (h->last)
-				h->last->next = o;
-			else
-				h->po = o;
-			h->last = o;
-		}
-		// else
-		// 	mi_free_output(o);
+		if (h->last)
+			h->last->next = o;
+		else
+			h->po = o;
+		h->last = o;
 		/* Exit RR means gdb exited, we won't get a new prompt ;-) */
 		if (is_exit)
 			return 1;
@@ -131,16 +112,9 @@ mi_output *mi_retire_response(mi_h *h)
 
 mi_output *mi_get_response_blk(mi_h *h)
 {
-	int r;
-	// todo: could cause deadlock... 
-	do
-	{
-		r = mi_get_response(h);
-		if (r)
-			return mi_retire_response(h);
-		else
-			usleep(100);
-	} while (!r);
-
+	// non-blocking now ...
+	int r = mi_get_response(h);
+	if (r)
+		return mi_retire_response(h);
 	return NULL;
 }

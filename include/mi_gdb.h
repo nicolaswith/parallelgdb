@@ -1,3 +1,9 @@
+/*
+
+	Modified by Nicolas With
+
+*/
+
 /**[txh]********************************************************************
 
   GDB/MI interface library
@@ -106,16 +112,11 @@ struct mi_output_struct
 };
 typedef struct mi_output_struct mi_output;
 
-typedef void (*stream_cb)(const char *, void *);
-typedef void (*async_cb)(mi_output *o, void *);
-typedef int (*tm_cb)(void *);
-
 /* Values of this structure shouldn't be manipulated by the user. */
 struct mi_h_struct
 {
 	/* The line we are reading. */
 	char *line;
-	int llen, lread;
 	/* Parsed output. */
 	mi_output *po, *last;
 };
@@ -430,7 +431,8 @@ enum mi_gvar_lang mi_lang_str_to_enum(const char *lang);
 const char *mi_lang_enum_to_str(enum mi_gvar_lang lang);
 int mi_res_changelist(mi_h *h, mi_gvar_chg **changed);
 int mi_res_children(mi_h *h, mi_gvar *v);
-mi_bkpt *mi_res_bkpt(mi_h *h);
+// mi_bkpt *mi_res_bkpt(mi_h *h); // original func
+mi_bkpt *mi_res_bkpt(mi_output *output);
 mi_wp *mi_res_wp(mi_h *h);
 char *mi_res_value(mi_h *h);
 // mi_stop *mi_res_stop(mi_h *h); // original func
@@ -449,6 +451,7 @@ mi_chg_reg *mi_get_reg_values_l(mi_h *h, int *how_many);
 void *mi_calloc(size_t count, size_t sz);
 void *mi_calloc1(size_t sz);
 char *mi_malloc(size_t sz);
+mi_h *mi_alloc_h();
 mi_results *mi_alloc_results(void);
 mi_output *mi_alloc_output(void);
 mi_frames *mi_alloc_frames(void);
@@ -460,9 +463,11 @@ mi_stop *mi_alloc_stop(void);
 mi_asm_insns *mi_alloc_asm_insns(void);
 mi_asm_insn *mi_alloc_asm_insn(void);
 mi_chg_reg *mi_alloc_chg_reg(void);
+void mi_free_h(mi_h **handle);
 void mi_free_output(mi_output *r);
 void mi_free_output_but(mi_output *r, mi_output *no, mi_results *no_r);
 void mi_free_frames(mi_frames *f);
+void mi_free_bkpt(mi_bkpt *b);
 void mi_free_aux_term(mi_aux_term *t);
 void mi_free_results(mi_results *r);
 void mi_free_results_but(mi_results *r, mi_results *no);
@@ -475,8 +480,6 @@ void mi_free_asm_insn(mi_asm_insn *i);
 void mi_free_charp_list(char **l);
 void mi_free_chg_reg(mi_chg_reg *r);
 
-mi_h *mi_alloc_h();
-void mi_free_h(mi_h **handle);
 char *get_cstr(mi_output *o);
 
 #endif /* MI_GDB_H */
