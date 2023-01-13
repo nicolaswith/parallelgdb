@@ -1,3 +1,9 @@
+/*
+
+	Modified by Nicolas With
+
+*/
+
 /**[txh]********************************************************************
 
 	GDB/MI interface library
