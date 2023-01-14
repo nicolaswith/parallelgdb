@@ -7,7 +7,7 @@ This debugger consists of two parts:
 2. The clients running on the host machine or the remote cluster
 
 # Building
-To build these two separate executables you can use the following command from the top level directory.
+To build these two separate executables, you can use the following command from the top level directory.
 
 	mkdir bin
 	make
@@ -37,23 +37,25 @@ The following dependencies must be available for building:
 - libgtksourceviewmm-3.0
 - libssh
 
-On Debian based systems you can use the following command to install them:
+On Debian based systems, you can use the following command to install them:
 
 	apt install libgtkmm-3.0-dev libgtksourceviewmm-3.0-dev libssh-dev
 
 ## Run-Time
-For the debugger to work the following programs need to be installed:
+For the debugger to work, the following programs need to be installed:
 - mpi / slurm: To start the client instances.
 - gdb: To debug the target program.
-- socat: To handle the I/O of the GDB instance and the target instance.
+- socat: To handle the I/O of the gdb instance and the target instance.
+
+Furthermore, when debugging on a remote cluster, the `client` executable needs to be copied to or build on this machine.
 
 # Using the debugger
-The debugging server is be started by using the command:
+The debugging server is started by using the command:
 
 	./bin/server
 
-In the startup dialog you need to setup all the according paths and parameters. This configuration can be exported and imported on the next start. 
+In the start dialog you need to set all the corresponding paths and parameters. This configuration can be exported and imported at the next start.
 
-The server will start the specified number of clients, of which each will start the GDB instance, running the target program, and two socat instances, handling the I/O of GDB and the target.
+The server will start the specified number of clients, each of which will start the gdb instance, running the target program, and two socat instances, handling the I/O of gdb and the target.
 
-When SSH is enabled the server will log in on the remote cluster and start the clients there.
+If SSH is enabled, the server logs on to the remote cluster and starts the clients there.
