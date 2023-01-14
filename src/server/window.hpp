@@ -85,6 +85,8 @@ class UIWindow
 	volatile bool *m_started;
 	volatile bool m_sent_run;
 
+	volatile bool *m_sent_stop;
+
 	volatile bool *m_conns_open_gdb;
 
 	void init_overview();

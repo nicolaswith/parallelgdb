@@ -48,6 +48,7 @@ UIWindow::UIWindow(const int num_processes)
 	m_scroll_connections_trgt = new sigc::connection[m_num_processes];
 	m_breakpoints = new Breakpoint *[m_num_processes];
 	m_started = new bool[m_num_processes];
+	m_sent_stop = new bool[m_num_processes];
 	m_conns_open_gdb = new bool[m_num_processes];
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
@@ -58,6 +59,7 @@ UIWindow::UIWindow(const int num_processes)
 		m_current_line[rank] = 0;
 		m_breakpoints[rank] = nullptr;
 		m_started[rank] = false;
+		m_sent_stop[rank] = false;
 	}
 }
 
@@ -75,6 +77,7 @@ UIWindow::~UIWindow()
 	delete[] m_scroll_connections_gdb;
 	delete[] m_scroll_connections_trgt;
 	delete[] m_started;
+	delete[] m_sent_stop;
 	delete[] m_conns_open_gdb;
 }
 
@@ -367,9 +370,13 @@ void UIWindow::stop_all()
 {
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
-		if (m_target_state[rank] == TargetState::RUNNING)
+		if (m_target_state[rank] != TargetState::RUNNING || m_sent_stop[rank])
 		{
-			send_data(m_conns_trgt[rank], "\3");
+			continue;
+		}
+		if (send_data(m_conns_trgt[rank], "\3"))
+		{
+			m_sent_stop[rank] = true;
 		}
 	}
 }
@@ -893,6 +900,7 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, co
 				else if (MI_CL_STOPPED == current_output->tclass)
 				{
 					m_target_state[rank] = TargetState::STOPPED;
+					m_sent_stop[rank] = false;
 				}
 				if (current_output->type == MI_T_OUT_OF_BAND && current_output->stype == MI_ST_STREAM)
 				{
