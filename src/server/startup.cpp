@@ -35,6 +35,7 @@ StartupDialog::StartupDialog()
 	  m_num_nodes(0),
 	  m_mpirun(false),
 	  m_srun(false),
+	  m_oversubscribe(false),
 	  m_client(nullptr),
 	  m_gdb(nullptr),
 	  m_socat(nullptr),
@@ -56,6 +57,7 @@ StartupDialog::StartupDialog()
 	m_entry_num_nodes = get_widget<Gtk::Entry>("num-nodes-entry");
 	m_radiobutton_mpirun = get_widget<Gtk::RadioButton>("mpirun-radiobutton");
 	m_radiobutton_srun = get_widget<Gtk::RadioButton>("srun-radiobutton");
+	m_checkbutton_oversubscribe = get_widget<Gtk::CheckButton>("oversubscribe-checkbutton");
 	m_entry_client = get_widget<Gtk::Entry>("client-entry");
 	m_entry_gdb = get_widget<Gtk::Entry>("gdb-entry");
 	m_entry_socat = get_widget<Gtk::Entry>("socat-entry");
@@ -107,6 +109,7 @@ void StartupDialog::clear_dialog()
 	m_entry_num_nodes->set_text("");
 	m_radiobutton_mpirun->set_active(true);
 	m_radiobutton_srun->set_active(false);
+	m_checkbutton_oversubscribe->set_active(false);
 	m_entry_client->set_text("");
 	m_entry_gdb->set_text("");
 	m_entry_socat->set_text("");
@@ -168,6 +171,17 @@ void StartupDialog::set_value(string key, string value)
 		{
 			m_checkbutton_ssh->set_active(false);
 			set_sensitivity_ssh(false);
+		}
+	}
+	if ("oversubscribe" == key)
+	{
+		if ("true" == value)
+		{
+			m_checkbutton_oversubscribe->set_active(true);
+		}
+		else
+		{
+			m_checkbutton_oversubscribe->set_active(false);
 		}
 	}
 	if ("launcher" == key)
@@ -252,6 +266,10 @@ void StartupDialog::export_config()
 	m_config += m_mpirun ? "mpirun" : "srun";
 	m_config += "\n";
 
+	m_config += "oversubscribe=";
+	m_config += m_oversubscribe ? "true" : "false";
+	m_config += "\n";
+
 	m_config += "client=";
 	m_config += m_client ? m_client : "";
 	m_config += "\n";
@@ -325,6 +343,7 @@ bool StartupDialog::read_values()
 {
 	m_mpirun = m_radiobutton_mpirun->get_active();
 	m_srun = m_radiobutton_srun->get_active();
+	m_oversubscribe = m_checkbutton_oversubscribe->get_active();
 	m_ssh = m_checkbutton_ssh->get_active();
 	m_custom_launcher = m_checkbutton_launcher->get_active();
 
@@ -437,15 +456,18 @@ string StartupDialog::get_cmd() const
 
 	if (m_mpirun)
 	{
-		cmd += "/usr/bin/mpirun";
-		cmd += " --oversubscribe";
+		cmd += "mpirun";
+		if (m_oversubscribe)
+		{
+			cmd += " --oversubscribe";
+		}
 
 		cmd += " -np ";
 		cmd += std::to_string(num_processes());
 	}
 	else if (m_srun)
 	{
-		cmd += "/usr/bin/srun";
+		cmd += "srun";
 
 		cmd += " --mpi=";
 		cmd += "pmi2";

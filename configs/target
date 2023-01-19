@@ -1,8 +1,17 @@
 processes_per_node=32
 num_nodes=1
 launcher=mpirun
+oversubscribe=true
 client=/home/nicolas/ma/parallelgdb/bin/client
 gdb=/usr/bin/gdb
 socat=/usr/bin/socat
 target=/home/nicolas/ma/target/bin/target
 ip_address=127.0.0.1
+ssh=false
+ssh_address=
+ssh_user=
+ssh_password=
+partition=
+custom_launcher=false
+custom_cmd=
+

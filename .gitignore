@@ -1,4 +1,4 @@
 .vscode
 bin
-configs/config_ssh
+configs/ssh
 *.*~
