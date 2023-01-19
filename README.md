@@ -59,3 +59,31 @@ In the start dialog you need to set all the corresponding paths and parameters. 
 The server will start the specified number of clients, each of which will start the gdb instance, running the target program, and two socat instances, handling the I/O of gdb and the target.
 
 If SSH is enabled, the server logs on to the remote cluster and starts the clients there.
+
+## Custom launcher command
+If you need to make specific changes to the start command, or need to use a completely different launcher, you can check the Custom Command option in the startup dialog. This command will invalidate the set paths, IP address and partition. SSH options will not be influenced. 
+
+For the server to know how many connections to open the number of processes and nodes still needs to be set in the startup dialog. Make SURE they match up with what you set in your custom command.
+
+The client supports two possibilities to set its rank. Under normal conditions it will try to read the environment variables set by OpenMPI/MPICH/slurm:
+
+	OMPI_COMM_WORLD_RANK
+	PMI_RANK
+
+If neither of those is set (not using OpenMPI/MPICH/slurm) the Parallel GDB specific environment variable:
+
+	PGDB_RANK
+
+is read. If desired, this one can be set by the user.
+
+Furthermore there are two command line arguments which also can be used to set the rank. First is 
+
+	-r <rank>
+
+which directly sets this processes rank.
+
+Second is
+
+	-e <name>
+
+which adds an additional environment variable name which is tried to read before the others.
