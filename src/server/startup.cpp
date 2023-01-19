@@ -155,6 +155,8 @@ void StartupDialog::set_value(string key, string value)
 		m_entry_ssh_password->set_text(value);
 	if ("partition" == key)
 		m_entry_partition->set_text(value);
+	if ("custom_cmd" == key)
+		m_entry_launcher->set_text(value);
 	if ("ssh" == key)
 	{
 		if ("true" == value)
@@ -179,6 +181,19 @@ void StartupDialog::set_value(string key, string value)
 		{
 			m_radiobutton_mpirun->set_active(false);
 			m_radiobutton_srun->set_active(true);
+		}
+	}
+	if ("custom_launcher" == key)
+	{
+		if ("true" == value)
+		{
+			m_checkbutton_launcher->set_active(true);
+			m_entry_launcher->set_sensitive(true);
+		}
+		else
+		{
+			m_checkbutton_launcher->set_active(false);
+			m_entry_launcher->set_sensitive(true);
 		}
 	}
 }
@@ -275,6 +290,14 @@ void StartupDialog::export_config()
 
 	m_config += "partition=";
 	m_config += m_partition ? m_partition : "";
+	m_config += "\n";
+
+	m_config += "custom_launcher=";
+	m_config += m_custom_launcher ? "true" : "false";
+	m_config += "\n";
+
+	m_config += "custom_cmd=";
+	m_config += m_launcher_cmd ? m_launcher_cmd : "";
 	m_config += "\n\n";
 
 	m_file_chooser_dialog = new Gtk::FileChooserDialog(*dynamic_cast<Gtk::Window *>(m_dialog), string("Select Save Location"), Gtk::FILE_CHOOSER_ACTION_SAVE);
