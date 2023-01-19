@@ -121,8 +121,7 @@ int get_rank(const char *const rank_str, const char *env_str)
 	{
 		std::vector<const char *> env_vars = {
 			"OMPI_COMM_WORLD_RANK",
-			"PMI_RANK",
-			"PGDB_RANK"};
+			"PMI_RANK"};
 		if (env_str)
 		{
 			env_vars.insert(env_vars.begin(), env_str);

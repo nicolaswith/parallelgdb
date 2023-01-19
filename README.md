@@ -70,20 +70,14 @@ The client supports two possibilities to set its rank. Under normal conditions i
 	OMPI_COMM_WORLD_RANK
 	PMI_RANK
 
-If neither of those is set (not using OpenMPI/MPICH/slurm) the Parallel GDB specific environment variable:
-
-	PGDB_RANK
-
-is read. If desired, this one can be set by the user.
-
-Furthermore there are two command line arguments which also can be used to set the rank. First is 
-
-	-r <rank>
-
-which directly sets this processes rank.
-
-Second is
+If neither of those is set (NOT using OpenMPI/MPICH/slurm as launcher) there are two command line arguments which can be used to set the rank. First is 
 
 	-e <name>
 
-which adds an additional environment variable name which is tried to read before the others.
+which adds an additional environment variable name which is tried to be read before the others.
+
+Second is
+
+	-r <rank>
+
+which directly sets this processes rank. This must be set for every rank individually, so the launch command should probably start a shell script/etc.
