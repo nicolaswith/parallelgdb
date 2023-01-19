@@ -31,15 +31,22 @@ T *StartupDialog::get_widget(const string &widget_name)
 
 StartupDialog::StartupDialog()
 	: m_is_valid(false),
+	  m_processes_per_node(0),
+	  m_num_nodes(0),
+	  m_mpirun(false),
+	  m_srun(false),
 	  m_client(nullptr),
 	  m_gdb(nullptr),
 	  m_socat(nullptr),
 	  m_target(nullptr),
 	  m_ip_address(nullptr),
+	  m_ssh(false),
 	  m_ssh_address(nullptr),
 	  m_ssh_user(nullptr),
 	  m_ssh_password(nullptr),
-	  m_partition(nullptr)
+	  m_partition(nullptr),
+	  m_custom_launcher(false),
+	  m_launcher_cmd(nullptr)
 {
 	m_builder = Gtk::Builder::create_from_file("./ui/startup_dialog.glade");
 	m_dialog = get_widget<Gtk::Dialog>("dialog");
@@ -59,20 +66,23 @@ StartupDialog::StartupDialog()
 	m_entry_ssh_user = get_widget<Gtk::Entry>("ssh-user-entry");
 	m_entry_ssh_password = get_widget<Gtk::Entry>("ssh-password-entry");
 	m_entry_partition = get_widget<Gtk::Entry>("partition-entry");
+	m_checkbutton_launcher = get_widget<Gtk::CheckButton>("launcher-checkbutton");
+	m_entry_launcher = get_widget<Gtk::Entry>("launcher-entry");
 
-	m_file_chooser_button->signal_selection_changed().connect(sigc::mem_fun(*this, &StartupDialog::read_config));
-	m_file_chooser_button->set_filename("/home/nicolas/ma/parallelgdb/configs/config_mpirun");
-	// m_file_chooser_button->set_filename("/home/nicolas/ma/parallelgdb/configs/config_mpi");
-	// m_file_chooser_button->set_filename("/home/nicolas/ma/parallelgdb/configs/config_ssh");
-	// m_file_chooser_button->set_filename("/home/nicolas/ma/parallelgdb/configs/config_ants");
+	m_entry_partition->set_sensitive(false);
+	set_sensitivity_ssh(false);
+	m_entry_launcher->set_sensitive(false);
 
-	set_sensitivity(false);
+	m_radiobutton_mpirun->signal_toggled().connect(sigc::mem_fun(*this, &StartupDialog::on_launcher_toggled));
+	m_radiobutton_srun->signal_toggled().connect(sigc::mem_fun(*this, &StartupDialog::on_launcher_toggled));
+	m_checkbutton_ssh->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &StartupDialog::on_ssh_button_toggled), m_checkbutton_ssh));
+	m_checkbutton_launcher->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &StartupDialog::on_custom_launcher_toggled), m_checkbutton_launcher));
 
 	get_widget<Gtk::Button>("clear-config-button")->signal_clicked().connect(sigc::mem_fun(*this, &StartupDialog::clear_all));
 	get_widget<Gtk::Button>("export-config-button")->signal_clicked().connect(sigc::mem_fun(*this, &StartupDialog::export_config));
 
+	m_file_chooser_button->signal_selection_changed().connect(sigc::mem_fun(*this, &StartupDialog::read_config));
 	m_dialog->signal_response().connect(sigc::mem_fun(*this, &StartupDialog::on_dialog_response));
-	m_checkbutton_ssh->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &StartupDialog::on_toggle_button), m_checkbutton_ssh));
 
 	m_dialog->show_all();
 }
@@ -107,7 +117,12 @@ void StartupDialog::clear_dialog()
 	m_entry_ssh_user->set_text("");
 	m_entry_ssh_password->set_text("");
 	m_entry_partition->set_text("");
-	set_sensitivity(false);
+	m_checkbutton_launcher->set_active(false);
+	m_entry_launcher->set_text("");
+
+	m_entry_partition->set_sensitive(false);
+	set_sensitivity_ssh(false);
+	m_entry_launcher->set_sensitive(false);
 }
 
 void StartupDialog::clear_all()
@@ -145,12 +160,12 @@ void StartupDialog::set_value(string key, string value)
 		if ("true" == value)
 		{
 			m_checkbutton_ssh->set_active(true);
-			set_sensitivity(true);
+			set_sensitivity_ssh(true);
 		}
 		else
 		{
 			m_checkbutton_ssh->set_active(false);
-			set_sensitivity(false);
+			set_sensitivity_ssh(false);
 		}
 	}
 	if ("launcher" == key)
@@ -285,6 +300,38 @@ void StartupDialog::on_save_dialog_response(const int response_id)
 
 bool StartupDialog::read_values()
 {
+	m_custom_launcher = m_checkbutton_launcher->get_active();
+	if (m_custom_launcher)
+	{
+		free(m_launcher_cmd);
+		m_launcher_cmd = strdup(m_entry_launcher->get_text().c_str());
+		return true;
+	}
+
+	m_mpirun = m_radiobutton_mpirun->get_active();
+	m_srun = m_radiobutton_srun->get_active();
+	m_ssh = m_checkbutton_ssh->get_active();
+
+	free(m_client);
+	free(m_gdb);
+	free(m_socat);
+	free(m_target);
+	free(m_ip_address);
+	free(m_ssh_address);
+	free(m_ssh_user);
+	free(m_ssh_password);
+	free(m_partition);
+
+	m_client = strdup(m_entry_client->get_text().c_str());
+	m_gdb = strdup(m_entry_gdb->get_text().c_str());
+	m_socat = strdup(m_entry_socat->get_text().c_str());
+	m_target = strdup(m_entry_target->get_text().c_str());
+	m_ip_address = strdup(m_entry_ip_address->get_text().c_str());
+	m_ssh_address = strdup(m_entry_ssh_address->get_text().c_str());
+	m_ssh_user = strdup(m_entry_ssh_user->get_text().c_str());
+	m_ssh_password = strdup(m_entry_ssh_password->get_text().c_str());
+	m_partition = strdup(m_entry_partition->get_text().c_str());
+
 	try
 	{
 		std::size_t pos;
@@ -319,31 +366,6 @@ bool StartupDialog::read_values()
 		return false;
 	}
 
-	m_mpirun = m_radiobutton_mpirun->get_active();
-	m_srun = m_radiobutton_srun->get_active();
-
-	free(m_client);
-	free(m_gdb);
-	free(m_socat);
-	free(m_target);
-	free(m_ip_address);
-	m_client = strdup(m_entry_client->get_text().c_str());
-	m_gdb = strdup(m_entry_gdb->get_text().c_str());
-	m_socat = strdup(m_entry_socat->get_text().c_str());
-	m_target = strdup(m_entry_target->get_text().c_str());
-	m_ip_address = strdup(m_entry_ip_address->get_text().c_str());
-
-	m_ssh = m_checkbutton_ssh->get_active();
-
-	free(m_ssh_address);
-	free(m_ssh_user);
-	free(m_ssh_password);
-	free(m_partition);
-	m_ssh_address = strdup(m_entry_ssh_address->get_text().c_str());
-	m_ssh_user = strdup(m_entry_ssh_user->get_text().c_str());
-	m_ssh_password = strdup(m_entry_ssh_password->get_text().c_str());
-	m_partition = strdup(m_entry_partition->get_text().c_str());
-
 	return true;
 }
 
@@ -357,15 +379,86 @@ void StartupDialog::on_dialog_response(const int response_id)
 	m_is_valid = read_values();
 }
 
-void StartupDialog::set_sensitivity(bool state)
+void StartupDialog::set_sensitivity_ssh(bool state)
 {
 	m_entry_ssh_address->set_sensitive(state);
 	m_entry_ssh_user->set_sensitive(state);
 	m_entry_ssh_password->set_sensitive(state);
-	m_entry_partition->set_sensitive(state);
 }
 
-void StartupDialog::on_toggle_button(Gtk::CheckButton *button)
+void StartupDialog::on_ssh_button_toggled(Gtk::CheckButton *button)
 {
-	set_sensitivity(button->get_active());
+	set_sensitivity_ssh(button->get_active());
+}
+
+void StartupDialog::on_custom_launcher_toggled(Gtk::CheckButton *button)
+{
+	m_entry_launcher->set_sensitive(button->get_active());
+}
+
+void StartupDialog::on_launcher_toggled()
+{
+	if (m_radiobutton_mpirun->get_active())
+	{
+		m_entry_partition->set_sensitive(false);
+	}
+	else if (m_radiobutton_srun->get_active())
+	{
+		m_entry_partition->set_sensitive(true);
+	}
+}
+
+string StartupDialog::get_cmd() const
+{
+	if (m_custom_launcher)
+	{
+		return m_entry_launcher->get_text();
+	}
+
+	string cmd = "";
+
+	if (m_mpirun)
+	{
+		cmd += "/usr/bin/mpirun";
+		cmd += " --oversubscribe";
+
+		cmd += " -np ";
+		cmd += std::to_string(num_processes());
+	}
+	else if (m_srun)
+	{
+		cmd += "/usr/bin/srun";
+
+		cmd += " --mpi=";
+		cmd += "pmi2";
+
+		cmd += " --nodes=";
+		cmd += std::to_string(m_num_nodes);
+
+		cmd += " --ntasks-per-node=";
+		cmd += std::to_string(m_processes_per_node);
+
+		if (m_partition && string(m_partition) != string(""))
+		{
+			cmd += " --partition=";
+			cmd += m_partition;
+		}
+	}
+
+	cmd += " ";
+	cmd += m_client;
+
+	cmd += " -s ";
+	cmd += m_socat;
+
+	cmd += " -g ";
+	cmd += m_gdb;
+
+	cmd += " -i ";
+	cmd += m_ip_address;
+
+	cmd += " ";
+	cmd += m_target;
+
+	return cmd;
 }

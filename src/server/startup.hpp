@@ -40,6 +40,8 @@ class StartupDialog
 	char *m_ssh_user;
 	char *m_ssh_password;
 	char *m_partition;
+	bool m_custom_launcher;
+	char *m_launcher_cmd;
 
 	Glib::RefPtr<Gtk::Builder> m_builder;
 	Gtk::Dialog *m_dialog;
@@ -62,10 +64,14 @@ class StartupDialog
 	Gtk::Entry *m_entry_ssh_user;
 	Gtk::Entry *m_entry_ssh_password;
 	Gtk::Entry *m_entry_partition;
+	Gtk::CheckButton *m_checkbutton_launcher;
+	Gtk::Entry *m_entry_launcher;
 
 	void on_dialog_response(const int response_id);
-	void set_sensitivity(bool state);
-	void on_toggle_button(Gtk::CheckButton *button);
+	void set_sensitivity_ssh(bool state);
+	void on_ssh_button_toggled(Gtk::CheckButton *button);
+	void on_custom_launcher_toggled(Gtk::CheckButton *button);
+	void on_launcher_toggled();
 	void clear_dialog();
 	void set_value(string key, string value);
 	void read_config();
@@ -81,6 +87,8 @@ public:
 	StartupDialog();
 	virtual ~StartupDialog();
 
+	string get_cmd() const;
+
 	inline int run()
 	{
 		return m_dialog->run();
@@ -94,51 +102,6 @@ public:
 	inline int num_processes() const
 	{
 		return m_processes_per_node * m_num_nodes;
-	}
-
-	inline int processes_per_node() const
-	{
-		return m_processes_per_node;
-	}
-
-	inline int num_nodes() const
-	{
-		return m_num_nodes;
-	}
-
-	inline bool mpirun() const
-	{
-		return m_mpirun;
-	}
-
-	inline bool srun() const
-	{
-		return m_srun;
-	}
-
-	inline const char *client() const
-	{
-		return m_client;
-	}
-
-	inline const char *gdb() const
-	{
-		return m_gdb;
-	}
-
-	inline const char *socat() const
-	{
-		return m_socat;
-	}
-
-	inline const char *target() const
-	{
-		return m_target;
-	}
-
-	inline const char *ip_address() const
-	{
-		return m_ip_address;
 	}
 
 	inline bool ssh() const
@@ -159,11 +122,6 @@ public:
 	inline const char *ssh_password() const
 	{
 		return m_ssh_password;
-	}
-
-	inline const char *partition() const
-	{
-		return m_partition;
 	}
 };
 

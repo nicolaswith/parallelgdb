@@ -31,53 +31,6 @@ const asio::ip::port_type base_port_trgt = 0xC000;
 
 Gtk::Application *g_app;
 
-string get_cmd(const StartupDialog &dialog)
-{
-	string cmd = "";
-
-	if (dialog.mpirun())
-	{
-		cmd += "/usr/bin/mpirun";
-		cmd += " --oversubscribe";
-
-		cmd += " -np ";
-		cmd += std::to_string(dialog.num_processes());
-	}
-	else if (dialog.srun())
-	{
-		cmd += "/usr/bin/srun";
-
-		cmd += " --nodes=";
-		cmd += std::to_string(dialog.num_nodes());
-
-		cmd += " --ntasks-per-node=";
-		cmd += std::to_string(dialog.processes_per_node());
-
-		cmd += " --partition=";
-		cmd += dialog.partition();
-
-		cmd += " --mpi=";
-		cmd += "pmi2";
-	}
-
-	cmd += " ";
-	cmd += dialog.client();
-
-	cmd += " -s ";
-	cmd += dialog.socat();
-
-	cmd += " -g ";
-	cmd += dialog.gdb();
-
-	cmd += " -i ";
-	cmd += dialog.ip_address();
-
-	cmd += " ";
-	cmd += dialog.target();
-
-	return cmd;
-}
-
 int run_cmd(ssh_session &session, const StartupDialog &dialog)
 {
 	ssh_channel channel;
@@ -96,7 +49,7 @@ int run_cmd(ssh_session &session, const StartupDialog &dialog)
 		return rc;
 	}
 
-	string cmd = get_cmd(dialog);
+	string cmd = dialog.get_cmd();
 	rc = ssh_channel_request_exec(channel, cmd.c_str());
 	if (rc != SSH_OK)
 	{
@@ -171,7 +124,7 @@ int start_clients_mpi(StartupDialog &dialog)
 	if (0 == pid)
 	{
 		char **argv = new char *[20];
-		string cmd = get_cmd(dialog);
+		string cmd = dialog.get_cmd();
 		int idx = 0;
 		std::istringstream iss(cmd);
 		string opt;
