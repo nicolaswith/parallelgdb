@@ -300,17 +300,10 @@ void StartupDialog::on_save_dialog_response(const int response_id)
 
 bool StartupDialog::read_values()
 {
-	m_custom_launcher = m_checkbutton_launcher->get_active();
-	if (m_custom_launcher)
-	{
-		free(m_launcher_cmd);
-		m_launcher_cmd = strdup(m_entry_launcher->get_text().c_str());
-		return true;
-	}
-
 	m_mpirun = m_radiobutton_mpirun->get_active();
 	m_srun = m_radiobutton_srun->get_active();
 	m_ssh = m_checkbutton_ssh->get_active();
+	m_custom_launcher = m_checkbutton_launcher->get_active();
 
 	free(m_client);
 	free(m_gdb);
@@ -321,6 +314,7 @@ bool StartupDialog::read_values()
 	free(m_ssh_user);
 	free(m_ssh_password);
 	free(m_partition);
+	free(m_launcher_cmd);
 
 	m_client = strdup(m_entry_client->get_text().c_str());
 	m_gdb = strdup(m_entry_gdb->get_text().c_str());
@@ -331,6 +325,7 @@ bool StartupDialog::read_values()
 	m_ssh_user = strdup(m_entry_ssh_user->get_text().c_str());
 	m_ssh_password = strdup(m_entry_ssh_password->get_text().c_str());
 	m_partition = strdup(m_entry_partition->get_text().c_str());
+	m_launcher_cmd = strdup(m_entry_launcher->get_text().c_str());
 
 	try
 	{

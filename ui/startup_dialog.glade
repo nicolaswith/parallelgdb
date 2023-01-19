@@ -424,7 +424,7 @@
               <object class="GtkLabel">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="tooltip-text" translatable="yes">This will invalidate all other settings except SSH.</property>
+                <property name="tooltip-text" translatable="yes">This will invalidate Launcher and Path settings.</property>
                 <property name="halign">start</property>
                 <property name="label" translatable="yes">Custom Command</property>
               </object>
