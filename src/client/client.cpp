@@ -26,7 +26,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <array>
+#include <vector>
 #include <sys/wait.h>
 
 using namespace std;
@@ -110,7 +110,7 @@ int start_socat(const string &tty_name, const char *const socat_path, const char
 	return pid;
 }
 
-int get_rank(const char *const rank_str)
+int get_rank(const char *const rank_str, const char *env_str)
 {
 	const char *rank = nullptr;
 	if (rank_str)
@@ -119,10 +119,14 @@ int get_rank(const char *const rank_str)
 	}
 	else
 	{
-		std::array<const char *const, 3> env_vars = {
-			"PMI_RANK",
+		std::vector<const char *> env_vars = {
 			"OMPI_COMM_WORLD_RANK",
+			"PMI_RANK",
 			"PGDB_RANK"};
+		if (env_str)
+		{
+			env_vars.insert(env_vars.begin(), env_str);
+		}
 		for (const char *const env_var : env_vars)
 		{
 			rank = getenv(env_var);
@@ -155,15 +159,18 @@ void print_help()
 		"  -g <path>\t path to gdb\n"
 		"  -s <path>\t path to socat\n"
 		"  -i <addr>\t host IP address\n"
+		"  -h\t\t print this help\n"
+		"\n"
+		"Only needed when using custom launcher command and only one at a time:\n"
 		"  -r <rank>\t rank of process\n"
-		"  -h\t\t print this help\n");
+		"  -e <name>\t name of the environment variable containing the process rank\n");
 }
 
-bool parse_cl_args(const int argc, char **argv, char **ip_addr, char **gdb_path, char **socat_path, char **target, char **rank_str)
+bool parse_cl_args(const int argc, char **argv, char **ip_addr, char **gdb_path, char **socat_path, char **target, char **rank_str, char **env_str)
 {
 	char c;
 	opterr = 0;
-	while ((c = getopt(argc, argv, "hg:s:i:r:")) != -1)
+	while ((c = getopt(argc, argv, "hg:s:i:r:e:")) != -1)
 	{
 		switch (c)
 		{
@@ -183,6 +190,10 @@ bool parse_cl_args(const int argc, char **argv, char **ip_addr, char **gdb_path,
 			free(*rank_str);
 			*rank_str = strdup(optarg);
 			break;
+		case 'e': // env var name
+			free(*env_str);
+			*env_str = strdup(optarg);
+			break;
 		case 'h': // help
 			print_help();
 			free(*target);
@@ -190,6 +201,7 @@ bool parse_cl_args(const int argc, char **argv, char **ip_addr, char **gdb_path,
 			free(*gdb_path);
 			free(*ip_addr);
 			free(*rank_str);
+			free(*env_str);
 			exit(EXIT_SUCCESS);
 			break;
 		case '?':
@@ -208,6 +220,10 @@ bool parse_cl_args(const int argc, char **argv, char **ip_addr, char **gdb_path,
 			else if ('r' == optopt)
 			{
 				fprintf(stderr, "Option -%c requires the process rank.\n", optopt);
+			}
+			else if ('e' == optopt)
+			{
+				fprintf(stderr, "Option -%c requires the name for the environment variable containing the process rank.\n", optopt);
 			}
 			else if (isprint(optopt))
 			{
@@ -252,13 +268,15 @@ int main(const int argc, char **argv)
 	char *socat_path = nullptr;
 	char *target = nullptr;
 	char *rank_str = nullptr;
-	if (!parse_cl_args(argc, argv, &ip_addr, &gdb_path, &socat_path, &target, &rank_str))
+	char *env_str = nullptr;
+	if (!parse_cl_args(argc, argv, &ip_addr, &gdb_path, &socat_path, &target, &rank_str, &env_str))
 	{
 		free(target);
 		free(socat_path);
 		free(gdb_path);
 		free(ip_addr);
 		free(rank_str);
+		free(env_str);
 		return EXIT_FAILURE;
 	}
 
@@ -266,7 +284,7 @@ int main(const int argc, char **argv)
 	string tty_gdb = "/tmp/ttyGDB_" + to_string(pid);
 	string tty_trgt = "/tmp/ttyTRGT_" + to_string(pid);
 
-	int rank = get_rank(rank_str);
+	int rank = get_rank(rank_str, env_str);
 	if (rank < 0)
 	{
 		free(target);
@@ -274,6 +292,7 @@ int main(const int argc, char **argv)
 		free(gdb_path);
 		free(ip_addr);
 		free(rank_str);
+		free(env_str);
 		fprintf(stderr, "Could not read rank.\n");
 		return EXIT_FAILURE;
 	}
