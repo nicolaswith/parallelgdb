@@ -1,6 +1,6 @@
 /*
 
-	Modified by Nicolas With
+	Modified by Nicolas With for ParallelGDB.
 
 */
 
