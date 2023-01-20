@@ -20,6 +20,7 @@
 #include <fstream>
 
 #include "startup.hpp"
+#include "base64.hpp"
 
 template <class T>
 T *StartupDialog::get_widget(const string &widget_name)
@@ -155,7 +156,7 @@ void StartupDialog::set_value(string key, string value)
 	if ("ssh_user" == key)
 		m_entry_ssh_user->set_text(value);
 	if ("ssh_password" == key)
-		m_entry_ssh_password->set_text(value);
+		m_entry_ssh_password->set_text(Base64::decode(value));
 	if ("partition" == key)
 		m_entry_partition->set_text(value);
 	if ("custom_cmd" == key)
@@ -303,7 +304,7 @@ void StartupDialog::export_config()
 	m_config += "\n";
 
 	m_config += "ssh_password=";
-	m_config += m_ssh_password ? m_ssh_password : "";
+	m_config += m_ssh_password ? Base64::encode(m_ssh_password) : "";
 	m_config += "\n";
 
 	m_config += "partition=";
