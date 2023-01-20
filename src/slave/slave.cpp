@@ -28,7 +28,7 @@
 
 using namespace std;
 
-void wait_for_socat(const int pid_socat_gdb, const int pid_socat_trgt)
+bool wait_for_socat(const int pid_socat_gdb, const int pid_socat_trgt)
 {
 	for (;;)
 	{
@@ -39,25 +39,38 @@ void wait_for_socat(const int pid_socat_gdb, const int pid_socat_trgt)
 			int pid;
 			bool found_gdb = false;
 			bool found_trgt = false;
-			stringstream stream(result);
+			istringstream stream(result);
 			while (stream >> pid)
 			{
 				if (pid == pid_socat_gdb)
+				{
 					found_gdb = true;
+				}
 				if (pid == pid_socat_trgt)
+				{
 					found_trgt = true;
+				}
 			}
 			if (found_gdb && found_trgt)
-				return;
+			{
+				return true;
+			}
 		}
-		pclose(cmd);
+		int ret = pclose(cmd);
+		if (0 != ret)
+		{
+			return false;
+		}
 		usleep(100);
 	}
 }
 
 int start_gdb(const string &tty_gdb, const string &tty_trgt, const char *const gdb_path, const char *const target, const int pid_socat_gdb, const int pid_socat_trgt)
 {
-	wait_for_socat(pid_socat_gdb, pid_socat_trgt);
+	if (!wait_for_socat(pid_socat_gdb, pid_socat_trgt))
+	{
+		return -1;
+	}
 	usleep(500000);
 
 	int pid = fork();
@@ -319,23 +332,31 @@ int main(const int argc, char **argv)
 	free(rank_str);
 	free(env_str);
 
-	int status;
-	while (true)
+	const bool start_success = pid_gdb > 0 && pid_socat_gdb > 0 && pid_socat_trgt > 0;
+	int exited = start_success ? 0 : -1;
+	while (0 == exited)
 	{
-		int exited = 0;
-		exited |= waitpid(pid_gdb, &status, WNOHANG);
-		exited |= waitpid(pid_socat_gdb, &status, WNOHANG);
-		exited |= waitpid(pid_socat_trgt, &status, WNOHANG);
-
-		if (exited)
-			break;
-
 		sleep(1);
+
+		exited = 0;
+
+		exited |= waitpid(pid_gdb, nullptr, WNOHANG);
+		exited |= waitpid(pid_socat_gdb, nullptr, WNOHANG);
+		exited |= waitpid(pid_socat_trgt, nullptr, WNOHANG);
 	}
 
-	kill(pid_gdb, SIGINT);
-	kill(pid_socat_gdb, SIGINT);
-	kill(pid_socat_trgt, SIGINT);
+	if (pid_gdb > 0)
+	{
+		kill(pid_gdb, SIGINT);
+	}
+	if (pid_socat_gdb > 0)
+	{
+		kill(pid_socat_gdb, SIGINT);
+	}
+	if (pid_socat_trgt > 0)
+	{
+		kill(pid_socat_trgt, SIGINT);
+	}
 
 	return EXIT_SUCCESS;
 }
