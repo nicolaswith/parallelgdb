@@ -175,6 +175,16 @@ void print_help()
 		"  -e <name>\t name of the environment variable containing the process rank\n");
 }
 
+void free_char_arrays(char *ip_addr, char *gdb_path, char *socat_path, char *target, char *rank_str, char *env_str)
+{
+	free(target);
+	free(socat_path);
+	free(gdb_path);
+	free(ip_addr);
+	free(rank_str);
+	free(env_str);
+}
+
 bool parse_cl_args(const int argc, char **argv, char **ip_addr, char **gdb_path, char **socat_path, char **target, char **rank_str, char **env_str)
 {
 	char c;
@@ -205,12 +215,7 @@ bool parse_cl_args(const int argc, char **argv, char **ip_addr, char **gdb_path,
 			break;
 		case 'h': // help
 			print_help();
-			free(*target);
-			free(*socat_path);
-			free(*gdb_path);
-			free(*ip_addr);
-			free(*rank_str);
-			free(*env_str);
+			free_char_arrays(*ip_addr, *gdb_path, *socat_path, *target, *rank_str, *env_str);
 			exit(EXIT_SUCCESS);
 			break;
 		case '?':
@@ -280,24 +285,14 @@ int main(const int argc, char **argv)
 	char *env_str = nullptr;
 	if (!parse_cl_args(argc, argv, &ip_addr, &gdb_path, &socat_path, &target, &rank_str, &env_str))
 	{
-		free(target);
-		free(socat_path);
-		free(gdb_path);
-		free(ip_addr);
-		free(rank_str);
-		free(env_str);
+		free_char_arrays(ip_addr, gdb_path, socat_path, target, rank_str, env_str);
 		return EXIT_FAILURE;
 	}
 
 	int rank = get_rank(rank_str, env_str);
 	if (rank < 0)
 	{
-		free(target);
-		free(socat_path);
-		free(gdb_path);
-		free(ip_addr);
-		free(rank_str);
-		free(env_str);
+		free_char_arrays(ip_addr, gdb_path, socat_path, target, rank_str, env_str);
 		fprintf(stderr, "Could not read rank.\n");
 		return EXIT_FAILURE;
 	}
@@ -307,6 +302,7 @@ int main(const int argc, char **argv)
 		gdb_path == nullptr ||
 		ip_addr == nullptr)
 	{
+		free_char_arrays(ip_addr, gdb_path, socat_path, target, rank_str, env_str);
 		fprintf(stderr, "Missing configuration. [paths or/and IP address]\n");
 		return EXIT_FAILURE;
 	}
@@ -325,12 +321,7 @@ int main(const int argc, char **argv)
 	int pid_socat_trgt = start_socat(tty_trgt, socat_path, ip_addr, port_trgt);
 	int pid_gdb = start_gdb(tty_gdb, tty_trgt, gdb_path, target, pid_socat_gdb, pid_socat_trgt);
 
-	free(target);
-	free(socat_path);
-	free(gdb_path);
-	free(ip_addr);
-	free(rank_str);
-	free(env_str);
+	free_char_arrays(ip_addr, gdb_path, socat_path, target, rank_str, env_str);
 
 	const bool start_success = pid_gdb > 0 && pid_socat_gdb > 0 && pid_socat_trgt > 0;
 	int exited = start_success ? 0 : -1;
