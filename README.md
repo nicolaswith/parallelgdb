@@ -52,9 +52,9 @@ Furthermore, when debugging on a remote cluster, the `pgdbslave` executable need
 # Using the debugger
 The debugging master is started by using the command:
 
-	./bin/master
+	./bin/pgdbmaster
 
-In the start dialog you need to set all the corresponding paths and parameters. This configuration can be exported and imported at the next start.
+In the startup dialog you need to set all the corresponding paths and parameters. This configuration can be exported and imported at the next start.
 
 The master will start the specified number of slaves, each of which will start the gdb instance, running the target program, and two socat instances, handling the I/O of gdb and the target.
 
