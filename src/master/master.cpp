@@ -23,7 +23,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "server.hpp"
+#include "master.hpp"
 
 const int max_length = 0x2000; // socat default
 const asio::ip::port_type base_port_gdb = 0x8000;
@@ -65,7 +65,7 @@ int run_cmd(ssh_session &session, const StartupDialog &dialog)
 	return SSH_OK;
 }
 
-bool start_clients_ssh(StartupDialog &dialog)
+bool start_slaves_ssh(StartupDialog &dialog)
 {
 	ssh_session session;
 	int rc;
@@ -106,7 +106,7 @@ bool start_clients_ssh(StartupDialog &dialog)
 	rc = run_cmd(session, dialog);
 	if (rc != SSH_OK)
 	{
-		fprintf(stderr, "Error starting clients: %s\n", ssh_get_error(session));
+		fprintf(stderr, "Error starting slaves: %s\n", ssh_get_error(session));
 		ssh_disconnect(session);
 		ssh_free(session);
 		return false;
@@ -118,7 +118,7 @@ bool start_clients_ssh(StartupDialog &dialog)
 	return true;
 }
 
-int start_clients_mpi(StartupDialog &dialog)
+int start_slaves_local(StartupDialog &dialog)
 {
 	const int pid = fork();
 	if (0 == pid)
@@ -246,11 +246,11 @@ int main(int, char const **)
 	bool ret = false;
 	if (dialog->ssh())
 	{
-		ret = start_clients_ssh(*dialog);
+		ret = start_slaves_ssh(*dialog);
 	}
 	else
 	{
-		ret = start_clients_mpi(*dialog) > 0;
+		ret = start_slaves_local(*dialog) > 0;
 	}
 	if (!ret)
 	{

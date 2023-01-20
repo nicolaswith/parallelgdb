@@ -36,7 +36,7 @@ StartupDialog::StartupDialog()
 	  m_mpirun(false),
 	  m_srun(false),
 	  m_oversubscribe(false),
-	  m_client(nullptr),
+	  m_slave(nullptr),
 	  m_gdb(nullptr),
 	  m_socat(nullptr),
 	  m_target(nullptr),
@@ -58,7 +58,7 @@ StartupDialog::StartupDialog()
 	m_radiobutton_mpirun = get_widget<Gtk::RadioButton>("mpirun-radiobutton");
 	m_radiobutton_srun = get_widget<Gtk::RadioButton>("srun-radiobutton");
 	m_checkbutton_oversubscribe = get_widget<Gtk::CheckButton>("oversubscribe-checkbutton");
-	m_entry_client = get_widget<Gtk::Entry>("client-entry");
+	m_entry_slave = get_widget<Gtk::Entry>("slave-entry");
 	m_entry_gdb = get_widget<Gtk::Entry>("gdb-entry");
 	m_entry_socat = get_widget<Gtk::Entry>("socat-entry");
 	m_entry_target = get_widget<Gtk::Entry>("target-entry");
@@ -91,7 +91,7 @@ StartupDialog::StartupDialog()
 
 StartupDialog::~StartupDialog()
 {
-	free(m_client);
+	free(m_slave);
 	free(m_gdb);
 	free(m_socat);
 	free(m_target);
@@ -110,7 +110,7 @@ void StartupDialog::clear_dialog()
 	m_radiobutton_mpirun->set_active(true);
 	m_radiobutton_srun->set_active(false);
 	m_checkbutton_oversubscribe->set_active(false);
-	m_entry_client->set_text("");
+	m_entry_slave->set_text("");
 	m_entry_gdb->set_text("");
 	m_entry_socat->set_text("");
 	m_entry_target->set_text("");
@@ -140,8 +140,8 @@ void StartupDialog::set_value(string key, string value)
 		m_entry_processes_per_node->set_text(value);
 	if ("num_nodes" == key)
 		m_entry_num_nodes->set_text(value);
-	if ("client" == key)
-		m_entry_client->set_text(value);
+	if ("slave" == key)
+		m_entry_slave->set_text(value);
 	if ("gdb" == key)
 		m_entry_gdb->set_text(value);
 	if ("socat" == key)
@@ -270,8 +270,8 @@ void StartupDialog::export_config()
 	m_config += m_oversubscribe ? "true" : "false";
 	m_config += "\n";
 
-	m_config += "client=";
-	m_config += m_client ? m_client : "";
+	m_config += "slave=";
+	m_config += m_slave ? m_slave : "";
 	m_config += "\n";
 
 	m_config += "gdb=";
@@ -347,7 +347,7 @@ bool StartupDialog::read_values()
 	m_ssh = m_checkbutton_ssh->get_active();
 	m_custom_launcher = m_checkbutton_launcher->get_active();
 
-	free(m_client);
+	free(m_slave);
 	free(m_gdb);
 	free(m_socat);
 	free(m_target);
@@ -358,7 +358,7 @@ bool StartupDialog::read_values()
 	free(m_partition);
 	free(m_launcher_cmd);
 
-	m_client = strdup(m_entry_client->get_text().c_str());
+	m_slave = strdup(m_entry_slave->get_text().c_str());
 	m_gdb = strdup(m_entry_gdb->get_text().c_str());
 	m_socat = strdup(m_entry_socat->get_text().c_str());
 	m_target = strdup(m_entry_target->get_text().c_str());
@@ -486,7 +486,7 @@ string StartupDialog::get_cmd() const
 	}
 
 	cmd += " ";
-	cmd += m_client;
+	cmd += m_slave;
 
 	cmd += " -s ";
 	cmd += m_socat;

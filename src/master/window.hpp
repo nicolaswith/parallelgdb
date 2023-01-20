@@ -29,6 +29,9 @@
 #include <gtksourceviewmm.h>
 #pragma GCC diagnostic pop
 
+#include "asio.hpp"
+using asio::ip::tcp;
+
 enum TargetState
 {
 	UNKNOWN,

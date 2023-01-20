@@ -67,7 +67,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes">Client Path</property>
+                <property name="label" translatable="yes">Slave Path</property>
               </object>
               <packing>
                 <property name="left-attach">0</property>
@@ -182,7 +182,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkEntry" id="client-entry">
+              <object class="GtkEntry" id="slave-entry">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
               </object>

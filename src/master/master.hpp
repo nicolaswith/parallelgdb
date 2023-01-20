@@ -17,22 +17,23 @@
 	along with ParallelGDB.  If not, see <https://www.gnu.org/licenses/gpl-3.0.txt>.
 */
 
-#ifndef DEFS_HPP
-#define DEFS_HPP
+#ifndef MASTER_HPP
+#define MASTER_HPP
 
-#include <iostream>
+#include "defs.hpp"
+#include "window.hpp"
+#include "startup.hpp"
 
-#include <gtkmm.h>
 #include "asio.hpp"
-
 using asio::ip::tcp;
-using std::string;
-using std::size_t;
-using std::cout;
-using std::endl;
 
-#define dump(var) std::cout << #var << " = " << var << "\n"
-#define dumpp(var) printf("%s = %p\n", #var, (void *)var)
-#define dumpb(var) std::cout << #var << " = " << std::boolalpha << var << "\n"
+#include <libssh/libssh.h>
 
-#endif /* DEFS_HPP */
+int run_cmd(ssh_session &session, const StartupDialog &dialog);
+bool start_slaves_ssh(const StartupDialog &dialog);
+int start_slaves_local(const StartupDialog &dialog);
+void process_session(tcp::socket socket, UIWindow &window, const int port);
+void start_acceptor(UIWindow &window, const asio::ip::port_type port);
+void start_servers(UIWindow &window);
+
+#endif /* MASTER_HPP */

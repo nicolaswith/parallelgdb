@@ -4,16 +4,16 @@ BUILDDIR = ./bin
 INCLUDEDIR = ./include
 SRCDIR = ./src
 
-all: libmigdb server client
+all: libmigdb master slave
 
 libmigdb:
 	+$(MAKE) -C $(INCLUDEDIR)/libmigdb
 
-server:
-	+$(MAKE) -C $(SRCDIR)/server
+master:
+	+$(MAKE) -C $(SRCDIR)/master
 
-client:
-	+$(MAKE) -C $(SRCDIR)/client
+slave:
+	+$(MAKE) -C $(SRCDIR)/slave
 
 clean:
 	$(RM) -f $(BUILDDIR)/*

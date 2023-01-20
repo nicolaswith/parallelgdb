@@ -153,7 +153,7 @@ void print_help()
 {
 	fprintf(
 		stderr,
-		"Usage: ./client [OPTIONS] </path/to/target>\n"
+		"Usage: ./pgdbslave [OPTIONS] </path/to/target>\n"
 		"Options:\n"
 		"  -g <path>\t path to gdb\n"
 		"  -s <path>\t path to socat\n"

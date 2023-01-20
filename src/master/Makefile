@@ -1,5 +1,5 @@
 #!/usr/bin/make
-TRGTS = server
+TRGTS = pgdbmaster
 
 CC = g++
 RM = rm
@@ -20,7 +20,7 @@ all: $(PRGS)
 $(BUILDDIR)/libmigdb.a:
 	+$(MAKE) -C $(INCLUDEDIR)/libmigdb
 
-$(BUILDDIR)/server: $(addprefix $(BUILDDIR)/, $(addsuffix .o, startup breakpoint breakpoint_dialog canvas window server)) $(BUILDDIR)/libmigdb.a
+$(BUILDDIR)/pgdbmaster: $(addprefix $(BUILDDIR)/, $(addsuffix .o, startup breakpoint breakpoint_dialog canvas window master)) $(BUILDDIR)/libmigdb.a
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(GTKLIBS)
 
 $(BUILDDIR)/%.o: %.cpp

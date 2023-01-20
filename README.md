@@ -3,8 +3,8 @@ This program is for debugging parallel programs either on the local machine or o
 
 # Structure
 This debugger consists of two parts: 
-1. The GUI server running on the host machine
-2. The clients running on the host machine or the remote cluster
+1. The GUI master running on the host machine
+2. The slaves running on the host machine or the remote cluster
 
 # Building
 To build these two separate executables, you can use the following command from the top level directory.
@@ -12,15 +12,15 @@ To build these two separate executables, you can use the following command from 
 	mkdir bin
 	make
 
-This will generate a `server` and a `client` executable in the `bin` directory.
+This will generate a `pgdbmaster` and a `pgdbslave` executable in the `bin` directory.
 
 If you only want a specific executable you can run 
 
-	make server
+	make master
 
 or 
 
-	make client
+	make slave
 
 to get the corresponding executable.
 
@@ -43,29 +43,29 @@ On Debian based systems, you can use the following command to install them:
 
 ## Run-Time
 For the debugger to work, the following programs need to be installed:
-- mpi / slurm: To start the client instances.
+- mpi / slurm: To start the slave instances.
 - gdb: To debug the target program.
 - socat: To handle the I/O of the gdb instance and the target instance.
 
-Furthermore, when debugging on a remote cluster, the `client` executable needs to be copied to or build on this machine.
+Furthermore, when debugging on a remote cluster, the `pgdbslave` executable needs to be copied to or build on this machine.
 
 # Using the debugger
-The debugging server is started by using the command:
+The debugging master is started by using the command:
 
-	./bin/server
+	./bin/master
 
 In the start dialog you need to set all the corresponding paths and parameters. This configuration can be exported and imported at the next start.
 
-The server will start the specified number of clients, each of which will start the gdb instance, running the target program, and two socat instances, handling the I/O of gdb and the target.
+The master will start the specified number of slaves, each of which will start the gdb instance, running the target program, and two socat instances, handling the I/O of gdb and the target.
 
-If SSH is enabled, the server logs on to the remote cluster and starts the clients there.
+If SSH is enabled, the master logs on to the remote cluster and starts the slaves there.
 
 ## Custom launcher command
 If you need to make specific changes to the start command, or need to use a completely different launcher, you can check the Custom Command option in the startup dialog. This command will invalidate the set paths, IP address and partition. SSH options will not be influenced. 
 
-For the server to know how many connections to open the number of processes and nodes still needs to be set in the startup dialog. Make SURE they match up with what you set in your custom command.
+For the master to know how many connections to open the number of processes and nodes still needs to be set in the startup dialog. Make SURE they match up with what you set in your custom command.
 
-The client supports two possibilities to set its rank. Under normal conditions it will try to read the environment variables set by OpenMPI/MPICH/slurm:
+The slave supports two possibilities to set its rank. Under normal conditions it will try to read the environment variables set by OpenMPI/MPICH/slurm:
 
 	OMPI_COMM_WORLD_RANK
 	PMI_RANK

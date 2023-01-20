@@ -1,5 +1,5 @@
 #!/usr/bin/make
-TRGTS = client
+TRGTS = pgdbslave
 
 CC = g++
 RM = rm
@@ -15,7 +15,7 @@ OBJS = $(addprefix $(BUILDDIR)/, $(SRCS:.cpp=.o))
 
 all: $(PRGS)
 
-$(BUILDDIR)/client: $(addprefix $(BUILDDIR)/, $(addsuffix .o, client))
+$(BUILDDIR)/pgdbslave: $(addprefix $(BUILDDIR)/, $(addsuffix .o, slave))
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 $(BUILDDIR)/%.o: %.cpp
