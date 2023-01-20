@@ -17,16 +17,13 @@
 	along with ParallelGDB.  If not, see <https://www.gnu.org/licenses/gpl-3.0.txt>.
 */
 
-#include <cstdlib>
-#include <iostream>
-#include <string>
 #include <string.h>
-#include <sstream>
-#include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
-#include <fcntl.h>
+#include <iostream>
+#include <sstream>
+#include <iomanip>
 #include <vector>
+#include <fcntl.h>
 #include <sys/wait.h>
 
 using namespace std;
@@ -119,7 +116,7 @@ int get_rank(const char *const rank_str, const char *env_str)
 	}
 	else
 	{
-		std::vector<const char *> env_vars = {
+		vector<const char *> env_vars = {
 			"OMPI_COMM_WORLD_RANK",
 			"PMI_RANK"};
 		if (env_str)
@@ -143,7 +140,7 @@ int get_rank(const char *const rank_str, const char *env_str)
 	{
 		return stoi(rank);
 	}
-	catch (const std::exception &e)
+	catch (const exception &e)
 	{
 		return -1;
 	}
@@ -279,10 +276,6 @@ int main(const int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
-	int pid = getpid();
-	string tty_gdb = "/tmp/ttyGDB_" + to_string(pid);
-	string tty_trgt = "/tmp/ttyTRGT_" + to_string(pid);
-
 	int rank = get_rank(rank_str, env_str);
 	if (rank < 0)
 	{
@@ -302,7 +295,15 @@ int main(const int argc, char **argv)
 		ip_addr == nullptr)
 	{
 		fprintf(stderr, "Missing configuration. [paths or/and IP address]\n");
+		return EXIT_FAILURE;
 	}
+
+	ostringstream tty_gdb_oss;
+	ostringstream tty_trgt_oss;
+	tty_gdb_oss << "/tmp/ttyGDB_" << setw(4) << setfill('0') << to_string(rank);
+	tty_trgt_oss << "/tmp/ttyTRGT_" << setw(4) << setfill('0') << to_string(rank);
+	string tty_gdb = tty_gdb_oss.str();
+	string tty_trgt = tty_trgt_oss.str();
 
 	int port_gdb = 0x8000 + rank;
 	int port_trgt = 0xC000 + rank;
@@ -316,6 +317,7 @@ int main(const int argc, char **argv)
 	free(gdb_path);
 	free(ip_addr);
 	free(rank_str);
+	free(env_str);
 
 	int status;
 	while (true)
