@@ -32,7 +32,7 @@ to delete all generated files.
 
 # Dependencies
 ## Compile-Time
-The following dependencies must be available for building:
+The following dependencies must be available for building the master:
 - libgtkmm-3.0
 - libgtksourceviewmm-3.0
 - libssh
@@ -42,10 +42,12 @@ On Debian based systems, you can use the following command to install them:
 	apt install libgtkmm-3.0-dev libgtksourceviewmm-3.0-dev libssh-dev
 
 ## Run-Time
-For the debugger to work, the following programs need to be installed:
-- mpi / slurm: To start the slave instances.
+For the debugger to work, the following programs need to be installed and be available in $PATH:
+- mpirun: To start the slave instances using MPI.
+- srun: To start the slave instances using slurm.
 - gdb: To debug the target program.
 - socat: To handle the I/O of the gdb instance and the target instance.
+- pidof: To check for socat instances.
 
 Furthermore, when debugging on a remote cluster, the `pgdbslave` executable needs to be copied to or build on this machine.
 
@@ -54,7 +56,7 @@ The debugging master is started by using the command:
 
 	./bin/pgdbmaster
 
-In the startup dialog you need to set all the corresponding paths and parameters. This configuration can be exported and imported at the next start.
+In the startup dialog you need to set the path to the `pgdbslave` and `target` executable, as well as some other parameters. This configuration can be exported and imported at the next start.
 
 The master will start the specified number of slaves, each of which will start the gdb instance, running the target program, and two socat instances, handling the I/O of gdb and the target.
 
