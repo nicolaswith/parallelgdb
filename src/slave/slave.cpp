@@ -59,13 +59,14 @@ bool wait_for_socat(const int pid_socat_gdb, const int pid_socat_trgt)
 		int ret = pclose(cmd);
 		if (0 != ret)
 		{
+			fprintf(stderr, "Error executing pidof. Exit Code: %d\n", ret);
 			return false;
 		}
 		usleep(100);
 	}
 }
 
-int start_gdb(const string &tty_gdb, const string &tty_trgt, const char *const gdb_path, const char *const target, const int pid_socat_gdb, const int pid_socat_trgt)
+int start_gdb(const string &tty_gdb, const string &tty_trgt, const char *const target, const int pid_socat_gdb, const int pid_socat_trgt)
 {
 	if (!wait_for_socat(pid_socat_gdb, pid_socat_trgt))
 	{
@@ -85,7 +86,7 @@ int start_gdb(const string &tty_gdb, const string &tty_trgt, const char *const g
 		string tty = "--tty=" + tty_trgt;
 
 		char *argv[] = {
-			(char *)gdb_path,
+			(char *)"gdb",
 			(char *)"-q",
 			(char *)"-i",
 			(char *)"mi3",
@@ -101,7 +102,7 @@ int start_gdb(const string &tty_gdb, const string &tty_trgt, const char *const g
 	return pid;
 }
 
-int start_socat(const string &tty_name, const char *const socat_path, const char *const ip_addr, const int port)
+int start_socat(const string &tty_name, const char *const ip_addr, const int port)
 {
 	int pid = fork();
 	if (0 == pid)
@@ -110,7 +111,7 @@ int start_socat(const string &tty_name, const char *const socat_path, const char
 		string tcp = "TCP:" + string(ip_addr) + ":" + to_string(port);
 
 		char *argv[] = {
-			(char *)socat_path,
+			(char *)"socat",
 			(char *)tty.c_str(),
 			(char *)tcp.c_str(),
 			(char *)nullptr};
@@ -163,10 +164,9 @@ void print_help()
 {
 	fprintf(
 		stderr,
+		"\n"
 		"Usage: ./pgdbslave [OPTIONS] </path/to/target>\n"
 		"Options:\n"
-		"  -g <path>\t path to gdb\n"
-		"  -s <path>\t path to socat\n"
 		"  -i <addr>\t host IP address\n"
 		"  -h\t\t print this help\n"
 		"\n"
@@ -175,32 +175,22 @@ void print_help()
 		"  -e <name>\t name of the environment variable containing the process rank\n");
 }
 
-void free_char_arrays(char *ip_addr, char *gdb_path, char *socat_path, char *target, char *rank_str, char *env_str)
+void free_char_arrays(char *ip_addr, char *target, char *rank_str, char *env_str)
 {
 	free(target);
-	free(socat_path);
-	free(gdb_path);
 	free(ip_addr);
 	free(rank_str);
 	free(env_str);
 }
 
-bool parse_cl_args(const int argc, char **argv, char **ip_addr, char **gdb_path, char **socat_path, char **target, char **rank_str, char **env_str)
+bool parse_cl_args(const int argc, char **argv, char **ip_addr, char **target, char **rank_str, char **env_str)
 {
 	char c;
 	opterr = 0;
-	while ((c = getopt(argc, argv, "hg:s:i:r:e:")) != -1)
+	while ((c = getopt(argc, argv, "hi:r:e:")) != -1)
 	{
 		switch (c)
 		{
-		case 'g': // gdb
-			free(*gdb_path);
-			*gdb_path = strdup(optarg);
-			break;
-		case 's': // socat
-			free(*socat_path);
-			*socat_path = strdup(optarg);
-			break;
 		case 'i': // ip
 			free(*ip_addr);
 			*ip_addr = strdup(optarg);
@@ -215,21 +205,13 @@ bool parse_cl_args(const int argc, char **argv, char **ip_addr, char **gdb_path,
 			break;
 		case 'h': // help
 			print_help();
-			free_char_arrays(*ip_addr, *gdb_path, *socat_path, *target, *rank_str, *env_str);
+			free_char_arrays(*ip_addr, *target, *rank_str, *env_str);
 			exit(EXIT_SUCCESS);
 			break;
 		case '?':
 			if ('i' == optopt)
 			{
 				fprintf(stderr, "Option -%c requires the host IP address.\n", optopt);
-			}
-			else if ('s' == optopt)
-			{
-				fprintf(stderr, "Option -%c requires the path to socat.\n", optopt);
-			}
-			else if ('g' == optopt)
-			{
-				fprintf(stderr, "Option -%c requires the path to gdb.\n", optopt);
 			}
 			else if ('r' == optopt)
 			{
@@ -254,7 +236,7 @@ bool parse_cl_args(const int argc, char **argv, char **ip_addr, char **gdb_path,
 		}
 	}
 
-	if (argc - optind == 1)
+	if (1 == argc - optind)
 	{
 		*target = strdup(argv[optind]);
 	}
@@ -278,31 +260,26 @@ bool parse_cl_args(const int argc, char **argv, char **ip_addr, char **gdb_path,
 int main(const int argc, char **argv)
 {
 	char *ip_addr = nullptr;
-	char *gdb_path = nullptr;
-	char *socat_path = nullptr;
 	char *target = nullptr;
 	char *rank_str = nullptr;
 	char *env_str = nullptr;
-	if (!parse_cl_args(argc, argv, &ip_addr, &gdb_path, &socat_path, &target, &rank_str, &env_str))
+	if (!parse_cl_args(argc, argv, &ip_addr, &target, &rank_str, &env_str))
 	{
-		free_char_arrays(ip_addr, gdb_path, socat_path, target, rank_str, env_str);
+		free_char_arrays(ip_addr, target, rank_str, env_str);
 		return EXIT_FAILURE;
 	}
 
 	int rank = get_rank(rank_str, env_str);
 	if (rank < 0)
 	{
-		free_char_arrays(ip_addr, gdb_path, socat_path, target, rank_str, env_str);
+		free_char_arrays(ip_addr, target, rank_str, env_str);
 		fprintf(stderr, "Could not read rank.\n");
 		return EXIT_FAILURE;
 	}
 
-	if (target == nullptr ||
-		socat_path == nullptr ||
-		gdb_path == nullptr ||
-		ip_addr == nullptr)
+	if (nullptr == target || nullptr == ip_addr)
 	{
-		free_char_arrays(ip_addr, gdb_path, socat_path, target, rank_str, env_str);
+		free_char_arrays(ip_addr, target, rank_str, env_str);
 		fprintf(stderr, "Missing configuration. [paths or/and IP address]\n");
 		return EXIT_FAILURE;
 	}
@@ -317,13 +294,13 @@ int main(const int argc, char **argv)
 	int port_gdb = 0x8000 + rank;
 	int port_trgt = 0xC000 + rank;
 
-	int pid_socat_gdb = start_socat(tty_gdb, socat_path, ip_addr, port_gdb);
-	int pid_socat_trgt = start_socat(tty_trgt, socat_path, ip_addr, port_trgt);
-	int pid_gdb = start_gdb(tty_gdb, tty_trgt, gdb_path, target, pid_socat_gdb, pid_socat_trgt);
+	int pid_socat_gdb = start_socat(tty_gdb, ip_addr, port_gdb);
+	int pid_socat_trgt = start_socat(tty_trgt, ip_addr, port_trgt);
+	int pid_gdb = start_gdb(tty_gdb, tty_trgt, target, pid_socat_gdb, pid_socat_trgt);
 
-	free_char_arrays(ip_addr, gdb_path, socat_path, target, rank_str, env_str);
+	free_char_arrays(ip_addr, target, rank_str, env_str);
 
-	const bool start_success = pid_gdb > 0 && pid_socat_gdb > 0 && pid_socat_trgt > 0;
+	const bool start_success = (pid_gdb > 0) && (pid_socat_gdb > 0) && (pid_socat_trgt > 0);
 	int exited = start_success ? 0 : -1;
 	while (0 == exited)
 	{

@@ -38,8 +38,6 @@ StartupDialog::StartupDialog()
 	  m_srun(false),
 	  m_oversubscribe(false),
 	  m_slave(nullptr),
-	  m_gdb(nullptr),
-	  m_socat(nullptr),
 	  m_target(nullptr),
 	  m_ip_address(nullptr),
 	  m_ssh(false),
@@ -60,8 +58,6 @@ StartupDialog::StartupDialog()
 	m_radiobutton_srun = get_widget<Gtk::RadioButton>("srun-radiobutton");
 	m_checkbutton_oversubscribe = get_widget<Gtk::CheckButton>("oversubscribe-checkbutton");
 	m_entry_slave = get_widget<Gtk::Entry>("slave-entry");
-	m_entry_gdb = get_widget<Gtk::Entry>("gdb-entry");
-	m_entry_socat = get_widget<Gtk::Entry>("socat-entry");
 	m_entry_target = get_widget<Gtk::Entry>("target-entry");
 	m_entry_ip_address = get_widget<Gtk::Entry>("ip-address-entry");
 	m_checkbutton_ssh = get_widget<Gtk::CheckButton>("ssh-checkbutton");
@@ -93,8 +89,6 @@ StartupDialog::StartupDialog()
 StartupDialog::~StartupDialog()
 {
 	free(m_slave);
-	free(m_gdb);
-	free(m_socat);
 	free(m_target);
 	free(m_ip_address);
 	free(m_ssh_address);
@@ -112,8 +106,6 @@ void StartupDialog::clear_dialog()
 	m_radiobutton_srun->set_active(false);
 	m_checkbutton_oversubscribe->set_active(false);
 	m_entry_slave->set_text("");
-	m_entry_gdb->set_text("");
-	m_entry_socat->set_text("");
 	m_entry_target->set_text("");
 	m_entry_ip_address->set_text("");
 	m_checkbutton_ssh->set_active(false);
@@ -143,10 +135,6 @@ void StartupDialog::set_value(string key, string value)
 		m_entry_num_nodes->set_text(value);
 	if ("slave" == key)
 		m_entry_slave->set_text(value);
-	if ("gdb" == key)
-		m_entry_gdb->set_text(value);
-	if ("socat" == key)
-		m_entry_socat->set_text(value);
 	if ("target" == key)
 		m_entry_target->set_text(value);
 	if ("ip_address" == key)
@@ -275,14 +263,6 @@ void StartupDialog::export_config()
 	m_config += m_slave ? m_slave : "";
 	m_config += "\n";
 
-	m_config += "gdb=";
-	m_config += m_gdb ? m_gdb : "";
-	m_config += "\n";
-
-	m_config += "socat=";
-	m_config += m_socat ? m_socat : "";
-	m_config += "\n";
-
 	m_config += "target=";
 	m_config += m_target ? m_target : "";
 	m_config += "\n";
@@ -349,8 +329,6 @@ bool StartupDialog::read_values()
 	m_custom_launcher = m_checkbutton_launcher->get_active();
 
 	free(m_slave);
-	free(m_gdb);
-	free(m_socat);
 	free(m_target);
 	free(m_ip_address);
 	free(m_ssh_address);
@@ -360,8 +338,6 @@ bool StartupDialog::read_values()
 	free(m_launcher_cmd);
 
 	m_slave = strdup(m_entry_slave->get_text().c_str());
-	m_gdb = strdup(m_entry_gdb->get_text().c_str());
-	m_socat = strdup(m_entry_socat->get_text().c_str());
 	m_target = strdup(m_entry_target->get_text().c_str());
 	m_ip_address = strdup(m_entry_ip_address->get_text().c_str());
 	m_ssh_address = strdup(m_entry_ssh_address->get_text().c_str());
@@ -488,12 +464,6 @@ string StartupDialog::get_cmd() const
 
 	cmd += " ";
 	cmd += m_slave;
-
-	cmd += " -s ";
-	cmd += m_socat;
-
-	cmd += " -g ";
-	cmd += m_gdb;
 
 	cmd += " -i ";
 	cmd += m_ip_address;

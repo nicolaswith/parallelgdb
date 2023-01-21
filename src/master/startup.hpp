@@ -32,8 +32,6 @@ class StartupDialog
 	bool m_srun;
 	bool m_oversubscribe;
 	char *m_slave;
-	char *m_gdb;
-	char *m_socat;
 	char *m_target;
 	char *m_ip_address;
 	bool m_ssh;
@@ -57,8 +55,6 @@ class StartupDialog
 	Gtk::RadioButton *m_radiobutton_srun;
 	Gtk::CheckButton *m_checkbutton_oversubscribe;
 	Gtk::Entry *m_entry_slave;
-	Gtk::Entry *m_entry_gdb;
-	Gtk::Entry *m_entry_socat;
 	Gtk::Entry *m_entry_target;
 	Gtk::Entry *m_entry_ip_address;
 	Gtk::CheckButton *m_checkbutton_ssh;

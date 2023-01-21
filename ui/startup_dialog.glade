@@ -40,7 +40,7 @@
           </packing>
         </child>
         <child>
-          <!-- n-columns=2 n-rows=23 -->
+          <!-- n-columns=2 n-rows=21 -->
           <object class="GtkGrid">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
@@ -50,18 +50,6 @@
             <property name="margin-bottom">10</property>
             <property name="row-spacing">10</property>
             <property name="column-spacing">25</property>
-            <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="halign">start</property>
-                <property name="label" translatable="yes">Processes per Node</property>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">0</property>
-              </packing>
-            </child>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
@@ -79,7 +67,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes">GDB Path</property>
+                <property name="label" translatable="yes">Target Path</property>
               </object>
               <packing>
                 <property name="left-attach">0</property>
@@ -91,7 +79,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes">socat Path</property>
+                <property name="label" translatable="yes">Local IP Address</property>
               </object>
               <packing>
                 <property name="left-attach">0</property>
@@ -103,19 +91,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes">Target Path</property>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">10</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="halign">start</property>
-                <property name="label" translatable="yes">Local IP Address</property>
+                <property name="label" translatable="yes">Use SSH</property>
               </object>
               <packing>
                 <property name="left-attach">0</property>
@@ -127,23 +103,11 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes">Use SSH</property>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">13</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="halign">start</property>
                 <property name="label" translatable="yes">SSH Address</property>
               </object>
               <packing>
                 <property name="left-attach">0</property>
-                <property name="top-attach">14</property>
+                <property name="top-attach">12</property>
               </packing>
             </child>
             <child>
@@ -155,7 +119,7 @@
               </object>
               <packing>
                 <property name="left-attach">0</property>
-                <property name="top-attach">15</property>
+                <property name="top-attach">13</property>
               </packing>
             </child>
             <child>
@@ -167,18 +131,7 @@
               </object>
               <packing>
                 <property name="left-attach">0</property>
-                <property name="top-attach">16</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="processes-per-node-entry">
-                <property name="width-request">500</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-              </object>
-              <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">0</property>
+                <property name="top-attach">14</property>
               </packing>
             </child>
             <child>
@@ -192,7 +145,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkEntry" id="gdb-entry">
+              <object class="GtkEntry" id="target-entry">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
               </object>
@@ -202,7 +155,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkEntry" id="socat-entry">
+              <object class="GtkEntry" id="ip-address-entry">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
               </object>
@@ -212,33 +165,13 @@
               </packing>
             </child>
             <child>
-              <object class="GtkEntry" id="target-entry">
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-              </object>
-              <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">10</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="ip-address-entry">
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-              </object>
-              <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">11</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkEntry" id="ssh-address-entry">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
               </object>
               <packing>
                 <property name="left-attach">1</property>
-                <property name="top-attach">14</property>
+                <property name="top-attach">12</property>
               </packing>
             </child>
             <child>
@@ -248,7 +181,7 @@
               </object>
               <packing>
                 <property name="left-attach">1</property>
-                <property name="top-attach">15</property>
+                <property name="top-attach">13</property>
               </packing>
             </child>
             <child>
@@ -259,7 +192,7 @@
               </object>
               <packing>
                 <property name="left-attach">1</property>
-                <property name="top-attach">16</property>
+                <property name="top-attach">14</property>
               </packing>
             </child>
             <child>
@@ -272,30 +205,7 @@
               </object>
               <packing>
                 <property name="left-attach">1</property>
-                <property name="top-attach">13</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="tooltip-text" translatable="yes">On each node &lt;Number of Processes&gt; processes will be launched.</property>
-                <property name="halign">start</property>
-                <property name="label" translatable="yes">Number of Nodes</property>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="num-nodes-entry">
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-              </object>
-              <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">1</property>
+                <property name="top-attach">11</property>
               </packing>
             </child>
             <child>
@@ -339,7 +249,7 @@
               </object>
               <packing>
                 <property name="left-attach">1</property>
-                <property name="top-attach">3</property>
+                <property name="top-attach">0</property>
               </packing>
             </child>
             <child>
@@ -351,7 +261,7 @@
               </object>
               <packing>
                 <property name="left-attach">0</property>
-                <property name="top-attach">3</property>
+                <property name="top-attach">0</property>
               </packing>
             </child>
             <child>
@@ -416,7 +326,7 @@
               </object>
               <packing>
                 <property name="left-attach">0</property>
-                <property name="top-attach">21</property>
+                <property name="top-attach">19</property>
                 <property name="width">2</property>
               </packing>
             </child>
@@ -430,7 +340,7 @@
               </object>
               <packing>
                 <property name="left-attach">0</property>
-                <property name="top-attach">18</property>
+                <property name="top-attach">16</property>
               </packing>
             </child>
             <child>
@@ -442,7 +352,7 @@
               </object>
               <packing>
                 <property name="left-attach">0</property>
-                <property name="top-attach">19</property>
+                <property name="top-attach">17</property>
               </packing>
             </child>
             <child>
@@ -455,7 +365,7 @@
               </object>
               <packing>
                 <property name="left-attach">1</property>
-                <property name="top-attach">18</property>
+                <property name="top-attach">16</property>
               </packing>
             </child>
             <child>
@@ -465,7 +375,7 @@
               </object>
               <packing>
                 <property name="left-attach">1</property>
-                <property name="top-attach">19</property>
+                <property name="top-attach">17</property>
               </packing>
             </child>
             <child>
@@ -478,7 +388,7 @@
               </object>
               <packing>
                 <property name="left-attach">0</property>
-                <property name="top-attach">12</property>
+                <property name="top-attach">10</property>
                 <property name="width">2</property>
               </packing>
             </child>
@@ -492,7 +402,7 @@
               </object>
               <packing>
                 <property name="left-attach">0</property>
-                <property name="top-attach">17</property>
+                <property name="top-attach">15</property>
                 <property name="width">2</property>
               </packing>
             </child>
@@ -507,7 +417,7 @@
               </object>
               <packing>
                 <property name="left-attach">0</property>
-                <property name="top-attach">20</property>
+                <property name="top-attach">18</property>
                 <property name="width">2</property>
               </packing>
             </child>
@@ -521,7 +431,7 @@
               </object>
               <packing>
                 <property name="left-attach">0</property>
-                <property name="top-attach">5</property>
+                <property name="top-attach">2</property>
               </packing>
             </child>
             <child>
@@ -531,7 +441,7 @@
               </object>
               <packing>
                 <property name="left-attach">1</property>
-                <property name="top-attach">5</property>
+                <property name="top-attach">2</property>
               </packing>
             </child>
             <child>
@@ -544,7 +454,7 @@
               </object>
               <packing>
                 <property name="left-attach">0</property>
-                <property name="top-attach">22</property>
+                <property name="top-attach">20</property>
                 <property name="width">2</property>
               </packing>
             </child>
@@ -557,20 +467,7 @@
               </object>
               <packing>
                 <property name="left-attach">0</property>
-                <property name="top-attach">2</property>
-                <property name="width">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSeparator">
-                <property name="height-request">2</property>
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="orientation">vertical</property>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">6</property>
+                <property name="top-attach">3</property>
                 <property name="width">2</property>
               </packing>
             </child>
@@ -584,7 +481,7 @@
               </object>
               <packing>
                 <property name="left-attach">0</property>
-                <property name="top-attach">4</property>
+                <property name="top-attach">1</property>
               </packing>
             </child>
             <child>
@@ -597,7 +494,66 @@
               </object>
               <packing>
                 <property name="left-attach">1</property>
+                <property name="top-attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="tooltip-text" translatable="yes">On each node &lt;Number of Processes&gt; processes will be launched.</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes">Number of Nodes</property>
+              </object>
+              <packing>
+                <property name="left-attach">0</property>
+                <property name="top-attach">5</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes">Processes per Node</property>
+              </object>
+              <packing>
+                <property name="left-attach">0</property>
                 <property name="top-attach">4</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="processes-per-node-entry">
+                <property name="width-request">500</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+              </object>
+              <packing>
+                <property name="left-attach">1</property>
+                <property name="top-attach">4</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="num-nodes-entry">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+              </object>
+              <packing>
+                <property name="left-attach">1</property>
+                <property name="top-attach">5</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSeparator">
+                <property name="height-request">2</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="orientation">vertical</property>
+              </object>
+              <packing>
+                <property name="left-attach">0</property>
+                <property name="top-attach">6</property>
+                <property name="width">2</property>
               </packing>
             </child>
           </object>
