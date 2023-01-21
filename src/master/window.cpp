@@ -678,8 +678,7 @@ void UIWindow::append_source_file(const string &fullpath)
 			char *path = realpath(filename.c_str(), nullptr);
 			if (path == nullptr)
 			{
-				std::cerr << "Cannot find file: " << filename << "\n";
-				return;
+				throw std::runtime_error("Cannot find file: " + filename + "\n");
 			}
 			Glib::RefPtr<Gsv::MarkAttributes> attributes = Gsv::MarkAttributes::create();
 			attributes->set_icon(Gio::Icon::create(path));

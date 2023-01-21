@@ -96,6 +96,7 @@ int start_gdb(const string &tty_gdb, const string &tty_trgt, const char *const t
 			(char *)target,
 			(char *)nullptr};
 		execvp(argv[0], argv);
+		fprintf(stderr, "Error starting gdb. %s\n", strerror(errno));
 		_exit(127);
 	}
 
@@ -116,6 +117,7 @@ int start_socat(const string &tty_name, const char *const ip_addr, const int por
 			(char *)tcp.c_str(),
 			(char *)nullptr};
 		execvp(argv[0], argv);
+		fprintf(stderr, "Error starting socat (%s, rank: %d). %s\n", (0 == (port & 0x4000)) ? "gdb" : "target", port & 0x3FFF, strerror(errno));
 		_exit(127);
 	}
 	return pid;

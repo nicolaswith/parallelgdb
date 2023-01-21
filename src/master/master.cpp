@@ -156,48 +156,40 @@ void process_session(tcp::socket socket, UIWindow &window, const int port)
 		window.set_conns_trgt(rank, &socket);
 	}
 
-	try
+	char *data = new char[max_length + 8];
+	if (nullptr == data)
 	{
-		char *data = new char[max_length + 8];
-		for (;;)
+		throw std::bad_alloc();
+	}
+	for (;;)
+	{
+		asio::error_code error;
+		const size_t length = socket.read_some(asio::buffer(data, max_length), error);
+		if (asio::error::eof == error)
 		{
-			if (nullptr == data)
+			if (UIWindow::src_is_gdb(port))
 			{
-				throw std::bad_alloc();
+				window.set_conns_open_gdb(rank, false);
+				mi_free_h(&gdb_handle);
 			}
-			asio::error_code error;
-			const size_t length = socket.read_some(asio::buffer(data, max_length), error);
-			if (asio::error::eof == error)
-			{
-				if (UIWindow::src_is_gdb(port))
-				{
-					window.set_conns_open_gdb(rank, false);
-					delete[] data;
-					mi_free_h(&gdb_handle);
-				}
-				break;
-			}
-			else if (error)
-			{
-				throw asio::system_error(error);
-			}
-			// add null termination to received data.
-			data[length] = '\0';
-			Glib::signal_idle().connect_once(
-				sigc::bind(
-					sigc::mem_fun(
-						window,
-						&UIWindow::print_data),
-					gdb_handle,
-					strdup(data),
-					port));
+			break;
 		}
-		delete[] data;
+		else if (error)
+		{
+			throw asio::system_error(error);
+		}
+		// add null termination to received data.
+		data[length] = '\0';
+		Glib::signal_idle().connect_once(
+			sigc::bind(
+				sigc::mem_fun(
+					window,
+					&UIWindow::print_data),
+				gdb_handle,
+				strdup(data),
+				port));
 	}
-	catch (std::exception &e)
-	{
-		std::cerr << "Exception in thread: " << e.what() << "\n";
-	}
+	delete[] data;
 }
 
 void start_acceptor(UIWindow &window, const asio::ip::port_type port)
