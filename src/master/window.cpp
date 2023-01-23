@@ -662,6 +662,7 @@ void UIWindow::append_source_file(const string &fullpath)
 		Glib::RefPtr<Gsv::Buffer> source_buffer = source_view->get_source_buffer();
 		source_view->set_source_buffer(source_buffer);
 		source_view->set_editable(false);
+		source_view->set_bottom_margin(30);
 		scrolled_window->add(*source_view);
 		char *content;
 		size_t content_length;
