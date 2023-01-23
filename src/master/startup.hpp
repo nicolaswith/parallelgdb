@@ -33,6 +33,7 @@ class StartupDialog
 	bool m_oversubscribe;
 	char *m_slave;
 	char *m_target;
+	char *m_arguments;
 	char *m_ip_address;
 	bool m_ssh;
 	char *m_ssh_address;
@@ -56,6 +57,7 @@ class StartupDialog
 	Gtk::CheckButton *m_checkbutton_oversubscribe;
 	Gtk::Entry *m_entry_slave;
 	Gtk::Entry *m_entry_target;
+	Gtk::Entry *m_entry_arguments;
 	Gtk::Entry *m_entry_ip_address;
 	Gtk::CheckButton *m_checkbutton_ssh;
 	Gtk::Entry *m_entry_ssh_address;

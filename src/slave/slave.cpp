@@ -66,7 +66,7 @@ bool wait_for_socat(const int pid_socat_gdb, const int pid_socat_trgt)
 	}
 }
 
-int start_gdb(const string &tty_gdb, const string &tty_trgt, const char *const target, const int pid_socat_gdb, const int pid_socat_trgt)
+int start_gdb(const int argc, char **argv, const int args_offset, const string &tty_gdb, const string &tty_trgt, const char *const target, const int pid_socat_gdb, const int pid_socat_trgt)
 {
 	if (!wait_for_socat(pid_socat_gdb, pid_socat_trgt))
 	{
@@ -85,17 +85,29 @@ int start_gdb(const string &tty_gdb, const string &tty_trgt, const char *const t
 
 		string tty = "--tty=" + tty_trgt;
 
-		char *argv[] = {
-			(char *)"gdb",
-			(char *)"-q",
-			(char *)"-i",
-			(char *)"mi3",
-			(char *)"-ex=set auto-load safe-path /",
-			(char *)"-ex=b main",
-			(char *)tty.c_str(),
-			(char *)target,
-			(char *)nullptr};
-		execvp(argv[0], argv);
+		const int num_args = argc - args_offset;
+		char **argv_gdb = (char **)malloc((10 + num_args) * sizeof(char *));
+
+		int idx = 0;
+		argv_gdb[idx++] = (char *)"gdb";
+		argv_gdb[idx++] = (char *)"-q";
+		argv_gdb[idx++] = (char *)"-i";
+		argv_gdb[idx++] = (char *)"mi3";
+		argv_gdb[idx++] = (char *)"-ex=set auto-load safe-path /";
+		argv_gdb[idx++] = (char *)"-ex=b main";
+		argv_gdb[idx++] = (char *)tty.c_str();
+		if (0 != num_args)
+		{
+			argv_gdb[idx++] = (char *)"--args";
+		}
+		argv_gdb[idx++] = (char *)target;
+		for (int i = 0; i < num_args; ++i)
+		{
+			argv_gdb[idx++] = (char *)argv[args_offset + i];
+		}
+		argv_gdb[idx++] = (char *)nullptr;
+
+		execvp(argv_gdb[0], argv_gdb);
 		fprintf(stderr, "Error starting gdb. %s\n", strerror(errno));
 		_exit(127);
 	}
@@ -185,7 +197,7 @@ void free_char_arrays(char *ip_addr, char *target, char *rank_str, char *env_str
 	free(env_str);
 }
 
-bool parse_cl_args(const int argc, char **argv, char **ip_addr, char **target, char **rank_str, char **env_str)
+int parse_cl_args(const int argc, char **argv, char **ip_addr, char **target, char **rank_str, char **env_str)
 {
 	char c;
 	opterr = 0;
@@ -234,29 +246,11 @@ bool parse_cl_args(const int argc, char **argv, char **ip_addr, char **target, c
 			[[fallthrough]];
 		default:
 			print_help();
-			return false;
+			return -1;
 		}
 	}
-
-	if (1 == argc - optind)
-	{
-		*target = strdup(argv[optind]);
-	}
-	else
-	{
-		if (argc == optind)
-		{
-			fprintf(stderr, "No target specified.\n");
-		}
-		else
-		{
-			fprintf(stderr, "Too many arguments.\n");
-		}
-		print_help();
-		return false;
-	}
-
-	return true;
+	*target = strdup(argv[optind]);
+	return optind + 1;
 }
 
 int main(const int argc, char **argv)
@@ -265,7 +259,9 @@ int main(const int argc, char **argv)
 	char *target = nullptr;
 	char *rank_str = nullptr;
 	char *env_str = nullptr;
-	if (!parse_cl_args(argc, argv, &ip_addr, &target, &rank_str, &env_str))
+
+	int args_offset = parse_cl_args(argc, argv, &ip_addr, &target, &rank_str, &env_str);
+	if (args_offset < 0)
 	{
 		free_char_arrays(ip_addr, target, rank_str, env_str);
 		return EXIT_FAILURE;
@@ -298,7 +294,7 @@ int main(const int argc, char **argv)
 
 	int pid_socat_gdb = start_socat(tty_gdb, ip_addr, port_gdb);
 	int pid_socat_trgt = start_socat(tty_trgt, ip_addr, port_trgt);
-	int pid_gdb = start_gdb(tty_gdb, tty_trgt, target, pid_socat_gdb, pid_socat_trgt);
+	int pid_gdb = start_gdb(argc, argv, args_offset, tty_gdb, tty_trgt, target, pid_socat_gdb, pid_socat_trgt);
 
 	free_char_arrays(ip_addr, target, rank_str, env_str);
 

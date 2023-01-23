@@ -39,6 +39,7 @@ StartupDialog::StartupDialog()
 	  m_oversubscribe(false),
 	  m_slave(nullptr),
 	  m_target(nullptr),
+	  m_arguments(nullptr),
 	  m_ip_address(nullptr),
 	  m_ssh(false),
 	  m_ssh_address(nullptr),
@@ -59,6 +60,7 @@ StartupDialog::StartupDialog()
 	m_checkbutton_oversubscribe = get_widget<Gtk::CheckButton>("oversubscribe-checkbutton");
 	m_entry_slave = get_widget<Gtk::Entry>("slave-entry");
 	m_entry_target = get_widget<Gtk::Entry>("target-entry");
+	m_entry_arguments = get_widget<Gtk::Entry>("arguments-entry");
 	m_entry_ip_address = get_widget<Gtk::Entry>("ip-address-entry");
 	m_checkbutton_ssh = get_widget<Gtk::CheckButton>("ssh-checkbutton");
 	m_entry_ssh_address = get_widget<Gtk::Entry>("ssh-address-entry");
@@ -90,11 +92,13 @@ StartupDialog::~StartupDialog()
 {
 	free(m_slave);
 	free(m_target);
+	free(m_arguments);
 	free(m_ip_address);
 	free(m_ssh_address);
 	free(m_ssh_user);
 	free(m_ssh_password);
 	free(m_partition);
+	free(m_launcher_cmd);
 	delete m_dialog;
 }
 
@@ -107,6 +111,7 @@ void StartupDialog::clear_dialog()
 	m_checkbutton_oversubscribe->set_active(false);
 	m_entry_slave->set_text("");
 	m_entry_target->set_text("");
+	m_entry_arguments->set_text("");
 	m_entry_ip_address->set_text("");
 	m_checkbutton_ssh->set_active(false);
 	m_entry_ssh_address->set_text("");
@@ -137,6 +142,8 @@ void StartupDialog::set_value(string key, string value)
 		m_entry_slave->set_text(value);
 	if ("target" == key)
 		m_entry_target->set_text(value);
+	if ("arguments" == key)
+		m_entry_arguments->set_text(value);
 	if ("ip_address" == key)
 		m_entry_ip_address->set_text(value);
 	if ("ssh_address" == key)
@@ -267,6 +274,10 @@ void StartupDialog::export_config()
 	m_config += m_target ? m_target : "";
 	m_config += "\n";
 
+	m_config += "arguments=";
+	m_config += m_arguments ? m_arguments : "";
+	m_config += "\n";
+
 	m_config += "ip_address=";
 	m_config += m_ip_address ? m_ip_address : "";
 	m_config += "\n";
@@ -330,6 +341,7 @@ bool StartupDialog::read_values()
 
 	free(m_slave);
 	free(m_target);
+	free(m_arguments);
 	free(m_ip_address);
 	free(m_ssh_address);
 	free(m_ssh_user);
@@ -339,6 +351,7 @@ bool StartupDialog::read_values()
 
 	m_slave = strdup(m_entry_slave->get_text().c_str());
 	m_target = strdup(m_entry_target->get_text().c_str());
+	m_arguments = strdup(m_entry_arguments->get_text().c_str());
 	m_ip_address = strdup(m_entry_ip_address->get_text().c_str());
 	m_ssh_address = strdup(m_entry_ssh_address->get_text().c_str());
 	m_ssh_user = strdup(m_entry_ssh_user->get_text().c_str());
@@ -470,6 +483,9 @@ string StartupDialog::get_cmd() const
 
 	cmd += " ";
 	cmd += m_target;
+
+	cmd += " ";
+	cmd += m_arguments;
 
 	return cmd;
 }

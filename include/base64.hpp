@@ -36,8 +36,13 @@
 class Base64
 {
 public:
-	static std::string encode(const std::string data)
+	static std::string encode(const std::string &data)
 	{
+		if ("" == data)
+		{
+			return "";
+		}
+
 		static constexpr char sEncodingTable[] = {
 			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
 			'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
