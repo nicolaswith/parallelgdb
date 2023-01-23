@@ -877,6 +877,11 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, co
 		{
 			token[token_length - 1] = '\0';
 		}
+		if (nullptr == gdb_handle)
+		{
+			std::cerr << "GDB handle deleted. Rank: " << std::to_string(rank) << "\n";
+			return;
+		}
 		free(gdb_handle->line);
 		gdb_handle->line = strdup(token);
 
