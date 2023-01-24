@@ -48,7 +48,7 @@ class UIWindow
 	const int m_num_processes;
 
 	int *m_current_line;
-	string *m_source_view_path;
+	string *m_current_file;
 	TargetState *m_target_state;
 	int *m_exit_code;
 

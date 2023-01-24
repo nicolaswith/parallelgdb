@@ -36,7 +36,7 @@ UIWindow::UIWindow(const int num_processes)
 	  m_sent_run(false)
 {
 	m_current_line = new int[m_num_processes];
-	m_source_view_path = new string[m_num_processes];
+	m_current_file = new string[m_num_processes];
 	m_target_state = new TargetState[m_num_processes];
 	m_exit_code = new int[m_num_processes];
 	m_conns_gdb = new tcp::socket *[m_num_processes];
@@ -69,7 +69,7 @@ UIWindow::UIWindow(const int num_processes)
 UIWindow::~UIWindow()
 {
 	delete[] m_current_line;
-	delete[] m_source_view_path;
+	delete[] m_current_file;
 	delete[] m_target_state;
 	delete[] m_exit_code;
 	delete[] m_conns_gdb;
@@ -552,7 +552,7 @@ void UIWindow::color_overview()
 			Gtk::Label *label = dynamic_cast<Gtk::Label *>(m_overview_grid->get_child_at(2 * rank + 2, row));
 			label->unset_color();
 
-			if (m_source_view_path[rank] == path)
+			if (m_current_file[rank] == path)
 			{
 				if (line_2_offset.find(m_current_line[rank]) == line_2_offset.end())
 				{
@@ -673,7 +673,7 @@ void UIWindow::append_overview_row(const string &basename, const string &fullpat
 		m_path_2_row[fullpath] = m_last_row_idx;
 
 		string text = "";
-		if (fullpath == m_source_view_path[rank])
+		if (fullpath == m_current_file[rank])
 		{
 			text = std::to_string(m_current_line[rank]);
 		}
@@ -777,7 +777,7 @@ void UIWindow::close_unused_tabs()
 		string fullpath = m_pagenum_2_path[page_num];
 		for (int rank = 0; rank < m_num_processes; ++rank)
 		{
-			if (m_source_view_path[rank] == fullpath && target_state(rank) != TargetState::EXITED)
+			if (m_current_file[rank] == fullpath && target_state(rank) != TargetState::EXITED)
 			{
 				is_used = true;
 				break;
@@ -854,7 +854,7 @@ void UIWindow::update_markers(const int page_num)
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
 		Gtk::TextIter line_iter = source_buffer->get_iter_at_line(m_current_line[rank] - 1);
-		if (!line_iter || page_path != m_source_view_path[rank] || m_target_state[rank] != TargetState::STOPPED)
+		if (!line_iter || page_path != m_current_file[rank] || m_target_state[rank] != TargetState::STOPPED)
 		{
 			m_drawing_area->set_y_offset(rank, -3 * UIDrawingArea::radius()); // set out of visible area
 			continue;
@@ -879,7 +879,7 @@ bool UIWindow::update_markers_timeout()
 
 void UIWindow::do_scroll(const int rank) const
 {
-	Gsv::View *source_view = m_path_2_view.at(m_source_view_path[rank]);
+	Gsv::View *source_view = m_path_2_view.at(m_current_file[rank]);
 	Gtk::TextIter iter = source_view->get_buffer()->get_iter_at_line(m_current_line[rank] - 1);
 	if (!iter)
 	{
@@ -900,7 +900,7 @@ void UIWindow::scroll_to_line(const int rank) const
 
 void UIWindow::set_position(const int rank, const string &fullpath, const int line)
 {
-	m_source_view_path[rank] = fullpath;
+	m_current_file[rank] = fullpath;
 	m_current_line[rank] = line;
 	update_overview(rank, fullpath, line);
 }
@@ -942,6 +942,7 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, co
 				if (MI_CL_RUNNING == current_output->tclass)
 				{
 					m_target_state[rank] = TargetState::RUNNING;
+					m_current_file[rank] = "";
 				}
 				else if (MI_CL_STOPPED == current_output->tclass)
 				{
@@ -980,6 +981,7 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, co
 					mi_stop_reason::sr_exited_normally == stop_record->reason)
 				{
 					m_target_state[rank] = TargetState::EXITED;
+					m_current_file[rank] = "";
 					m_exit_code[rank] = stop_record->exit_code;
 					clear_labels_overview(rank);
 				}
