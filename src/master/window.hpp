@@ -50,6 +50,7 @@ class UIWindow
 	int *m_current_line;
 	string *m_source_view_path;
 	TargetState *m_target_state;
+	int *m_exit_code;
 
 	Glib::RefPtr<Gtk::Builder> m_builder;
 	Gtk::Window *m_root_window;
@@ -60,6 +61,7 @@ class UIWindow
 
 	Gtk::Grid *m_overview_grid;
 	Gtk::Separator **m_separators;
+	int m_first_row_idx;
 	int m_last_row_idx;
 
 	Gtk::TextBuffer **m_text_buffers_gdb;
@@ -122,7 +124,7 @@ class UIWindow
 	void on_quit_clicked();
 	void on_interaction_button_clicked(const int key_value);
 	bool on_key_press(GdkEventKey *event);
-	void remove_label_overview(const int rank);
+	void clear_labels_overview(const int rank);
 	void color_overview();
 	void update_overview(const int rank, const string &fullpath, const int line);
 	void set_position(const int rank, const string &fullpath, const int line);

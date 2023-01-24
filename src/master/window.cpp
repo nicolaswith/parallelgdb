@@ -38,6 +38,7 @@ UIWindow::UIWindow(const int num_processes)
 	m_current_line = new int[m_num_processes];
 	m_source_view_path = new string[m_num_processes];
 	m_target_state = new TargetState[m_num_processes];
+	m_exit_code = new int[m_num_processes];
 	m_conns_gdb = new tcp::socket *[m_num_processes];
 	m_conns_trgt = new tcp::socket *[m_num_processes];
 	m_separators = new Gtk::Separator *[m_num_processes];
@@ -54,6 +55,7 @@ UIWindow::UIWindow(const int num_processes)
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
 		m_target_state[rank] = TargetState::UNKNOWN;
+		m_exit_code[rank] = 0;
 		m_conns_gdb[rank] = nullptr;
 		m_conns_trgt[rank] = nullptr;
 		m_conns_open_gdb[rank] = false;
@@ -68,6 +70,8 @@ UIWindow::~UIWindow()
 {
 	delete[] m_current_line;
 	delete[] m_source_view_path;
+	delete[] m_target_state;
+	delete[] m_exit_code;
 	delete[] m_conns_gdb;
 	delete[] m_conns_trgt;
 	delete[] m_separators;
@@ -77,6 +81,7 @@ UIWindow::~UIWindow()
 	delete[] m_scrolled_windows_trgt;
 	delete[] m_scroll_connections_gdb;
 	delete[] m_scroll_connections_trgt;
+	delete[] m_breakpoints;
 	delete[] m_started;
 	delete[] m_sent_stop;
 	delete[] m_conns_open_gdb;
@@ -120,23 +125,49 @@ void UIWindow::init_overview()
 {
 	m_overview_grid = get_widget<Gtk::Grid>("overview-grid");
 
-	Gtk::Label *process_label = Gtk::manage(new Gtk::Label("Process"));
-	process_label->set_size_request(100, -1);
-	m_overview_grid->attach(*process_label, 0, 0);
+	int row = 0;
+
+	Gtk::Label *label;
+	Gtk::Separator *separator;
+
+	label = Gtk::manage(new Gtk::Label("Process"));
+	label->set_size_request(100, -1);
+	m_overview_grid->attach(*label, row++, 0);
+
+	separator = Gtk::manage(new Gtk::Separator);
+	separator->set_size_request(-1, 2);
+	m_overview_grid->attach(*separator, 0, row++, 2 * m_num_processes + 1, 1);
+
+	label = Gtk::manage(new Gtk::Label("Running"));
+	m_overview_grid->attach(*label, 0, row++);
+
+	separator = Gtk::manage(new Gtk::Separator);
+	separator->set_size_request(-1, 2);
+	m_overview_grid->attach(*separator, 0, row++, 2 * m_num_processes + 1, 1);
+
+	label = Gtk::manage(new Gtk::Label("Exited"));
+	m_overview_grid->attach(*label, 0, row++);
 
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
-		Gtk::Separator *separator = Gtk::manage(new Gtk::Separator);
+		separator = Gtk::manage(new Gtk::Separator);
 		separator->set_size_request(2, -1);
-		m_overview_grid->attach(*separator, 2 * rank + 1, 0, 1, 1);
+		m_overview_grid->attach(*separator, 2 * rank + 1, 0, 1, 5);
 		m_separators[rank] = separator;
 
-		Gtk::Label *process_num = Gtk::manage(new Gtk::Label(std::to_string(rank)));
-		process_num->set_size_request(35, -1);
-		m_overview_grid->attach(*process_num, 2 * rank + 2, 0);
+		label = Gtk::manage(new Gtk::Label(std::to_string(rank)));
+		label->set_size_request(35, -1);
+		m_overview_grid->attach(*label, 2 * rank + 2, 0);
+
+		label = Gtk::manage(new Gtk::Label());
+		m_overview_grid->attach(*label, 2 * rank + 2, 2);
+
+		label = Gtk::manage(new Gtk::Label());
+		m_overview_grid->attach(*label, 2 * rank + 2, 4);
 	}
 
-	m_last_row_idx = 1;
+	m_first_row_idx = row;
+	m_last_row_idx = row;
 }
 
 bool UIWindow::init(Glib::RefPtr<Gtk::Application> app)
@@ -536,7 +567,7 @@ void UIWindow::color_overview()
 	}
 }
 
-void UIWindow::remove_label_overview(const int rank)
+void UIWindow::clear_labels_overview(const int rank)
 {
 	for (std::pair<const string, int> &pair : m_path_2_row)
 	{
@@ -552,26 +583,35 @@ void UIWindow::remove_label_overview(const int rank)
 
 void UIWindow::check_overview()
 {
-	for (std::pair<const string, int> &pair : m_path_2_row)
+	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
-		const string &path = pair.first;
-		const int row = pair.second;
-
-		for (int rank = 0; rank < m_num_processes; ++rank)
+		Gtk::Label *label = dynamic_cast<Gtk::Label *>(m_overview_grid->get_child_at(2 * rank + 2, 2));
+		label->set_text("");
+		label->set_tooltip_text("");
+		label = dynamic_cast<Gtk::Label *>(m_overview_grid->get_child_at(2 * rank + 2, 4));
+		label->set_text("");
+		label->set_tooltip_text("");
+		if (m_target_state[rank] == TargetState::RUNNING)
 		{
-			Gtk::Label *label = dynamic_cast<Gtk::Label *>(m_overview_grid->get_child_at(2 * rank + 2, row));
-			if (label && path == m_source_view_path[rank])
+			clear_labels_overview(rank);
+			Gtk::Label *label = dynamic_cast<Gtk::Label *>(m_overview_grid->get_child_at(2 * rank + 2, 2));
+			label->set_text("R");
+			label->set_tooltip_text("Running");
+		}
+		else if (m_target_state[rank] == TargetState::EXITED)
+		{
+			clear_labels_overview(rank);
+			Gtk::Label *label = dynamic_cast<Gtk::Label *>(m_overview_grid->get_child_at(2 * rank + 2, 4));
+			const string exit_code = std::to_string(m_exit_code[rank]);
+			label->set_text(exit_code);
+			label->set_tooltip_text("Exited with code: " + exit_code);
+			if (0 != m_exit_code[rank])
 			{
-				if (m_target_state[rank] == TargetState::RUNNING)
-				{
-					label->set_text("R");
-					label->set_tooltip_text("Running");
-				}
-				else if (m_target_state[rank] == TargetState::EXITED)
-				{
-					label->set_text("E");
-					label->set_tooltip_text("Exited");
-				}
+				label->override_color(UIDrawingArea::s_colors[0]);
+			}
+			else
+			{
+				label->unset_color();
 			}
 		}
 	}
@@ -622,8 +662,7 @@ void UIWindow::append_overview_row(const string &basename, const string &fullpat
 {
 	Gtk::Separator *separator = Gtk::manage(new Gtk::Separator);
 	separator->set_size_request(-1, 2);
-	m_overview_grid->attach(*separator, 0, m_last_row_idx, 2 * m_num_processes + 1, 1);
-	m_last_row_idx++;
+	m_overview_grid->attach(*separator, 0, m_last_row_idx++, 2 * m_num_processes + 1, 1);
 
 	Gtk::Label *basename_label = Gtk::manage(new Gtk::Label(basename));
 	basename_label->set_tooltip_text(fullpath);
@@ -638,8 +677,8 @@ void UIWindow::append_overview_row(const string &basename, const string &fullpat
 		{
 			text = std::to_string(m_current_line[rank]);
 		}
-		Gtk::Label *row_num = Gtk::manage(new Gtk::Label(text));
-		m_overview_grid->attach(*row_num, 2 * rank + 2, m_last_row_idx);
+		Gtk::Label *line_num = Gtk::manage(new Gtk::Label(text));
+		m_overview_grid->attach(*line_num, 2 * rank + 2, m_last_row_idx);
 
 		m_overview_grid->remove(*dynamic_cast<Gtk::Widget *>(m_separators[rank]));
 		m_overview_grid->attach(*m_separators[rank], 2 * rank + 1, 0, 1, m_last_row_idx + 1);
@@ -775,8 +814,9 @@ void UIWindow::close_unused_tabs()
 	{
 		const int page_num = *rit;
 		m_files_notebook->remove_page(page_num);
-		m_overview_grid->remove_row(2 * page_num + 2);
-		m_overview_grid->remove_row(2 * page_num + 1);
+		const string fullpath = m_pagenum_2_path[page_num];
+		m_overview_grid->remove_row(m_path_2_row[fullpath]);
+		m_overview_grid->remove_row(m_path_2_row[fullpath] - 1);
 		m_last_row_idx -= 2;
 	}
 
@@ -796,7 +836,7 @@ void UIWindow::close_unused_tabs()
 		string fullpath = label->get_tooltip_text();
 
 		m_path_2_pagenum[fullpath] = page_num;
-		m_path_2_row[fullpath] = 2 * page_num + 2;
+		m_path_2_row[fullpath] = m_first_row_idx + (2 * page_num) + 1;
 		m_pagenum_2_path[page_num] = fullpath;
 		m_path_2_view[fullpath] = source_view;
 		m_opened_files.insert(fullpath);
@@ -940,7 +980,8 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data, co
 					mi_stop_reason::sr_exited_normally == stop_record->reason)
 				{
 					m_target_state[rank] = TargetState::EXITED;
-					remove_label_overview(rank);
+					m_exit_code[rank] = stop_record->exit_code;
+					clear_labels_overview(rank);
 				}
 				if (stop_record->frame && stop_record->frame->fullname && stop_record->frame->func)
 				{
