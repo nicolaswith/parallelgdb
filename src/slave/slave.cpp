@@ -32,7 +32,7 @@ bool wait_for_socat(const int pid_socat_gdb, const int pid_socat_trgt)
 {
 	for (;;)
 	{
-		FILE *cmd = popen("pidof -x socat", "r");
+		FILE *cmd = popen("pidof socat", "r");
 		char result[1024] = {0};
 		while (fgets(result, sizeof(result), cmd) != NULL)
 		{
@@ -56,12 +56,7 @@ bool wait_for_socat(const int pid_socat_gdb, const int pid_socat_trgt)
 				return true;
 			}
 		}
-		int ret = pclose(cmd);
-		if (0 != ret)
-		{
-			fprintf(stderr, "Error executing pidof. Exit Code: %d\n", ret);
-			return false;
-		}
+		pclose(cmd);
 		usleep(100);
 	}
 }
@@ -178,12 +173,11 @@ void print_help()
 {
 	fprintf(
 		stderr,
-		"\n"
-		"Usage: ./pgdbslave [OPTIONS] </path/to/target>\n"
-		"Options:\n"
+		"Usage: ./pgdbslave -i <addr> [OPTIONS] </path/to/target>\n"
 		"  -i <addr>\t host IP address\n"
 		"  -h\t\t print this help\n"
 		"\n"
+		"Options:\n"
 		"Only needed when using custom launcher command and only one at a time:\n"
 		"  -r <rank>\t rank of process\n"
 		"  -e <name>\t name of the environment variable containing the process rank\n");
@@ -249,7 +243,22 @@ int parse_cl_args(const int argc, char **argv, char **ip_addr, char **target, ch
 			return -1;
 		}
 	}
-	*target = strdup(argv[optind]);
+	if (argc > optind)
+	{
+		*target = strdup(argv[optind]);
+	}
+	else
+	{
+		fprintf(stderr, "No target specified.\n");
+		print_help();
+		return -1;
+	}
+	if (nullptr == ip_addr)
+	{
+		fprintf(stderr, "Missing host IP address.\n");
+		print_help();
+		return -1;
+	}
 	return optind + 1;
 }
 
@@ -272,13 +281,6 @@ int main(const int argc, char **argv)
 	{
 		free_char_arrays(ip_addr, target, rank_str, env_str);
 		fprintf(stderr, "Could not read rank.\n");
-		return EXIT_FAILURE;
-	}
-
-	if (nullptr == target || nullptr == ip_addr)
-	{
-		free_char_arrays(ip_addr, target, rank_str, env_str);
-		fprintf(stderr, "Missing configuration. [paths or/and IP address]\n");
 		return EXIT_FAILURE;
 	}
 
