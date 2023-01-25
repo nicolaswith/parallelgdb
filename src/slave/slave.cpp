@@ -253,7 +253,7 @@ int parse_cl_args(const int argc, char **argv, char **ip_addr, char **target, ch
 		print_help();
 		return -1;
 	}
-	if (nullptr == ip_addr)
+	if (nullptr == *ip_addr)
 	{
 		fprintf(stderr, "Missing host IP address.\n");
 		print_help();
