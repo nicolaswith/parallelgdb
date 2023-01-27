@@ -28,17 +28,17 @@
 
 using namespace std;
 
-bool wait_for_socat(const int pid_socat_gdb, const int pid_socat_trgt)
+void wait_for_socat(const int pid_socat_gdb, const int pid_socat_trgt)
 {
 	for (;;)
 	{
 		FILE *cmd = popen("pidof socat", "r");
 		char result[1024] = {0};
+		bool found_gdb = false;
+		bool found_trgt = false;
 		while (fgets(result, sizeof(result), cmd) != NULL)
 		{
 			int pid;
-			bool found_gdb = false;
-			bool found_trgt = false;
 			istringstream stream(result);
 			while (stream >> pid)
 			{
@@ -53,7 +53,7 @@ bool wait_for_socat(const int pid_socat_gdb, const int pid_socat_trgt)
 			}
 			if (found_gdb && found_trgt)
 			{
-				return true;
+				return;
 			}
 		}
 		pclose(cmd);
@@ -63,10 +63,7 @@ bool wait_for_socat(const int pid_socat_gdb, const int pid_socat_trgt)
 
 int start_gdb(const int argc, char **argv, const int args_offset, const string &tty_gdb, const string &tty_trgt, const char *const target, const int pid_socat_gdb, const int pid_socat_trgt)
 {
-	if (!wait_for_socat(pid_socat_gdb, pid_socat_trgt))
-	{
-		return -1;
-	}
+	wait_for_socat(pid_socat_gdb, pid_socat_trgt);
 	usleep(500000);
 
 	int pid = fork();
@@ -100,7 +97,7 @@ int start_gdb(const int argc, char **argv, const int args_offset, const string &
 		{
 			argv_gdb[idx++] = (char *)argv[args_offset + i];
 		}
-		argv_gdb[idx++] = (char *)nullptr;
+		argv_gdb[idx] = (char *)nullptr;
 
 		execvp(argv_gdb[0], argv_gdb);
 		fprintf(stderr, "Error starting gdb. %s\n", strerror(errno));
