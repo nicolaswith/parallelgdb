@@ -20,7 +20,8 @@
 #ifndef STARTUP_HPP
 #define STARTUP_HPP
 
-#include "defs.hpp"
+#include <gtkmm.h>
+#include <iosfwd>
 
 class StartupDialog
 {
@@ -47,7 +48,7 @@ class StartupDialog
 	Gtk::Dialog *m_dialog;
 
 	Gtk::FileChooserDialog *m_file_chooser_dialog;
-	string m_config;
+	std::string m_config;
 
 	Gtk::FileChooserButton *m_file_chooser_button;
 	Gtk::Entry *m_entry_processes_per_node;
@@ -73,7 +74,7 @@ class StartupDialog
 	void on_custom_launcher_toggled(Gtk::CheckButton *button);
 	void on_launcher_toggled();
 	void clear_dialog();
-	void set_value(string key, string value);
+	void set_value(std::string key, std::string value);
 	void read_config();
 	void export_config();
 	bool read_values();
@@ -81,13 +82,13 @@ class StartupDialog
 	void clear_all();
 
 	template <class T>
-	T *get_widget(const string &widget_name);
+	T *get_widget(const std::string &widget_name);
 
 public:
 	StartupDialog();
 	virtual ~StartupDialog();
 
-	string get_cmd() const;
+	std::string get_cmd() const;
 
 	inline int run()
 	{

@@ -17,8 +17,12 @@
 	along with ParallelGDB.  If not, see <https://www.gnu.org/licenses/gpl-3.0.txt>.
 */
 
+#include <string>
+
 #include "breakpoint.hpp"
 #include "window.hpp"
+
+using std::string;
 
 Breakpoint::Breakpoint(const int num_processes, const int line, const string &full_path, UIWindow *const window)
 	: m_num_processes(num_processes),

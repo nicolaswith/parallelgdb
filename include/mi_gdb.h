@@ -31,9 +31,7 @@
 #ifndef MI_GDB_H
 #define MI_GDB_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h> /* pid_t */
+#include <unistd.h>
 
 #define MI_OK                      0
 #define MI_OUT_OF_MEMORY           1

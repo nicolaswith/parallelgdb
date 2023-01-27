@@ -20,19 +20,18 @@
 #ifndef MASTER_HPP
 #define MASTER_HPP
 
-#include "defs.hpp"
-#include "window.hpp"
-#include "startup.hpp"
-
 #include "asio.hpp"
-using asio::ip::tcp;
+#include <gtkmm.h>
 
-#include <libssh/libssh.h>
+class UIWindow;
+class StartupDialog;
+struct ssh_session_struct;
+typedef struct ssh_session_struct *ssh_session;
 
 int run_cmd(ssh_session &session, const StartupDialog &dialog);
 bool start_slaves_ssh(const StartupDialog &dialog);
 int start_slaves_local(const StartupDialog &dialog);
-void process_session(tcp::socket socket, UIWindow &window, const int port);
+void process_session(asio::ip::tcp::socket socket, UIWindow &window, const int port);
 void start_acceptor(UIWindow &window, const asio::ip::port_type port);
 void start_servers(UIWindow &window);
 

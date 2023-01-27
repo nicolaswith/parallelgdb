@@ -30,6 +30,9 @@
 
 ***************************************************************************/
 
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "mi_gdb.h"
 
 void *mi_calloc(size_t count, size_t sz)

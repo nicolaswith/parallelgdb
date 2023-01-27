@@ -37,22 +37,9 @@ in a row.
 
 ***************************************************************************/
 
-#ifndef _GNU_SOURCE
-#define _GNU_SOURCE
-#endif
-#include <sys/types.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/wait.h>
-#include <fcntl.h>
 #include <string.h>
-#include <stdarg.h>
-#include <limits.h>
-#include <errno.h>
-#include <signal.h>
-#include <sys/stat.h>
-#include <sys/time.h>
+#include <stdlib.h>
+
 #include "mi_gdb.h"
 
 int mi_error = MI_OK;

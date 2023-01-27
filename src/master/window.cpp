@@ -17,19 +17,30 @@
 	along with ParallelGDB.  If not, see <https://www.gnu.org/licenses/gpl-3.0.txt>.
 */
 
+#include <tuple>
+#include <iterator>
 #include <iostream>
 #include <string>
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#include <gtksourceview/gtksource.h>
+#include <gtksourceviewmm.h>
+#pragma GCC diagnostic pop
 
 #include "window.hpp"
 #include "breakpoint.hpp"
 #include "breakpoint_dialog.hpp"
 #include "canvas.hpp"
 
+using std::string;
+using asio::ip::tcp;
+
 const char *const breakpoint_category = "breakpoint-category";
 const char *const line_number_id = "line-number";
 const char *const marks_id = "marks";
 
-int max_buttons_per_row = 8;
+static int max_buttons_per_row = 8;
 
 UIWindow::UIWindow(const int num_processes)
 	: m_num_processes(num_processes),
@@ -558,7 +569,7 @@ void UIWindow::color_overview()
 				{
 					line_2_offset[m_current_line[rank]] = color_offset++;
 				}
-				if (color_offset <= NUM_COLORS)
+				if (color_offset <= UIDrawingArea::NUM_COLORS)
 				{
 					label->override_color(UIDrawingArea::s_colors[line_2_offset[m_current_line[rank]]]);
 				}

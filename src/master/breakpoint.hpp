@@ -20,7 +20,8 @@
 #ifndef BREAKPOINT_HPP
 #define BREAKPOINT_HPP
 
-#include "defs.hpp"
+#include <gtkmm.h>
+#include <iosfwd>
 
 class UIWindow;
 
@@ -39,7 +40,7 @@ class Breakpoint
 	const int m_num_processes;
 
 	const int m_line;
-	const string m_full_path;
+	const std::string m_full_path;
 	int m_number;
 
 	bool m_stop_all;
@@ -49,11 +50,11 @@ class Breakpoint
 
 	bool create_breakpoint(const int rank);
 	bool delete_breakpoint(const int rank);
-	string get_list(const BreakpointState state) const;
+	std::string get_list(const BreakpointState state) const;
 	void update_states();
 
 public:
-	Breakpoint(const int num_processes, const int line, const string &full_path, UIWindow *const window);
+	Breakpoint(const int num_processes, const int line, const std::string &full_path, UIWindow *const window);
 	~Breakpoint();
 
 	void update_breakpoints(const bool *const button_states);

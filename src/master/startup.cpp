@@ -18,9 +18,12 @@
 */
 
 #include <fstream>
+#include <string>
 
 #include "startup.hpp"
 #include "base64.hpp"
+
+using std::string;
 
 template <class T>
 T *StartupDialog::get_widget(const string &widget_name)
@@ -84,6 +87,8 @@ StartupDialog::StartupDialog()
 
 	m_file_chooser_button->signal_selection_changed().connect(sigc::mem_fun(*this, &StartupDialog::read_config));
 	m_dialog->signal_response().connect(sigc::mem_fun(*this, &StartupDialog::on_dialog_response));
+
+	m_file_chooser_button->set_filename("/home/nicolas/ma/parallelgdb/configs/target");
 
 	m_dialog->show_all();
 }

@@ -17,19 +17,22 @@
 	along with ParallelGDB.  If not, see <https://www.gnu.org/licenses/gpl-3.0.txt>.
 */
 
-#include <iostream>
 #include <string>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
+#include <string.h>
+#include <libssh/libssh.h>
 
 #include "master.hpp"
+#include "window.hpp"
+#include "startup.hpp"
+
+using std::string;
+using asio::ip::tcp;
 
 const int max_length = 0x2000; // socat default
 const asio::ip::port_type base_port_gdb = 0x8000;
 const asio::ip::port_type base_port_trgt = 0xC000;
 
-Gtk::Application *g_app;
+static Gtk::Application *g_app;
 
 int run_cmd(ssh_session &session, const StartupDialog &dialog)
 {

@@ -20,8 +20,10 @@
 #ifndef BREAKPOINT_DIALOG_HPP
 #define BREAKPOINT_DIALOG_HPP
 
-#include "defs.hpp"
-#include "breakpoint.hpp"
+#include <gtkmm.h>
+#include <iosfwd>
+
+class Breakpoint;
 
 class BreakpointDialog
 {
@@ -40,7 +42,7 @@ class BreakpointDialog
 	void toggle_all();
 
 	template <class T>
-	T *get_widget(const string &widget_name);
+	T *get_widget(const std::string &widget_name);
 
 public:
 	BreakpointDialog(const int num_processes, const int max_buttons_per_row, Breakpoint *const breakpoint, const bool init);

@@ -32,7 +32,8 @@
 
 #include <ctype.h>
 #include <string.h>
-#include <assert.h>
+#include <stdlib.h>
+
 #include "mi_gdb.h"
 
 mi_results *mi_get_result(const char *str, const char **end);

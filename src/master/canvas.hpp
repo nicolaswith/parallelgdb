@@ -20,10 +20,7 @@
 #ifndef CANVAS_HPP
 #define CANVAS_HPP
 
-#include "defs.hpp"
-#include "mi_gdb.h"
-
-const int NUM_COLORS = 8;
+#include <gtkmm.h>
 
 class UIWindow;
 
@@ -39,6 +36,7 @@ class UIDrawingArea : public Gtk::DrawingArea
 
 public:
 	static const Gdk::RGBA s_colors[];
+	static const int NUM_COLORS;
 
 protected:
 	virtual bool on_draw(const Cairo::RefPtr<Cairo::Context> &c);

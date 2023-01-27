@@ -17,12 +17,21 @@
 	along with ParallelGDB.  If not, see <https://www.gnu.org/licenses/gpl-3.0.txt>.
 */
 
-#include <string>
+#include <gtkmm.h>
 #include <cmath>
+#include <string>
+
 #include "canvas.hpp"
 #include "window.hpp"
+#include "mi_gdb.h"
 
-const Gdk::RGBA UIDrawingArea::s_colors[NUM_COLORS] = {
+using std::string;
+
+const int UIDrawingArea::s_radius = 10;
+const int UIDrawingArea::s_spacing = 4;
+
+const int UIDrawingArea::NUM_COLORS = 8;
+const Gdk::RGBA UIDrawingArea::s_colors[] = {
 	Gdk::RGBA("#ff0000"),
 	Gdk::RGBA("#008000"),
 	Gdk::RGBA("#0000bb"),
@@ -31,9 +40,6 @@ const Gdk::RGBA UIDrawingArea::s_colors[NUM_COLORS] = {
 	Gdk::RGBA("#00ff00"),
 	Gdk::RGBA("#00ffff"),
 	Gdk::RGBA("#1e90ff")};
-
-const int UIDrawingArea::s_radius = 10;
-const int UIDrawingArea::s_spacing = 4;
 
 UIDrawingArea::UIDrawingArea(const int num_processes, UIWindow *const window)
 	: m_num_processes(num_processes),

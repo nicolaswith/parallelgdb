@@ -17,7 +17,12 @@
 	along with ParallelGDB.  If not, see <https://www.gnu.org/licenses/gpl-3.0.txt>.
 */
 
+#include <string>
+
 #include "breakpoint_dialog.hpp"
+#include "breakpoint.hpp"
+
+using std::string;
 
 const char *const rank_id = "rank-id";
 
