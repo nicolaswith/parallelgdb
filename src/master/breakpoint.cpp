@@ -87,7 +87,7 @@ bool Breakpoint::delete_breakpoints()
 	}
 	if (!all_deleted)
 	{
-		Gtk::MessageDialog dialog(*m_window->root_window(), string("Could not delete breakpoint for some ranks.\nNot deleted for rank(s): ") + get_list(ERROR_DELETING), false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
+		Gtk::MessageDialog dialog(*m_window->root_window(), string("Could not delete Breakpoint for some Processes.\nNot deleted for Process(es): ") + get_list(ERROR_DELETING), false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
 		dialog.run();
 	}
 	update_states();
@@ -115,15 +115,15 @@ void Breakpoint::update_breakpoints(const bool *const button_states)
 		string message = "";
 		if (!error_creating_list.empty())
 		{
-			message += "Could not create breakpoints for some ranks. [ ";
+			message += "Could not create Breakpoint for some Processes. [ ";
 			message += error_creating_list + "]\n";
 		}
 		if (!error_deleting_list.empty())
 		{
-			message += "Could not delete breakpoints for some ranks. [ ";
+			message += "Could not delete Breakpoint for some Processes. [ ";
 			message += error_deleting_list + "]\n";
 		}
-		message += "Active breakpoints for rank(s): " + (created_list.empty() ? "<None>" : created_list);
+		message += "Active Breakpoint for Process(es): " + (created_list.empty() ? "<None>" : created_list);
 		Gtk::MessageDialog info_dialog(*m_window->root_window(), message, false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
 		info_dialog.run();
 	}

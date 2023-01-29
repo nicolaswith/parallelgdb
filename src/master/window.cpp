@@ -316,7 +316,7 @@ void UIWindow::send_data_to_active(tcp::socket *const *const socket, const strin
 	}
 	if (!one_selected)
 	{
-		Gtk::MessageDialog dialog(*m_root_window, "No process selected.", false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
+		Gtk::MessageDialog dialog(*m_root_window, "No Process selected.", false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
 		dialog.run();
 	}
 }
@@ -394,7 +394,7 @@ void UIWindow::send_input(const string &entry_name, const string &grid_name, tcp
 	}
 	else
 	{
-		Gtk::MessageDialog dialog(*m_root_window, "No process selected.\nNoting has been sent.", false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
+		Gtk::MessageDialog dialog(*m_root_window, "No Process selected.\nNoting has been sent.", false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
 		dialog.run();
 	}
 }
