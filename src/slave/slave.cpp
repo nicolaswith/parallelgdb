@@ -28,10 +28,14 @@
 
 using namespace std;
 
-void wait_for_socat(const int pid_socat_gdb, const int pid_socat_trgt)
+bool wait_for_socat(const int pid_socat_gdb, const int pid_socat_trgt)
 {
-	for (;;)
+	int exited = 0;
+	while (0 == exited)
 	{
+		exited = 0;
+		exited |= waitpid(pid_socat_gdb, nullptr, WNOHANG);
+		exited |= waitpid(pid_socat_trgt, nullptr, WNOHANG);
 		FILE *cmd = popen("pidof socat", "r");
 		char result[1024] = {0};
 		bool found_gdb = false;
@@ -53,17 +57,21 @@ void wait_for_socat(const int pid_socat_gdb, const int pid_socat_trgt)
 			}
 			if (found_gdb && found_trgt)
 			{
-				return;
+				return true;
 			}
 		}
 		pclose(cmd);
-		usleep(100);
+		usleep(100000);
 	}
+	return false;
 }
 
 int start_gdb(const int argc, char **argv, const int args_offset, const string &tty_gdb, const string &tty_trgt, const char *const target, const int pid_socat_gdb, const int pid_socat_trgt)
 {
-	wait_for_socat(pid_socat_gdb, pid_socat_trgt);
+	if (!wait_for_socat(pid_socat_gdb, pid_socat_trgt))
+	{
+		return -1;
+	}
 	usleep(500000);
 
 	int pid = fork();
