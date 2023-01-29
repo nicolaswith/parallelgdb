@@ -109,7 +109,7 @@ void Breakpoint::update_breakpoints(const bool *const button_states)
 	}
 	string error_creating_list = get_list(ERROR_CREATING);
 	string error_deleting_list = get_list(ERROR_DELETING);
-	string created_list = get_list(CREATED);
+	update_states();
 	if (!error_creating_list.empty() || !error_deleting_list.empty())
 	{
 		string message = "";
@@ -123,11 +123,11 @@ void Breakpoint::update_breakpoints(const bool *const button_states)
 			message += "Could not delete Breakpoint for some Processes. [ ";
 			message += error_deleting_list + "]\n";
 		}
+		string created_list = get_list(CREATED);
 		message += "Active Breakpoint for Process(es): " + (created_list.empty() ? "<None>" : created_list);
 		Gtk::MessageDialog info_dialog(*m_window->root_window(), message, false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
 		info_dialog.run();
 	}
-	update_states();
 }
 
 string Breakpoint::get_list(const BreakpointState state) const
