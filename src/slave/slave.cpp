@@ -26,16 +26,43 @@
 #include <fcntl.h>
 #include <sys/wait.h>
 
+#include "slave.hpp"
+
 using namespace std;
 
-bool wait_for_socat(const int pid_socat_gdb, const int pid_socat_trgt)
+Slave::Slave(const int argc, char **argv)
+	: m_argc(argc),
+	  m_argv(argv),
+	  m_args_offset(-1),
+	  m_ip_addr(nullptr),
+	  m_target(nullptr),
+	  m_rank_str(nullptr),
+	  m_env_str(nullptr),
+	  m_rank(-1),
+	  m_pid_socat_gdb(-1),
+	  m_pid_socat_trgt(-1),
+	  m_pid_gdb(-1)
+{
+	m_base_port_gdb = 0x8000;
+	m_base_port_trgt = 0xC000;
+}
+
+Slave::~Slave()
+{
+	free(m_target);
+	free(m_ip_addr);
+	free(m_rank_str);
+	free(m_env_str);
+}
+
+bool Slave::wait_for_socat() const
 {
 	int exited = 0;
 	while (0 == exited)
 	{
 		exited = 0;
-		exited |= waitpid(pid_socat_gdb, nullptr, WNOHANG);
-		exited |= waitpid(pid_socat_trgt, nullptr, WNOHANG);
+		exited |= waitpid(m_pid_socat_gdb, nullptr, WNOHANG);
+		exited |= waitpid(m_pid_socat_trgt, nullptr, WNOHANG);
 		FILE *cmd = popen("pidof socat", "r");
 		char result[1024] = {0};
 		bool found_gdb = false;
@@ -46,11 +73,11 @@ bool wait_for_socat(const int pid_socat_gdb, const int pid_socat_trgt)
 			istringstream stream(result);
 			while (stream >> pid)
 			{
-				if (pid == pid_socat_gdb)
+				if (pid == m_pid_socat_gdb)
 				{
 					found_gdb = true;
 				}
-				if (pid == pid_socat_trgt)
+				if (pid == m_pid_socat_trgt)
 				{
 					found_trgt = true;
 				}
@@ -66,9 +93,9 @@ bool wait_for_socat(const int pid_socat_gdb, const int pid_socat_trgt)
 	return false;
 }
 
-int start_gdb(const int argc, char **argv, const int args_offset, const string &tty_gdb, const string &tty_trgt, const char *const target, const int pid_socat_gdb, const int pid_socat_trgt)
+int Slave::start_gdb(const string &tty_gdb, const string &tty_trgt) const
 {
-	if (!wait_for_socat(pid_socat_gdb, pid_socat_trgt))
+	if (!wait_for_socat())
 	{
 		return -1;
 	}
@@ -85,7 +112,7 @@ int start_gdb(const int argc, char **argv, const int args_offset, const string &
 
 		string tty = "--tty=" + tty_trgt;
 
-		const int num_args = argc - args_offset;
+		const int num_args = m_argc - m_args_offset;
 		char **argv_gdb = (char **)malloc((10 + num_args) * sizeof(char *));
 
 		int idx = 0;
@@ -100,10 +127,10 @@ int start_gdb(const int argc, char **argv, const int args_offset, const string &
 		{
 			argv_gdb[idx++] = (char *)"--args";
 		}
-		argv_gdb[idx++] = (char *)target;
+		argv_gdb[idx++] = (char *)m_target;
 		for (int i = 0; i < num_args; ++i)
 		{
-			argv_gdb[idx++] = (char *)argv[args_offset + i];
+			argv_gdb[idx++] = (char *)m_argv[m_args_offset + i];
 		}
 		argv_gdb[idx] = (char *)nullptr;
 
@@ -115,13 +142,13 @@ int start_gdb(const int argc, char **argv, const int args_offset, const string &
 	return pid;
 }
 
-int start_socat(const string &tty_name, const char *const ip_addr, const int port)
+int Slave::start_socat(const string &tty_name, const int port) const
 {
 	int pid = fork();
 	if (0 == pid)
 	{
 		string tty = "pty,echo=0,link=" + tty_name;
-		string tcp = "TCP:" + string(ip_addr) + ":" + to_string(port);
+		string tcp = "TCP:" + string(m_ip_addr) + ":" + to_string(port);
 
 		char *argv[] = {
 			(char *)"socat",
@@ -135,90 +162,28 @@ int start_socat(const string &tty_name, const char *const ip_addr, const int por
 	return pid;
 }
 
-int get_rank(const char *const rank_str, const char *env_str)
-{
-	const char *rank = nullptr;
-	if (rank_str)
-	{
-		rank = rank_str;
-	}
-	else
-	{
-		vector<const char *> env_vars = {
-			"OMPI_COMM_WORLD_RANK",
-			"PMI_RANK"};
-		if (env_str)
-		{
-			env_vars.insert(env_vars.begin(), env_str);
-		}
-		for (const char *const env_var : env_vars)
-		{
-			rank = getenv(env_var);
-			if (rank)
-			{
-				break;
-			}
-		}
-	}
-	if (!rank)
-	{
-		return -1;
-	}
-	try
-	{
-		return stoi(rank);
-	}
-	catch (const exception &e)
-	{
-		return -1;
-	}
-}
-
-void print_help()
-{
-	fprintf(
-		stderr,
-		"Usage: ./pgdbslave -i <addr> [OPTIONS] </path/to/target>\n"
-		"  -i <addr>\t host IP address\n"
-		"  -h\t\t print this help\n"
-		"\n"
-		"Options:\n"
-		"Only needed when using custom launcher command and only one at a time:\n"
-		"  -r <rank>\t rank of process\n"
-		"  -e <name>\t name of the environment variable containing the process rank\n");
-}
-
-void free_char_arrays(char *ip_addr, char *target, char *rank_str, char *env_str)
-{
-	free(target);
-	free(ip_addr);
-	free(rank_str);
-	free(env_str);
-}
-
-int parse_cl_args(const int argc, char **argv, char **ip_addr, char **target, char **rank_str, char **env_str)
+bool Slave::parse_cl_args()
 {
 	char c;
 	opterr = 0;
-	while ((c = getopt(argc, argv, "hi:r:e:")) != -1)
+	while ((c = getopt(m_argc, m_argv, "hi:r:e:")) != -1)
 	{
 		switch (c)
 		{
 		case 'i': // ip
-			free(*ip_addr);
-			*ip_addr = strdup(optarg);
+			free(m_ip_addr);
+			m_ip_addr = strdup(optarg);
 			break;
 		case 'r': // rank
-			free(*rank_str);
-			*rank_str = strdup(optarg);
+			free(m_rank_str);
+			m_rank_str = strdup(optarg);
 			break;
 		case 'e': // env var name
-			free(*env_str);
-			*env_str = strdup(optarg);
+			free(m_env_str);
+			m_env_str = strdup(optarg);
 			break;
 		case 'h': // help
 			print_help();
-			free_char_arrays(*ip_addr, *target, *rank_str, *env_str);
 			exit(EXIT_SUCCESS);
 			break;
 		case '?':
@@ -245,91 +210,155 @@ int parse_cl_args(const int argc, char **argv, char **ip_addr, char **target, ch
 			[[fallthrough]];
 		default:
 			print_help();
-			return -1;
+			return false;
 		}
 	}
-	if (argc > optind)
+	if (m_argc > optind)
 	{
-		*target = strdup(argv[optind]);
+		m_target = strdup(m_argv[optind]);
 	}
 	else
 	{
 		fprintf(stderr, "No target specified.\n");
 		print_help();
-		return -1;
+		return false;
 	}
-	if (nullptr == *ip_addr)
+	if (nullptr == m_ip_addr)
 	{
 		fprintf(stderr, "Missing host IP address.\n");
 		print_help();
-		return -1;
+		return false;
 	}
-	return optind + 1;
+	m_args_offset = optind + 1;
+	return true;
 }
 
-int main(const int argc, char **argv)
+bool Slave::set_rank()
 {
-	char *ip_addr = nullptr;
-	char *target = nullptr;
-	char *rank_str = nullptr;
-	char *env_str = nullptr;
-
-	int args_offset = parse_cl_args(argc, argv, &ip_addr, &target, &rank_str, &env_str);
-	if (args_offset < 0)
+	const char *rank = nullptr;
+	if (m_rank_str)
 	{
-		free_char_arrays(ip_addr, target, rank_str, env_str);
-		return EXIT_FAILURE;
+		rank = m_rank_str;
 	}
-
-	int rank = get_rank(rank_str, env_str);
-	if (rank < 0)
+	else
 	{
-		free_char_arrays(ip_addr, target, rank_str, env_str);
-		fprintf(stderr, "Could not read rank.\n");
-		return EXIT_FAILURE;
+		vector<const char *> env_vars = {
+			"OMPI_COMM_WORLD_RANK",
+			"PMI_RANK"};
+		if (m_env_str)
+		{
+			env_vars.insert(env_vars.begin(), m_env_str);
+		}
+		for (const char *const env_var : env_vars)
+		{
+			rank = getenv(env_var);
+			if (rank)
+			{
+				break;
+			}
+		}
 	}
+	if (!rank)
+	{
+		fprintf(stderr, "Could not read environemnt variable containing rank.\n");
+		print_help();
+		return false;
+	}
+	try
+	{
+		m_rank = stoi(rank);
+	}
+	catch (const exception &e)
+	{
+		fprintf(stderr, "Could not parse rank to integer. String: %s\n", rank);
+		print_help();
+		return false;
+	}
+	return true;
+}
 
+bool Slave::start_processes()
+{
 	ostringstream tty_gdb_oss;
 	ostringstream tty_trgt_oss;
-	tty_gdb_oss << "/tmp/ttyGDB_" << setw(4) << setfill('0') << to_string(rank);
-	tty_trgt_oss << "/tmp/ttyTRGT_" << setw(4) << setfill('0') << to_string(rank);
+	tty_gdb_oss << "/tmp/ttyGDB_" << setw(4) << setfill('0') << to_string(m_rank);
+	tty_trgt_oss << "/tmp/ttyTRGT_" << setw(4) << setfill('0') << to_string(m_rank);
 	string tty_gdb = tty_gdb_oss.str();
 	string tty_trgt = tty_trgt_oss.str();
 
-	int port_gdb = 0x8000 + rank;
-	int port_trgt = 0xC000 + rank;
+	const int port_gdb = m_base_port_gdb + m_rank;
+	const int port_trgt = m_base_port_trgt + m_rank;
 
-	int pid_socat_gdb = start_socat(tty_gdb, ip_addr, port_gdb);
-	int pid_socat_trgt = start_socat(tty_trgt, ip_addr, port_trgt);
-	int pid_gdb = start_gdb(argc, argv, args_offset, tty_gdb, tty_trgt, target, pid_socat_gdb, pid_socat_trgt);
+	m_pid_socat_gdb = start_socat(tty_gdb, port_gdb);
+	m_pid_socat_trgt = start_socat(tty_trgt, port_trgt);
 
-	free_char_arrays(ip_addr, target, rank_str, env_str);
+	if (m_pid_socat_gdb > 0 && m_pid_socat_trgt > 0)
+	{
+		m_pid_gdb = start_gdb(tty_gdb, tty_trgt);
+	}
 
-	const bool start_success = (pid_gdb > 0) && (pid_socat_gdb > 0) && (pid_socat_trgt > 0);
-	int exited = start_success ? 0 : -1;
+	return (m_pid_gdb > 0) && (m_pid_socat_gdb > 0) && (m_pid_socat_trgt > 0);
+}
+
+void Slave::monitor_processes() const
+{
+	int exited = 0;
 	while (0 == exited)
 	{
 		sleep(1);
 
 		exited = 0;
 
-		exited |= waitpid(pid_gdb, nullptr, WNOHANG);
-		exited |= waitpid(pid_socat_gdb, nullptr, WNOHANG);
-		exited |= waitpid(pid_socat_trgt, nullptr, WNOHANG);
+		exited |= waitpid(m_pid_gdb, nullptr, WNOHANG);
+		exited |= waitpid(m_pid_socat_gdb, nullptr, WNOHANG);
+		exited |= waitpid(m_pid_socat_trgt, nullptr, WNOHANG);
 	}
 
-	if (pid_gdb > 0)
+	if (m_pid_gdb > 0)
 	{
-		kill(pid_gdb, SIGINT);
+		kill(m_pid_gdb, SIGINT);
 	}
-	if (pid_socat_gdb > 0)
+	if (m_pid_socat_gdb > 0)
 	{
-		kill(pid_socat_gdb, SIGINT);
+		kill(m_pid_socat_gdb, SIGINT);
 	}
-	if (pid_socat_trgt > 0)
+	if (m_pid_socat_trgt > 0)
 	{
-		kill(pid_socat_trgt, SIGINT);
+		kill(m_pid_socat_trgt, SIGINT);
 	}
+}
+
+void Slave::print_help()
+{
+	fprintf(
+		stderr,
+		"Usage: ./pgdbslave -i <addr> [OPTIONS] </path/to/target>\n"
+		"  -i <addr>\t host IP address\n"
+		"  -h\t\t print this help\n"
+		"\n"
+		"Options:\n"
+		"Only needed when using custom launcher command and only one at a time:\n"
+		"  -r <rank>\t rank of process\n"
+		"  -e <name>\t name of the environment variable containing the process rank\n");
+}
+
+int main(const int argc, char **argv)
+{
+	Slave slave{argc, argv};
+
+	if (!slave.parse_cl_args())
+	{
+		return EXIT_FAILURE;
+	}
+	if (!slave.set_rank())
+	{
+		return EXIT_FAILURE;
+	}
+	if (!slave.start_processes())
+	{
+		return EXIT_FAILURE;
+	}
+	slave.monitor_processes();
 
 	return EXIT_SUCCESS;
 }
