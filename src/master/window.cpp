@@ -979,7 +979,6 @@ void UIWindow::check_overview(const int rank)
 	}
 }
 
-// todo: tooltip and color?
 /**
  * This function updates all labels and their tooltip for a process.
  *
@@ -1009,30 +1008,32 @@ void UIWindow::update_overview(const int rank, const string &fullpath,
 			throw std::invalid_argument("Invalid row.");
 		}
 
-		// get corresponding source code at line and store it in text
-		string text = "File not loaded.";
-		if (m_path_2_view.find(fullpath) != m_path_2_view.end())
-		{
-			Gtk::TextIter iter =
-				m_path_2_view[fullpath]->get_buffer()->get_iter_at_line(line - 1);
-			if (iter)
-			{
-				Gtk::TextIter end =
-					m_path_2_view[fullpath]->get_buffer()->get_iter_at_line(line - 1);
-				end.forward_to_line_end();
-				text = iter.get_text(end);
-			}
-		}
-		label->set_tooltip_text(text);
-
-		if (fullpath == path)
-		{
-			label->set_text(std::to_string(line));
-		}
-		else
+		// clear label and tooltip if process is not in this file
+		if (fullpath != path)
 		{
 			label->set_text("");
+			label->set_tooltip_text("");
+			continue;
 		}
+		
+		// get source code from source file at line
+		string tooltip = "File not found.";
+		if (m_path_2_view.find(fullpath) != m_path_2_view.end())
+		{
+			Gtk::TextIter iter = m_path_2_view[fullpath]
+									 ->get_buffer()
+									 ->get_iter_at_line(line - 1);
+			if (iter)
+			{
+				Gtk::TextIter end = m_path_2_view[fullpath]
+										->get_buffer()
+										->get_iter_at_line(line - 1);
+				end.forward_to_line_end();
+				tooltip = iter.get_text(end);
+			}
+		}
+		label->set_tooltip_text(tooltip);
+		label->set_text(std::to_string(line));
 	}
 
 	color_overview();
@@ -1074,8 +1075,8 @@ void UIWindow::append_overview_row(const string &basename,
 								m_last_row_idx + 1);
 	}
 	m_last_row_idx++;
-
 	m_overview_grid->show_all();
+	color_overview();
 }
 
 /**
