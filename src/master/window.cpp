@@ -1119,7 +1119,7 @@ void UIWindow::append_source_file(const string &fullpath)
 			source_view->signal_line_mark_activated().connect(sigc::bind(
 				sigc::mem_fun(*this, &UIWindow::on_line_mark_clicked), fullpath));
 			// prepare breakpoint icon to be used on click events
-			string filename = "./res/breakpoint.png";
+			string filename = "./res/breakpoint.svg";
 			char *path = realpath(filename.c_str(), nullptr);
 			if (path == nullptr)
 			{
