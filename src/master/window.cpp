@@ -757,9 +757,13 @@ void UIWindow::create_mark(Gtk::TextIter &iter,
 			std::to_string(line), breakpoint_category, iter);
 		// store the breakpoint object in the line mark for later access
 		new_mark->set_data(line_number_id, (void *)breakpoint);
-		std::set<int> *set = new std::set<int>; // todo: set is overwritten!
+		std::set<int> *set = (std::set<int> *)source_buffer->get_data(marks_id);
+		if (nullptr == set)
+		{
+			set = new std::set<int>;
+			source_buffer->set_data(marks_id, (void *)set);
+		}
 		set->insert(line);
-		source_buffer->set_data(marks_id, (void *)set);
 	}
 	else
 	{
@@ -829,7 +833,6 @@ void UIWindow::on_line_mark_clicked(Gtk::TextIter &iter, GdkEvent *const event,
 {
 	const int line = iter.get_line();
 	// check if a line mark exists at this line
-	// todo: use set?
 	bool line_has_mark = false;
 	Glib::RefPtr<Gtk::TextMark> mark;
 	for (Glib::RefPtr<Gtk::TextMark> &current_mark : iter.get_marks())
