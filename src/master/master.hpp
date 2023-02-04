@@ -28,11 +28,34 @@ class StartupDialog;
 struct ssh_session_struct;
 typedef struct ssh_session_struct *ssh_session;
 
-int run_cmd(ssh_session &session, const StartupDialog &dialog);
-bool start_slaves_ssh(const StartupDialog &dialog);
-int start_slaves_local(const StartupDialog &dialog);
-void process_session(asio::ip::tcp::socket socket, UIWindow &window, const int port);
-void start_acceptor(UIWindow &window, const asio::ip::port_type port);
-void start_servers(UIWindow &window);
+class Master
+{
+	const int m_max_length;
+	const int m_base_port_gdb;
+	const int m_base_port_trgt;
+
+	Glib::RefPtr<Gtk::Application> m_app;
+	UIWindow *m_window;
+	StartupDialog *m_dialog;
+
+private:
+	int run_cmd(ssh_session &session);
+	bool start_slaves_ssh();
+	bool start_slaves_local();
+	void process_session(asio::ip::tcp::socket socket,
+						 const asio::ip::port_type port);
+	void start_acceptor(const asio::ip::port_type port);
+
+public:
+	Master();
+	~Master();
+
+	bool run_startup_dialog();
+	void start_servers();
+	bool start_slaves();
+	void start_GUI();
+};
+
+void sigint_handler(int signum);
 
 #endif /* MASTER_HPP */

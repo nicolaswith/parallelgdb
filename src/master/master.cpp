@@ -18,6 +18,7 @@
 */
 
 #include <string>
+#include <regex>
 #include <string.h>
 #include <libssh/libssh.h>
 
@@ -25,16 +26,27 @@
 #include "window.hpp"
 #include "startup.hpp"
 
-using std::string;
 using asio::ip::tcp;
+using std::string;
 
-const int max_length = 0x2000; // socat default
-const asio::ip::port_type base_port_gdb = 0x8000;
-const asio::ip::port_type base_port_trgt = 0xC000;
+static Gtk::Application *s_app;
 
-static Gtk::Application *g_app;
+Master::Master()
+	: m_max_length(0x2000), // socat default
+	  m_base_port_gdb(0x8000),
+	  m_base_port_trgt(0xC000)
+{
+	m_app = Gtk::Application::create();
+	s_app = m_app.get();
+}
 
-int run_cmd(ssh_session &session, const StartupDialog &dialog)
+Master::~Master()
+{
+	m_app.reset();
+	delete m_window;
+}
+
+int Master::run_cmd(ssh_session &session)
 {
 	ssh_channel channel;
 	int rc;
@@ -52,7 +64,7 @@ int run_cmd(ssh_session &session, const StartupDialog &dialog)
 		return rc;
 	}
 
-	string cmd = dialog.get_cmd();
+	string cmd = m_dialog->get_cmd();
 	rc = ssh_channel_request_exec(channel, cmd.c_str());
 	if (rc != SSH_OK)
 	{
@@ -68,7 +80,7 @@ int run_cmd(ssh_session &session, const StartupDialog &dialog)
 	return SSH_OK;
 }
 
-bool start_slaves_ssh(StartupDialog &dialog)
+bool Master::start_slaves_ssh()
 {
 	ssh_session session;
 	int rc;
@@ -79,13 +91,13 @@ bool start_slaves_ssh(StartupDialog &dialog)
 		return false;
 	}
 
-	ssh_options_set(session, SSH_OPTIONS_HOST, dialog.ssh_address());
-	ssh_options_set(session, SSH_OPTIONS_USER, dialog.ssh_user());
+	ssh_options_set(session, SSH_OPTIONS_HOST, m_dialog->ssh_address());
+	ssh_options_set(session, SSH_OPTIONS_USER, m_dialog->ssh_user());
 
 	rc = ssh_connect(session);
 	if (rc != SSH_OK)
 	{
-		fprintf(stderr, "Error connecting to %s: %s\n", dialog.ssh_address(), ssh_get_error(session));
+		fprintf(stderr, "Error connecting to %s: %s\n", m_dialog->ssh_address(), ssh_get_error(session));
 		return false;
 	}
 
@@ -97,7 +109,7 @@ bool start_slaves_ssh(StartupDialog &dialog)
 		return false;
 	}
 
-	rc = ssh_userauth_password(session, NULL, dialog.ssh_password());
+	rc = ssh_userauth_password(session, NULL, m_dialog->ssh_password());
 	if (rc != SSH_AUTH_SUCCESS)
 	{
 		fprintf(stderr, "Error authenticating with password: %s\n", ssh_get_error(session));
@@ -106,7 +118,7 @@ bool start_slaves_ssh(StartupDialog &dialog)
 		return false;
 	}
 
-	rc = run_cmd(session, dialog);
+	rc = run_cmd(session);
 	if (rc != SSH_OK)
 	{
 		fprintf(stderr, "Error starting slaves: %s\n", ssh_get_error(session));
@@ -121,13 +133,19 @@ bool start_slaves_ssh(StartupDialog &dialog)
 	return true;
 }
 
-int start_slaves_local(StartupDialog &dialog)
+bool Master::start_slaves_local()
 {
 	const int pid = fork();
 	if (0 == pid)
 	{
-		char **argv = new char *[20];
-		string cmd = dialog.get_cmd();
+		string cmd = m_dialog->get_cmd();
+		cmd = std::regex_replace(cmd, std::regex("^ +"), "");
+		cmd = std::regex_replace(cmd, std::regex(" +$"), "");
+		cmd = std::regex_replace(cmd, std::regex(" +"), " ");
+		const int num_spaces = std::count_if(cmd.begin(), cmd.end(),
+											 [](char c)
+											 { return c == ' '; });
+		char **argv = new char *[num_spaces + 1];
 		int idx = 0;
 		std::istringstream iss(cmd);
 		string opt;
@@ -136,30 +154,29 @@ int start_slaves_local(StartupDialog &dialog)
 			argv[idx++] = strdup(opt.c_str());
 		}
 		argv[idx] = nullptr;
-
 		execvp(argv[0], argv);
 		_exit(127);
 	}
-	return pid;
+	return pid > 0;
 }
 
-void process_session(tcp::socket socket, UIWindow &window, const int port)
+void Master::process_session(tcp::socket socket, const asio::ip::port_type port)
 {
 	const int rank = UIWindow::get_rank(port);
 	mi_h *gdb_handle = nullptr;
 	if (UIWindow::src_is_gdb(port))
 	{
-		window.set_conns_gdb(rank, &socket);
-		window.set_conns_open_gdb(rank, true);
+		m_window->set_conns_gdb(rank, &socket);
+		m_window->set_conns_open_gdb(rank, true);
 		gdb_handle = mi_alloc_h();
 		gdb_handle->line = nullptr;
 	}
 	else
 	{
-		window.set_conns_trgt(rank, &socket);
+		m_window->set_conns_trgt(rank, &socket);
 	}
 
-	char *data = new char[max_length + 8];
+	char *data = new char[m_max_length + 8];
 	if (nullptr == data)
 	{
 		throw std::bad_alloc();
@@ -167,12 +184,12 @@ void process_session(tcp::socket socket, UIWindow &window, const int port)
 	for (;;)
 	{
 		asio::error_code error;
-		const size_t length = socket.read_some(asio::buffer(data, max_length), error);
+		const size_t length = socket.read_some(asio::buffer(data, m_max_length), error);
 		if (asio::error::eof == error)
 		{
 			if (UIWindow::src_is_gdb(port))
 			{
-				window.set_conns_open_gdb(rank, false);
+				m_window->set_conns_open_gdb(rank, false);
 				mi_free_h(&gdb_handle);
 			}
 			break;
@@ -186,7 +203,7 @@ void process_session(tcp::socket socket, UIWindow &window, const int port)
 		Glib::signal_idle().connect_once(
 			sigc::bind(
 				sigc::mem_fun(
-					window,
+					*m_window,
 					&UIWindow::print_data),
 				gdb_handle,
 				strdup(data),
@@ -195,20 +212,64 @@ void process_session(tcp::socket socket, UIWindow &window, const int port)
 	delete[] data;
 }
 
-void start_acceptor(UIWindow &window, const asio::ip::port_type port)
+void Master::start_acceptor(const asio::ip::port_type port)
 {
 	asio::io_context io_context;
 	tcp::acceptor acceptor(io_context, tcp::endpoint(tcp::v4(), port));
-	process_session(acceptor.accept(), window, port);
+	process_session(acceptor.accept(), port);
 }
 
-void start_servers(UIWindow &window)
+void Master::start_servers()
 {
-	for (int rank = 0; rank < window.num_processes(); ++rank)
+	m_window = new UIWindow{m_dialog->num_processes()};
+
+	for (int rank = 0; rank < m_window->num_processes(); ++rank)
 	{
-		std::thread(start_acceptor, std::ref(window), (base_port_gdb + rank)).detach();
-		std::thread(start_acceptor, std::ref(window), (base_port_trgt + rank)).detach();
+		std::thread(&Master::start_acceptor, this, (m_base_port_gdb + rank)).detach();
+		std::thread(&Master::start_acceptor, this, (m_base_port_trgt + rank)).detach();
 	}
+}
+
+bool Master::run_startup_dialog()
+{
+	m_dialog = new StartupDialog();
+	for (;;)
+	{
+		const int res = m_dialog->run();
+		if (Gtk::RESPONSE_OK == res && m_dialog->is_valid())
+		{
+			return true;
+		}
+		else if (Gtk::RESPONSE_DELETE_EVENT == res)
+		{
+			return false;
+		}
+	}
+	return false;
+}
+
+bool Master::start_slaves()
+{
+	bool ret = false;
+	if (m_dialog->ssh())
+	{
+		ret = start_slaves_ssh();
+	}
+	else
+	{
+		ret = start_slaves_local();
+	}
+	delete m_dialog;
+	return ret;
+}
+
+void Master::start_GUI()
+{
+	if (!m_window->init(m_app))
+	{
+		return;
+	}
+	m_app->run(*m_window->root_window());
 }
 
 void sigint_handler(int signum)
@@ -217,47 +278,25 @@ void sigint_handler(int signum)
 	{
 		return;
 	}
-	g_app->quit();
+	s_app->quit();
 }
 
 int main(int, char const **)
 {
-	Glib::RefPtr<Gtk::Application> app = Gtk::Application::create();
-	g_app = app.get();
-
-	std::unique_ptr<StartupDialog> dialog = std::make_unique<StartupDialog>();
-	do
+	Master master;
+	if (!master.run_startup_dialog())
 	{
-		if (Gtk::RESPONSE_OK != dialog->run())
-		{
-			return EXIT_SUCCESS;
-		}
-	} while (!dialog->is_valid());
-
+		return EXIT_SUCCESS;
+	}
 	signal(SIGINT, sigint_handler);
-	UIWindow window{dialog->num_processes()};
-	start_servers(window);
 
-	bool ret = false;
-	if (dialog->ssh())
+	master.start_servers();
+	if (!master.start_slaves())
 	{
-		ret = start_slaves_ssh(*dialog);
-	}
-	else
-	{
-		ret = start_slaves_local(*dialog) > 0;
-	}
-	if (!ret)
-	{
+		fprintf(stderr, "Could not start slaves.\n");
 		return EXIT_FAILURE;
 	}
-
-	dialog.reset();
-	if (!window.init(app))
-	{
-		return EXIT_FAILURE;
-	}
-	app->run(*window.root_window());
+	master.start_GUI();
 
 	return EXIT_SUCCESS;
 }
