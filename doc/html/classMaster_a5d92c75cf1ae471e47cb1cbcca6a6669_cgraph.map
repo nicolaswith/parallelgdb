@@ -1,0 +1,5 @@
+<map id="Master::start_slaves_local" name="Master::start_slaves_local">
+<area shape="rect" id="node1" title="Starts the slave instances on the local (host) machine." alt="" coords="5,5,160,47"/>
+<area shape="rect" id="node2" href="$classStartupDialog.html#a3dd518b4edebb588ba60b8b5538cc903" title="Returns the launcher command." alt="" coords="208,13,383,39"/>
+<area shape="rect" id="node3" href="$classStartupDialog.html#ac1b9a18530bb5ffc903f83c88448bb1d" title="Returns the total number of processes." alt="" coords="431,5,579,47"/>
+</map>

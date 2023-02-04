@@ -1,0 +1,4 @@
+<map id="UIWindow::toggle_all_gdb" name="UIWindow::toggle_all_gdb">
+<area shape="rect" id="node1" title="Toggles all checkbuttons in the GDB I/O section grid." alt="" coords="5,5,196,32"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#a6a12f21b7519fae0cfaad1e698085b4f" title="Toggle all checkbuttons in a grid." alt="" coords="244,5,403,32"/>
+</map>

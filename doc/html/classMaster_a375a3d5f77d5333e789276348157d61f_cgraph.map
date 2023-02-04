@@ -1,0 +1,9 @@
+<map id="Master::start_slaves_ssh" name="Master::start_slaves_ssh">
+<area shape="rect" id="node1" title="Establishes a SSH connection to the remote server." alt="" coords="5,105,188,131"/>
+<area shape="rect" id="node2" href="$classMaster.html#a467656f8e61095d188fae547d967b2c8" title="Executes the launcher command on the remote server." alt="" coords="259,13,389,39"/>
+<area shape="rect" id="node5" href="$classStartupDialog.html#a6667956beed62c38c50659365c5a8411" title="Returns the SSH address." alt="" coords="253,64,395,105"/>
+<area shape="rect" id="node6" href="$classStartupDialog.html#ad505fcb515c6c991031165f406836f87" title="Returns the SSH password." alt="" coords="253,129,395,171"/>
+<area shape="rect" id="node7" href="$classStartupDialog.html#afb409d2ec8daa554d089dcea4939e4e5" title="Returns the SSH username." alt="" coords="236,195,412,222"/>
+<area shape="rect" id="node3" href="$classStartupDialog.html#a3dd518b4edebb588ba60b8b5538cc903" title="Returns the launcher command." alt="" coords="460,13,635,39"/>
+<area shape="rect" id="node4" href="$classStartupDialog.html#ac1b9a18530bb5ffc903f83c88448bb1d" title="Returns the total number of processes." alt="" coords="683,5,831,47"/>
+</map>

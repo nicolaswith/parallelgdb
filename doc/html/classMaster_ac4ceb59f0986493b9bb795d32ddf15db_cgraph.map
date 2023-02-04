@@ -1,0 +1,5 @@
+<map id="Master::run_startup_dialog" name="Master::run_startup_dialog">
+<area shape="rect" id="node1" title="Runs the startup dialog." alt="" coords="5,23,155,65"/>
+<area shape="rect" id="node2" href="$classStartupDialog.html#a92f4cf1bc14ff2c0a0daece576720ea8" title="Returns whether the configuration could be successfully parsed." alt="" coords="203,5,372,32"/>
+<area shape="rect" id="node3" href="$classStartupDialog.html#af47f73e01a8a6450694bac12940f14de" title="Runs the startup dialog." alt="" coords="217,56,357,83"/>
+</map>

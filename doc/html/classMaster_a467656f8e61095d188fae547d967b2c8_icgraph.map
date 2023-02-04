@@ -1,0 +1,6 @@
+<map id="Master::run_cmd" name="Master::run_cmd">
+<area shape="rect" id="node1" title="Executes the launcher command on the remote server." alt="" coords="541,5,672,32"/>
+<area shape="rect" id="node2" href="$classMaster.html#a375a3d5f77d5333e789276348157d61f" title="Establishes a SSH connection to the remote server." alt="" coords="311,5,493,32"/>
+<area shape="rect" id="node3" href="$classMaster.html#a9bb6425799975f544c846ae7d67e947e" title="Starts the slaves on the desired debug platform." alt="" coords="108,5,263,32"/>
+<area shape="rect" id="node4" href="$master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,5,60,32"/>
+</map>

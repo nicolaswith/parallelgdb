@@ -1,0 +1,13 @@
+<map id="UIWindow::delete_mark" name="UIWindow::delete_mark">
+<area shape="rect" id="node1" title="Deletes the breakpoint for all processes and then the mark itself." alt="" coords="5,107,183,134"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#a32dd4b6056237371b87bc2ffe701b1a6" title="Delete a line mark in a Gsv::View." alt="" coords="231,46,399,73"/>
+<area shape="rect" id="node4" href="$classBreakpoint.html#aab6298c6cb7b4c1fb1e2995ccd23a32a" title="Deletes the breakpoints for all process." alt="" coords="243,129,386,171"/>
+<area shape="rect" id="node3" href="$classBreakpoint.html#a40fe4a865e93c2dbe1c9d75698514e95" title="Returns the line number of the associated source file." alt="" coords="459,5,613,47"/>
+<area shape="rect" id="node5" href="$classBreakpoint.html#ac27741795e2f0c8627128fe2ffd221e8" title="Deletes a breakpoint for a process." alt="" coords="465,71,607,112"/>
+<area shape="rect" id="node9" href="$classBreakpoint.html#a57d9849b5661c53ad12c69b407b920de" title="Generates a comma separated list of processes for which the breakpoint is in the state state." alt="" coords="461,137,611,163"/>
+<area shape="rect" id="node10" href="$classUIWindow.html#a206ec747a9c2589eac08719d221ce218" title="Gets the Gtk window object." alt="" coords="447,187,625,214"/>
+<area shape="rect" id="node11" href="$classBreakpoint.html#a84d8c1b691a7687552af36500a63392e" title="Resets the error states to their corresponding base state." alt="" coords="463,239,609,280"/>
+<area shape="rect" id="node6" href="$classUIWindow.html#a17b365bb1177f5f8e1306c5ac2d41198" title="Gets the TCP socket associated to a process. (GDB)" alt="" coords="673,27,865,54"/>
+<area shape="rect" id="node7" href="$classUIWindow.html#af7d2b8be24892c57aa9b40a3ccada1b8" title="Writes data to the TCP socket." alt="" coords="688,78,851,105"/>
+<area shape="rect" id="node8" href="$classUIWindow.html#a655257a1db3090889ead987fcdffcaaa" title="Gets the state of a process." alt="" coords="682,129,857,155"/>
+</map>

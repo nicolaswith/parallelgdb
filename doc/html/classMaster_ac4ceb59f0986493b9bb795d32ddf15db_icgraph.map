@@ -1,0 +1,4 @@
+<map id="Master::run_startup_dialog" name="Master::run_startup_dialog">
+<area shape="rect" id="node1" title="Runs the startup dialog." alt="" coords="108,5,257,47"/>
+<area shape="rect" id="node2" href="$master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,13,60,39"/>
+</map>

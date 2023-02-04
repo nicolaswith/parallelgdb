@@ -1,0 +1,5 @@
+<map id="Master::run_cmd" name="Master::run_cmd">
+<area shape="rect" id="node1" title="Executes the launcher command on the remote server." alt="" coords="5,13,136,39"/>
+<area shape="rect" id="node2" href="$classStartupDialog.html#a3dd518b4edebb588ba60b8b5538cc903" title="Returns the launcher command." alt="" coords="184,13,359,39"/>
+<area shape="rect" id="node3" href="$classStartupDialog.html#ac1b9a18530bb5ffc903f83c88448bb1d" title="Returns the total number of processes." alt="" coords="407,5,555,47"/>
+</map>

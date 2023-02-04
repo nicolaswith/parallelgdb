@@ -1,0 +1,5 @@
+<map id="Breakpoint::set_stop_all" name="Breakpoint::set_stop_all">
+<area shape="rect" id="node1" title="Sets the stop all flag for a breakpoint." alt="" coords="475,13,653,39"/>
+<area shape="rect" id="node2" href="$classBreakpointDialog.html#ac16b1a808758800a2dd732d510d93429" title="Signal handler for the accept/close action of the dialog." alt="" coords="268,5,427,47"/>
+<area shape="rect" id="node3" href="$classBreakpointDialog.html#ac27e6255f162b0d8b355ba75b8b5287d" title="Default constructor." alt="" coords="5,5,220,47"/>
+</map>

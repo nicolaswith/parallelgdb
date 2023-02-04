@@ -1,0 +1,6 @@
+<map id="StartupDialog::read_values" name="StartupDialog::read_values">
+<area shape="rect" id="node1" title="Parses the current configuration." alt="" coords="492,39,640,80"/>
+<area shape="rect" id="node2" href="$classStartupDialog.html#ab54fa6d3e3745d7328ce8996f8dd4a82" title="Prepare the export of the current configuration as a file." alt="" coords="272,5,433,47"/>
+<area shape="rect" id="node4" href="$classStartupDialog.html#a5fd5b58e94e3b1cfe0e1d393db678e94" title="Updates the stored configuration with the current configuration." alt="" coords="261,71,444,112"/>
+<area shape="rect" id="node3" href="$classStartupDialog.html#a016c30fe4bc25cdb0fd0c3ec2c33e4a6" title="Default constructor." alt="" coords="5,46,213,73"/>
+</map>

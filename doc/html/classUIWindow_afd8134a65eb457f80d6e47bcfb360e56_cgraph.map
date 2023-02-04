@@ -1,0 +1,4 @@
+<map id="UIWindow::stop_all" name="UIWindow::stop_all">
+<area shape="rect" id="node1" title="Stops all processes." alt="" coords="5,5,152,32"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#af7d2b8be24892c57aa9b40a3ccada1b8" title="Writes data to the TCP socket." alt="" coords="200,5,363,32"/>
+</map>

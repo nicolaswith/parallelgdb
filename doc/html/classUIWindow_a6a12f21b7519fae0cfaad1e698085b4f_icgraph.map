@@ -1,0 +1,8 @@
+<map id="UIWindow::toggle_all" name="UIWindow::toggle_all">
+<area shape="rect" id="node1" title="Toggle all checkbuttons in a grid." alt="" coords="695,31,853,57"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#a7f0274883889305c8ea893ddfebd77ec" title="Toggles all checkbuttons in the GDB I/O section grid." alt="" coords="456,5,647,32"/>
+<area shape="rect" id="node6" href="$classUIWindow.html#aee371ffb7ff1f2cdf4c0a735dc0df349" title="Toggles all checkbuttons in the target I/O section grid." alt="" coords="457,56,646,83"/>
+<area shape="rect" id="node3" href="$classUIWindow.html#a237131d5aa62c32799cf1f0d0e913110" title="Loads the glade file and connects the signal handlers." alt="" coords="292,31,408,57"/>
+<area shape="rect" id="node4" href="$classMaster.html#a6cb4d31abc26317bccf2251edca321bb" title="Starts the GUI main window." alt="" coords="108,31,244,57"/>
+<area shape="rect" id="node5" href="$master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,31,60,57"/>
+</map>

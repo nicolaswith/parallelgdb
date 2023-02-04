@@ -1,0 +1,4 @@
+<map id="StartupDialog::on_dialog_response" name="StartupDialog::on_dialog_response">
+<area shape="rect" id="node1" title="Updates the stored configuration with the current configuration." alt="" coords="261,5,444,47"/>
+<area shape="rect" id="node2" href="$classStartupDialog.html#a016c30fe4bc25cdb0fd0c3ec2c33e4a6" title="Default constructor." alt="" coords="5,13,213,39"/>
+</map>

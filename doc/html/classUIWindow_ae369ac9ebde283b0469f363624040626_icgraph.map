@@ -1,0 +1,6 @@
+<map id="UIWindow::update_markers_timeout" name="UIWindow::update_markers_timeout">
+<area shape="rect" id="node1" title="Checks if the source file notebook has pages and updates the dots if so." alt="" coords="456,5,656,47"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#a237131d5aa62c32799cf1f0d0e913110" title="Loads the glade file and connects the signal handlers." alt="" coords="292,13,408,39"/>
+<area shape="rect" id="node3" href="$classMaster.html#a6cb4d31abc26317bccf2251edca321bb" title="Starts the GUI main window." alt="" coords="108,13,244,39"/>
+<area shape="rect" id="node4" href="$master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,13,60,39"/>
+</map>

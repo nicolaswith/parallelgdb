@@ -1,0 +1,4 @@
+<map id="UIWindow::update_overview" name="UIWindow::update_overview">
+<area shape="rect" id="node1" title="Updates all labels and their tooltip for a process." alt="" coords="5,5,212,32"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#aa4f6b1a4b49767fcc71a6a72ba9a461c" title="Sets the color for the line numbers in the Overview." alt="" coords="260,5,455,32"/>
+</map>

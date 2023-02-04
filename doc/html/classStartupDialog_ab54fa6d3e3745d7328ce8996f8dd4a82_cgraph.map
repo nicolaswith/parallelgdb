@@ -1,0 +1,5 @@
+<map id="StartupDialog::export_config" name="StartupDialog::export_config">
+<area shape="rect" id="node1" title="Prepare the export of the current configuration as a file." alt="" coords="5,39,167,80"/>
+<area shape="rect" id="node2" href="$classStartupDialog.html#a0625950ed3d3c47d6b33c24dc681a1bf" title="Writes the current configuration as a file." alt="" coords="215,5,388,47"/>
+<area shape="rect" id="node3" href="$classStartupDialog.html#ab85326592b6948d675667f65051980ce" title="Parses the current configuration." alt="" coords="227,71,375,112"/>
+</map>

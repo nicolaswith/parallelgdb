@@ -1,0 +1,4 @@
+<map id="Slave::start_gdb" name="Slave::start_gdb">
+<area shape="rect" id="node1" title="Starts the GDB instance." alt="" coords="5,5,132,32"/>
+<area shape="rect" id="node2" href="$classSlave.html#afb4b4faa40456a75e111244357ffdd3a" title="Waits for the socat instances to start." alt="" coords="180,5,341,32"/>
+</map>

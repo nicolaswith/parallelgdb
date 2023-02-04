@@ -1,0 +1,6 @@
+<map id="UIWindow::update_markers_timeout" name="UIWindow::update_markers_timeout">
+<area shape="rect" id="node1" title="Checks if the source file notebook has pages and updates the dots if so." alt="" coords="5,27,205,69"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#a8805706e8ed834473e3690ac4b5f1614" title="Sets the positions of the dots in the drawing area." alt="" coords="253,35,453,61"/>
+<area shape="rect" id="node3" href="$classUIDrawingArea.html#a0efe30d5e68d4233aeeb40878c7a9cca" title="Returns the radius of the dots." alt="" coords="501,5,669,32"/>
+<area shape="rect" id="node4" href="$classUIDrawingArea.html#a768f592a688a0d04b72e1312121658d4" title="Sets the vertical offset for a process." alt="" coords="511,57,659,98"/>
+</map>

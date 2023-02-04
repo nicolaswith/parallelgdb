@@ -1,0 +1,5 @@
+<map id="StartupDialog::clear_all" name="StartupDialog::clear_all">
+<area shape="rect" id="node1" title="Resets the dialog to be empty and clears the file in the file&#45;chooser&#45;button." alt="" coords="5,13,180,39"/>
+<area shape="rect" id="node2" href="$classStartupDialog.html#ac789bc36cd7e4cb908b3dd69686e0c65" title="Resets the dialog to be empty." alt="" coords="228,5,379,47"/>
+<area shape="rect" id="node3" href="$classStartupDialog.html#ab2d6ab6b84129961129868effaa196c9" title="Sets the sensitivity of the SSH related widgets." alt="" coords="427,5,565,47"/>
+</map>

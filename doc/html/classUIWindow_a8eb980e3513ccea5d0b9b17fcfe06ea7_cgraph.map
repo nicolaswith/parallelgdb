@@ -1,0 +1,7 @@
+<map id="UIWindow::on_interaction_button_clicked" name="UIWindow::on_interaction_button_clicked">
+<area shape="rect" id="node1" title="Signal handler for all the interaction buttons." alt="" coords="5,27,193,69"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#a06f629dcbc6ff6c5c4eb0a1025a36496" title="Maps the buttons/hot&#45;keys to the corresponding action." alt="" coords="241,27,387,69"/>
+<area shape="rect" id="node3" href="$classUIWindow.html#adf1424cd3dede540dd982fcf53de8ebb" title="Closes all unused source files." alt="" coords="435,5,653,32"/>
+<area shape="rect" id="node4" href="$classUIWindow.html#aa69cad1ed3b5f47f4f25aa5e2f88795b" title="Sends data to all selected processes." alt="" coords="463,57,625,98"/>
+<area shape="rect" id="node5" href="$classUIWindow.html#af7d2b8be24892c57aa9b40a3ccada1b8" title="Writes data to the TCP socket." alt="" coords="701,64,864,91"/>
+</map>

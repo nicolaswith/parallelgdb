@@ -1,0 +1,5 @@
+<map id="UIWindow::set_position" name="UIWindow::set_position">
+<area shape="rect" id="node1" title="Updates the current line and file for a process." alt="" coords="5,5,180,32"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#adf6ab1f7b18f7ee63dbc0d2b63660949" title="Updates all labels and their tooltip for a process." alt="" coords="228,5,435,32"/>
+<area shape="rect" id="node3" href="$classUIWindow.html#aa4f6b1a4b49767fcc71a6a72ba9a461c" title="Sets the color for the line numbers in the Overview." alt="" coords="483,5,677,32"/>
+</map>

@@ -1,0 +1,8 @@
+<map id="StartupDialog::get_cmd" name="StartupDialog::get_cmd">
+<area shape="rect" id="node1" title="Returns the launcher command." alt="" coords="720,35,895,61"/>
+<area shape="rect" id="node2" href="$classMaster.html#a467656f8e61095d188fae547d967b2c8" title="Executes the launcher command on the remote server." alt="" coords="541,8,672,35"/>
+<area shape="rect" id="node6" href="$classMaster.html#a5d92c75cf1ae471e47cb1cbcca6a6669" title="Starts the slave instances on the local (host) machine." alt="" coords="325,57,479,98"/>
+<area shape="rect" id="node3" href="$classMaster.html#a375a3d5f77d5333e789276348157d61f" title="Establishes a SSH connection to the remote server." alt="" coords="311,5,493,32"/>
+<area shape="rect" id="node4" href="$classMaster.html#a9bb6425799975f544c846ae7d67e947e" title="Starts the slaves on the desired debug platform." alt="" coords="108,35,263,61"/>
+<area shape="rect" id="node5" href="$master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,35,60,61"/>
+</map>

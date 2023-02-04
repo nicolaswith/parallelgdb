@@ -1,0 +1,6 @@
+<map id="Breakpoint::delete_breakpoint" name="Breakpoint::delete_breakpoint">
+<area shape="rect" id="node1" title="Deletes a breakpoint for a process." alt="" coords="5,49,148,90"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#a17b365bb1177f5f8e1306c5ac2d41198" title="Gets the TCP socket associated to a process. (GDB)" alt="" coords="196,5,388,32"/>
+<area shape="rect" id="node3" href="$classUIWindow.html#af7d2b8be24892c57aa9b40a3ccada1b8" title="Writes data to the TCP socket." alt="" coords="211,56,373,83"/>
+<area shape="rect" id="node4" href="$classUIWindow.html#a655257a1db3090889ead987fcdffcaaa" title="Gets the state of a process." alt="" coords="205,107,379,133"/>
+</map>

@@ -6,26 +6,26 @@
 
 /**[txh]********************************************************************
 
-  GDB/MI interface library
-  Copyright (c) 2004-2016 by Salvador E. Tropea.
- 
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation; either version 2 of the License, or
-  (at your option) any later version.
- 
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
- 
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software
-  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+	GDB/MI interface library
+	Copyright (c) 2004-2016 by Salvador E. Tropea.
 
-  Comments:
-  Main header for libmigdb.
-  
+	This program is free software; you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation; either version 2 of the License, or
+	(at your option) any later version.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+	Comments:
+	Main header for libmigdb.
+
 ***************************************************************************/
 
 #ifndef MI_GDB_H
@@ -49,7 +49,12 @@
 #define MI_MISSING_GDB            13
 #define MI_LAST_ERROR             13
 
-enum mi_val_type { t_const, t_tuple, t_list };
+enum mi_val_type
+{
+	t_const,
+	t_tuple,
+	t_list
+};
 
 /* Types and subtypes. */
 /* Type. */
@@ -437,7 +442,8 @@ char *mi_res_value(mi_h *h);
 mi_stop *mi_res_stop(mi_output *o);
 enum mi_stop_reason mi_reason_str_to_enum(const char *s);
 const char *mi_reason_enum_to_str(enum mi_stop_reason r);
-int mi_get_read_memory(mi_h *h, unsigned char *dest, unsigned ws, int *na, unsigned long *addr);
+int mi_get_read_memory(mi_h *h, unsigned char *dest, unsigned ws,
+					   int *na, unsigned long *addr);
 mi_asm_insns *mi_get_asm_insns(mi_h *h);
 mi_chg_reg *mi_get_list_registers(mi_h *h, int *how_many);
 int mi_get_list_registers_l(mi_h *h, mi_chg_reg *l);

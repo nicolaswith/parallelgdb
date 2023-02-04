@@ -1,0 +1,4 @@
+<map id="UIWindow::clear_mark" name="UIWindow::clear_mark">
+<area shape="rect" id="node1" title="Delete a line mark in a Gsv::View." alt="" coords="5,13,173,39"/>
+<area shape="rect" id="node2" href="$classBreakpoint.html#a40fe4a865e93c2dbe1c9d75698514e95" title="Returns the line number of the associated source file." alt="" coords="221,5,375,47"/>
+</map>

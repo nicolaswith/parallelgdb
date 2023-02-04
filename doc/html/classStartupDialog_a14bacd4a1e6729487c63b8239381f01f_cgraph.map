@@ -1,0 +1,6 @@
+<map id="StartupDialog::read_config" name="StartupDialog::read_config">
+<area shape="rect" id="node1" title="Opens a (configuration) file and reads its entire content." alt="" coords="5,39,153,80"/>
+<area shape="rect" id="node2" href="$classStartupDialog.html#ac789bc36cd7e4cb908b3dd69686e0c65" title="Resets the dialog to be empty." alt="" coords="201,5,352,47"/>
+<area shape="rect" id="node4" href="$classStartupDialog.html#acafba25bdc1da15ee0eb63b217e76254" title="Set a value to an widget in the dialog." alt="" coords="207,71,346,112"/>
+<area shape="rect" id="node3" href="$classStartupDialog.html#ab2d6ab6b84129961129868effaa196c9" title="Sets the sensitivity of the SSH related widgets." alt="" coords="400,39,539,80"/>
+</map>

@@ -1,0 +1,13 @@
+<map id="UIWindow::send_data_to_active" name="UIWindow::send_data_to_active">
+<area shape="rect" id="node1" title="Sends data to all selected processes." alt="" coords="977,85,1140,127"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#a06f629dcbc6ff6c5c4eb0a1025a36496" title="Maps the buttons/hot&#45;keys to the corresponding action." alt="" coords="776,56,921,97"/>
+<area shape="rect" id="node8" href="$classUIWindow.html#a848694f8ebd8e4be25695b37b799a8f5" title="Forwards the received data to the corresponding data handler." alt="" coords="768,122,929,149"/>
+<area shape="rect" id="node3" href="$classUIWindow.html#a8eb980e3513ccea5d0b9b17fcfe06ea7" title="Signal handler for all the interaction buttons." alt="" coords="532,5,720,47"/>
+<area shape="rect" id="node7" href="$classUIWindow.html#a679f5db0a5c299d0252161faf114ccc5" title="Signal handler for key&#45;press events." alt="" coords="535,71,717,98"/>
+<area shape="rect" id="node4" href="$classUIWindow.html#a237131d5aa62c32799cf1f0d0e913110" title="Loads the glade file and connects the signal handlers." alt="" coords="342,71,458,98"/>
+<area shape="rect" id="node5" href="$classMaster.html#a6cb4d31abc26317bccf2251edca321bb" title="Starts the GUI main window." alt="" coords="120,71,256,98"/>
+<area shape="rect" id="node6" href="$master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,97,60,123"/>
+<area shape="rect" id="node9" href="$classMaster.html#ae56b3474ea28e62abfe0c183a874fa9d" title="Handles the TCP communication between socat and the master." alt="" coords="535,122,717,149"/>
+<area shape="rect" id="node10" href="$classMaster.html#a8f01bcecf27dbe029c4181f72133c536" title="Waits (blocking) for a TCP connection on the TCP port." alt="" coords="316,122,484,149"/>
+<area shape="rect" id="node11" href="$classMaster.html#ab15d4163aba6881bbfd079414566ab12" title="Creates threads for each blocking TCP acceptor call." alt="" coords="108,122,268,149"/>
+</map>

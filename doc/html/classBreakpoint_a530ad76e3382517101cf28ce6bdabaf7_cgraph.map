@@ -1,0 +1,12 @@
+<map id="Breakpoint::update_breakpoints" name="Breakpoint::update_breakpoints">
+<area shape="rect" id="node1" title="Modifies the breakpoints according to button_states." alt="" coords="5,158,152,199"/>
+<area shape="rect" id="node2" href="$classBreakpoint.html#abc03d69a380841a3e15cd39a11b7d60b" title="Creates a breakpoint for a process." alt="" coords="218,99,361,141"/>
+<area shape="rect" id="node7" href="$classBreakpoint.html#ac27741795e2f0c8627128fe2ffd221e8" title="Deletes a breakpoint for a process." alt="" coords="218,34,361,75"/>
+<area shape="rect" id="node8" href="$classBreakpoint.html#a57d9849b5661c53ad12c69b407b920de" title="Generates a comma separated list of processes for which the breakpoint is in the state state." alt="" coords="215,165,364,192"/>
+<area shape="rect" id="node9" href="$classUIWindow.html#a206ec747a9c2589eac08719d221ce218" title="Gets the Gtk window object." alt="" coords="200,216,379,243"/>
+<area shape="rect" id="node10" href="$classBreakpoint.html#a84d8c1b691a7687552af36500a63392e" title="Resets the error states to their corresponding base state." alt="" coords="216,267,363,309"/>
+<area shape="rect" id="node3" href="$classUIWindow.html#a17b365bb1177f5f8e1306c5ac2d41198" title="Gets the TCP socket associated to a process. (GDB)" alt="" coords="427,5,619,32"/>
+<area shape="rect" id="node4" href="$classUIWindow.html#af7d2b8be24892c57aa9b40a3ccada1b8" title="Writes data to the TCP socket." alt="" coords="441,56,604,83"/>
+<area shape="rect" id="node5" href="$classUIWindow.html#a85567fb5c7d2674f3be31fe5a01a2e3a" title="Stores a pointer to a Breakpoint object." alt="" coords="427,157,619,184"/>
+<area shape="rect" id="node6" href="$classUIWindow.html#a655257a1db3090889ead987fcdffcaaa" title="Gets the state of a process." alt="" coords="435,107,610,133"/>
+</map>

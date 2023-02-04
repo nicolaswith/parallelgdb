@@ -1,0 +1,5 @@
+<map id="Slave::wait_for_socat" name="Slave::wait_for_socat">
+<area shape="rect" id="node1" title="Waits for the socat instances to start." alt="" coords="396,5,557,32"/>
+<area shape="rect" id="node2" href="$classSlave.html#abd3f800842bf7c91d584018d8e416687" title="Starts the GDB instance." alt="" coords="221,5,348,32"/>
+<area shape="rect" id="node3" href="$classSlave.html#a32d41a6530cc160039a3b350b694fa51" title="Generates the name for the PTYs and starts GDB and socat." alt="" coords="5,5,173,32"/>
+</map>

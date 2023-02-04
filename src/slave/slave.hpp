@@ -17,8 +17,22 @@
 	along with ParallelGDB.  If not, see <https://www.gnu.org/licenses/gpl-3.0.txt>.
 */
 
+/**
+ * @file slave.hpp
+ *
+ * @brief Header file for the Slave class.
+ *
+ * This file is the header file for the Slave class.
+ */
+
 #include <iosfwd>
 
+/// Holds the state of the slave program.
+/**
+ * This class holds the state of the slave program. It contains all utility
+ * to analyze the configuration, start the socat and GDB instances, and then
+ * monitor them.
+ */
 class Slave
 {
 	const int m_argc;
@@ -39,17 +53,26 @@ class Slave
 	int m_pid_socat_trgt;
 	int m_pid_gdb;
 
+	/// Waits for the socat instances to start.
 	bool wait_for_socat() const;
+	/// Starts the GDB instance.
 	int start_gdb(const std::string &tty_gdb, const std::string &tty_trgt) const;
+	/// Starts a socat instance.
 	int start_socat(const std::string &tty_name, const int port) const;
 
 public:
+	/// Default constructor.
 	Slave(const int argc, char **argv);
+	/// Destructor.
 	~Slave();
 
+	/// Parses the command line arguments.
 	bool parse_cl_args();
+	/// Obtains the rank assigned to this process.
 	bool set_rank();
+	/// Generates the name for the PTYs and starts GDB and socat.
 	bool start_processes();
+	/// Monitors the socat and GDB instances.
 	void monitor_processes() const;
 
 	static void print_help();

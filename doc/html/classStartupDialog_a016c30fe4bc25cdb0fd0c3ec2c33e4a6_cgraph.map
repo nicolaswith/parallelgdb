@@ -1,0 +1,15 @@
+<map id="StartupDialog::StartupDialog" name="StartupDialog::StartupDialog">
+<area shape="rect" id="node1" title="Default constructor." alt="" coords="5,242,213,269"/>
+<area shape="rect" id="node2" href="$classStartupDialog.html#a7ec3dcbd1f393f8553f6500b855057d4" title="Resets the dialog to be empty and clears the file in the file&#45;chooser&#45;button." alt="" coords="273,398,448,425"/>
+<area shape="rect" id="node4" href="$classStartupDialog.html#ab2d6ab6b84129961129868effaa196c9" title="Sets the sensitivity of the SSH related widgets." alt="" coords="729,300,868,341"/>
+<area shape="rect" id="node5" href="$classStartupDialog.html#ab54fa6d3e3745d7328ce8996f8dd4a82" title="Prepare the export of the current configuration as a file." alt="" coords="280,71,441,112"/>
+<area shape="rect" id="node8" href="$classStartupDialog.html#a388850ae7213401935f6f84de8935369" title="Signal handler for the Custom Launcher checkbutton." alt="" coords="265,201,456,243"/>
+<area shape="rect" id="node9" href="$classStartupDialog.html#a5fd5b58e94e3b1cfe0e1d393db678e94" title="Updates the stored configuration with the current configuration." alt="" coords="269,136,452,177"/>
+<area shape="rect" id="node10" href="$classStartupDialog.html#afd2bf77da49e0941b5bec30f951c920c" title="Signal handler for the Launcher radio&#45;button." alt="" coords="261,332,460,373"/>
+<area shape="rect" id="node11" href="$classStartupDialog.html#ac6a10f9fa9674970f6dcaa34130432c2" title="Signal handler for the SSH checkbutton." alt="" coords="513,5,677,47"/>
+<area shape="rect" id="node12" href="$classStartupDialog.html#a14bacd4a1e6729487c63b8239381f01f" title="Opens a (configuration) file and reads its entire content." alt="" coords="287,267,435,308"/>
+<area shape="rect" id="node3" href="$classStartupDialog.html#ac789bc36cd7e4cb908b3dd69686e0c65" title="Resets the dialog to be empty." alt="" coords="519,332,670,373"/>
+<area shape="rect" id="node6" href="$classStartupDialog.html#a0625950ed3d3c47d6b33c24dc681a1bf" title="Writes the current configuration as a file." alt="" coords="508,71,681,112"/>
+<area shape="rect" id="node7" href="$classStartupDialog.html#ab85326592b6948d675667f65051980ce" title="Parses the current configuration." alt="" coords="521,136,669,177"/>
+<area shape="rect" id="node13" href="$classStartupDialog.html#acafba25bdc1da15ee0eb63b217e76254" title="Set a value to an widget in the dialog." alt="" coords="525,267,664,308"/>
+</map>

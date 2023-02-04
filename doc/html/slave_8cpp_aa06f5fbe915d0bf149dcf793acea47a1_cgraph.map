@@ -1,0 +1,4 @@
+<map id="main" name="main">
+<area shape="rect" id="node1" title="Entry point for the slave program." alt="" coords="5,5,60,32"/>
+<area shape="rect" id="node2" href="$classSlave.html#abd2d7a416fab3368b857b4a45094c5e1" title="Monitors the socat and GDB instances." alt="" coords="108,5,297,32"/>
+</map>

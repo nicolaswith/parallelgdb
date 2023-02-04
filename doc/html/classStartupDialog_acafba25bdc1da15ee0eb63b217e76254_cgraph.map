@@ -1,0 +1,4 @@
+<map id="StartupDialog::set_value" name="StartupDialog::set_value">
+<area shape="rect" id="node1" title="Set a value to an widget in the dialog." alt="" coords="5,5,144,47"/>
+<area shape="rect" id="node2" href="$classStartupDialog.html#ab2d6ab6b84129961129868effaa196c9" title="Sets the sensitivity of the SSH related widgets." alt="" coords="192,5,331,47"/>
+</map>

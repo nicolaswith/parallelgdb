@@ -1,0 +1,4 @@
+<map id="UIWindow::check_overview" name="UIWindow::check_overview">
+<area shape="rect" id="node1" title="Updates the running and exited row for a processes." alt="" coords="5,13,205,39"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#a07a87970f8669d0e209b039699a226b0" title="Clears all columns of a process in the Overview." alt="" coords="253,5,427,47"/>
+</map>

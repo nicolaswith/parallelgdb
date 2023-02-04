@@ -1,0 +1,4 @@
+<map id="Slave::start_gdb" name="Slave::start_gdb">
+<area shape="rect" id="node1" title="Starts the GDB instance." alt="" coords="221,5,348,32"/>
+<area shape="rect" id="node2" href="$classSlave.html#a32d41a6530cc160039a3b350b694fa51" title="Generates the name for the PTYs and starts GDB and socat." alt="" coords="5,5,173,32"/>
+</map>

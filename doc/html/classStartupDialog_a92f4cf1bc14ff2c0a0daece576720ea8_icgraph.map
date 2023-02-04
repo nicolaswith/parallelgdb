@@ -1,0 +1,5 @@
+<map id="StartupDialog::is_valid" name="StartupDialog::is_valid">
+<area shape="rect" id="node1" title="Returns whether the configuration could be successfully parsed." alt="" coords="305,13,475,39"/>
+<area shape="rect" id="node2" href="$classMaster.html#ac4ceb59f0986493b9bb795d32ddf15db" title="Runs the startup dialog." alt="" coords="108,5,257,47"/>
+<area shape="rect" id="node3" href="$master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,13,60,39"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="StartupDialog::on_ssh_button_toggled" name="StartupDialog::on_ssh_button_toggled">
+<area shape="rect" id="node1" title="Signal handler for the SSH checkbutton." alt="" coords="5,5,169,47"/>
+<area shape="rect" id="node2" href="$classStartupDialog.html#ab2d6ab6b84129961129868effaa196c9" title="Sets the sensitivity of the SSH related widgets." alt="" coords="217,5,356,47"/>
+</map>

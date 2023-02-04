@@ -17,12 +17,25 @@
 	along with ParallelGDB.  If not, see <https://www.gnu.org/licenses/gpl-3.0.txt>.
 */
 
+/**
+ * @file startup.hpp
+ *
+ * @brief Header file for the StartupDialog class.
+ *
+ * This file is the header file for the StartupDialog class.
+ */
+
 #ifndef STARTUP_HPP
 #define STARTUP_HPP
 
 #include <gtkmm.h>
 #include <iosfwd>
 
+/// Generates the startup dialog.
+/**
+ * This is a wrapper class for a Gtk::Dialog. It generates the startup dialog,
+ * where the user configures ParallelGDB.
+ */
 class StartupDialog
 {
 	bool m_is_valid;
@@ -68,58 +81,117 @@ class StartupDialog
 	Gtk::CheckButton *m_checkbutton_launcher;
 	Gtk::Entry *m_entry_launcher;
 
+	/// Updates the stored configuration with the current configuration.
 	void on_dialog_response(const int response_id);
-	void set_sensitivity_ssh(bool state);
+	/// Sets the sensitivity of the SSH related widgets.
+	void set_sensitivity_ssh(const bool state);
+	/// Signal handler for the SSH checkbutton.
 	void on_ssh_button_toggled(Gtk::CheckButton *button);
+	/// Signal handler for the Custom Launcher checkbutton.
 	void on_custom_launcher_toggled(Gtk::CheckButton *button);
+	/// Signal handler for the Launcher radio-button.
 	void on_launcher_toggled();
+	/// Resets the dialog to be empty.
 	void clear_dialog();
-	void set_value(std::string key, std::string value);
+	/// Set a value to an widget in the dialog.
+	void set_value(const std::string &key, const std::string &value);
+	/// Opens a (configuration) file and reads its entire content.
 	void read_config();
+	/// Prepare the export of the current configuration as a file.
 	void export_config();
+	/// Parses the current configuration.
 	bool read_values();
+	/// Writes the current configuration as a file.
 	void on_save_dialog_response(const int response_id);
+	/// Resets the dialog to be empty and clears the file in the file-chooser-button.
 	void clear_all();
 
 	template <class T>
 	T *get_widget(const std::string &widget_name);
 
 public:
+	/// Default constructor.
 	StartupDialog();
+	/// Destructor.
 	virtual ~StartupDialog();
 
+	/// Returns the launcher command.
 	std::string get_cmd() const;
 
+	/// Runs the startup dialog.
+	/**
+	 * This function runs the startup dialog.
+	 *
+	 * @return The response ID.
+	 */
 	inline int run()
 	{
 		return m_dialog->run();
 	}
 
+	/// Returns whether the configuration could be successfully parsed.
+	/**
+	 * This function returns whether the configuration could be
+	 * successfully parsed.
+	 *
+	 * @return @c true on success, @c false otherwise.
+	 */
 	inline bool is_valid() const
 	{
 		return m_is_valid;
 	}
 
+	/// Returns the total number of processes.
+	/**
+	 * This function returns the total number of processes.
+	 * [node] * [processes / node] = [processes]
+	 *
+	 * @return The total number of processes.
+	 */
 	inline int num_processes() const
 	{
-		return m_processes_per_node * m_num_nodes;
+		return m_num_nodes * m_processes_per_node;
 	}
 
+	/// Returns whether SSH should be used.
+	/**
+	 * This function returns whether SSH should be used.
+	 *
+	 * @return Whether SSH should be used. @c true for yes. @c false for no.
+	 */
 	inline bool ssh() const
 	{
 		return m_ssh;
 	}
 
+	/// Returns the SSH address.
+	/**
+	 * This function returns the SSH address.
+	 *
+	 * @return The SSH address.
+	 */
 	inline const char *ssh_address() const
 	{
 		return m_ssh_address;
 	}
 
+	/// Returns the SSH username.
+	/**
+	 * This function returns the SSH username.
+	 *
+	 * @return The SSH username.
+	 */
 	inline const char *ssh_user() const
 	{
 		return m_ssh_user;
 	}
 
+	/// Returns the SSH password.
+	/**
+	 * This function returns the SSH password.
+	 *
+	 * @return The SSH password.
+	 */
 	inline const char *ssh_password() const
 	{
 		return m_ssh_password;

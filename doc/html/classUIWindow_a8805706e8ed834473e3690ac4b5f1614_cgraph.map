@@ -1,0 +1,5 @@
+<map id="UIWindow::update_markers" name="UIWindow::update_markers">
+<area shape="rect" id="node1" title="Sets the positions of the dots in the drawing area." alt="" coords="5,35,205,61"/>
+<area shape="rect" id="node2" href="$classUIDrawingArea.html#a0efe30d5e68d4233aeeb40878c7a9cca" title="Returns the radius of the dots." alt="" coords="253,5,421,32"/>
+<area shape="rect" id="node3" href="$classUIDrawingArea.html#a768f592a688a0d04b72e1312121658d4" title="Sets the vertical offset for a process." alt="" coords="263,57,411,98"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="StartupDialog::get_cmd" name="StartupDialog::get_cmd">
+<area shape="rect" id="node1" title="Returns the launcher command." alt="" coords="5,13,180,39"/>
+<area shape="rect" id="node2" href="$classStartupDialog.html#ac1b9a18530bb5ffc903f83c88448bb1d" title="Returns the total number of processes." alt="" coords="228,5,376,47"/>
+</map>

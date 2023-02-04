@@ -1,0 +1,4 @@
+<map id="StartupDialog::clear_dialog" name="StartupDialog::clear_dialog">
+<area shape="rect" id="node1" title="Resets the dialog to be empty." alt="" coords="5,5,156,47"/>
+<area shape="rect" id="node2" href="$classStartupDialog.html#ab2d6ab6b84129961129868effaa196c9" title="Sets the sensitivity of the SSH related widgets." alt="" coords="204,5,343,47"/>
+</map>

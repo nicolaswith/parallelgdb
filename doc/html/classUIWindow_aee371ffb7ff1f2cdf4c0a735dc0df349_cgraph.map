@@ -1,0 +1,4 @@
+<map id="UIWindow::toggle_all_trgt" name="UIWindow::toggle_all_trgt">
+<area shape="rect" id="node1" title="Toggles all checkbuttons in the target I/O section grid." alt="" coords="5,5,195,32"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#a6a12f21b7519fae0cfaad1e698085b4f" title="Toggle all checkbuttons in a grid." alt="" coords="243,5,401,32"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="UIWindow::on_key_press" name="UIWindow::on_key_press">
+<area shape="rect" id="node1" title="Signal handler for key&#45;press events." alt="" coords="5,35,188,61"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#a06f629dcbc6ff6c5c4eb0a1025a36496" title="Maps the buttons/hot&#45;keys to the corresponding action." alt="" coords="236,27,381,69"/>
+<area shape="rect" id="node3" href="$classUIWindow.html#adf1424cd3dede540dd982fcf53de8ebb" title="Closes all unused source files." alt="" coords="429,5,648,32"/>
+<area shape="rect" id="node4" href="$classUIWindow.html#aa69cad1ed3b5f47f4f25aa5e2f88795b" title="Sends data to all selected processes." alt="" coords="457,57,620,98"/>
+<area shape="rect" id="node5" href="$classUIWindow.html#af7d2b8be24892c57aa9b40a3ccada1b8" title="Writes data to the TCP socket." alt="" coords="696,64,859,91"/>
+</map>

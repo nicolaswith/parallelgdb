@@ -1,0 +1,16 @@
+<map id="UIWindow::edit_mark" name="UIWindow::edit_mark">
+<area shape="rect" id="node1" title="Displays the BreakpointDialog dialog." alt="" coords="5,78,167,105"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#a32dd4b6056237371b87bc2ffe701b1a6" title="Delete a line mark in a Gsv::View." alt="" coords="221,21,389,47"/>
+<area shape="rect" id="node4" href="$classBreakpoint.html#a8336aad83387aa92aa8b21e9361096f6" title="Checks if at least one breakpoint is existing." alt="" coords="215,78,396,105"/>
+<area shape="rect" id="node5" href="$classBreakpoint.html#a530ad76e3382517101cf28ce6bdabaf7" title="Modifies the breakpoints according to button_states." alt="" coords="232,144,379,185"/>
+<area shape="rect" id="node3" href="$classBreakpoint.html#a40fe4a865e93c2dbe1c9d75698514e95" title="Returns the line number of the associated source file." alt="" coords="457,5,610,47"/>
+<area shape="rect" id="node6" href="$classBreakpoint.html#abc03d69a380841a3e15cd39a11b7d60b" title="Creates a breakpoint for a process." alt="" coords="462,304,605,345"/>
+<area shape="rect" id="node11" href="$classBreakpoint.html#ac27741795e2f0c8627128fe2ffd221e8" title="Deletes a breakpoint for a process." alt="" coords="462,239,605,280"/>
+<area shape="rect" id="node12" href="$classBreakpoint.html#a57d9849b5661c53ad12c69b407b920de" title="Generates a comma separated list of processes for which the breakpoint is in the state state." alt="" coords="459,71,608,98"/>
+<area shape="rect" id="node13" href="$classUIWindow.html#a206ec747a9c2589eac08719d221ce218" title="Gets the Gtk window object." alt="" coords="444,122,623,149"/>
+<area shape="rect" id="node14" href="$classBreakpoint.html#a84d8c1b691a7687552af36500a63392e" title="Resets the error states to their corresponding base state." alt="" coords="460,173,607,215"/>
+<area shape="rect" id="node7" href="$classUIWindow.html#a17b365bb1177f5f8e1306c5ac2d41198" title="Gets the TCP socket associated to a process. (GDB)" alt="" coords="671,210,863,237"/>
+<area shape="rect" id="node8" href="$classUIWindow.html#af7d2b8be24892c57aa9b40a3ccada1b8" title="Writes data to the TCP socket." alt="" coords="685,261,848,287"/>
+<area shape="rect" id="node9" href="$classUIWindow.html#a85567fb5c7d2674f3be31fe5a01a2e3a" title="Stores a pointer to a Breakpoint object." alt="" coords="671,362,863,389"/>
+<area shape="rect" id="node10" href="$classUIWindow.html#a655257a1db3090889ead987fcdffcaaa" title="Gets the state of a process." alt="" coords="679,311,854,338"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="UIWindow::send_input_gdb" name="UIWindow::send_input_gdb">
+<area shape="rect" id="node1" title="Sends text to the socat instances connected to GDB." alt="" coords="5,5,203,32"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#a162a36247228bf4ca885a921f106b3b4" title="Writes the text in an entry to a TCP socket." alt="" coords="251,5,417,32"/>
+</map>

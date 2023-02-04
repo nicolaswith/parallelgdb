@@ -1,0 +1,45 @@
+<map id="UIWindow::init" name="UIWindow::init">
+<area shape="rect" id="node1" title="Loads the glade file and connects the signal handlers." alt="" coords="5,460,121,487"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#adf1424cd3dede540dd982fcf53de8ebb" title="Closes all unused source files." alt="" coords="697,53,915,80"/>
+<area shape="rect" id="node3" href="$classUIWindow.html#a90f6e11b3d717e1b45e0462499e03b8f" title="Attaches checkbuttons in a grid layout." alt="" coords="195,271,343,297"/>
+<area shape="rect" id="node4" href="$classUIWindow.html#a286e53c542b81365dbfcde1662899925" title="Adds a page in the GDB/target I/O notebook for every process." alt="" coords="177,321,361,348"/>
+<area shape="rect" id="node5" href="$classUIWindow.html#a84b9b7bc3de08ad346f4d06735fdf6ac" title="Initializes the table&#45;like grid layout in the overview." alt="" coords="178,372,361,399"/>
+<area shape="rect" id="node6" href="$classUIWindow.html#af28cb60749093d8cd3e36426b32e5052" title="Displays the about dialog." alt="" coords="192,423,347,465"/>
+<area shape="rect" id="node7" href="$classUIWindow.html#a8eb980e3513ccea5d0b9b17fcfe06ea7" title="Signal handler for all the interaction buttons." alt="" coords="175,103,363,145"/>
+<area shape="rect" id="node11" href="$classUIWindow.html#a679f5db0a5c299d0252161faf114ccc5" title="Signal handler for key&#45;press events." alt="" coords="178,169,361,196"/>
+<area shape="rect" id="node12" href="$classUIWindow.html#a56c434b8be8180dd65afa0a77e830f1c" title="Quits the application." alt="" coords="172,489,367,516"/>
+<area shape="rect" id="node13" href="$classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="192,220,347,247"/>
+<area shape="rect" id="node33" href="$classUIDrawingArea.html#a0efe30d5e68d4233aeeb40878c7a9cca" title="Returns the radius of the dots." alt="" coords="722,540,890,567"/>
+<area shape="rect" id="node34" href="$classUIWindow.html#af347fa10ac769b7317f73795e18852bc" title="Sends text to the socat instances connected to GDB." alt="" coords="171,657,368,684"/>
+<area shape="rect" id="node36" href="$classUIWindow.html#a22bc56f7e3f3090988e3236cc8774274" title="Sends text to the socat instances connected to the target program." alt="" coords="171,708,367,735"/>
+<area shape="rect" id="node37" href="$classUIDrawingArea.html#a802481f1adca4637078fdecafd3ccee1" title="Returns the spacing of the dots." alt="" coords="180,759,359,785"/>
+<area shape="rect" id="node38" href="$classUIWindow.html#a7f0274883889305c8ea893ddfebd77ec" title="Toggles all checkbuttons in the GDB I/O section grid." alt="" coords="174,809,365,836"/>
+<area shape="rect" id="node40" href="$classUIWindow.html#aee371ffb7ff1f2cdf4c0a735dc0df349" title="Toggles all checkbuttons in the target I/O section grid." alt="" coords="175,860,364,887"/>
+<area shape="rect" id="node41" href="$classUIWindow.html#ae369ac9ebde283b0469f363624040626" title="Checks if the source file notebook has pages and updates the dots if so." alt="" coords="169,591,369,633"/>
+<area shape="rect" id="node8" href="$classUIWindow.html#a06f629dcbc6ff6c5c4eb0a1025a36496" title="Maps the buttons/hot&#45;keys to the corresponding action." alt="" coords="455,103,600,145"/>
+<area shape="rect" id="node9" href="$classUIWindow.html#aa69cad1ed3b5f47f4f25aa5e2f88795b" title="Sends data to all selected processes." alt="" coords="982,94,1145,135"/>
+<area shape="rect" id="node10" href="$classUIWindow.html#af7d2b8be24892c57aa9b40a3ccada1b8" title="Writes data to the TCP socket." alt="" coords="1671,311,1833,337"/>
+<area shape="rect" id="node14" href="$classUIWindow.html#acf4ea013c774568bd14b79f4486eb067" title="Appends a source file page to the source view notebook." alt="" coords="417,233,637,260"/>
+<area shape="rect" id="node15" href="$classUIWindow.html#a8c927adbf781e88754dcc9caabc6ae0b" title="Appends a new row for a source file to the Overview." alt="" coords="685,292,927,319"/>
+<area shape="rect" id="node16" href="$classUIWindow.html#aa20f683f45142300ff17e7ff445f50bc" title="Signal handler for the Gsv::View line mark clicked signal." alt="" coords="715,226,897,267"/>
+<area shape="rect" id="node17" href="$classUIWindow.html#a447e57e6deef4c794c8b8da1ec50141e" title="Creates a line mark in a Gsv::View." alt="" coords="975,309,1152,336"/>
+<area shape="rect" id="node28" href="$classUIWindow.html#a19ed8774685ac8a1a223f958d6376d74" title="Deletes the breakpoint for all processes and then the mark itself." alt="" coords="975,208,1152,235"/>
+<area shape="rect" id="node32" href="$classUIWindow.html#ab3135faddc758530ac3e34b8973130ad" title="Displays the BreakpointDialog dialog." alt="" coords="983,259,1144,285"/>
+<area shape="rect" id="node18" href="$classBreakpoint.html#a8336aad83387aa92aa8b21e9361096f6" title="Checks if at least one breakpoint is existing." alt="" coords="1200,269,1381,296"/>
+<area shape="rect" id="node19" href="$classBreakpoint.html#a530ad76e3382517101cf28ce6bdabaf7" title="Modifies the breakpoints according to button_states." alt="" coords="1217,321,1364,362"/>
+<area shape="rect" id="node20" href="$classBreakpoint.html#abc03d69a380841a3e15cd39a11b7d60b" title="Creates a breakpoint for a process." alt="" coords="1447,438,1590,479"/>
+<area shape="rect" id="node24" href="$classBreakpoint.html#ac27741795e2f0c8627128fe2ffd221e8" title="Deletes a breakpoint for a process." alt="" coords="1447,321,1590,362"/>
+<area shape="rect" id="node25" href="$classBreakpoint.html#a57d9849b5661c53ad12c69b407b920de" title="Generates a comma separated list of processes for which the breakpoint is in the state state." alt="" coords="1444,387,1593,413"/>
+<area shape="rect" id="node26" href="$classUIWindow.html#a206ec747a9c2589eac08719d221ce218" title="Gets the Gtk window object." alt="" coords="1429,204,1608,231"/>
+<area shape="rect" id="node27" href="$classBreakpoint.html#a84d8c1b691a7687552af36500a63392e" title="Resets the error states to their corresponding base state." alt="" coords="1445,255,1592,297"/>
+<area shape="rect" id="node21" href="$classUIWindow.html#a17b365bb1177f5f8e1306c5ac2d41198" title="Gets the TCP socket associated to a process. (GDB)" alt="" coords="1656,361,1848,388"/>
+<area shape="rect" id="node22" href="$classUIWindow.html#a85567fb5c7d2674f3be31fe5a01a2e3a" title="Stores a pointer to a Breakpoint object." alt="" coords="1656,463,1848,489"/>
+<area shape="rect" id="node23" href="$classUIWindow.html#a655257a1db3090889ead987fcdffcaaa" title="Gets the state of a process." alt="" coords="1665,412,1839,439"/>
+<area shape="rect" id="node29" href="$classUIWindow.html#a32dd4b6056237371b87bc2ffe701b1a6" title="Delete a line mark in a Gsv::View." alt="" coords="1207,152,1375,179"/>
+<area shape="rect" id="node31" href="$classBreakpoint.html#aab6298c6cb7b4c1fb1e2995ccd23a32a" title="Deletes the breakpoints for all process." alt="" coords="1219,203,1362,245"/>
+<area shape="rect" id="node30" href="$classBreakpoint.html#a40fe4a865e93c2dbe1c9d75698514e95" title="Returns the line number of the associated source file." alt="" coords="1442,138,1595,179"/>
+<area shape="rect" id="node35" href="$classUIWindow.html#a162a36247228bf4ca885a921f106b3b4" title="Writes the text in an entry to a TCP socket." alt="" coords="444,683,611,709"/>
+<area shape="rect" id="node39" href="$classUIWindow.html#a6a12f21b7519fae0cfaad1e698085b4f" title="Toggle all checkbuttons in a grid." alt="" coords="448,835,607,861"/>
+<area shape="rect" id="node42" href="$classUIWindow.html#a8805706e8ed834473e3690ac4b5f1614" title="Sets the positions of the dots in the drawing area." alt="" coords="427,599,627,625"/>
+<area shape="rect" id="node43" href="$classUIDrawingArea.html#a768f592a688a0d04b72e1312121658d4" title="Sets the vertical offset for a process." alt="" coords="732,591,880,633"/>
+</map>

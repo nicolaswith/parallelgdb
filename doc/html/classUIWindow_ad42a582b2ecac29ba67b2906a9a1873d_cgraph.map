@@ -1,0 +1,4 @@
+<map id="UIWindow::scroll_to_line" name="UIWindow::scroll_to_line">
+<area shape="rect" id="node1" title="Appends scrolling a scrolled window to the Gdk idle handler." alt="" coords="5,5,187,32"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#a4f86980f7a059df4113036578c1bfa6a" title="Scrolls a scrolled window to a line." alt="" coords="235,5,388,32"/>
+</map>

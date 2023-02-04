@@ -1,0 +1,7 @@
+<map id="src/master/window.hpp" name="src/master/window.hpp">
+<area shape="rect" id="node1" title="Header file for the UIWindow class." alt="" coords="315,5,487,32"/>
+<area shape="rect" id="node2" href="$breakpoint_8cpp.html" title="Contains the implementation of the Breakpoint class." alt="" coords="5,80,197,107"/>
+<area shape="rect" id="node3" href="$canvas_8cpp.html" title="Contains the implementation of the UIDrawingArea class." alt="" coords="221,80,389,107"/>
+<area shape="rect" id="node4" href="$master_8cpp.html" title="Contains the implementation of the Master class." alt="" coords="414,80,581,107"/>
+<area shape="rect" id="node5" href="$window_8cpp.html" title="Contains the implementation of the UIWindow class." alt="" coords="605,80,776,107"/>
+</map>

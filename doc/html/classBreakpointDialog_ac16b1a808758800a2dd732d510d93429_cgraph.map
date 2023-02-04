@@ -1,0 +1,4 @@
+<map id="BreakpointDialog::on_dialog_response" name="BreakpointDialog::on_dialog_response">
+<area shape="rect" id="node1" title="Signal handler for the accept/close action of the dialog." alt="" coords="5,5,164,47"/>
+<area shape="rect" id="node2" href="$classBreakpoint.html#a349950c76da1773d23fd8a2705afd505" title="Sets the stop all flag for a breakpoint." alt="" coords="212,13,391,39"/>
+</map>

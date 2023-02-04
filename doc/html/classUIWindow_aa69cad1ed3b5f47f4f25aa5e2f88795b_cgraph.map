@@ -1,0 +1,4 @@
+<map id="UIWindow::send_data_to_active" name="UIWindow::send_data_to_active">
+<area shape="rect" id="node1" title="Sends data to all selected processes." alt="" coords="5,5,168,47"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#af7d2b8be24892c57aa9b40a3ccada1b8" title="Writes data to the TCP socket." alt="" coords="216,13,379,39"/>
+</map>

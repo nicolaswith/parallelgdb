@@ -1,0 +1,10 @@
+<map id="UIWindow::clear_labels_overview" name="UIWindow::clear_labels_overview">
+<area shape="rect" id="node1" title="Clears all columns of a process in the Overview." alt="" coords="1459,23,1632,65"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#a280911307d72c0277043340ec513b5d4" title="Updates the running and exited row for a processes." alt="" coords="1211,5,1411,32"/>
+<area shape="rect" id="node3" href="$classUIWindow.html#ac76b56c0c18d92124dbabfa71efa3287" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="971,31,1163,57"/>
+<area shape="rect" id="node4" href="$classUIWindow.html#a848694f8ebd8e4be25695b37b799a8f5" title="Forwards the received data to the corresponding data handler." alt="" coords="761,31,923,57"/>
+<area shape="rect" id="node5" href="$classMaster.html#ae56b3474ea28e62abfe0c183a874fa9d" title="Handles the TCP communication between socat and the master." alt="" coords="532,31,713,57"/>
+<area shape="rect" id="node6" href="$classMaster.html#a8f01bcecf27dbe029c4181f72133c536" title="Waits (blocking) for a TCP connection on the TCP port." alt="" coords="316,31,484,57"/>
+<area shape="rect" id="node7" href="$classMaster.html#ab15d4163aba6881bbfd079414566ab12" title="Creates threads for each blocking TCP acceptor call." alt="" coords="108,31,268,57"/>
+<area shape="rect" id="node8" href="$master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,31,60,57"/>
+</map>

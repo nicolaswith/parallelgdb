@@ -1,0 +1,8 @@
+<map id="BreakpointDialog::BreakpointDialog" name="BreakpointDialog::BreakpointDialog">
+<area shape="rect" id="node1" title="Default constructor." alt="" coords="5,78,220,119"/>
+<area shape="rect" id="node2" href="$classBreakpoint.html#a625897163309d3e95624f4cf71060227" title="Returns whether the stop all flag is set for this breakpoint." alt="" coords="281,5,461,32"/>
+<area shape="rect" id="node3" href="$classBreakpoint.html#ab12850b9f6287dd4b98e75c093329773" title="Returns wether the breakpoint for this process is created." alt="" coords="287,56,455,83"/>
+<area shape="rect" id="node4" href="$classBreakpointDialog.html#ac16b1a808758800a2dd732d510d93429" title="Signal handler for the accept/close action of the dialog." alt="" coords="292,107,451,149"/>
+<area shape="rect" id="node6" href="$classBreakpointDialog.html#a03b06c33b18c064666df56f574258bee" title="Toggles all checkbuttons in the grid." alt="" coords="268,173,475,200"/>
+<area shape="rect" id="node5" href="$classBreakpoint.html#a349950c76da1773d23fd8a2705afd505" title="Sets the stop all flag for a breakpoint." alt="" coords="523,115,701,141"/>
+</map>

@@ -1,0 +1,8 @@
+<map id="UIWindow::scroll_bottom" name="UIWindow::scroll_bottom">
+<area shape="rect" id="node1" title="Scrolls a scrolled window to the bottom." alt="" coords="971,5,1155,32"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#a848694f8ebd8e4be25695b37b799a8f5" title="Forwards the received data to the corresponding data handler." alt="" coords="761,5,923,32"/>
+<area shape="rect" id="node3" href="$classMaster.html#ae56b3474ea28e62abfe0c183a874fa9d" title="Handles the TCP communication between socat and the master." alt="" coords="532,5,713,32"/>
+<area shape="rect" id="node4" href="$classMaster.html#a8f01bcecf27dbe029c4181f72133c536" title="Waits (blocking) for a TCP connection on the TCP port." alt="" coords="316,5,484,32"/>
+<area shape="rect" id="node5" href="$classMaster.html#ab15d4163aba6881bbfd079414566ab12" title="Creates threads for each blocking TCP acceptor call." alt="" coords="108,5,268,32"/>
+<area shape="rect" id="node6" href="$master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,5,60,32"/>
+</map>

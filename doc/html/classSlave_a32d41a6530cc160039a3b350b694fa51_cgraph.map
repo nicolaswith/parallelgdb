@@ -1,0 +1,6 @@
+<map id="Slave::start_processes" name="Slave::start_processes">
+<area shape="rect" id="node1" title="Generates the name for the PTYs and starts GDB and socat." alt="" coords="5,31,173,57"/>
+<area shape="rect" id="node2" href="$classSlave.html#abd3f800842bf7c91d584018d8e416687" title="Starts the GDB instance." alt="" coords="227,5,354,32"/>
+<area shape="rect" id="node4" href="$classSlave.html#a6593d74b5a6f61ea27a26c8b1a24f9e8" title="Starts a socat instance." alt="" coords="221,56,360,83"/>
+<area shape="rect" id="node3" href="$classSlave.html#afb4b4faa40456a75e111244357ffdd3a" title="Waits for the socat instances to start." alt="" coords="408,5,569,32"/>
+</map>

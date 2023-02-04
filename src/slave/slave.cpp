@@ -17,6 +17,14 @@
 	along with ParallelGDB.  If not, see <https://www.gnu.org/licenses/gpl-3.0.txt>.
 */
 
+/**
+ * @file slave.cpp
+ *
+ * @brief Contains the implementation of the Slave class.
+ *
+ * This file contains the implementation of the Slave class.
+ */
+
 #include <string.h>
 #include <unistd.h>
 #include <iostream>
@@ -30,6 +38,14 @@
 
 using namespace std;
 
+/**
+ * This is the default constructor for the Slave class.
+ *
+ * @param argc The total number of arguments passed to this program.
+ *
+ * @param[in] argv The array containing the arguments passed to this program.
+ * This NEEDS to be null-terminated.
+ */
 Slave::Slave(const int argc, char **argv)
 	: m_argc(argc),
 	  m_argv(argv),
@@ -47,6 +63,9 @@ Slave::Slave(const int argc, char **argv)
 	m_base_port_trgt = 0xC000;
 }
 
+/**
+ * This function frees the allocated char arrays.
+ */
 Slave::~Slave()
 {
 	free(m_target);
@@ -55,6 +74,13 @@ Slave::~Slave()
 	free(m_env_str);
 }
 
+/**
+ * This function waits for the socat instances to start. It checks that both
+ * instances are alive and then checks if the forked processes are already
+ * running socat.
+ *
+ * @return @c true on success, @c false when either of the socat instances dies.
+ */
 bool Slave::wait_for_socat() const
 {
 	int exited = 0;
@@ -93,6 +119,21 @@ bool Slave::wait_for_socat() const
 	return false;
 }
 
+/**
+ * This function starts the GDB instance. It ensures both socat instances are
+ * running, by calling the @ref wait_for_socat function before forking. The I/O
+ * of the new process is connected to the PTY created by socat. The target I/O
+ * will be connected to the second PTY created by the other socat instance. This
+ * is done by GBD with the --tty option. The user arguments are forwarded to
+ * the target program.
+ *
+ * @param[in] tty_gdb The name of the PTY created by socat for the GDB instance.
+ *
+ * @param[in] tty_trgt The name of the PTY created by socat for the
+ * target program.
+ *
+ * @return The PID of the forked process, or @c -1 on error.
+ */
 int Slave::start_gdb(const string &tty_gdb, const string &tty_trgt) const
 {
 	if (!wait_for_socat())
@@ -106,10 +147,12 @@ int Slave::start_gdb(const string &tty_gdb, const string &tty_trgt) const
 	{
 		int tty_fd = open(tty_gdb.c_str(), O_RDWR);
 
+		// connect I/O of GDB to PTY
 		dup2(tty_fd, STDIN_FILENO);
 		dup2(tty_fd, STDOUT_FILENO);
 		dup2(tty_fd, STDERR_FILENO);
 
+		// prepare command to instruct GDB to send the target output on this PTY
 		string tty = "--tty=" + tty_trgt;
 
 		const int num_args = m_argc - m_args_offset;
@@ -128,6 +171,7 @@ int Slave::start_gdb(const string &tty_gdb, const string &tty_trgt) const
 			argv_gdb[idx++] = (char *)"--args";
 		}
 		argv_gdb[idx++] = (char *)m_target;
+		// append user arguments
 		for (int i = 0; i < num_args; ++i)
 		{
 			argv_gdb[idx++] = (char *)m_argv[m_args_offset + i];
@@ -135,6 +179,7 @@ int Slave::start_gdb(const string &tty_gdb, const string &tty_trgt) const
 		argv_gdb[idx] = (char *)nullptr;
 
 		execvp(argv_gdb[0], argv_gdb);
+		// Only reached if exec fails
 		fprintf(stderr, "Error starting gdb. %s\n", strerror(errno));
 		_exit(127);
 	}
@@ -142,6 +187,23 @@ int Slave::start_gdb(const string &tty_gdb, const string &tty_trgt) const
 	return pid;
 }
 
+/**
+ * This function starts a socat instance. This is done by forking and then
+ * calling exec to replace the process image.
+ *
+ * socat will create a temporal PTY, to which the GDB instance is connected to
+ * in the @ref start_gdb function.
+ *
+ * @param[in] tty_name The name of the PTY to be created.
+ *
+ * @param port The designated TCP port at the master for this process.
+ *
+ * @return The PID of the forked process, or @c -1 on error.
+ *
+ * @note
+ * This function is called for twice. Once to create the PTY for GDB and once
+ * for the target program.
+ */
 int Slave::start_socat(const string &tty_name, const int port) const
 {
 	int pid = fork();
@@ -156,12 +218,21 @@ int Slave::start_socat(const string &tty_name, const int port) const
 			(char *)tcp.c_str(),
 			(char *)nullptr};
 		execvp(argv[0], argv);
-		fprintf(stderr, "Error starting socat (%s, rank: %d). %s\n", (0 == (port & 0x4000)) ? "gdb" : "target", port & 0x3FFF, strerror(errno));
+		// Only reached if exec fails
+		fprintf(stderr, "Error starting socat (%s, rank: %d). %s\n",
+				(0 == (port & 0x4000)) ? "gdb" : "target",
+				port & 0x3FFF, strerror(errno));
 		_exit(127);
 	}
 	return pid;
 }
 
+/**
+ * This function parses the command line arguments. User arguments are passed
+ * after the path to the target.
+ *
+ * @return @c true on success, @c false on error.
+ */
 bool Slave::parse_cl_args()
 {
 	char c;
@@ -189,15 +260,20 @@ bool Slave::parse_cl_args()
 		case '?':
 			if ('i' == optopt)
 			{
-				fprintf(stderr, "Option -%c requires the host IP address.\n", optopt);
+				fprintf(stderr,
+						"Option -%c requires the host IP address.\n", optopt);
 			}
 			else if ('r' == optopt)
 			{
-				fprintf(stderr, "Option -%c requires the process rank.\n", optopt);
+				fprintf(stderr,
+						"Option -%c requires the process rank.\n", optopt);
 			}
 			else if ('e' == optopt)
 			{
-				fprintf(stderr, "Option -%c requires the name for the environment variable containing the process rank.\n", optopt);
+				fprintf(stderr,
+						"Option -%c requires the name for the environment "
+						"variable containing the process rank.\n",
+						optopt);
 			}
 			else if (isprint(optopt))
 			{
@@ -229,10 +305,24 @@ bool Slave::parse_cl_args()
 		print_help();
 		return false;
 	}
+	// store the offset of the first user argument
 	m_args_offset = optind + 1;
 	return true;
 }
 
+/**
+ * This function obtains the rank assigned to this process. The rank can be
+ * retrievd from the environment variables or the command line arguments. The
+ * user can pass a environment variable name with the -e option to the process.
+ * This variable will then be parsed for the rank.
+ *
+ * The priority of the actions is as follows: Rank set via:
+ * 1. the -r command line option
+ * 2. the custom environment variable (-e)
+ * 3. the MPI/slurm default environment variables (default)
+ *
+ * @return @c true on success, @c false on error.
+ */
 bool Slave::set_rank()
 {
 	const char *rank = nullptr;
@@ -247,6 +337,7 @@ bool Slave::set_rank()
 			"PMI_RANK"};
 		if (m_env_str)
 		{
+			// push custom enviornment variable to front, so it is check first
 			env_vars.insert(env_vars.begin(), m_env_str);
 		}
 		for (const char *const env_var : env_vars)
@@ -277,6 +368,13 @@ bool Slave::set_rank()
 	return true;
 }
 
+/**
+ * This function generates the name for the PTYs and calculates the designated
+ * TCP ports at the master. Then the socat instances are stated and when
+ * successful, the GDB instance is started.
+ *
+ * @return @c true when all three instances are running, @c false on error.
+ */
 bool Slave::start_processes()
 {
 	ostringstream tty_gdb_oss;
@@ -300,15 +398,17 @@ bool Slave::start_processes()
 	return (m_pid_gdb > 0) && (m_pid_socat_gdb > 0) && (m_pid_socat_trgt > 0);
 }
 
+/**
+ * This function monitors the socat and GDB instances for exiting. When either
+ * of these processes exits, all others are killed as well.
+ */
 void Slave::monitor_processes() const
 {
 	int exited = 0;
 	while (0 == exited)
 	{
 		sleep(1);
-
 		exited = 0;
-
 		exited |= waitpid(m_pid_gdb, nullptr, WNOHANG);
 		exited |= waitpid(m_pid_socat_gdb, nullptr, WNOHANG);
 		exited |= waitpid(m_pid_socat_trgt, nullptr, WNOHANG);
@@ -328,6 +428,10 @@ void Slave::monitor_processes() const
 	}
 }
 
+/// Prints the help text.
+/**
+ * This function prints the help text.
+ */
 void Slave::print_help()
 {
 	fprintf(
@@ -342,6 +446,10 @@ void Slave::print_help()
 		"  -e <name>\t name of the environment variable containing the process rank\n");
 }
 
+/// Entry point for the slave program.
+/**
+ * This program starts and monitors the socat and GDB instances.
+ */
 int main(const int argc, char **argv)
 {
 	Slave slave{argc, argv};

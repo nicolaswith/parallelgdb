@@ -1,0 +1,7 @@
+<map id="Breakpoint::create_breakpoint" name="Breakpoint::create_breakpoint">
+<area shape="rect" id="node1" title="Creates a breakpoint for a process." alt="" coords="5,74,148,115"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#a17b365bb1177f5f8e1306c5ac2d41198" title="Gets the TCP socket associated to a process. (GDB)" alt="" coords="196,5,388,32"/>
+<area shape="rect" id="node3" href="$classUIWindow.html#af7d2b8be24892c57aa9b40a3ccada1b8" title="Writes data to the TCP socket." alt="" coords="211,56,373,83"/>
+<area shape="rect" id="node4" href="$classUIWindow.html#a85567fb5c7d2674f3be31fe5a01a2e3a" title="Stores a pointer to a Breakpoint object." alt="" coords="196,107,388,133"/>
+<area shape="rect" id="node5" href="$classUIWindow.html#a655257a1db3090889ead987fcdffcaaa" title="Gets the state of a process." alt="" coords="205,157,379,184"/>
+</map>

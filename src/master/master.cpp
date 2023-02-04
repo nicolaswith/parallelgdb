@@ -17,6 +17,14 @@
 	along with ParallelGDB.  If not, see <https://www.gnu.org/licenses/gpl-3.0.txt>.
 */
 
+/**
+ * @file master.cpp
+ *
+ * @brief Contains the implementation of the Master class.
+ *
+ * This file contains the implementation of the Master class.
+ */
+
 #include <string>
 #include <regex>
 #include <string.h>
@@ -31,6 +39,11 @@ using std::string;
 
 static Gtk::Application *s_app;
 
+/**
+ * This is the default constructor for the Master class. It sets the base ports
+ * for the TCP sockets and creates a new Gtk::Application, which will later
+ * display the GUI.
+ */
 Master::Master()
 	: m_max_length(0x2000), // socat default
 	  m_base_port_gdb(0x8000),
@@ -40,12 +53,22 @@ Master::Master()
 	s_app = m_app.get();
 }
 
+/**
+ * This function will delete the app and the GUI window.
+ */
 Master::~Master()
 {
 	m_app.reset();
 	delete m_window;
 }
 
+/**
+ * This function executes the launcher command on the remote server.
+ *
+ * @param[in] session The SSH session.
+ *
+ * @return @c SSH_OK on success, @c SSH_ERROR on error.
+ */
 int Master::run_cmd(ssh_session &session)
 {
 	ssh_channel channel;
@@ -80,6 +103,12 @@ int Master::run_cmd(ssh_session &session)
 	return SSH_OK;
 }
 
+/**
+ * This function establishes a SSH connection to the remote server using the
+ * username and password set in the startup dialog.
+ *
+ * @return @c true on success, @c false on error.
+ */
 bool Master::start_slaves_ssh()
 {
 	ssh_session session;
@@ -97,7 +126,8 @@ bool Master::start_slaves_ssh()
 	rc = ssh_connect(session);
 	if (rc != SSH_OK)
 	{
-		fprintf(stderr, "Error connecting to %s: %s\n", m_dialog->ssh_address(), ssh_get_error(session));
+		fprintf(stderr, "Error connecting to %s: %s\n", m_dialog->ssh_address(),
+				ssh_get_error(session));
 		return false;
 	}
 
@@ -112,7 +142,8 @@ bool Master::start_slaves_ssh()
 	rc = ssh_userauth_password(session, NULL, m_dialog->ssh_password());
 	if (rc != SSH_AUTH_SUCCESS)
 	{
-		fprintf(stderr, "Error authenticating with password: %s\n", ssh_get_error(session));
+		fprintf(stderr, "Error authenticating with password: %s\n",
+				ssh_get_error(session));
 		ssh_disconnect(session);
 		ssh_free(session);
 		return false;
@@ -133,6 +164,11 @@ bool Master::start_slaves_ssh()
 	return true;
 }
 
+/**
+ * This function starts the slave instances on the local (host) machine.
+ *
+ * @return The forked PID on success, @c -1 on error.
+ */
 bool Master::start_slaves_local()
 {
 	const int pid = fork();
@@ -142,9 +178,10 @@ bool Master::start_slaves_local()
 		cmd = std::regex_replace(cmd, std::regex("^ +"), "");
 		cmd = std::regex_replace(cmd, std::regex(" +$"), "");
 		cmd = std::regex_replace(cmd, std::regex(" +"), " ");
-		const int num_spaces = std::count_if(cmd.begin(), cmd.end(),
-											 [](char c)
-											 { return c == ' '; });
+		const int num_spaces =
+			std::count_if(cmd.begin(), cmd.end(),
+						  [](char c)
+						  { return c == ' '; });
 		char **argv = new char *[num_spaces + 1];
 		int idx = 0;
 		std::istringstream iss(cmd);
@@ -160,7 +197,19 @@ bool Master::start_slaves_local()
 	return pid > 0;
 }
 
-void Master::process_session(tcp::socket socket, const asio::ip::port_type port)
+/**
+ * This function handles the TCP communication between socat and the master. It
+ * creates a gdb output parser of for all GDB sockets. After that it waits
+ * (blocking) for data. When data is received, a copy is sent to be
+ * displayed/parsed. On error the connection is closed and the master
+ * terminates.
+ *
+ * @param socket The TCP socket.
+ *
+ * @param port The assigned port of the @p socket.
+ */
+void Master::process_session(tcp::socket socket,
+							 const asio::ip::port_type port)
 {
 	const int rank = UIWindow::get_rank(port);
 	mi_h *gdb_handle = nullptr;
@@ -168,6 +217,7 @@ void Master::process_session(tcp::socket socket, const asio::ip::port_type port)
 	{
 		m_window->set_conns_gdb(rank, &socket);
 		m_window->set_conns_open_gdb(rank, true);
+		// allocate the GDB output parser
 		gdb_handle = mi_alloc_h();
 		gdb_handle->line = nullptr;
 	}
@@ -176,6 +226,8 @@ void Master::process_session(tcp::socket socket, const asio::ip::port_type port)
 		m_window->set_conns_trgt(rank, &socket);
 	}
 
+	// Allocate enough memory for a socat message. This memory will be
+	// overwritten without clearing it, as it is '\0'-terminated anyway.
 	char *data = new char[m_max_length + 8];
 	if (nullptr == data)
 	{
@@ -184,7 +236,8 @@ void Master::process_session(tcp::socket socket, const asio::ip::port_type port)
 	for (;;)
 	{
 		asio::error_code error;
-		const size_t length = socket.read_some(asio::buffer(data, m_max_length), error);
+		const size_t length =
+			socket.read_some(asio::buffer(data, m_max_length), error);
 		if (asio::error::eof == error)
 		{
 			if (UIWindow::src_is_gdb(port))
@@ -200,18 +253,19 @@ void Master::process_session(tcp::socket socket, const asio::ip::port_type port)
 		}
 		// add null termination to received data.
 		data[length] = '\0';
+		// hand a copy of the data to the print function
 		Glib::signal_idle().connect_once(
-			sigc::bind(
-				sigc::mem_fun(
-					*m_window,
-					&UIWindow::print_data),
-				gdb_handle,
-				strdup(data),
-				port));
+			sigc::bind(sigc::mem_fun(*m_window, &UIWindow::print_data),
+					   gdb_handle, strdup(data), port));
 	}
 	delete[] data;
 }
 
+/**
+ * This function waits for a TCP connection on the TCP @p port.
+ *
+ * @param port The assigned port of the @p socket.
+ */
 void Master::start_acceptor(const asio::ip::port_type port)
 {
 	asio::io_context io_context;
@@ -219,17 +273,28 @@ void Master::start_acceptor(const asio::ip::port_type port)
 	process_session(acceptor.accept(), port);
 }
 
+/**
+ * This function creates threads for each blocking TCP acceptor call.
+ */
 void Master::start_servers()
 {
 	m_window = new UIWindow{m_dialog->num_processes()};
 
 	for (int rank = 0; rank < m_window->num_processes(); ++rank)
 	{
-		std::thread(&Master::start_acceptor, this, (m_base_port_gdb + rank)).detach();
-		std::thread(&Master::start_acceptor, this, (m_base_port_trgt + rank)).detach();
+		std::thread(&Master::start_acceptor, this, (m_base_port_gdb + rank))
+			.detach();
+		std::thread(&Master::start_acceptor, this, (m_base_port_trgt + rank))
+			.detach();
 	}
 }
 
+/**
+ * This function runs the startup dialog.
+ *
+ * @return @c true if the master application should start, @c false if the
+ * dialog was closed and the master should terminate.
+ */
 bool Master::run_startup_dialog()
 {
 	m_dialog = new StartupDialog();
@@ -248,6 +313,17 @@ bool Master::run_startup_dialog()
 	return false;
 }
 
+/**
+ * This function starts the slaves on the desired debug platform.
+ *
+ * @note
+ * The master does not check for successful launch of the slaves, as this
+ * happens after the fork / on the remote server. Success in this context
+ * means only that the fork was successful / the SSH connection could be
+ * established and the launch command was sent.
+ *
+ * @return @c true on success, @c false on error.
+ */
 bool Master::start_slaves()
 {
 	bool ret = false;
@@ -263,6 +339,9 @@ bool Master::start_slaves()
 	return ret;
 }
 
+/**
+ * This function starts the GUI main window.
+ */
 void Master::start_GUI()
 {
 	if (!m_window->init(m_app))
@@ -272,6 +351,12 @@ void Master::start_GUI()
 	m_app->run(*m_window->root_window());
 }
 
+/**
+ * This function handles the SIGINT signal. It will close the master and thus
+ * the slave program.
+ *
+ * @param signum The signal number.
+ */
 void sigint_handler(int signum)
 {
 	if (signum != SIGINT)
@@ -281,6 +366,11 @@ void sigint_handler(int signum)
 	s_app->quit();
 }
 
+/// Master entry point.
+/**
+ * This is the entry point for ParallelGDB. It will first open a dialog to
+ * configure the necessary parameters and then start the slaves and the GUI.
+ */
 int main(int, char const **)
 {
 	Master master;

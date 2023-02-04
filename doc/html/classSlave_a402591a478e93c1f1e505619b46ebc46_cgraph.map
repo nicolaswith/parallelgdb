@@ -1,0 +1,4 @@
+<map id="Slave::set_rank" name="Slave::set_rank">
+<area shape="rect" id="node1" title="Obtains the rank assigned to this process." alt="" coords="5,5,128,32"/>
+<area shape="rect" id="node2" href="$classSlave.html#a23cb3fd44e3d83317046810abb68902a" title="Prints the help text." alt="" coords="176,5,307,32"/>
+</map>
