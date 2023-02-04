@@ -117,7 +117,15 @@ PMI_RANK
 </pre><p> If neither of those is set (NOT using OpenMPI/MPICH/slurm as launcher) there are two command line arguments which can be used to set the rank. First is </p><pre class="fragment">-e &lt;name&gt;
 </pre><p> which adds an additional environment variable name which is tried to be read before the others.</p>
 <p>Second is </p><pre class="fragment">-r &lt;rank&gt;
-</pre><p> which directly sets this processes rank. This must be set for every rank individually, so the launch command should probably start a shell script/etc. </p>
+</pre><p> which directly sets this processes rank. This must be set for every rank individually, so the launch command should probably start a shell script/etc.</p>
+<h1><a class="anchor" id="autotoc_md8"></a>
+Example Target</h1>
+<p>In this project a small example target and configuration file for it is included. It can be built with: </p><pre class="fragment">cd example
+mkdir bin
+make
+</pre><p> After that the debugger can be started with: </p><pre class="fragment">cd ..
+./bin/pgdbmaster
+</pre><p> Then, in the startup dialog, load the configuration file <code>config</code> and customize it to your needs. </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 <!-- start footer part -->

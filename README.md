@@ -83,3 +83,17 @@ Second is
 	-r <rank>
 
 which directly sets this processes rank. This must be set for every rank individually, so the launch command should probably start a shell script/etc.
+
+# Example Target
+In this project a small example target and configuration file for it is included. It can be built with:
+
+	cd example
+	mkdir bin
+	make
+
+After that the debugger can be started with:
+
+	cd ..
+	./bin/pgdbmaster
+
+Then, in the startup dialog, load the configuration file `config` and customize it to your needs.
