@@ -1,9 +1,10 @@
-processes_per_node=32
+processes_per_node=8
 num_nodes=1
 launcher=mpirun
-oversubscribe=true
-slave=/home/nicolas/ma/parallelgdb/bin/pgdbslave
-target=/home/nicolas/ma/target/bin/target
+oversubscribe=false
+slave=./bin/pgdbslave
+target=./example/bin/target
+arguments=
 ip_address=127.0.0.1
 ssh=false
 ssh_address=
