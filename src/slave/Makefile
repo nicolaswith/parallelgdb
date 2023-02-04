@@ -6,7 +6,7 @@ RM = rm
 
 BUILDDIR = ../../bin
 
-CFLAGS  = -std=c++11 -Wall -Wextra -Wpedantic -Werror -O3
+CFLAGS  = -std=c++17 -Wall -Wextra -Wpedantic -Werror -O3
 LDFLAGS = 
 
 PRGS = $(addprefix $(BUILDDIR)/, $(TRGTS))
