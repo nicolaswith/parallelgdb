@@ -1,5 +1,5 @@
 <map id="Breakpoint::set_number" name="Breakpoint::set_number">
-<area shape="rect" id="node1" title="Sets the from GDB to this breakpoint assigned ID." alt="" coords="1211,5,1389,32"/>
+<area shape="rect" id="node1" title="Sets the from GDB to this breakpoint assigned ID for a process." alt="" coords="1211,5,1389,32"/>
 <area shape="rect" id="node2" href="$classUIWindow.html#ac76b56c0c18d92124dbabfa71efa3287" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="971,5,1163,32"/>
 <area shape="rect" id="node3" href="$classUIWindow.html#a848694f8ebd8e4be25695b37b799a8f5" title="Forwards the received data to the corresponding data handler." alt="" coords="761,5,923,32"/>
 <area shape="rect" id="node4" href="$classMaster.html#ae56b3474ea28e62abfe0c183a874fa9d" title="Handles the TCP communication between socat and the master." alt="" coords="532,5,713,32"/>

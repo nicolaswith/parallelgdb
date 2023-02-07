@@ -1436,7 +1436,7 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data,
 				mi_bkpt *breakpoint = mi_res_bkpt(first_output);
 				if (breakpoint)
 				{
-					m_breakpoints[rank]->set_number(breakpoint->number);
+					m_breakpoints[rank]->set_number(rank, breakpoint->number);
 					m_bkptno_2_bkpt[breakpoint->number] = m_breakpoints[rank];
 					m_breakpoints[rank] = nullptr;
 				}

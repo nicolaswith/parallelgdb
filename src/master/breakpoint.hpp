@@ -57,7 +57,7 @@ class Breakpoint
 
 	const int m_line;
 	const std::string m_full_path;
-	int m_number;
+	int *m_numbers;
 
 	bool m_stop_all;
 
@@ -118,15 +118,18 @@ public:
 		return m_line;
 	}
 
-	/// Sets the from GDB to this breakpoint assigned ID.
+	/// Sets the from GDB to this breakpoint assigned ID for a process.
 	/**
-	 * This function sets the from GDB to this breakpoint assigned ID.
+	 * This function sets the from GDB to this breakpoint assigned ID for a
+	 * process.
+	 *
+	 * @param rank The process rank.
 	 *
 	 * @param number The from GDB to this breakpoint assigned ID.
 	 */
-	inline void set_number(const int number)
+	inline void set_number(const int rank, const int number)
 	{
-		m_number = number;
+		m_numbers[rank] = number;
 	}
 
 	/// Sets the stop all flag for a breakpoint.

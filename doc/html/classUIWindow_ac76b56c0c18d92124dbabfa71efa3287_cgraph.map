@@ -4,7 +4,7 @@
 <area shape="rect" id="node23" href="$classUIWindow.html#a280911307d72c0277043340ec513b5d4" title="Updates the running and exited row for a processes." alt="" coords="255,341,455,368"/>
 <area shape="rect" id="node24" href="$classUIWindow.html#a07a87970f8669d0e209b039699a226b0" title="Clears all columns of a process in the Overview." alt="" coords="547,309,721,350"/>
 <area shape="rect" id="node25" href="$classUIWindow.html#ad42a582b2ecac29ba67b2906a9a1873d" title="Appends scrolling a scrolled window to the Gdk idle handler." alt="" coords="265,392,446,419"/>
-<area shape="rect" id="node27" href="$classBreakpoint.html#a6b5b680bfb80251ecafc35d7c68bc3b7" title="Sets the from GDB to this breakpoint assigned ID." alt="" coords="266,443,445,469"/>
+<area shape="rect" id="node27" href="$classBreakpoint.html#a3b06ef4c75553e578056987bbf419470" title="Sets the from GDB to this breakpoint assigned ID for a process." alt="" coords="266,443,445,469"/>
 <area shape="rect" id="node28" href="$classUIWindow.html#aa18935ac7bf79e5a10c8d536b81ca25f" title="Updates the current line and file for a process." alt="" coords="268,101,443,128"/>
 <area shape="rect" id="node30" href="$classUIWindow.html#afd8134a65eb457f80d6e47bcfb360e56" title="Stops all processes." alt="" coords="827,319,973,345"/>
 <area shape="rect" id="node3" href="$classUIWindow.html#a8c927adbf781e88754dcc9caabc6ae0b" title="Appends a new row for a source file to the Overview." alt="" coords="513,123,755,149"/>

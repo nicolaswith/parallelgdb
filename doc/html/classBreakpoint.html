@@ -131,9 +131,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a40fe4a865e93c2dbe1c9d75698514e95"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBreakpoint.html#a40fe4a865e93c2dbe1c9d75698514e95">get_line_number</a> () const</td></tr>
 <tr class="memdesc:a40fe4a865e93c2dbe1c9d75698514e95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the line number of the associated source file.  <a href="classBreakpoint.html#a40fe4a865e93c2dbe1c9d75698514e95">More...</a><br /></td></tr>
 <tr class="separator:a40fe4a865e93c2dbe1c9d75698514e95"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b5b680bfb80251ecafc35d7c68bc3b7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBreakpoint.html#a6b5b680bfb80251ecafc35d7c68bc3b7">set_number</a> (const int number)</td></tr>
-<tr class="memdesc:a6b5b680bfb80251ecafc35d7c68bc3b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the from GDB to this breakpoint assigned ID.  <a href="classBreakpoint.html#a6b5b680bfb80251ecafc35d7c68bc3b7">More...</a><br /></td></tr>
-<tr class="separator:a6b5b680bfb80251ecafc35d7c68bc3b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b06ef4c75553e578056987bbf419470"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBreakpoint.html#a3b06ef4c75553e578056987bbf419470">set_number</a> (const int rank, const int number)</td></tr>
+<tr class="memdesc:a3b06ef4c75553e578056987bbf419470"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the from GDB to this breakpoint assigned ID for a process.  <a href="classBreakpoint.html#a3b06ef4c75553e578056987bbf419470">More...</a><br /></td></tr>
+<tr class="separator:a3b06ef4c75553e578056987bbf419470"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a349950c76da1773d23fd8a2705afd505"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBreakpoint.html#a349950c76da1773d23fd8a2705afd505">set_stop_all</a> (const bool stop_all)</td></tr>
 <tr class="memdesc:a349950c76da1773d23fd8a2705afd505"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the stop all flag for a breakpoint.  <a href="classBreakpoint.html#a349950c76da1773d23fd8a2705afd505">More...</a><br /></td></tr>
 <tr class="separator:a349950c76da1773d23fd8a2705afd505"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -164,8 +164,8 @@ Private Attributes</h2></td></tr>
 <tr class="separator:ae12e23257ec56279d6254a397346a304"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f3c31b5505ef6f8e7a8109921cf4916"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBreakpoint.html#a1f3c31b5505ef6f8e7a8109921cf4916">m_full_path</a></td></tr>
 <tr class="separator:a1f3c31b5505ef6f8e7a8109921cf4916"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd35c973e9b9f4384ffa3e245c6172bc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBreakpoint.html#afd35c973e9b9f4384ffa3e245c6172bc">m_number</a></td></tr>
-<tr class="separator:afd35c973e9b9f4384ffa3e245c6172bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63b5e2a9b9b1041e1e3942f7e32b8d77"><td class="memItemLeft" align="right" valign="top">int *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBreakpoint.html#a63b5e2a9b9b1041e1e3942f7e32b8d77">m_numbers</a></td></tr>
+<tr class="separator:a63b5e2a9b9b1041e1e3942f7e32b8d77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a101b9b44cf5b609356e26bd51f6b8507"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBreakpoint.html#a101b9b44cf5b609356e26bd51f6b8507">m_stop_all</a></td></tr>
 <tr class="separator:a101b9b44cf5b609356e26bd51f6b8507"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8c771b8f57eb4cc0b25f8004e903945"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classUIWindow.html">UIWindow</a> *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBreakpoint.html#ac8c771b8f57eb4cc0b25f8004e903945">m_window</a></td></tr>
@@ -277,7 +277,7 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> on success, <code>false</code> on error.</dd></dl>
-<dl class="section note"><dt>Note</dt><dd>Breakpoints are ID'd by a number which is set by GDB. It is saved in the <a class="el" href="classBreakpoint.html#afd35c973e9b9f4384ffa3e245c6172bc">m_number</a> variable. The <a class="el" href="classBreakpoint.html#afd35c973e9b9f4384ffa3e245c6172bc">m_number</a> variable is set by the <a class="el" href="classBreakpoint.html#a6b5b680bfb80251ecafc35d7c68bc3b7">set_number</a> function which is called by the <a class="el" href="classUIWindow.html#ac76b56c0c18d92124dbabfa71efa3287">UIWindow::print_data_gdb</a> function, when the corresponding GDB output has been parsed. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Breakpoints are ID'd by a number which is set by GDB. It is saved in the <a class="el" href="classBreakpoint.html#a63b5e2a9b9b1041e1e3942f7e32b8d77">m_numbers</a> array per process. The <a class="el" href="classBreakpoint.html#a63b5e2a9b9b1041e1e3942f7e32b8d77">m_numbers</a> array is set by the <a class="el" href="classBreakpoint.html#a3b06ef4c75553e578056987bbf419470">set_number</a> function which is called by the <a class="el" href="classUIWindow.html#ac76b56c0c18d92124dbabfa71efa3287">UIWindow::print_data_gdb</a> function, when the corresponding GDB output has been parsed. </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -346,7 +346,7 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> on success, <code>false</code> on error.</dd></dl>
-<dl class="section note"><dt>Note</dt><dd>Breakpoints are ID'd by a number which is set by GDB. It is saved in the <a class="el" href="classBreakpoint.html#afd35c973e9b9f4384ffa3e245c6172bc">m_number</a> variable and used in this function to delete it. The <a class="el" href="classBreakpoint.html#afd35c973e9b9f4384ffa3e245c6172bc">m_number</a> variable is set by the <a class="el" href="classBreakpoint.html#a6b5b680bfb80251ecafc35d7c68bc3b7">set_number</a> function which is called by the <a class="el" href="classUIWindow.html#ac76b56c0c18d92124dbabfa71efa3287">UIWindow::print_data_gdb</a> function, when the corresponding GDB output has been parsed. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Breakpoints are ID'd by a number which is set by GDB. It is saved in the <a class="el" href="classBreakpoint.html#a63b5e2a9b9b1041e1e3942f7e32b8d77">m_numbers</a> array per process and used in this function to delete it. The <a class="el" href="classBreakpoint.html#a63b5e2a9b9b1041e1e3942f7e32b8d77">m_numbers</a> variable is set by the <a class="el" href="classBreakpoint.html#a3b06ef4c75553e578056987bbf419470">set_number</a> function which is called by the <a class="el" href="classUIWindow.html#ac76b56c0c18d92124dbabfa71efa3287">UIWindow::print_data_gdb</a> function, when the corresponding GDB output has been parsed. </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -666,8 +666,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a6b5b680bfb80251ecafc35d7c68bc3b7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6b5b680bfb80251ecafc35d7c68bc3b7">&#9670;&nbsp;</a></span>set_number()</h2>
+<a id="a3b06ef4c75553e578056987bbf419470"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b06ef4c75553e578056987bbf419470">&#9670;&nbsp;</a></span>set_number()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -679,8 +679,18 @@ Here is the caller graph for this function:</div>
           <td class="memname">void Breakpoint::set_number </td>
           <td>(</td>
           <td class="paramtype">const int&#160;</td>
-          <td class="paramname"><em>number</em></td><td>)</td>
+          <td class="paramname"><em>rank</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>number</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -689,9 +699,10 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This function sets the from GDB to this breakpoint assigned ID.</p>
+<p>This function sets the from GDB to this breakpoint assigned ID for a process.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">rank</td><td>The process rank.</td></tr>
     <tr><td class="paramname">number</td><td>The from GDB to this breakpoint assigned ID. </td></tr>
   </table>
   </dd>
@@ -699,9 +710,9 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classBreakpoint_a6b5b680bfb80251ecafc35d7c68bc3b7_icgraph.png" border="0" usemap="#aclassBreakpoint_a6b5b680bfb80251ecafc35d7c68bc3b7_icgraph" alt=""/></div>
-<map name="aclassBreakpoint_a6b5b680bfb80251ecafc35d7c68bc3b7_icgraph" id="aclassBreakpoint_a6b5b680bfb80251ecafc35d7c68bc3b7_icgraph">
-<area shape="rect" title="Sets the from GDB to this breakpoint assigned ID." alt="" coords="1211,5,1389,32"/>
+<div class="center"><img src="classBreakpoint_a3b06ef4c75553e578056987bbf419470_icgraph.png" border="0" usemap="#aclassBreakpoint_a3b06ef4c75553e578056987bbf419470_icgraph" alt=""/></div>
+<map name="aclassBreakpoint_a3b06ef4c75553e578056987bbf419470_icgraph" id="aclassBreakpoint_a3b06ef4c75553e578056987bbf419470_icgraph">
+<area shape="rect" title="Sets the from GDB to this breakpoint assigned ID for a process." alt="" coords="1211,5,1389,32"/>
 <area shape="rect" href="classUIWindow.html#ac76b56c0c18d92124dbabfa71efa3287" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="971,5,1163,32"/>
 <area shape="rect" href="classUIWindow.html#a848694f8ebd8e4be25695b37b799a8f5" title="Forwards the received data to the corresponding data handler." alt="" coords="761,5,923,32"/>
 <area shape="rect" href="classMaster.html#ae56b3474ea28e62abfe0c183a874fa9d" title="Handles the TCP communication between socat and the master." alt="" coords="532,5,713,32"/>
@@ -960,8 +971,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="afd35c973e9b9f4384ffa3e245c6172bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afd35c973e9b9f4384ffa3e245c6172bc">&#9670;&nbsp;</a></span>m_number</h2>
+<a id="a63b5e2a9b9b1041e1e3942f7e32b8d77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63b5e2a9b9b1041e1e3942f7e32b8d77">&#9670;&nbsp;</a></span>m_numbers</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -970,7 +981,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int Breakpoint::m_number</td>
+          <td class="memname">int* Breakpoint::m_numbers</td>
         </tr>
       </table>
   </td>

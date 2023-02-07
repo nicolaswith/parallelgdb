@@ -10,7 +10,7 @@ var classBreakpoint =
     [ "get_stop_all", "classBreakpoint.html#a625897163309d3e95624f4cf71060227", null ],
     [ "is_created", "classBreakpoint.html#ab12850b9f6287dd4b98e75c093329773", null ],
     [ "one_created", "classBreakpoint.html#a8336aad83387aa92aa8b21e9361096f6", null ],
-    [ "set_number", "classBreakpoint.html#a6b5b680bfb80251ecafc35d7c68bc3b7", null ],
+    [ "set_number", "classBreakpoint.html#a3b06ef4c75553e578056987bbf419470", null ],
     [ "set_stop_all", "classBreakpoint.html#a349950c76da1773d23fd8a2705afd505", null ],
     [ "update_breakpoints", "classBreakpoint.html#a530ad76e3382517101cf28ce6bdabaf7", null ],
     [ "update_states", "classBreakpoint.html#a84d8c1b691a7687552af36500a63392e", null ],
@@ -18,7 +18,7 @@ var classBreakpoint =
     [ "m_full_path", "classBreakpoint.html#a1f3c31b5505ef6f8e7a8109921cf4916", null ],
     [ "m_line", "classBreakpoint.html#ae12e23257ec56279d6254a397346a304", null ],
     [ "m_num_processes", "classBreakpoint.html#a1ac7151b3c03ab97f42e9f28fbb323ef", null ],
-    [ "m_number", "classBreakpoint.html#afd35c973e9b9f4384ffa3e245c6172bc", null ],
+    [ "m_numbers", "classBreakpoint.html#a63b5e2a9b9b1041e1e3942f7e32b8d77", null ],
     [ "m_stop_all", "classBreakpoint.html#a101b9b44cf5b609356e26bd51f6b8507", null ],
     [ "m_window", "classBreakpoint.html#ac8c771b8f57eb4cc0b25f8004e903945", null ]
 ];

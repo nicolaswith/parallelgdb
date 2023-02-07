@@ -56,7 +56,7 @@ var searchData=
   ['m_5fmutex_5fgui_449',['m_mutex_gui',['../classUIWindow.html#abbca8dda2c80e6d9d3505bd0fd8e41f2',1,'UIWindow']]],
   ['m_5fnum_5fnodes_450',['m_num_nodes',['../classStartupDialog.html#a4fb978682847587726709d972a163070',1,'StartupDialog']]],
   ['m_5fnum_5fprocesses_451',['m_num_processes',['../classBreakpoint.html#a1ac7151b3c03ab97f42e9f28fbb323ef',1,'Breakpoint::m_num_processes()'],['../classBreakpointDialog.html#a8e9082997a1bee39e52ac23d2e7f3243',1,'BreakpointDialog::m_num_processes()'],['../classUIDrawingArea.html#a5968a1599f05944dc8d03361e72b3b55',1,'UIDrawingArea::m_num_processes()'],['../classUIWindow.html#aa6ab0774e00b724e8f57066dee944fac',1,'UIWindow::m_num_processes()']]],
-  ['m_5fnumber_452',['m_number',['../classBreakpoint.html#afd35c973e9b9f4384ffa3e245c6172bc',1,'Breakpoint']]],
+  ['m_5fnumbers_452',['m_numbers',['../classBreakpoint.html#a63b5e2a9b9b1041e1e3942f7e32b8d77',1,'Breakpoint']]],
   ['m_5fopened_5ffiles_453',['m_opened_files',['../classUIWindow.html#a5afa2f44e6154453afb0587e175af659',1,'UIWindow']]],
   ['m_5foversubscribe_454',['m_oversubscribe',['../classStartupDialog.html#a6fdf51172d45e0f07bb5fed4a1e292a4',1,'StartupDialog']]],
   ['m_5foverview_5fgrid_455',['m_overview_grid',['../classUIWindow.html#a9651cf63253286c26089eb65db28fd10',1,'UIWindow']]],

@@ -54,13 +54,14 @@ Breakpoint::Breakpoint(const int num_processes, const int line,
 	: m_num_processes(num_processes),
 	  m_line(line),
 	  m_full_path(full_path),
-	  m_number(-1),
+	  m_numbers(new int[m_num_processes]),
 	  m_stop_all(false),
 	  m_window(window),
 	  m_breakpoint_state(new BreakpointState[m_num_processes])
 {
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
+		m_numbers[rank] = -1;
 		m_breakpoint_state[rank] = NO_ACTION;
 	}
 }
@@ -70,6 +71,7 @@ Breakpoint::Breakpoint(const int num_processes, const int line,
  */
 Breakpoint::~Breakpoint()
 {
+	delete[] m_numbers;
 	delete[] m_breakpoint_state;
 }
 
@@ -83,7 +85,7 @@ Breakpoint::~Breakpoint()
  *
  * @note
  * Breakpoints are ID'd by a number which is set by GDB. It is saved in the
- * @ref m_number variable. The @ref m_number variable is set by the
+ * @ref m_numbers array per process. The @ref m_numbers array is set by the
  * @ref set_number function which is called by the
  * @ref UIWindow::print_data_gdb function, when the corresponding GDB output has
  * been parsed.
@@ -115,8 +117,8 @@ bool Breakpoint::create_breakpoint(const int rank)
  *
  * @note
  * Breakpoints are ID'd by a number which is set by GDB. It is saved in the
- * @ref m_number variable and used in this function to delete it.
- * The @ref m_number variable is set by the @ref set_number function which is
+ * @ref m_numbers array per process and used in this function to delete it.
+ * The @ref m_numbers array is set by the @ref set_number function which is
  * called by the @ref UIWindow::print_data_gdb function, when the corresponding
  * GDB output has been parsed.
  */
@@ -128,7 +130,7 @@ bool Breakpoint::delete_breakpoint(const int rank)
 		return false;
 	}
 
-	string cmd = "-break-delete " + std::to_string(m_number) + "\n";
+	string cmd = "-break-delete " + std::to_string(m_numbers[rank]) + "\n";
 	m_window->send_data(m_window->get_conns_gdb(rank), cmd);
 
 	m_breakpoint_state[rank] = NO_ACTION;
