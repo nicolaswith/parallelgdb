@@ -27,6 +27,7 @@
 
 #include <fstream>
 #include <string>
+#include <regex>
 
 #include "startup.hpp"
 #include "base64.hpp"
@@ -75,7 +76,7 @@ StartupDialog::StartupDialog()
 	  m_ssh_password(nullptr),
 	  m_partition(nullptr),
 	  m_custom_launcher(false),
-	  m_launcher_cmd(nullptr)
+	  m_launcher_cmd("")
 {
 	// parse the glade file
 	m_builder = Gtk::Builder::create_from_file("./ui/startup_dialog.glade");
@@ -148,7 +149,6 @@ StartupDialog::~StartupDialog()
 	free(m_ssh_user);
 	free(m_ssh_password);
 	free(m_partition);
-	free(m_launcher_cmd);
 	delete m_dialog;
 }
 
@@ -395,7 +395,7 @@ void StartupDialog::export_config()
 	m_config += "\n";
 
 	m_config += "custom_cmd=";
-	m_config += m_launcher_cmd ? m_launcher_cmd : "";
+	m_config += m_launcher_cmd;
 	m_config += "\n\n";
 
 	// open file-saver dialog
@@ -454,7 +454,6 @@ bool StartupDialog::read_values()
 	free(m_ssh_user);
 	free(m_ssh_password);
 	free(m_partition);
-	free(m_launcher_cmd);
 
 	// copy new configs
 	m_slave = strdup(m_entry_slave->get_text().c_str());
@@ -465,7 +464,12 @@ bool StartupDialog::read_values()
 	m_ssh_user = strdup(m_entry_ssh_user->get_text().c_str());
 	m_ssh_password = strdup(m_entry_ssh_password->get_text().c_str());
 	m_partition = strdup(m_entry_partition->get_text().c_str());
-	m_launcher_cmd = strdup(m_entry_launcher->get_text().c_str());
+
+	// trim custom command
+	m_launcher_cmd = m_entry_launcher->get_text();
+	m_launcher_cmd = std::regex_replace(m_launcher_cmd, std::regex("^[ \t]+"), "");
+	m_launcher_cmd = std::regex_replace(m_launcher_cmd, std::regex("[ \t]+$"), "");
+	m_launcher_cmd = std::regex_replace(m_launcher_cmd, std::regex("[ \t]+"), " ");
 
 	// parse intergers
 	try
@@ -586,7 +590,7 @@ string StartupDialog::get_cmd() const
 {
 	if (m_custom_launcher)
 	{
-		return m_entry_launcher->get_text();
+		return m_launcher_cmd;
 	}
 
 	string cmd = "";

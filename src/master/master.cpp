@@ -26,8 +26,8 @@
  */
 
 #include <string>
-#include <regex>
 #include <string.h>
+#include <algorithm>
 #include <libssh/libssh.h>
 
 #include "master.hpp"
@@ -175,9 +175,6 @@ bool Master::start_slaves_local()
 	if (0 == pid)
 	{
 		string cmd = m_dialog->get_cmd();
-		cmd = std::regex_replace(cmd, std::regex("^ +"), "");
-		cmd = std::regex_replace(cmd, std::regex(" +$"), "");
-		cmd = std::regex_replace(cmd, std::regex(" +"), " ");
 		const int num_spaces =
 			std::count_if(cmd.begin(), cmd.end(),
 						  [](char c)
@@ -326,14 +323,17 @@ bool Master::run_startup_dialog()
  */
 bool Master::start_slaves()
 {
-	bool ret = false;
-	if (m_dialog->ssh())
+	bool ret = true;
+	if (m_dialog->master_starts_slaves())
 	{
-		ret = start_slaves_ssh();
-	}
-	else
-	{
-		ret = start_slaves_local();
+		if (m_dialog->ssh())
+		{
+			ret = start_slaves_ssh();
+		}
+		else
+		{
+			ret = start_slaves_local();
+		}
 	}
 	delete m_dialog;
 	return ret;

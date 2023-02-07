@@ -346,7 +346,7 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> on success, <code>false</code> on error.</dd></dl>
-<dl class="section note"><dt>Note</dt><dd>Breakpoints are ID'd by a number which is set by GDB. It is saved in the <a class="el" href="classBreakpoint.html#a63b5e2a9b9b1041e1e3942f7e32b8d77">m_numbers</a> array per process and used in this function to delete it. The <a class="el" href="classBreakpoint.html#a63b5e2a9b9b1041e1e3942f7e32b8d77">m_numbers</a> variable is set by the <a class="el" href="classBreakpoint.html#a3b06ef4c75553e578056987bbf419470">set_number</a> function which is called by the <a class="el" href="classUIWindow.html#ac76b56c0c18d92124dbabfa71efa3287">UIWindow::print_data_gdb</a> function, when the corresponding GDB output has been parsed. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Breakpoints are ID'd by a number which is set by GDB. It is saved in the <a class="el" href="classBreakpoint.html#a63b5e2a9b9b1041e1e3942f7e32b8d77">m_numbers</a> array per process and used in this function to delete it. The <a class="el" href="classBreakpoint.html#a63b5e2a9b9b1041e1e3942f7e32b8d77">m_numbers</a> array is set by the <a class="el" href="classBreakpoint.html#a3b06ef4c75553e578056987bbf419470">set_number</a> function which is called by the <a class="el" href="classUIWindow.html#ac76b56c0c18d92124dbabfa71efa3287">UIWindow::print_data_gdb</a> function, when the corresponding GDB output has been parsed. </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">

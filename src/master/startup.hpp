@@ -55,7 +55,7 @@ class StartupDialog
 	char *m_ssh_password;
 	char *m_partition;
 	bool m_custom_launcher;
-	char *m_launcher_cmd;
+	std::string m_launcher_cmd;
 
 	Glib::RefPtr<Gtk::Builder> m_builder;
 	Gtk::Dialog *m_dialog;
@@ -195,6 +195,19 @@ public:
 	inline const char *ssh_password() const
 	{
 		return m_ssh_password;
+	}
+
+	/// Returns whether the master should start the slaves.
+	/**
+	 * This function returns whether the master should start the slaves. When 
+	 * the custom command is used AND is left blank, the user wants to start 
+	 * the slaves manually.
+	 *
+	 * @return Whether the master should start the slaves.
+	 */
+	inline bool master_starts_slaves() const
+	{
+		return !(m_custom_launcher && m_launcher_cmd.empty());
 	}
 };
 

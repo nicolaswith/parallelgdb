@@ -1,0 +1,5 @@
+<map id="StartupDialog::master_starts_slaves" name="StartupDialog::master_starts_slaves">
+<area shape="rect" id="node1" title="Returns whether the master should start the slaves." alt="" coords="311,5,476,47"/>
+<area shape="rect" id="node2" href="$classMaster.html#a9bb6425799975f544c846ae7d67e947e" title="Starts the slaves on the desired debug platform." alt="" coords="108,13,263,39"/>
+<area shape="rect" id="node3" href="$master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,13,60,39"/>
+</map>
