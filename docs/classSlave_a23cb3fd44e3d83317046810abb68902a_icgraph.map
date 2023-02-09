@@ -1,5 +1,6 @@
 <map id="Slave::print_help" name="Slave::print_help">
-<area shape="rect" id="node1" title="Prints the help text." alt="" coords="208,31,339,57"/>
-<area shape="rect" id="node2" href="$classSlave.html#a842e443fdf7cfb25921ecc0bb8bfe673" title="Parses the command line arguments." alt="" coords="5,5,160,32"/>
-<area shape="rect" id="node3" href="$classSlave.html#a402591a478e93c1f1e505619b46ebc46" title="Obtains the rank assigned to this process." alt="" coords="21,56,144,83"/>
+<area shape="rect" id="node1" title="Prints the help text." alt="" coords="311,31,441,57"/>
+<area shape="rect" id="node2" href="$classSlave.html#a842e443fdf7cfb25921ecc0bb8bfe673" title="Parses the command line arguments." alt="" coords="108,5,263,32"/>
+<area shape="rect" id="node4" href="$classSlave.html#a402591a478e93c1f1e505619b46ebc46" title="Obtains the rank assigned to this process." alt="" coords="124,56,247,83"/>
+<area shape="rect" id="node3" href="$slave_8cpp.html#aa06f5fbe915d0bf149dcf793acea47a1" title="Entry point for the slave program." alt="" coords="5,31,60,57"/>
 </map>

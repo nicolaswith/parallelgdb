@@ -446,13 +446,21 @@ void Slave::print_help()
 		"  -e <name>\t name of the environment variable containing the process rank\n");
 }
 
+
+
 /// Entry point for the slave program.
 /**
  * This program starts and monitors the socat and GDB instances.
+ * 
+ * @param argc The number of arguments passed to this program.
+ * 
+ * @param argv The array containing the arguments.
+ * 
+ * @return The exit state of the program.
  */
 int main(const int argc, char **argv)
 {
-	Slave slave{argc, argv};
+	Slave slave(argc, argv);
 
 	if (!slave.parse_cl_args())
 	{

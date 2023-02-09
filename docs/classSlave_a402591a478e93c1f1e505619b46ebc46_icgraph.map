@@ -1,0 +1,4 @@
+<map id="Slave::set_rank" name="Slave::set_rank">
+<area shape="rect" id="node1" title="Obtains the rank assigned to this process." alt="" coords="108,5,231,32"/>
+<area shape="rect" id="node2" href="$slave_8cpp.html#aa06f5fbe915d0bf149dcf793acea47a1" title="Entry point for the slave program." alt="" coords="5,5,60,32"/>
+</map>
