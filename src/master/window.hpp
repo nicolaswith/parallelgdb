@@ -93,7 +93,7 @@ class UIWindow
 	std::map<std::string, Gsv::View *> m_path_2_view;
 	std::map<std::string, int> m_path_2_row;
 
-	std::map<int, Breakpoint *> m_bkptno_2_bkpt;
+	std::map<int, Breakpoint *> *m_bkptno_2_bkpt;
 
 	sigc::connection *m_scroll_connections_gdb;
 	sigc::connection *m_scroll_connections_trgt;

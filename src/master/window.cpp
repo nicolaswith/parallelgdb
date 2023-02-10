@@ -71,6 +71,7 @@ UIWindow::UIWindow(const int num_processes)
 	m_text_buffers_trgt = new Gtk::TextBuffer *[m_num_processes];
 	m_scrolled_windows_gdb = new Gtk::ScrolledWindow *[m_num_processes];
 	m_scrolled_windows_trgt = new Gtk::ScrolledWindow *[m_num_processes];
+	m_bkptno_2_bkpt = new std::map<int, Breakpoint *>[m_num_processes];
 	m_scroll_connections_gdb = new sigc::connection[m_num_processes];
 	m_scroll_connections_trgt = new sigc::connection[m_num_processes];
 	m_breakpoints = new Breakpoint *[m_num_processes];
@@ -109,6 +110,7 @@ UIWindow::~UIWindow()
 	delete[] m_text_buffers_trgt;
 	delete[] m_scrolled_windows_gdb;
 	delete[] m_scrolled_windows_trgt;
+	delete[] m_bkptno_2_bkpt;
 	delete[] m_scroll_connections_gdb;
 	delete[] m_scroll_connections_trgt;
 	delete[] m_breakpoints;
@@ -1015,7 +1017,7 @@ void UIWindow::update_overview(const int rank, const string &fullpath,
 			label->set_tooltip_text("");
 			continue;
 		}
-		
+
 		// get source code from source file at line
 		string tooltip = "File not found.";
 		if (m_path_2_view.find(fullpath) != m_path_2_view.end())
@@ -1437,7 +1439,7 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data,
 				if (breakpoint)
 				{
 					m_breakpoints[rank]->set_number(rank, breakpoint->number);
-					m_bkptno_2_bkpt[breakpoint->number] = m_breakpoints[rank];
+					m_bkptno_2_bkpt[rank][breakpoint->number] = m_breakpoints[rank];
 					m_breakpoints[rank] = nullptr;
 				}
 				mi_free_bkpt(breakpoint);
@@ -1447,7 +1449,7 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data,
 			if (stop_record)
 			{
 				if (stop_record->have_bkptno && stop_record->bkptno > 1 &&
-					m_bkptno_2_bkpt[stop_record->bkptno]->get_stop_all())
+					m_bkptno_2_bkpt[rank][stop_record->bkptno]->get_stop_all())
 				{
 					stop_all();
 				}
