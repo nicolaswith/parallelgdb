@@ -1,9 +1,10 @@
 <map id="UIWindow::clear_mark" name="UIWindow::clear_mark">
-<area shape="rect" id="node1" title="Delete a line mark in a Gsv::View." alt="" coords="1935,31,2103,57"/>
-<area shape="rect" id="node2" href="$classUIWindow.html#a19ed8774685ac8a1a223f958d6376d74" title="Deletes the breakpoint for all processes and then the mark itself." alt="" coords="1709,5,1887,32"/>
-<area shape="rect" id="node14" href="$classUIWindow.html#ab3135faddc758530ac3e34b8973130ad" title="Displays the BreakpointDialog dialog." alt="" coords="1717,56,1879,83"/>
-<area shape="rect" id="node3" href="$classUIWindow.html#aa20f683f45142300ff17e7ff445f50bc" title="Signal handler for the Gsv::View line mark clicked signal." alt="" coords="1479,23,1661,65"/>
+<area shape="rect" id="node1" title="Delete a line mark in a Gsv::View." alt="" coords="2168,31,2336,57"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#a19ed8774685ac8a1a223f958d6376d74" title="Deletes the breakpoint for all processes and then the mark itself." alt="" coords="1943,5,2120,32"/>
+<area shape="rect" id="node15" href="$classUIWindow.html#ab3135faddc758530ac3e34b8973130ad" title="Displays the BreakpointDialog dialog." alt="" coords="1951,56,2112,83"/>
+<area shape="rect" id="node3" href="$classUIWindow.html#aa20f683f45142300ff17e7ff445f50bc" title="Signal handler for the Gsv::View line mark clicked signal." alt="" coords="1712,23,1895,65"/>
 <area shape="rect" id="node4" href="$classUIWindow.html#acf4ea013c774568bd14b79f4486eb067" title="Appends a source file page to the source view notebook." alt="" coords="1211,31,1431,57"/>
+<area shape="rect" id="node14" href="$classUIWindow.html#a1b85f5b4298b721830e9b162a65c664e" title="Opens a file for a source file which was not found." alt="" coords="1479,56,1664,83"/>
 <area shape="rect" id="node5" href="$classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="989,5,1144,32"/>
 <area shape="rect" id="node9" href="$classUIWindow.html#ac76b56c0c18d92124dbabfa71efa3287" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="971,56,1163,83"/>
 <area shape="rect" id="node6" href="$classUIWindow.html#a237131d5aa62c32799cf1f0d0e913110" title="Loads the glade file and connects the signal handlers." alt="" coords="784,5,900,32"/>

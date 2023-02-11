@@ -1,32 +1,33 @@
 <map id="UIWindow::print_data_gdb" name="UIWindow::print_data_gdb">
-<area shape="rect" id="node1" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="5,291,197,317"/>
-<area shape="rect" id="node2" href="$classUIWindow.html#acf4ea013c774568bd14b79f4486eb067" title="Appends a source file page to the source view notebook." alt="" coords="245,181,465,208"/>
-<area shape="rect" id="node23" href="$classUIWindow.html#a280911307d72c0277043340ec513b5d4" title="Updates the running and exited row for a processes." alt="" coords="255,341,455,368"/>
-<area shape="rect" id="node24" href="$classUIWindow.html#a07a87970f8669d0e209b039699a226b0" title="Clears all columns of a process in the Overview." alt="" coords="547,309,721,350"/>
-<area shape="rect" id="node25" href="$classUIWindow.html#ad42a582b2ecac29ba67b2906a9a1873d" title="Appends scrolling a scrolled window to the Gdk idle handler." alt="" coords="265,392,446,419"/>
-<area shape="rect" id="node27" href="$classBreakpoint.html#a3b06ef4c75553e578056987bbf419470" title="Sets the from GDB to this breakpoint assigned ID for a process." alt="" coords="266,443,445,469"/>
-<area shape="rect" id="node28" href="$classUIWindow.html#aa18935ac7bf79e5a10c8d536b81ca25f" title="Updates the current line and file for a process." alt="" coords="268,101,443,128"/>
-<area shape="rect" id="node30" href="$classUIWindow.html#afd8134a65eb457f80d6e47bcfb360e56" title="Stops all processes." alt="" coords="827,319,973,345"/>
-<area shape="rect" id="node3" href="$classUIWindow.html#a8c927adbf781e88754dcc9caabc6ae0b" title="Appends a new row for a source file to the Overview." alt="" coords="513,123,755,149"/>
-<area shape="rect" id="node5" href="$classUIWindow.html#aa20f683f45142300ff17e7ff445f50bc" title="Signal handler for the Gsv::View line mark clicked signal." alt="" coords="543,174,725,215"/>
-<area shape="rect" id="node4" href="$classUIWindow.html#aa4f6b1a4b49767fcc71a6a72ba9a461c" title="Sets the color for the line numbers in the Overview." alt="" coords="803,75,997,101"/>
-<area shape="rect" id="node6" href="$classUIWindow.html#a447e57e6deef4c794c8b8da1ec50141e" title="Creates a line mark in a Gsv::View." alt="" coords="811,129,989,156"/>
-<area shape="rect" id="node18" href="$classUIWindow.html#a19ed8774685ac8a1a223f958d6376d74" title="Deletes the breakpoint for all processes and then the mark itself." alt="" coords="811,231,989,257"/>
-<area shape="rect" id="node22" href="$classUIWindow.html#ab3135faddc758530ac3e34b8973130ad" title="Displays the BreakpointDialog dialog." alt="" coords="819,180,981,207"/>
-<area shape="rect" id="node7" href="$classBreakpoint.html#a8336aad83387aa92aa8b21e9361096f6" title="Checks if at least one breakpoint is existing." alt="" coords="1045,88,1227,115"/>
-<area shape="rect" id="node8" href="$classBreakpoint.html#a530ad76e3382517101cf28ce6bdabaf7" title="Modifies the breakpoints according to button_states." alt="" coords="1063,139,1209,181"/>
-<area shape="rect" id="node9" href="$classBreakpoint.html#abc03d69a380841a3e15cd39a11b7d60b" title="Creates a breakpoint for a process." alt="" coords="1293,9,1435,50"/>
-<area shape="rect" id="node14" href="$classBreakpoint.html#ac27741795e2f0c8627128fe2ffd221e8" title="Deletes a breakpoint for a process." alt="" coords="1293,139,1435,181"/>
-<area shape="rect" id="node15" href="$classBreakpoint.html#a57d9849b5661c53ad12c69b407b920de" title="Generates a comma separated list of processes for which the breakpoint is in the state state." alt="" coords="1289,205,1439,232"/>
-<area shape="rect" id="node16" href="$classUIWindow.html#a206ec747a9c2589eac08719d221ce218" title="Gets the Gtk window object." alt="" coords="1275,256,1453,283"/>
-<area shape="rect" id="node17" href="$classBreakpoint.html#a84d8c1b691a7687552af36500a63392e" title="Resets the error states to their corresponding base state." alt="" coords="1291,74,1437,115"/>
-<area shape="rect" id="node10" href="$classUIWindow.html#a17b365bb1177f5f8e1306c5ac2d41198" title="Gets the TCP socket associated to a process. (GDB)" alt="" coords="1501,107,1693,133"/>
-<area shape="rect" id="node11" href="$classUIWindow.html#af7d2b8be24892c57aa9b40a3ccada1b8" title="Writes data to the TCP socket." alt="" coords="1516,157,1679,184"/>
-<area shape="rect" id="node12" href="$classUIWindow.html#a85567fb5c7d2674f3be31fe5a01a2e3a" title="Stores a pointer to a Breakpoint object." alt="" coords="1501,5,1693,32"/>
-<area shape="rect" id="node13" href="$classUIWindow.html#a655257a1db3090889ead987fcdffcaaa" title="Gets the state of a process." alt="" coords="1510,56,1685,83"/>
-<area shape="rect" id="node19" href="$classUIWindow.html#a32dd4b6056237371b87bc2ffe701b1a6" title="Delete a line mark in a Gsv::View." alt="" coords="1052,271,1220,297"/>
-<area shape="rect" id="node21" href="$classBreakpoint.html#aab6298c6cb7b4c1fb1e2995ccd23a32a" title="Deletes the breakpoints for all process." alt="" coords="1065,205,1207,246"/>
-<area shape="rect" id="node20" href="$classBreakpoint.html#a40fe4a865e93c2dbe1c9d75698514e95" title="Returns the line number of the associated source file." alt="" coords="1287,307,1441,349"/>
-<area shape="rect" id="node26" href="$classUIWindow.html#a4f86980f7a059df4113036578c1bfa6a" title="Scrolls a scrolled window to a line." alt="" coords="557,392,711,419"/>
-<area shape="rect" id="node29" href="$classUIWindow.html#adf6ab1f7b18f7ee63dbc0d2b63660949" title="Updates all labels and their tooltip for a process." alt="" coords="531,72,737,99"/>
+<area shape="rect" id="node1" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="5,327,197,353"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#acf4ea013c774568bd14b79f4486eb067" title="Appends a source file page to the source view notebook." alt="" coords="245,200,465,227"/>
+<area shape="rect" id="node25" href="$classUIWindow.html#a280911307d72c0277043340ec513b5d4" title="Updates the running and exited row for a processes." alt="" coords="255,377,455,404"/>
+<area shape="rect" id="node26" href="$classUIWindow.html#a07a87970f8669d0e209b039699a226b0" title="Clears all columns of a process in the Overview." alt="" coords="519,345,693,386"/>
+<area shape="rect" id="node27" href="$classUIWindow.html#ad42a582b2ecac29ba67b2906a9a1873d" title="Appends scrolling a scrolled window to the Gdk idle handler." alt="" coords="265,428,446,455"/>
+<area shape="rect" id="node29" href="$classBreakpoint.html#a3b06ef4c75553e578056987bbf419470" title="Sets the from GDB to this breakpoint assigned ID for a process." alt="" coords="266,479,445,505"/>
+<area shape="rect" id="node30" href="$classUIWindow.html#aa18935ac7bf79e5a10c8d536b81ca25f" title="Updates the current line and file for a process." alt="" coords="519,73,693,100"/>
+<area shape="rect" id="node31" href="$classUIWindow.html#afd8134a65eb457f80d6e47bcfb360e56" title="Stops all processes." alt="" coords="794,324,941,351"/>
+<area shape="rect" id="node3" href="$classUIWindow.html#a8c927adbf781e88754dcc9caabc6ae0b" title="Appends a new row for a source file to the Overview." alt="" coords="747,124,988,151"/>
+<area shape="rect" id="node5" href="$classUIWindow.html#aa20f683f45142300ff17e7ff445f50bc" title="Signal handler for the Gsv::View line mark clicked signal." alt="" coords="776,175,959,217"/>
+<area shape="rect" id="node23" href="$classUIWindow.html#a1b85f5b4298b721830e9b162a65c664e" title="Opens a file for a source file which was not found." alt="" coords="513,175,699,201"/>
+<area shape="rect" id="node4" href="$classUIWindow.html#aa4f6b1a4b49767fcc71a6a72ba9a461c" title="Sets the color for the line numbers in the Overview." alt="" coords="1036,75,1231,101"/>
+<area shape="rect" id="node6" href="$classUIWindow.html#a447e57e6deef4c794c8b8da1ec50141e" title="Creates a line mark in a Gsv::View." alt="" coords="1045,129,1222,156"/>
+<area shape="rect" id="node18" href="$classUIWindow.html#a19ed8774685ac8a1a223f958d6376d74" title="Deletes the breakpoint for all processes and then the mark itself." alt="" coords="1045,231,1222,257"/>
+<area shape="rect" id="node22" href="$classUIWindow.html#ab3135faddc758530ac3e34b8973130ad" title="Displays the BreakpointDialog dialog." alt="" coords="1053,180,1214,207"/>
+<area shape="rect" id="node7" href="$classBreakpoint.html#a8336aad83387aa92aa8b21e9361096f6" title="Checks if at least one breakpoint is existing." alt="" coords="1279,88,1460,115"/>
+<area shape="rect" id="node8" href="$classBreakpoint.html#a530ad76e3382517101cf28ce6bdabaf7" title="Modifies the breakpoints according to button_states." alt="" coords="1296,139,1443,181"/>
+<area shape="rect" id="node9" href="$classBreakpoint.html#abc03d69a380841a3e15cd39a11b7d60b" title="Creates a breakpoint for a process." alt="" coords="1526,9,1669,50"/>
+<area shape="rect" id="node14" href="$classBreakpoint.html#ac27741795e2f0c8627128fe2ffd221e8" title="Deletes a breakpoint for a process." alt="" coords="1526,139,1669,181"/>
+<area shape="rect" id="node15" href="$classBreakpoint.html#a57d9849b5661c53ad12c69b407b920de" title="Generates a comma separated list of processes for which the breakpoint is in the state state." alt="" coords="1523,205,1672,232"/>
+<area shape="rect" id="node16" href="$classUIWindow.html#a206ec747a9c2589eac08719d221ce218" title="Gets the Gtk window object." alt="" coords="1508,256,1687,283"/>
+<area shape="rect" id="node17" href="$classBreakpoint.html#a84d8c1b691a7687552af36500a63392e" title="Resets the error states to their corresponding base state." alt="" coords="1524,74,1671,115"/>
+<area shape="rect" id="node10" href="$classUIWindow.html#a17b365bb1177f5f8e1306c5ac2d41198" title="Gets the TCP socket associated to a process. (GDB)" alt="" coords="1735,107,1927,133"/>
+<area shape="rect" id="node11" href="$classUIWindow.html#af7d2b8be24892c57aa9b40a3ccada1b8" title="Writes data to the TCP socket." alt="" coords="1749,157,1912,184"/>
+<area shape="rect" id="node12" href="$classUIWindow.html#a85567fb5c7d2674f3be31fe5a01a2e3a" title="Stores a pointer to a Breakpoint object." alt="" coords="1735,5,1927,32"/>
+<area shape="rect" id="node13" href="$classUIWindow.html#a655257a1db3090889ead987fcdffcaaa" title="Gets the state of a process." alt="" coords="1743,56,1918,83"/>
+<area shape="rect" id="node19" href="$classUIWindow.html#a32dd4b6056237371b87bc2ffe701b1a6" title="Delete a line mark in a Gsv::View." alt="" coords="1285,271,1453,297"/>
+<area shape="rect" id="node21" href="$classBreakpoint.html#aab6298c6cb7b4c1fb1e2995ccd23a32a" title="Deletes the breakpoints for all process." alt="" coords="1298,205,1441,246"/>
+<area shape="rect" id="node20" href="$classBreakpoint.html#a40fe4a865e93c2dbe1c9d75698514e95" title="Returns the line number of the associated source file." alt="" coords="1521,307,1674,349"/>
+<area shape="rect" id="node24" href="$classUIWindow.html#adf6ab1f7b18f7ee63dbc0d2b63660949" title="Updates all labels and their tooltip for a process." alt="" coords="764,73,971,100"/>
+<area shape="rect" id="node28" href="$classUIWindow.html#a4f86980f7a059df4113036578c1bfa6a" title="Scrolls a scrolled window to a line." alt="" coords="529,428,683,455"/>
 </map>

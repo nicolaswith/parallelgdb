@@ -95,6 +95,8 @@ class UIWindow
 
 	std::map<int, Breakpoint *> *m_bkptno_2_bkpt;
 
+	std::map<std::string, sigc::connection> m_path_2_connection;
+
 	sigc::connection *m_scroll_connections_gdb;
 	sigc::connection *m_scroll_connections_trgt;
 
@@ -204,6 +206,8 @@ class UIWindow
 	void close_unused_tabs();
 	/// Updates the running and exited row for a processes.
 	void check_overview(const int rank);
+	/// Opens a file for a source file which was not found.
+	void open_missing(Gtk::TextIter &, GdkEvent *, const std::string &fullpath);
 
 	/// Wrapper for the Gtk::get_widget function.
 	template <class T>

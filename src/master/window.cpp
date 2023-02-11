@@ -48,6 +48,7 @@ using std::string;
 const char *const breakpoint_category = "breakpoint-category";
 const char *const line_number_id = "line-number";
 const char *const marks_id = "marks";
+const char *const open_file_id = "open-file";
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 /**
@@ -1135,7 +1136,30 @@ void UIWindow::append_source_file(const string &fullpath)
 		}
 		else
 		{
-			source_buffer->set_text(string("Could not load file: ") + fullpath);
+			source_buffer->set_text(string("Could not load file: ") +
+									fullpath +
+									"\n\n<- Click icon to open a file.");
+			source_view->set_show_line_marks(true);
+			sigc::connection open_file_connection =
+				source_view->signal_line_mark_activated().connect(sigc::bind(
+					sigc::mem_fun(*this, &UIWindow::open_missing), fullpath));
+			m_path_2_connection[fullpath] = open_file_connection;
+			// prepare breakpoint icon to be used on click events
+			string filename = "./res/breakpoint.svg";
+			char *path = realpath(filename.c_str(), nullptr);
+			if (path == nullptr)
+			{
+				throw std::runtime_error("Cannot find file: " + filename + "\n");
+			}
+			Glib::RefPtr<Gsv::MarkAttributes> attributes =
+				Gsv::MarkAttributes::create();
+			attributes->set_icon(Gio::Icon::create(path));
+			source_view->set_mark_attributes(breakpoint_category, attributes, 0);
+			free(path);
+			Glib::RefPtr<Gsv::Mark> new_mark =
+				source_buffer->create_source_mark(
+					open_file_id, breakpoint_category,
+					source_buffer->get_iter_at_line(2));
 		}
 		scrolled_window->show_all();
 		int page_num = m_files_notebook->append_page(*scrolled_window, *label);
@@ -1152,6 +1176,57 @@ void UIWindow::append_source_file(const string &fullpath)
 }
 
 /**
+ * This function opens a file for a source file which was not found. Therefore
+ * a file-chooser dialog is shown, where the user selects the file to open.
+ *
+ * @param[in] fullpath The source file which was not found.
+ */
+void UIWindow::open_missing(Gtk::TextIter &, GdkEvent *, const string &fullpath)
+{
+	Gsv::View *source_view = m_path_2_view[fullpath];
+	Glib::RefPtr<Gsv::Buffer> source_buffer = source_view->get_source_buffer();
+
+	std::unique_ptr<Gtk::FileChooserDialog> dialog =
+		std::make_unique<Gtk::FileChooserDialog>(
+			*m_root_window,
+			string("Open File for: ") + fullpath);
+	dialog->add_button("Cancel", Gtk::RESPONSE_CANCEL);
+	dialog->add_button("Open", Gtk::RESPONSE_OK);
+	string open_path = "";
+	if (Gtk::RESPONSE_OK == dialog->run())
+	{
+		open_path = dialog->get_filename();
+	}
+	dialog.reset();
+	if ("" == open_path)
+	{
+		return;
+	}
+	char *content;
+	size_t content_length;
+	// load the content of the source file
+	if (g_file_get_contents(open_path.c_str(), &content,
+							&content_length, nullptr))
+	{
+		source_buffer->delete_mark(source_buffer->get_mark(open_file_id));
+		m_path_2_connection[fullpath].disconnect();
+		source_view->set_show_line_numbers(true);
+		source_buffer->set_language(
+			Gsv::LanguageManager::get_default()
+				->guess_language(open_path, Glib::ustring()));
+		source_buffer->set_highlight_matching_brackets(true);
+		source_buffer->set_highlight_syntax(true);
+		source_view->signal_line_mark_activated().connect(sigc::bind(
+			sigc::mem_fun(*this, &UIWindow::on_line_mark_clicked), fullpath));
+		source_buffer->set_text(content);
+		for (int rank = 0; rank < m_num_processes; ++rank)
+		{
+			update_overview(rank, m_current_file[rank], m_current_line[rank]);
+		}
+	}
+}
+
+/**
  * This function opens a source file in the source view notebook.
  */
 void UIWindow::open_file()
@@ -1161,8 +1236,7 @@ void UIWindow::open_file()
 												 "Open Source File");
 	dialog->add_button("Cancel", Gtk::RESPONSE_CANCEL);
 	dialog->add_button("Open", Gtk::RESPONSE_OK);
-	int res = dialog->run();
-	if (Gtk::RESPONSE_OK == res)
+	if (Gtk::RESPONSE_OK == dialog->run())
 	{
 		string fullpath = dialog->get_filename();
 		append_source_file(fullpath);
