@@ -1090,89 +1090,74 @@ void UIWindow::append_overview_row(const string &basename,
 void UIWindow::append_source_file(const string &fullpath)
 {
 	// check that file is not opened already
-	if (m_opened_files.find(fullpath) == m_opened_files.end())
+	if (m_opened_files.find(fullpath) != m_opened_files.end())
 	{
-		m_opened_files.insert(fullpath);
-		string basename = Glib::path_get_basename(fullpath);
-		Gtk::Label *label = Gtk::manage(new Gtk::Label(basename));
-		label->set_tooltip_text(fullpath);
-		Gtk::ScrolledWindow *scrolled_window =
-			Gtk::manage(new Gtk::ScrolledWindow());
-		// prepare the Gsv::View
-		Gsv::View *source_view = Gtk::manage(new Gsv::View());
-		Glib::RefPtr<Gsv::Buffer> source_buffer = source_view->get_source_buffer();
-		source_view->set_source_buffer(source_buffer);
-		source_view->set_editable(false);
-		source_view->set_bottom_margin(30);
-		scrolled_window->add(*source_view);
-		char *content;
-		size_t content_length;
-		// load the content of the source file
-		if (g_file_get_contents(fullpath.c_str(), &content, &content_length,
-								nullptr))
-		{
-			source_view->set_show_line_numbers(true);
-			source_view->set_show_line_marks(true);
-			source_buffer->set_language(
-				Gsv::LanguageManager::get_default()
-					->guess_language(fullpath, Glib::ustring()));
-			source_buffer->set_highlight_matching_brackets(true);
-			source_buffer->set_highlight_syntax(true);
-			source_buffer->set_text(content);
-			source_view->signal_line_mark_activated().connect(sigc::bind(
-				sigc::mem_fun(*this, &UIWindow::on_line_mark_clicked), fullpath));
-			// prepare breakpoint icon to be used on click events
-			string filename = "./res/breakpoint.svg";
-			char *path = realpath(filename.c_str(), nullptr);
-			if (path == nullptr)
-			{
-				throw std::runtime_error("Cannot find file: " + filename + "\n");
-			}
-			Glib::RefPtr<Gsv::MarkAttributes> attributes =
-				Gsv::MarkAttributes::create();
-			attributes->set_icon(Gio::Icon::create(path));
-			source_view->set_mark_attributes(breakpoint_category, attributes, 0);
-			free(path);
-		}
-		else
-		{
-			source_buffer->set_text(string("Could not load file: ") +
-									fullpath +
-									"\n\n<- Click icon to open a file.");
-			source_view->set_show_line_marks(true);
-			sigc::connection open_file_connection =
-				source_view->signal_line_mark_activated().connect(sigc::bind(
-					sigc::mem_fun(*this, &UIWindow::open_missing), fullpath));
-			m_path_2_connection[fullpath] = open_file_connection;
-			// prepare breakpoint icon to be used on click events
-			string filename = "./res/breakpoint.svg";
-			char *path = realpath(filename.c_str(), nullptr);
-			if (path == nullptr)
-			{
-				throw std::runtime_error("Cannot find file: " + filename + "\n");
-			}
-			Glib::RefPtr<Gsv::MarkAttributes> attributes =
-				Gsv::MarkAttributes::create();
-			attributes->set_icon(Gio::Icon::create(path));
-			source_view->set_mark_attributes(breakpoint_category, attributes, 0);
-			free(path);
-			Glib::RefPtr<Gsv::Mark> new_mark =
-				source_buffer->create_source_mark(
-					open_file_id, breakpoint_category,
-					source_buffer->get_iter_at_line(2));
-		}
-		scrolled_window->show_all();
-		int page_num = m_files_notebook->append_page(*scrolled_window, *label);
-		m_files_notebook->set_current_page(page_num);
-		m_path_2_pagenum[fullpath] = page_num;
-		m_pagenum_2_path[page_num] = fullpath;
-		m_path_2_view[fullpath] = source_view;
-		append_overview_row(basename, fullpath);
+		m_files_notebook->set_current_page(m_path_2_pagenum[fullpath]);
+		return;
+	}
+	m_opened_files.insert(fullpath);
+	string basename = Glib::path_get_basename(fullpath);
+	Gtk::Label *label = Gtk::manage(new Gtk::Label(basename));
+	label->set_tooltip_text(fullpath);
+	Gtk::ScrolledWindow *scrolled_window =
+		Gtk::manage(new Gtk::ScrolledWindow());
+	// prepare the Gsv::View
+	Gsv::View *source_view = Gtk::manage(new Gsv::View());
+	Glib::RefPtr<Gsv::Buffer> source_buffer = source_view->get_source_buffer();
+	source_view->set_source_buffer(source_buffer);
+	source_view->set_editable(false);
+	source_view->set_show_line_marks(true);
+	source_view->set_bottom_margin(30);
+	scrolled_window->add(*source_view);
+	// prepare breakpoint icon to be used on click events
+	string filename = "./res/breakpoint.svg";
+	char *path = realpath(filename.c_str(), nullptr);
+	if (path == nullptr)
+	{
+		throw std::runtime_error("Cannot find file: " + filename + "\n");
+	}
+	Glib::RefPtr<Gsv::MarkAttributes> attributes =
+		Gsv::MarkAttributes::create();
+	attributes->set_icon(Gio::Icon::create(path));
+	source_view->set_mark_attributes(breakpoint_category, attributes, 0);
+	free(path);
+	// load the content of the source file
+	char *content;
+	size_t content_length;
+	if (g_file_get_contents(fullpath.c_str(), &content,
+							&content_length, nullptr))
+	{
+		source_buffer->set_language(
+			Gsv::LanguageManager::get_default()
+				->guess_language(fullpath, Glib::ustring()));
+		source_buffer->set_highlight_matching_brackets(true);
+		source_buffer->set_highlight_syntax(true);
+		source_buffer->set_text(content);
+		source_view->set_show_line_numbers(true);
+		source_view->signal_line_mark_activated().connect(sigc::bind(
+			sigc::mem_fun(*this, &UIWindow::on_line_mark_clicked), fullpath));
 	}
 	else
 	{
-		m_files_notebook->set_current_page(m_path_2_pagenum[fullpath]);
+		source_buffer->set_text(string("Could not load file: ") +
+								fullpath +
+								"\n\n<- Click icon to open a file.");
+		sigc::connection open_file_connection =
+			source_view->signal_line_mark_activated().connect(sigc::bind(
+				sigc::mem_fun(*this, &UIWindow::open_missing), fullpath));
+		m_path_2_connection[fullpath] = open_file_connection;
+		Glib::RefPtr<Gsv::Mark> new_mark =
+			source_buffer->create_source_mark(
+				open_file_id, breakpoint_category,
+				source_buffer->get_iter_at_line(2));
 	}
+	scrolled_window->show_all();
+	int page_num = m_files_notebook->append_page(*scrolled_window, *label);
+	m_files_notebook->set_current_page(page_num);
+	m_path_2_pagenum[fullpath] = page_num;
+	m_pagenum_2_path[page_num] = fullpath;
+	m_path_2_view[fullpath] = source_view;
+	append_overview_row(basename, fullpath);
 }
 
 /**
@@ -1210,6 +1195,7 @@ void UIWindow::open_missing(Gtk::TextIter &, GdkEvent *, const string &fullpath)
 	{
 		source_buffer->delete_mark(source_buffer->get_mark(open_file_id));
 		m_path_2_connection[fullpath].disconnect();
+		m_path_2_connection.erase(fullpath);
 		source_view->set_show_line_numbers(true);
 		source_buffer->set_language(
 			Gsv::LanguageManager::get_default()
