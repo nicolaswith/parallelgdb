@@ -1276,6 +1276,11 @@ mi_bkpt *mi_get_bkpt(mi_results *p)
 				res->file = p->v.cstr;
 				p->v.cstr = NULL;
 			}
+			else if (strcmp(p->var, "fullname") == 0)
+			{
+				res->fullname = p->v.cstr;
+				p->v.cstr = NULL;
+			}
 			else if (strcmp(p->var, "line") == 0)
 				res->line = atoi(p->v.cstr);
 			else if (strcmp(p->var, "times") == 0)

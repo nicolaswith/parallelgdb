@@ -166,6 +166,7 @@ void mi_free_bkpt(mi_bkpt *b)
 	{
 		free(b->func);
 		free(b->file);
+		free(b->fullname);
 		free(b->file_abs);
 		free(b->cond);
 		aux = b->next;

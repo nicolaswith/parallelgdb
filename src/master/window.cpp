@@ -1522,8 +1522,7 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data,
 					m_exit_code[rank] = stop_record->exit_code;
 					clear_labels_overview(rank);
 				}
-				if (stop_record->frame && stop_record->frame->fullname &&
-					stop_record->frame->func)
+				if (stop_record->frame && stop_record->frame->fullname)
 				{
 					const string fullpath = stop_record->frame->fullname;
 					// this index is one-based!
