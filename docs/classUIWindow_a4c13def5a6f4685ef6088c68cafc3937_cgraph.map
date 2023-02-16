@@ -1,7 +1,7 @@
 <map id="UIWindow::print_data" name="UIWindow::print_data">
 <area shape="rect" id="node1" title="Forwards the received data to the corresponding data handler." alt="" coords="5,377,167,404"/>
 <area shape="rect" id="node2" href="$classUIWindow.html#afb01300d48a3af10ed8b08574e8d0f66" title="Retrieves the process rank from the TCP port." alt="" coords="235,251,387,277"/>
-<area shape="rect" id="node3" href="$classUIWindow.html#ac76b56c0c18d92124dbabfa71efa3287" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="215,301,407,328"/>
+<area shape="rect" id="node3" href="$classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="215,301,407,328"/>
 <area shape="rect" id="node34" href="$classUIWindow.html#af0ef03c9ebd1f694e7dfc9326d7104f1" title="Appends text to the target I/O text view." alt="" coords="215,352,406,379"/>
 <area shape="rect" id="node35" href="$classUIWindow.html#a367f6c7fc5761af2c7b9ba95a5ad6ae6" title="Scrolls a scrolled window to the bottom." alt="" coords="219,403,403,429"/>
 <area shape="rect" id="node36" href="$classUIWindow.html#aa69cad1ed3b5f47f4f25aa5e2f88795b" title="Sends data to all selected processes." alt="" coords="995,450,1158,491"/>

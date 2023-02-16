@@ -195,9 +195,8 @@ bool Master::start_slaves_local()
 }
 
 /**
- * This function handles the TCP communication between socat and the master. It
- * creates a gdb output parser of for all GDB sockets. After that it waits
- * (blocking) for data. When data is received, a copy is sent to be
+ * This function handles the TCP communication between socat and the master. 
+ * It waits (blocking) for data. When data is received, a copy is sent to be
  * displayed/parsed. On error the connection is closed and the master
  * terminates.
  *
@@ -209,14 +208,9 @@ void Master::process_session(tcp::socket socket,
 							 const asio::ip::port_type port)
 {
 	const int rank = UIWindow::get_rank(port);
-	mi_h *gdb_handle = nullptr;
 	if (UIWindow::src_is_gdb(port))
 	{
 		m_window->set_conns_gdb(rank, &socket);
-		m_window->set_conns_open_gdb(rank, true);
-		// allocate the GDB output parser
-		gdb_handle = mi_alloc_h();
-		gdb_handle->line = nullptr;
 	}
 	else
 	{
@@ -237,11 +231,7 @@ void Master::process_session(tcp::socket socket,
 			socket.read_some(asio::buffer(data, m_max_length), error);
 		if (asio::error::eof == error)
 		{
-			if (UIWindow::src_is_gdb(port))
-			{
-				m_window->set_conns_open_gdb(rank, false);
-				mi_free_h(&gdb_handle);
-			}
+			// there should be no data on eof ... ?
 			break;
 		}
 		else if (error)
@@ -253,7 +243,7 @@ void Master::process_session(tcp::socket socket,
 		// hand a copy of the data to the print function
 		Glib::signal_idle().connect_once(
 			sigc::bind(sigc::mem_fun(*m_window, &UIWindow::print_data),
-					   gdb_handle, strdup(data), port));
+					   strdup(data), port));
 	}
 	delete[] data;
 }

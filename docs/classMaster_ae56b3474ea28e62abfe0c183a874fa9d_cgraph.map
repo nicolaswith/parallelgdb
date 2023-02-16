@@ -1,12 +1,11 @@
 <map id="Master::process_session" name="Master::process_session">
-<area shape="rect" id="node1" title="Handles the TCP communication between socat and the master." alt="" coords="5,441,187,467"/>
+<area shape="rect" id="node1" title="Handles the TCP communication between socat and the master." alt="" coords="5,415,187,442"/>
 <area shape="rect" id="node2" href="$classUIWindow.html#afb01300d48a3af10ed8b08574e8d0f66" title="Retrieves the process rank from the TCP port." alt="" coords="493,218,645,245"/>
-<area shape="rect" id="node3" href="$classUIWindow.html#a848694f8ebd8e4be25695b37b799a8f5" title="Forwards the received data to the corresponding data handler." alt="" coords="249,365,411,391"/>
+<area shape="rect" id="node3" href="$classUIWindow.html#a4c13def5a6f4685ef6088c68cafc3937" title="Forwards the received data to the corresponding data handler." alt="" coords="249,365,411,391"/>
 <area shape="rect" id="node38" href="$classUIWindow.html#adcac347655db8e31194add4d428579c2" title="Checks whether the port is associated with GDB." alt="" coords="488,503,651,530"/>
 <area shape="rect" id="node39" href="$classUIWindow.html#a37091955820dfb6b2c292477e14dcfb2" title="Sets the TCP socket associated to a process. (GDB)" alt="" coords="235,466,425,493"/>
-<area shape="rect" id="node40" href="$classUIWindow.html#a8a72ec989d85105cfbf686a116cda7e6" title="Sets whether the TCP connection is open." alt="" coords="250,517,410,559"/>
-<area shape="rect" id="node41" href="$classUIWindow.html#a4332b7dab6c211ae72c06e74239f7225" title="Sets the TCP socket associated to a process. (target)" alt="" coords="235,583,425,610"/>
-<area shape="rect" id="node4" href="$classUIWindow.html#ac76b56c0c18d92124dbabfa71efa3287" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="473,319,665,346"/>
+<area shape="rect" id="node40" href="$classUIWindow.html#a4332b7dab6c211ae72c06e74239f7225" title="Sets the TCP socket associated to a process. (target)" alt="" coords="235,517,425,543"/>
+<area shape="rect" id="node4" href="$classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="473,319,665,346"/>
 <area shape="rect" id="node35" href="$classUIWindow.html#af0ef03c9ebd1f694e7dfc9326d7104f1" title="Appends text to the target I/O text view." alt="" coords="474,453,665,479"/>
 <area shape="rect" id="node36" href="$classUIWindow.html#a367f6c7fc5761af2c7b9ba95a5ad6ae6" title="Scrolls a scrolled window to the bottom." alt="" coords="477,269,661,295"/>
 <area shape="rect" id="node37" href="$classUIWindow.html#aa69cad1ed3b5f47f4f25aa5e2f88795b" title="Sends data to all selected processes." alt="" coords="1254,413,1417,455"/>

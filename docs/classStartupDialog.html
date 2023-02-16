@@ -142,10 +142,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac6306bbf09822abe76847e406e3e3071"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#ac6306bbf09822abe76847e406e3e3071">master_starts_slaves</a> () const</td></tr>
 <tr class="memdesc:ac6306bbf09822abe76847e406e3e3071"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether the master should start the slaves.  <a href="classStartupDialog.html#ac6306bbf09822abe76847e406e3e3071">More...</a><br /></td></tr>
 <tr class="separator:ac6306bbf09822abe76847e406e3e3071"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a069d27a41b7c000e11ed33573b88c690"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a069d27a41b7c000e11ed33573b88c690"><td class="memTemplItemLeft" align="right" valign="top">T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#a069d27a41b7c000e11ed33573b88c690">get_widget</a> (const string &amp;widget_name)</td></tr>
-<tr class="memdesc:a069d27a41b7c000e11ed33573b88c690"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper for the Gtk::get_widget function.  <a href="classStartupDialog.html#a069d27a41b7c000e11ed33573b88c690">More...</a><br /></td></tr>
-<tr class="separator:a069d27a41b7c000e11ed33573b88c690"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -185,9 +181,10 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:a7ec3dcbd1f393f8553f6500b855057d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#a7ec3dcbd1f393f8553f6500b855057d4">clear_all</a> ()</td></tr>
 <tr class="memdesc:a7ec3dcbd1f393f8553f6500b855057d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the dialog to be empty and clears the file in the file-chooser-button.  <a href="classStartupDialog.html#a7ec3dcbd1f393f8553f6500b855057d4">More...</a><br /></td></tr>
 <tr class="separator:a7ec3dcbd1f393f8553f6500b855057d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4bd3f78b9f7d601b0ea4092f64fef60"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:aa4bd3f78b9f7d601b0ea4092f64fef60"><td class="memTemplItemLeft" align="right" valign="top">T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#aa4bd3f78b9f7d601b0ea4092f64fef60">get_widget</a> (const std::string &amp;widget_name)</td></tr>
-<tr class="separator:aa4bd3f78b9f7d601b0ea4092f64fef60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb90cee233c729f223dfa5b5204a17a4"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:abb90cee233c729f223dfa5b5204a17a4"><td class="memTemplItemLeft" align="right" valign="top">T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#abb90cee233c729f223dfa5b5204a17a4">get_widget</a> (const std::string &amp;widget_name)</td></tr>
+<tr class="memdesc:abb90cee233c729f223dfa5b5204a17a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper for the Gtk::get_widget function.  <a href="classStartupDialog.html#abb90cee233c729f223dfa5b5204a17a4">More...</a><br /></td></tr>
+<tr class="separator:abb90cee233c729f223dfa5b5204a17a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -514,8 +511,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="aa4bd3f78b9f7d601b0ea4092f64fef60"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa4bd3f78b9f7d601b0ea4092f64fef60">&#9670;&nbsp;</a></span>get_widget() <span class="overload">[1/2]</span></h2>
+<a id="abb90cee233c729f223dfa5b5204a17a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb90cee233c729f223dfa5b5204a17a4">&#9670;&nbsp;</a></span>get_widget()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -526,7 +523,7 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">T* StartupDialog::get_widget </td>
+          <td class="memname">T * StartupDialog::get_widget </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>widget_name</em></td><td>)</td>
@@ -538,26 +535,6 @@ template&lt;class T &gt; </div>
 <span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a069d27a41b7c000e11ed33573b88c690"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a069d27a41b7c000e11ed33573b88c690">&#9670;&nbsp;</a></span>get_widget() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">T* StartupDialog::get_widget </td>
-          <td>(</td>
-          <td class="paramtype">const string &amp;&#160;</td>
-          <td class="paramname"><em>widget_name</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
 </div><div class="memdoc">
 <p>This function is a wrapper for the Gtk::get_widget function.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>

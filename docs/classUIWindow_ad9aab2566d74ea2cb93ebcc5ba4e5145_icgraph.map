@@ -1,6 +1,6 @@
 <map id="UIWindow::print_data_gdb" name="UIWindow::print_data_gdb">
 <area shape="rect" id="node1" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="971,5,1163,32"/>
-<area shape="rect" id="node2" href="$classUIWindow.html#a848694f8ebd8e4be25695b37b799a8f5" title="Forwards the received data to the corresponding data handler." alt="" coords="761,5,923,32"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#a4c13def5a6f4685ef6088c68cafc3937" title="Forwards the received data to the corresponding data handler." alt="" coords="761,5,923,32"/>
 <area shape="rect" id="node3" href="$classMaster.html#ae56b3474ea28e62abfe0c183a874fa9d" title="Handles the TCP communication between socat and the master." alt="" coords="532,5,713,32"/>
 <area shape="rect" id="node4" href="$classMaster.html#a8f01bcecf27dbe029c4181f72133c536" title="Waits (blocking) for a TCP connection on the TCP port." alt="" coords="316,5,484,32"/>
 <area shape="rect" id="node5" href="$classMaster.html#ab15d4163aba6881bbfd079414566ab12" title="Creates threads for each blocking TCP acceptor call." alt="" coords="108,5,268,32"/>

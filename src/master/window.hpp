@@ -70,6 +70,8 @@ class UIWindow
 	TargetState *m_target_state;
 	int *m_exit_code;
 
+	mi_h **m_gdb_handle;
+
 	Glib::RefPtr<Gtk::Builder> m_builder;
 	Gtk::Window *m_root_window;
 	Glib::RefPtr<Gtk::Application> m_app;
@@ -92,9 +94,7 @@ class UIWindow
 	std::map<int, std::string> m_pagenum_2_path;
 	std::map<std::string, Gsv::View *> m_path_2_view;
 	std::map<std::string, int> m_path_2_row;
-
 	std::map<int, Breakpoint *> *m_bkptno_2_bkpt;
-
 	std::map<std::string, sigc::connection> m_path_2_connection;
 
 	sigc::connection *m_scroll_connections_gdb;
@@ -109,10 +109,7 @@ class UIWindow
 
 	volatile bool *m_started;
 	volatile bool m_sent_run;
-
 	volatile bool *m_sent_stop;
-
-	volatile bool *m_conns_open_gdb;
 
 	/// Initializes the table-like grid layout in the overview.
 	void init_overview();
@@ -132,8 +129,7 @@ class UIWindow
 	/// Appends a source file page to the source view notebook.
 	void append_source_file(const std::string &fullpath);
 	/// Tokenizes, parses and analyzes the received GDB output.
-	void print_data_gdb(mi_h *const gdb_handle, const char *const data,
-						const int rank);
+	void print_data_gdb(const char *const data, const int rank);
 	/// Appends text to the target I/O text view.
 	void print_data_trgt(const char *const data, const int rank);
 	/// Sets the positions of the dots in the drawing area.
@@ -224,8 +220,7 @@ public:
 	/// Closes the GDB instances and thus the slaves.
 	bool on_delete(GdkEventAny *);
 	/// Forwards the received data to the corresponding data handler.
-	void print_data(mi_h *const gdb_handle, const char *const data,
-					const int port);
+	void print_data(const char *const data, const int port);
 	/// Writes data to the TCP socket.
 	bool send_data(asio::ip::tcp::socket *const socket,
 				   const std::string &data);
@@ -323,33 +318,6 @@ public:
 							   asio::ip::tcp::socket *const socket)
 	{
 		m_conns_trgt[rank] = socket;
-	}
-
-	/// Returns whether the TCP connection is open.
-	/**
-	 * This function returns whether the TCP connection is open.
-	 *
-	 * @param rank The process rank.
-	 *
-	 * @return Whether the TCP connection is open. @c true for open,
-	 * @c false for closed.
-	 */
-	inline bool get_conns_open_gdb(const int rank) const
-	{
-		return m_conns_open_gdb[rank];
-	}
-
-	/// Sets whether the TCP connection is open.
-	/**
-	 * This function sets whether the TCP connection is open.
-	 *
-	 * @param rank The process rank.
-	 *
-	 * @param value @c true for open, @c false for closed.
-	 */
-	inline void set_conns_open_gdb(const int rank, const bool value)
-	{
-		m_conns_open_gdb[rank] = value;
 	}
 
 	/// Stores a pointer to a Breakpoint object.

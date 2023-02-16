@@ -2,11 +2,11 @@
 <area shape="rect" id="node1" title="Opens a file for a source file which was not found." alt="" coords="1479,31,1664,57"/>
 <area shape="rect" id="node2" href="$classUIWindow.html#acf4ea013c774568bd14b79f4486eb067" title="Appends a source file page to the source view notebook." alt="" coords="1211,31,1431,57"/>
 <area shape="rect" id="node3" href="$classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="989,5,1144,32"/>
-<area shape="rect" id="node7" href="$classUIWindow.html#ac76b56c0c18d92124dbabfa71efa3287" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="971,56,1163,83"/>
+<area shape="rect" id="node7" href="$classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="971,56,1163,83"/>
 <area shape="rect" id="node4" href="$classUIWindow.html#a237131d5aa62c32799cf1f0d0e913110" title="Loads the glade file and connects the signal handlers." alt="" coords="784,5,900,32"/>
 <area shape="rect" id="node5" href="$classMaster.html#a6cb4d31abc26317bccf2251edca321bb" title="Starts the GUI main window." alt="" coords="332,5,468,32"/>
 <area shape="rect" id="node6" href="$master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,31,60,57"/>
-<area shape="rect" id="node8" href="$classUIWindow.html#a848694f8ebd8e4be25695b37b799a8f5" title="Forwards the received data to the corresponding data handler." alt="" coords="761,56,923,83"/>
+<area shape="rect" id="node8" href="$classUIWindow.html#a4c13def5a6f4685ef6088c68cafc3937" title="Forwards the received data to the corresponding data handler." alt="" coords="761,56,923,83"/>
 <area shape="rect" id="node9" href="$classMaster.html#ae56b3474ea28e62abfe0c183a874fa9d" title="Handles the TCP communication between socat and the master." alt="" coords="532,56,713,83"/>
 <area shape="rect" id="node10" href="$classMaster.html#a8f01bcecf27dbe029c4181f72133c536" title="Waits (blocking) for a TCP connection on the TCP port." alt="" coords="316,56,484,83"/>
 <area shape="rect" id="node11" href="$classMaster.html#ab15d4163aba6881bbfd079414566ab12" title="Creates threads for each blocking TCP acceptor call." alt="" coords="108,56,268,83"/>

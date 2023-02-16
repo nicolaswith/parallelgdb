@@ -42,7 +42,7 @@ using std::string;
  * @return The pointer to the widget object on success, @c nullptr on error.
  */
 template <class T>
-T *BreakpointDialog::get_widget(const string &widget_name)
+T *BreakpointDialog::get_widget(const std::string &widget_name)
 {
 	T *widget;
 	m_builder->get_widget<T>(widget_name, widget);

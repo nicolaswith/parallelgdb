@@ -1,7 +1,0 @@
-<map id="UIWindow::set_conns_open_gdb" name="UIWindow::set_conns_open_gdb">
-<area shape="rect" id="node1" title="Sets whether the TCP connection is open." alt="" coords="761,5,921,47"/>
-<area shape="rect" id="node2" href="$classMaster.html#ae56b3474ea28e62abfe0c183a874fa9d" title="Handles the TCP communication between socat and the master." alt="" coords="532,13,713,39"/>
-<area shape="rect" id="node3" href="$classMaster.html#a8f01bcecf27dbe029c4181f72133c536" title="Waits (blocking) for a TCP connection on the TCP port." alt="" coords="316,13,484,39"/>
-<area shape="rect" id="node4" href="$classMaster.html#ab15d4163aba6881bbfd079414566ab12" title="Creates threads for each blocking TCP acceptor call." alt="" coords="108,13,268,39"/>
-<area shape="rect" id="node5" href="$master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,13,60,39"/>
-</map>

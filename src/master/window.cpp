@@ -64,6 +64,7 @@ UIWindow::UIWindow(const int num_processes)
 	m_current_line = new int[m_num_processes];
 	m_current_file = new string[m_num_processes];
 	m_target_state = new TargetState[m_num_processes];
+	m_gdb_handle = new mi_h *[m_num_processes];
 	m_exit_code = new int[m_num_processes];
 	m_conns_gdb = new tcp::socket *[m_num_processes];
 	m_conns_trgt = new tcp::socket *[m_num_processes];
@@ -78,7 +79,6 @@ UIWindow::UIWindow(const int num_processes)
 	m_breakpoints = new Breakpoint *[m_num_processes];
 	m_started = new bool[m_num_processes];
 	m_sent_stop = new bool[m_num_processes];
-	m_conns_open_gdb = new bool[m_num_processes];
 	// initialize values
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
@@ -86,11 +86,13 @@ UIWindow::UIWindow(const int num_processes)
 		m_exit_code[rank] = 0;
 		m_conns_gdb[rank] = nullptr;
 		m_conns_trgt[rank] = nullptr;
-		m_conns_open_gdb[rank] = false;
 		m_current_line[rank] = 0;
 		m_breakpoints[rank] = nullptr;
 		m_started[rank] = false;
 		m_sent_stop[rank] = false;
+		// allocate the GDB output parser per rank
+		m_gdb_handle[rank] = mi_alloc_h();
+		m_gdb_handle[rank]->line = nullptr;
 	}
 }
 
@@ -117,7 +119,11 @@ UIWindow::~UIWindow()
 	delete[] m_breakpoints;
 	delete[] m_started;
 	delete[] m_sent_stop;
-	delete[] m_conns_open_gdb;
+	for (int rank = 0; rank < m_num_processes; ++rank)
+	{
+		mi_free_h(&m_gdb_handle[rank]);
+	}
+	delete[] m_gdb_handle;
 }
 
 /**
@@ -130,7 +136,7 @@ UIWindow::~UIWindow()
  * @return The pointer to the widget object on success, @c nullptr on error.
  */
 template <class T>
-T *UIWindow::get_widget(const string &widget_name)
+T *UIWindow::get_widget(const std::string &widget_name)
 {
 	T *widget;
 	m_builder->get_widget<T>(widget_name, widget);
@@ -399,7 +405,7 @@ bool UIWindow::on_delete(GdkEventAny *)
 {
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
-		if (!m_conns_open_gdb[rank])
+		if (!m_conns_gdb[rank]->is_open())
 		{
 			continue;
 		}
@@ -408,7 +414,7 @@ bool UIWindow::on_delete(GdkEventAny *)
 	}
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
-		while (m_conns_open_gdb[rank])
+		while (m_conns_gdb[rank]->is_open())
 		{
 			usleep(100);
 		}
@@ -1430,8 +1436,6 @@ void UIWindow::set_position(const int rank, const string &fullpath,
  * parser. The resulting response objects are then analyzed and based on that
  * states are updated.
  *
- * @param[in] gdb_handle A pointer to the GDB output parser.
- *
  * @param[in] data The received GDB output.
  *
  * @param rank The process rank.
@@ -1439,8 +1443,7 @@ void UIWindow::set_position(const int rank, const string &fullpath,
  * @note
  * This should probably be refactored...
  */
-void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data,
-							  const int rank)
+void UIWindow::print_data_gdb(const char *const data, const int rank)
 {
 	Gtk::TextBuffer *buffer = m_text_buffers_gdb[rank];
 
@@ -1453,15 +1456,10 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data,
 		{
 			token[token_length - 1] = '\0';
 		}
-		if (nullptr == gdb_handle)
-		{
-			std::cerr << "GDB handle deleted. Rank: " << std::to_string(rank) << "\n";
-			return;
-		}
-		free(gdb_handle->line);
-		gdb_handle->line = strdup(token);
+		free(m_gdb_handle[rank]->line);
+		m_gdb_handle[rank]->line = strdup(token);
 
-		int response = mi_get_response(gdb_handle);
+		int response = mi_get_response(m_gdb_handle[rank]);
 		if (0 != response)
 		{
 			if (!m_started[rank])
@@ -1469,7 +1467,7 @@ void UIWindow::print_data_gdb(mi_h *const gdb_handle, const char *const data,
 				m_started[rank] = true;
 			}
 
-			mi_output *first_output = mi_retire_response(gdb_handle);
+			mi_output *first_output = mi_retire_response(m_gdb_handle[rank]);
 			mi_output *current_output = first_output;
 
 			while (NULL != current_output)
@@ -1561,14 +1559,11 @@ void UIWindow::print_data_trgt(const char *const data, const int rank)
  * Furthermore it is responsible for sending the first @c run command, after all
  * GDB instances have started.
  *
- * @param[in] gdb_handle A pointer to the GDB output parser.
- *
  * @param[in] data The received text.
  *
  * @param port The originating TCP port.
  */
-void UIWindow::print_data(mi_h *const gdb_handle, const char *const data,
-						  const int port)
+void UIWindow::print_data(const char *const data, const int port)
 {
 	const int rank = get_rank(port);
 	const bool is_gdb = src_is_gdb(port);
@@ -1577,7 +1572,7 @@ void UIWindow::print_data(mi_h *const gdb_handle, const char *const data,
 
 	if (is_gdb)
 	{
-		print_data_gdb(gdb_handle, data, rank);
+		print_data_gdb(data, rank);
 		Gtk::ScrolledWindow *scrolled_window = m_scrolled_windows_gdb[rank];
 		if (m_scroll_connections_gdb[rank].empty())
 		{
