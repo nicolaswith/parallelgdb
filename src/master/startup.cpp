@@ -65,15 +65,15 @@ StartupDialog::StartupDialog()
 	  m_num_nodes(0),
 	  m_mpirun(false),
 	  m_srun(false),
-	  m_slave(nullptr),
-	  m_target(nullptr),
-	  m_arguments(nullptr),
-	  m_ip_address(nullptr),
 	  m_ssh(false),
-	  m_ssh_address(nullptr),
-	  m_ssh_user(nullptr),
-	  m_ssh_password(nullptr),
 	  m_custom_launcher(false),
+	  m_slave(""),
+	  m_target(""),
+	  m_arguments(""),
+	  m_ip_address(""),
+	  m_ssh_address(""),
+	  m_ssh_user(""),
+	  m_ssh_password(""),
 	  m_launcher_args(""),
 	  m_launcher_cmd("")
 {
@@ -133,13 +133,6 @@ StartupDialog::StartupDialog()
  */
 StartupDialog::~StartupDialog()
 {
-	free(m_slave);
-	free(m_target);
-	free(m_arguments);
-	free(m_ip_address);
-	free(m_ssh_address);
-	free(m_ssh_user);
-	free(m_ssh_password);
 	delete m_dialog;
 }
 
@@ -248,7 +241,7 @@ void StartupDialog::set_value(const std::string &key, const std::string &value)
 		else
 		{
 			m_checkbutton_launcher->set_active(false);
-			m_entry_launcher->set_sensitive(true);
+			m_entry_launcher->set_sensitive(false);
 		}
 	}
 }
@@ -329,19 +322,19 @@ void StartupDialog::export_config()
 	m_config += "\n";
 
 	m_config += "slave=";
-	m_config += m_slave ? m_slave : "";
+	m_config += m_slave;
 	m_config += "\n";
 
 	m_config += "target=";
-	m_config += m_target ? m_target : "";
+	m_config += m_target;
 	m_config += "\n";
 
 	m_config += "arguments=";
-	m_config += m_arguments ? m_arguments : "";
+	m_config += m_arguments;
 	m_config += "\n";
 
 	m_config += "ip_address=";
-	m_config += m_ip_address ? m_ip_address : "";
+	m_config += m_ip_address;
 	m_config += "\n";
 
 	m_config += "ssh=";
@@ -349,15 +342,15 @@ void StartupDialog::export_config()
 	m_config += "\n";
 
 	m_config += "ssh_address=";
-	m_config += m_ssh_address ? m_ssh_address : "";
+	m_config += m_ssh_address;
 	m_config += "\n";
 
 	m_config += "ssh_user=";
-	m_config += m_ssh_user ? m_ssh_user : "";
+	m_config += m_ssh_user;
 	m_config += "\n";
 
 	m_config += "ssh_password=";
-	m_config += m_ssh_password ? Base64::encode(m_ssh_password) : "";
+	m_config += Base64::encode(m_ssh_password);
 	m_config += "\n";
 
 	m_config += "launcher_args=";
@@ -418,35 +411,16 @@ bool StartupDialog::read_values()
 	m_ssh = m_checkbutton_ssh->get_active();
 	m_custom_launcher = m_checkbutton_launcher->get_active();
 
-	// clear old configs
-	free(m_slave);
-	free(m_target);
-	free(m_arguments);
-	free(m_ip_address);
-	free(m_ssh_address);
-	free(m_ssh_user);
-	free(m_ssh_password);
-
 	// copy new configs
-	m_slave = strdup(m_entry_slave->get_text().c_str());
-	m_target = strdup(m_entry_target->get_text().c_str());
-	m_arguments = strdup(m_entry_arguments->get_text().c_str());
-	m_ip_address = strdup(m_entry_ip_address->get_text().c_str());
-	m_ssh_address = strdup(m_entry_ssh_address->get_text().c_str());
-	m_ssh_user = strdup(m_entry_ssh_user->get_text().c_str());
-	m_ssh_password = strdup(m_entry_ssh_password->get_text().c_str());
-
-	// trim custom command
+	m_slave = m_entry_slave->get_text();
+	m_target = m_entry_target->get_text();
+	m_arguments = m_entry_arguments->get_text();
+	m_ip_address = m_entry_ip_address->get_text();
+	m_ssh_address = m_entry_ssh_address->get_text();
+	m_ssh_user = m_entry_ssh_user->get_text();
+	m_ssh_password = m_entry_ssh_password->get_text();
 	m_launcher_cmd = m_entry_launcher->get_text();
-	m_launcher_cmd = std::regex_replace(m_launcher_cmd, std::regex("^[ \t]+"), "");
-	m_launcher_cmd = std::regex_replace(m_launcher_cmd, std::regex("[ \t]+$"), "");
-	m_launcher_cmd = std::regex_replace(m_launcher_cmd, std::regex("[ \t]+"), " ");
-
-	// trim launcher arguments
 	m_launcher_args = m_entry_launcher_args->get_text();
-	m_launcher_args = std::regex_replace(m_launcher_args, std::regex("^[ \t]+"), "");
-	m_launcher_args = std::regex_replace(m_launcher_args, std::regex("[ \t]+$"), "");
-	m_launcher_args = std::regex_replace(m_launcher_args, std::regex("[ \t]+"), " ");
 
 	// parse intergers
 	try
@@ -588,6 +562,12 @@ string StartupDialog::get_cmd() const
 
 	cmd += " ";
 	cmd += m_arguments;
+
+	// Remove all preceding and trailing whitespace
+	cmd = std::regex_replace(cmd, std::regex("^[ \t]+"), "");
+	cmd = std::regex_replace(cmd, std::regex("[ \t]+$"), "");
+	// Reduces multiple whitespace chars to one space char.
+	cmd = std::regex_replace(cmd, std::regex("[ \t]+"), " ");
 
 	return cmd;
 }

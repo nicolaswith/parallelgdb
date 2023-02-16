@@ -44,15 +44,15 @@ class StartupDialog
 	int m_num_nodes;
 	bool m_mpirun;
 	bool m_srun;
-	char *m_slave;
-	char *m_target;
-	char *m_arguments;
-	char *m_ip_address;
 	bool m_ssh;
-	char *m_ssh_address;
-	char *m_ssh_user;
-	char *m_ssh_password;
 	bool m_custom_launcher;
+	std::string m_slave;
+	std::string m_target;
+	std::string m_arguments;
+	std::string m_ip_address;
+	std::string m_ssh_address;
+	std::string m_ssh_user;
+	std::string m_ssh_password;
 	std::string m_launcher_args;
 	std::string m_launcher_cmd;
 
@@ -168,7 +168,7 @@ public:
 	 */
 	inline const char *ssh_address() const
 	{
-		return m_ssh_address;
+		return m_ssh_address.c_str();
 	}
 
 	/// Returns the SSH username.
@@ -179,7 +179,7 @@ public:
 	 */
 	inline const char *ssh_user() const
 	{
-		return m_ssh_user;
+		return m_ssh_user.c_str();
 	}
 
 	/// Returns the SSH password.
@@ -190,7 +190,7 @@ public:
 	 */
 	inline const char *ssh_password() const
 	{
-		return m_ssh_password;
+		return m_ssh_password.c_str();
 	}
 
 	/// Returns whether the master should start the slaves.

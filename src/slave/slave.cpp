@@ -237,7 +237,7 @@ bool Slave::parse_cl_args()
 {
 	char c;
 	opterr = 0;
-	while ((c = getopt(m_argc, m_argv, "hi:r:e:")) != -1)
+	while ((c = getopt(m_argc, m_argv, "+hi:r:e:")) != -1)
 	{
 		switch (c)
 		{
