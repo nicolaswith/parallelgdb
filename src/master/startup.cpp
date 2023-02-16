@@ -65,7 +65,6 @@ StartupDialog::StartupDialog()
 	  m_num_nodes(0),
 	  m_mpirun(false),
 	  m_srun(false),
-	  m_oversubscribe(false),
 	  m_slave(nullptr),
 	  m_target(nullptr),
 	  m_arguments(nullptr),
@@ -74,8 +73,8 @@ StartupDialog::StartupDialog()
 	  m_ssh_address(nullptr),
 	  m_ssh_user(nullptr),
 	  m_ssh_password(nullptr),
-	  m_partition(nullptr),
 	  m_custom_launcher(false),
+	  m_launcher_args(""),
 	  m_launcher_cmd("")
 {
 	// parse the glade file
@@ -90,8 +89,6 @@ StartupDialog::StartupDialog()
 	m_entry_num_nodes = get_widget<Gtk::Entry>("num-nodes-entry");
 	m_radiobutton_mpirun = get_widget<Gtk::RadioButton>("mpirun-radiobutton");
 	m_radiobutton_srun = get_widget<Gtk::RadioButton>("srun-radiobutton");
-	m_checkbutton_oversubscribe =
-		get_widget<Gtk::CheckButton>("oversubscribe-checkbutton");
 	m_entry_slave = get_widget<Gtk::Entry>("slave-entry");
 	m_entry_target = get_widget<Gtk::Entry>("target-entry");
 	m_entry_arguments = get_widget<Gtk::Entry>("arguments-entry");
@@ -100,20 +97,15 @@ StartupDialog::StartupDialog()
 	m_entry_ssh_address = get_widget<Gtk::Entry>("ssh-address-entry");
 	m_entry_ssh_user = get_widget<Gtk::Entry>("ssh-user-entry");
 	m_entry_ssh_password = get_widget<Gtk::Entry>("ssh-password-entry");
-	m_entry_partition = get_widget<Gtk::Entry>("partition-entry");
+	m_entry_launcher_args = get_widget<Gtk::Entry>("launcher-args-entry");
 	m_checkbutton_launcher = get_widget<Gtk::CheckButton>("launcher-checkbutton");
 	m_entry_launcher = get_widget<Gtk::Entry>("launcher-entry");
 
 	// set button and entry sensitivity for empty configuration
-	m_entry_partition->set_sensitive(false);
 	set_sensitivity_ssh(false);
 	m_entry_launcher->set_sensitive(false);
 
 	// connect signal handlers to buttons
-	m_radiobutton_mpirun->signal_toggled().connect(
-		sigc::mem_fun(*this, &StartupDialog::on_launcher_toggled));
-	m_radiobutton_srun->signal_toggled().connect(
-		sigc::mem_fun(*this, &StartupDialog::on_launcher_toggled));
 	m_checkbutton_ssh->signal_toggled().connect(
 		sigc::bind(sigc::mem_fun(*this, &StartupDialog::on_ssh_button_toggled),
 				   m_checkbutton_ssh));
@@ -148,7 +140,6 @@ StartupDialog::~StartupDialog()
 	free(m_ssh_address);
 	free(m_ssh_user);
 	free(m_ssh_password);
-	free(m_partition);
 	delete m_dialog;
 }
 
@@ -161,7 +152,6 @@ void StartupDialog::clear_dialog()
 	m_entry_num_nodes->set_text("");
 	m_radiobutton_mpirun->set_active(true);
 	m_radiobutton_srun->set_active(false);
-	m_checkbutton_oversubscribe->set_active(false);
 	m_entry_slave->set_text("");
 	m_entry_target->set_text("");
 	m_entry_arguments->set_text("");
@@ -170,11 +160,10 @@ void StartupDialog::clear_dialog()
 	m_entry_ssh_address->set_text("");
 	m_entry_ssh_user->set_text("");
 	m_entry_ssh_password->set_text("");
-	m_entry_partition->set_text("");
+	m_entry_launcher_args->set_text("");
 	m_checkbutton_launcher->set_active(false);
 	m_entry_launcher->set_text("");
 
-	m_entry_partition->set_sensitive(false);
 	set_sensitivity_ssh(false);
 	m_entry_launcher->set_sensitive(false);
 }
@@ -219,8 +208,8 @@ void StartupDialog::set_value(const std::string &key, const std::string &value)
 		m_entry_ssh_user->set_text(value);
 	if ("ssh_password" == key)
 		m_entry_ssh_password->set_text(Base64::decode(value));
-	if ("partition" == key)
-		m_entry_partition->set_text(value);
+	if ("launcher_args" == key)
+		m_entry_launcher_args->set_text(value);
 	if ("custom_cmd" == key)
 		m_entry_launcher->set_text(value);
 	if ("ssh" == key)
@@ -234,17 +223,6 @@ void StartupDialog::set_value(const std::string &key, const std::string &value)
 		{
 			m_checkbutton_ssh->set_active(false);
 			set_sensitivity_ssh(false);
-		}
-	}
-	if ("oversubscribe" == key)
-	{
-		if ("true" == value)
-		{
-			m_checkbutton_oversubscribe->set_active(true);
-		}
-		else
-		{
-			m_checkbutton_oversubscribe->set_active(false);
 		}
 	}
 	if ("launcher" == key)
@@ -350,10 +328,6 @@ void StartupDialog::export_config()
 	m_config += m_mpirun ? "mpirun" : "srun";
 	m_config += "\n";
 
-	m_config += "oversubscribe=";
-	m_config += m_oversubscribe ? "true" : "false";
-	m_config += "\n";
-
 	m_config += "slave=";
 	m_config += m_slave ? m_slave : "";
 	m_config += "\n";
@@ -386,8 +360,8 @@ void StartupDialog::export_config()
 	m_config += m_ssh_password ? Base64::encode(m_ssh_password) : "";
 	m_config += "\n";
 
-	m_config += "partition=";
-	m_config += m_partition ? m_partition : "";
+	m_config += "launcher_args=";
+	m_config += m_launcher_args;
 	m_config += "\n";
 
 	m_config += "custom_launcher=";
@@ -441,7 +415,6 @@ bool StartupDialog::read_values()
 	// get button states
 	m_mpirun = m_radiobutton_mpirun->get_active();
 	m_srun = m_radiobutton_srun->get_active();
-	m_oversubscribe = m_checkbutton_oversubscribe->get_active();
 	m_ssh = m_checkbutton_ssh->get_active();
 	m_custom_launcher = m_checkbutton_launcher->get_active();
 
@@ -453,7 +426,6 @@ bool StartupDialog::read_values()
 	free(m_ssh_address);
 	free(m_ssh_user);
 	free(m_ssh_password);
-	free(m_partition);
 
 	// copy new configs
 	m_slave = strdup(m_entry_slave->get_text().c_str());
@@ -463,13 +435,18 @@ bool StartupDialog::read_values()
 	m_ssh_address = strdup(m_entry_ssh_address->get_text().c_str());
 	m_ssh_user = strdup(m_entry_ssh_user->get_text().c_str());
 	m_ssh_password = strdup(m_entry_ssh_password->get_text().c_str());
-	m_partition = strdup(m_entry_partition->get_text().c_str());
 
 	// trim custom command
 	m_launcher_cmd = m_entry_launcher->get_text();
 	m_launcher_cmd = std::regex_replace(m_launcher_cmd, std::regex("^[ \t]+"), "");
 	m_launcher_cmd = std::regex_replace(m_launcher_cmd, std::regex("[ \t]+$"), "");
 	m_launcher_cmd = std::regex_replace(m_launcher_cmd, std::regex("[ \t]+"), " ");
+
+	// trim launcher arguments
+	m_launcher_args = m_entry_launcher_args->get_text();
+	m_launcher_args = std::regex_replace(m_launcher_args, std::regex("^[ \t]+"), "");
+	m_launcher_args = std::regex_replace(m_launcher_args, std::regex("[ \t]+$"), "");
+	m_launcher_args = std::regex_replace(m_launcher_args, std::regex("[ \t]+"), " ");
 
 	// parse intergers
 	try
@@ -566,22 +543,6 @@ void StartupDialog::on_custom_launcher_toggled(Gtk::CheckButton *button)
 }
 
 /**
- * This function sets the correct sensitivity for the launcher related widgets
- * when a launcher is selected.
- */
-void StartupDialog::on_launcher_toggled()
-{
-	if (m_radiobutton_mpirun->get_active())
-	{
-		m_entry_partition->set_sensitive(false);
-	}
-	else if (m_radiobutton_srun->get_active())
-	{
-		m_entry_partition->set_sensitive(true);
-	}
-}
-
-/**
  * This function assembles the launcher command from the current configuration.
  *
  * @return The launcher command.
@@ -598,10 +559,6 @@ string StartupDialog::get_cmd() const
 	if (m_mpirun)
 	{
 		cmd += "mpirun";
-		if (m_oversubscribe)
-		{
-			cmd += " --oversubscribe";
-		}
 
 		cmd += " -np ";
 		cmd += std::to_string(num_processes());
@@ -610,21 +567,15 @@ string StartupDialog::get_cmd() const
 	{
 		cmd += "srun";
 
-		cmd += " --mpi=";
-		cmd += "pmi2";
-
 		cmd += " --nodes=";
 		cmd += std::to_string(m_num_nodes);
 
 		cmd += " --ntasks-per-node=";
 		cmd += std::to_string(m_processes_per_node);
-
-		if (m_partition && string(m_partition) != string(""))
-		{
-			cmd += " --partition=";
-			cmd += m_partition;
-		}
 	}
+
+	cmd += " ";
+	cmd += m_launcher_args;
 
 	cmd += " ";
 	cmd += m_slave;

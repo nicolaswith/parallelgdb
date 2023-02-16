@@ -1,7 +1,6 @@
 processes_per_node=8
 num_nodes=1
 launcher=mpirun
-oversubscribe=false
 slave=./bin/pgdbslave
 target=./example/bin/target
 arguments=
@@ -10,7 +9,7 @@ ssh=false
 ssh_address=
 ssh_user=
 ssh_password=
-partition=
+launcher_args=
 custom_launcher=false
 custom_cmd=
 

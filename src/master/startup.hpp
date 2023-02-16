@@ -44,7 +44,6 @@ class StartupDialog
 	int m_num_nodes;
 	bool m_mpirun;
 	bool m_srun;
-	bool m_oversubscribe;
 	char *m_slave;
 	char *m_target;
 	char *m_arguments;
@@ -53,8 +52,8 @@ class StartupDialog
 	char *m_ssh_address;
 	char *m_ssh_user;
 	char *m_ssh_password;
-	char *m_partition;
 	bool m_custom_launcher;
+	std::string m_launcher_args;
 	std::string m_launcher_cmd;
 
 	Glib::RefPtr<Gtk::Builder> m_builder;
@@ -68,7 +67,6 @@ class StartupDialog
 	Gtk::Entry *m_entry_num_nodes;
 	Gtk::RadioButton *m_radiobutton_mpirun;
 	Gtk::RadioButton *m_radiobutton_srun;
-	Gtk::CheckButton *m_checkbutton_oversubscribe;
 	Gtk::Entry *m_entry_slave;
 	Gtk::Entry *m_entry_target;
 	Gtk::Entry *m_entry_arguments;
@@ -77,7 +75,7 @@ class StartupDialog
 	Gtk::Entry *m_entry_ssh_address;
 	Gtk::Entry *m_entry_ssh_user;
 	Gtk::Entry *m_entry_ssh_password;
-	Gtk::Entry *m_entry_partition;
+	Gtk::Entry *m_entry_launcher_args;
 	Gtk::CheckButton *m_checkbutton_launcher;
 	Gtk::Entry *m_entry_launcher;
 
@@ -89,8 +87,6 @@ class StartupDialog
 	void on_ssh_button_toggled(Gtk::CheckButton *button);
 	/// Signal handler for the Custom Launcher checkbutton.
 	void on_custom_launcher_toggled(Gtk::CheckButton *button);
-	/// Signal handler for the Launcher radio-button.
-	void on_launcher_toggled();
 	/// Resets the dialog to be empty.
 	void clear_dialog();
 	/// Set a value to an widget in the dialog.

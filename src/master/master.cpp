@@ -95,6 +95,7 @@ int Master::run_cmd(ssh_session &session)
 		ssh_channel_free(channel);
 		return rc;
 	}
+	printf("Started slaves via SSH with command:\n%s\n", cmd.c_str());
 
 	ssh_channel_send_eof(channel);
 	ssh_channel_close(channel);
@@ -175,6 +176,7 @@ bool Master::start_slaves_local()
 	if (0 == pid)
 	{
 		string cmd = m_dialog->get_cmd();
+		printf("Started slaves with command:\n%s\n", cmd.c_str());
 		const int num_spaces =
 			std::count_if(cmd.begin(), cmd.end(),
 						  [](char c)
