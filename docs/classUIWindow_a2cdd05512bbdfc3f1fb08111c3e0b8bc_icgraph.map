@@ -1,6 +1,7 @@
-<map id="UIWindow::on_quit_clicked" name="UIWindow::on_quit_clicked">
-<area shape="rect" id="node1" title="Terminates the slaves and then quits the application." alt="" coords="456,5,651,32"/>
+<map id="UIWindow::on_delete" name="UIWindow::on_delete">
+<area shape="rect" id="node1" title="Closes the GDB TCP sockets and thus the slaves." alt="" coords="699,5,857,32"/>
 <area shape="rect" id="node2" href="$classUIWindow.html#a237131d5aa62c32799cf1f0d0e913110" title="Loads the glade file and connects the signal handlers." alt="" coords="292,5,408,32"/>
+<area shape="rect" id="node5" href="$classUIWindow.html#a56c434b8be8180dd65afa0a77e830f1c" title="Terminates the slaves and then quits the application." alt="" coords="456,31,651,57"/>
 <area shape="rect" id="node3" href="$classMaster.html#a6cb4d31abc26317bccf2251edca321bb" title="Starts the GUI main window." alt="" coords="108,5,244,32"/>
 <area shape="rect" id="node4" href="$master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,5,60,32"/>
 </map>

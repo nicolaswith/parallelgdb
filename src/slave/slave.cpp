@@ -416,7 +416,7 @@ void Slave::monitor_processes() const
 
 	if (m_pid_gdb > 0)
 	{
-		kill(m_pid_gdb, SIGINT);
+		kill(m_pid_gdb, SIGKILL);
 	}
 	if (m_pid_socat_gdb > 0)
 	{
@@ -446,16 +446,14 @@ void Slave::print_help()
 		"  -e <name>\t name of the environment variable containing the process rank\n");
 }
 
-
-
 /// Entry point for the slave program.
 /**
  * This program starts and monitors the socat and GDB instances.
- * 
+ *
  * @param argc The number of arguments passed to this program.
- * 
+ *
  * @param argv The array containing the arguments.
- * 
+ *
  * @return The exit state of the program.
  */
 int main(const int argc, char **argv)

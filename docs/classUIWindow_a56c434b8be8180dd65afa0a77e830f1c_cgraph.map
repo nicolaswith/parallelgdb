@@ -1,0 +1,4 @@
+<map id="UIWindow::on_quit_clicked" name="UIWindow::on_quit_clicked">
+<area shape="rect" id="node1" title="Terminates the slaves and then quits the application." alt="" coords="5,5,200,32"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#a2cdd05512bbdfc3f1fb08111c3e0b8bc" title="Closes the GDB TCP sockets and thus the slaves." alt="" coords="248,5,407,32"/>
+</map>

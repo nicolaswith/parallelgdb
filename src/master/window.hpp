@@ -180,7 +180,7 @@ class UIWindow
 	void interact_with_gdb(const int key_value);
 	/// Displays the about dialog.
 	void on_about_clicked();
-	/// Quits the application.
+	/// Terminates the slaves and then quits the application.
 	void on_quit_clicked();
 	/// Signal handler for all the interaction buttons.
 	void on_interaction_button_clicked(const int key_value);
@@ -217,7 +217,7 @@ public:
 
 	/// Loads the glade file and connects the signal handlers.
 	bool init(Glib::RefPtr<Gtk::Application> app);
-	/// Closes the GDB instances and thus the slaves.
+	/// Closes the GDB TCP sockets and thus the slaves.
 	bool on_delete(GdkEventAny *);
 	/// Forwards the received data to the corresponding data handler.
 	void print_data(const char *const data, const int port);

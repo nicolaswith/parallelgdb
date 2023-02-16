@@ -298,6 +298,8 @@ bool UIWindow::init(Glib::RefPtr<Gtk::Application> app)
 		.connect(sigc::mem_fun(*this, &UIWindow::toggle_all_trgt));
 	m_root_window->signal_key_press_event().connect(
 		sigc::mem_fun(*this, &UIWindow::on_key_press), false);
+	m_root_window->signal_delete_event().connect(
+		sigc::mem_fun(*this, &UIWindow::on_delete));
 	get_widget<Gtk::Button>("step-over-button")
 		->signal_clicked()
 		.connect(sigc::bind(
@@ -386,17 +388,17 @@ void UIWindow::on_about_clicked()
 }
 
 /**
- * This function quits the application.
+ * This function terminates the slaves and then quits the application.
  */
 void UIWindow::on_quit_clicked()
 {
+	on_delete(new GdkEventAny);
 	m_app->quit();
 }
 
 /**
- * This function closes the GDB instances and thus the slaves. It waits until
- * all TCP connections are closed. This function is called by Gtk before the
- * application quits.
+ * This function closes the GDB TCP sockets and thus the slaves. It is called
+ * before the application quits.
  *
  * @return @c false. The return value is used to indicate whether the event is
  * completely handled.
@@ -405,18 +407,9 @@ bool UIWindow::on_delete(GdkEventAny *)
 {
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
-		if (!m_conns_gdb[rank]->is_open())
+		if (m_conns_gdb[rank])
 		{
-			continue;
-		}
-		string cmd = "\4"; // EOF: ^D
-		asio::write(*m_conns_gdb[rank], asio::buffer(cmd, cmd.length()));
-	}
-	for (int rank = 0; rank < m_num_processes; ++rank)
-	{
-		while (m_conns_gdb[rank]->is_open())
-		{
-			usleep(100);
+			m_conns_gdb[rank]->shutdown(asio::ip::tcp::socket::shutdown_both);
 		}
 	}
 	return false;
