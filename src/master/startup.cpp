@@ -34,7 +34,6 @@
 
 using std::string;
 
-/// Wrapper for the Gtk::get_widget function.
 /**
  * This function is a wrapper for the Gtk::get_widget function.
  *
@@ -277,7 +276,7 @@ void StartupDialog::read_config()
 }
 
 /**
- * This function shows a save file dialog to export the current configuration
+ * This function shows a file-chooser-dialog to export the current configuration
  * as a file.
  */
 void StartupDialog::export_config()
@@ -301,9 +300,11 @@ void StartupDialog::export_config()
 
 /**
  * This function writes the current configuration as a file. The filename is
- * set by the user in the file-saver-dialog.
+ * set by the user in the file-chooser-dialog.
  *
  * @param response_id The response ID.
+ * 
+ * @param file_chooser_dialog The file-chooser-dialog.
  */
 void StartupDialog::on_save_dialog_response(const int response_id,
 											Gtk::FileChooserDialog *file_chooser_dialog)

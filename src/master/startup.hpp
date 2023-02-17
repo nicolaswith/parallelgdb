@@ -101,6 +101,7 @@ class StartupDialog
 	/// Resets the dialog to be empty and clears the file in the file-chooser-button.
 	void clear_all();
 
+	/// Wrapper for the Gtk::get_widget function.
 	template <class T>
 	T *get_widget(const std::string &widget_name);
 
