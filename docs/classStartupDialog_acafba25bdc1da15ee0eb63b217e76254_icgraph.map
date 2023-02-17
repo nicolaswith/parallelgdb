@@ -1,5 +1,5 @@
 <map id="StartupDialog::set_value" name="StartupDialog::set_value">
 <area shape="rect" id="node1" title="Set a value to an widget in the dialog." alt="" coords="457,5,596,47"/>
-<area shape="rect" id="node2" href="$classStartupDialog.html#a14bacd4a1e6729487c63b8239381f01f" title="Opens a (configuration) file and reads its entire content." alt="" coords="261,5,409,47"/>
+<area shape="rect" id="node2" href="$classStartupDialog.html#a14bacd4a1e6729487c63b8239381f01f" title="Opens and tokenizes a (configuration) file." alt="" coords="261,5,409,47"/>
 <area shape="rect" id="node3" href="$classStartupDialog.html#a016c30fe4bc25cdb0fd0c3ec2c33e4a6" title="Default constructor." alt="" coords="5,13,213,39"/>
 </map>

@@ -39,7 +39,7 @@
 class StartupDialog
 {
 	bool m_is_valid;
-
+	int m_number_of_processes;
 	int m_processes_per_node;
 	int m_num_nodes;
 	bool m_mpirun;
@@ -59,10 +59,8 @@ class StartupDialog
 	Glib::RefPtr<Gtk::Builder> m_builder;
 	Gtk::Dialog *m_dialog;
 
-	Gtk::FileChooserDialog *m_file_chooser_dialog;
-	std::string m_config;
-
 	Gtk::FileChooserButton *m_file_chooser_button;
+	Gtk::Entry *m_entry_number_of_processes;
 	Gtk::Entry *m_entry_processes_per_node;
 	Gtk::Entry *m_entry_num_nodes;
 	Gtk::RadioButton *m_radiobutton_mpirun;
@@ -79,7 +77,7 @@ class StartupDialog
 	Gtk::CheckButton *m_checkbutton_launcher;
 	Gtk::Entry *m_entry_launcher;
 
-	/// Updates the stored configuration with the current configuration.
+	/// Updates the current configuration.
 	void on_dialog_response(const int response_id);
 	/// Sets the sensitivity of the SSH related widgets.
 	void set_sensitivity_ssh(const bool state);
@@ -91,14 +89,15 @@ class StartupDialog
 	void clear_dialog();
 	/// Set a value to an widget in the dialog.
 	void set_value(const std::string &key, const std::string &value);
-	/// Opens a (configuration) file and reads its entire content.
+	/// Opens and tokenizes a (configuration) file.
 	void read_config();
-	/// Prepare the export of the current configuration as a file.
+	/// Shows a save file dialog to export the current configuration as a file
 	void export_config();
 	/// Parses the current configuration.
 	bool read_values();
 	/// Writes the current configuration as a file.
-	void on_save_dialog_response(const int response_id);
+	void on_save_dialog_response(const int response_id,
+								 Gtk::FileChooserDialog *file_chooser_dialog);
 	/// Resets the dialog to be empty and clears the file in the file-chooser-button.
 	void clear_all();
 
@@ -140,13 +139,12 @@ public:
 	/// Returns the total number of processes.
 	/**
 	 * This function returns the total number of processes.
-	 * [node] * [processes / node] = [processes]
 	 *
 	 * @return The total number of processes.
 	 */
 	inline int num_processes() const
 	{
-		return m_num_nodes * m_processes_per_node;
+		return m_number_of_processes;
 	}
 
 	/// Returns whether SSH should be used.
@@ -195,8 +193,8 @@ public:
 
 	/// Returns whether the master should start the slaves.
 	/**
-	 * This function returns whether the master should start the slaves. When 
-	 * the custom command is used AND is left blank, the user wants to start 
+	 * This function returns whether the master should start the slaves. When
+	 * the custom command is used AND is left blank, the user wants to start
 	 * the slaves manually.
 	 *
 	 * @return Whether the master should start the slaves.

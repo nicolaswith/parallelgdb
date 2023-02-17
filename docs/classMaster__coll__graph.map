@@ -1,9 +1,9 @@
 <map id="Master" name="Master">
-<area shape="rect" id="node1" title="Holds the state of the master program." alt="" coords="75,331,142,357"/>
-<area shape="rect" id="node2" href="$classUIWindow.html" title="Wrapper class for the GUI window." alt="" coords="323,241,411,268"/>
-<area shape="rect" id="node3" href="$classBreakpoint.html" title="Stores information about a breakpoint on a specific source file." alt="" coords="267,331,361,357"/>
-<area shape="rect" id="node4" href="$classUIDrawingArea.html" title="Draws the processes current location in the source files on the drawing area." alt="" coords="545,331,665,357"/>
-<area shape="rect" id="node5" title=" " alt="" coords="669,241,807,268"/>
-<area shape="rect" id="node6" href="$classStartupDialog.html" title="Generates the startup dialog." alt="" coords="5,241,116,268"/>
+<area shape="rect" id="node1" title="Holds the state of the master program." alt="" coords="75,301,142,328"/>
+<area shape="rect" id="node2" href="$classUIWindow.html" title="Wrapper class for the GUI window." alt="" coords="323,212,411,239"/>
+<area shape="rect" id="node3" href="$classBreakpoint.html" title="Stores information about a breakpoint on a specific source file." alt="" coords="267,301,361,328"/>
+<area shape="rect" id="node4" href="$classUIDrawingArea.html" title="Draws the processes current location in the source files on the drawing area." alt="" coords="545,301,665,328"/>
+<area shape="rect" id="node5" title=" " alt="" coords="669,212,807,239"/>
+<area shape="rect" id="node6" href="$classStartupDialog.html" title="Generates the startup dialog." alt="" coords="5,212,116,239"/>
 <area shape="rect" id="node7" title=" " alt="" coords="31,5,90,32"/>
 </map>

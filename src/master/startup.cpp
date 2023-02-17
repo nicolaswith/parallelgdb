@@ -54,15 +54,16 @@ T *StartupDialog::get_widget(const std::string &widget_name)
 
 /**
  * This is the default constructor for the StartupDialog class. It will
- * parse the startup_dialog.glade file and render the GUI dialog.
+ * parse the startup_dialog.glade file and renders the startup dialog.
  *
  * On accept the entered configuration will be parsed and saved in the member
  * variables.
  */
 StartupDialog::StartupDialog()
 	: m_is_valid(false),
-	  m_processes_per_node(0),
-	  m_num_nodes(0),
+	  m_number_of_processes(-1),
+	  m_processes_per_node(-1),
+	  m_num_nodes(-1),
 	  m_mpirun(false),
 	  m_srun(false),
 	  m_ssh(false),
@@ -82,8 +83,8 @@ StartupDialog::StartupDialog()
 	m_dialog = get_widget<Gtk::Dialog>("dialog");
 
 	// save pointer to widgets to simplify access
-	m_file_chooser_button =
-		get_widget<Gtk::FileChooserButton>("file-chooser-button");
+	m_entry_number_of_processes =
+		get_widget<Gtk::Entry>("number-of-processes-entry");
 	m_entry_processes_per_node =
 		get_widget<Gtk::Entry>("processes-per-node-entry");
 	m_entry_num_nodes = get_widget<Gtk::Entry>("num-nodes-entry");
@@ -119,6 +120,8 @@ StartupDialog::StartupDialog()
 	get_widget<Gtk::Button>("export-config-button")
 		->signal_clicked()
 		.connect(sigc::mem_fun(*this, &StartupDialog::export_config));
+	m_file_chooser_button =
+		get_widget<Gtk::FileChooserButton>("file-chooser-button");
 
 	m_file_chooser_button->signal_selection_changed().connect(
 		sigc::mem_fun(*this, &StartupDialog::read_config));
@@ -129,7 +132,7 @@ StartupDialog::StartupDialog()
 }
 
 /**
- * This function frees the char arrays and closes the dialog.
+ * This function closes the startup dialog.
  */
 StartupDialog::~StartupDialog()
 {
@@ -141,6 +144,7 @@ StartupDialog::~StartupDialog()
  */
 void StartupDialog::clear_dialog()
 {
+	m_entry_number_of_processes->set_text("");
 	m_entry_processes_per_node->set_text("");
 	m_entry_num_nodes->set_text("");
 	m_radiobutton_mpirun->set_active(true);
@@ -183,6 +187,8 @@ void StartupDialog::clear_all()
  */
 void StartupDialog::set_value(const std::string &key, const std::string &value)
 {
+	if ("number_of_processes" == key)
+		m_entry_number_of_processes->set_text(value);
 	if ("processes_per_node" == key)
 		m_entry_processes_per_node->set_text(value);
 	if ("num_nodes" == key)
@@ -247,56 +253,32 @@ void StartupDialog::set_value(const std::string &key, const std::string &value)
 }
 
 /**
- * This function opens a (configuration) file and reads its entire content.
- * The content is then tokenized and passed to the @ref set_value function.
+ * This function opens a (configuration) file. The content is tokenized and
+ * passed to the @ref set_value function.
  */
 void StartupDialog::read_config()
 {
-	// open config file
-	FILE *f = fopen(m_file_chooser_button->get_filename().c_str(), "r");
-	if (!f)
-	{
-		return;
-	}
-
-	// only clear dialog if successfully opened the config file
 	clear_dialog();
-
-	// get file size
-	fseek(f, 0, SEEK_END);
-	size_t size = ftell(f);
-	char *config = new char[size + 8];
-	rewind(f);
-
-	// read in file
-	fread(config, sizeof(char), size, f);
-	config[size] = '\n';
-	config[size + 1] = '\0';
-
-	// tokenize config file
-	std::istringstream is_file(config);
-	std::string line;
-	while (std::getline(is_file, line))
+	std::ifstream config_file(m_file_chooser_button->get_filename());
+	string line;
+	while (std::getline(config_file, line))
 	{
 		std::istringstream is_line(line);
-		std::string key;
+		string key;
 		if (std::getline(is_line, key, '='))
 		{
-			std::string value;
+			string value;
 			if (std::getline(is_line, value))
 			{
 				set_value(key, value);
 			}
 		}
 	}
-	delete[] config;
 }
 
 /**
- * This function prepares the content of the file and saves it in @ref m_config.
- * After that a save dialog is shown, where the user specifies the filename.
- * On accepting this dialog the @ref on_save_dialog_response function is called,
- * where the file is actually written.
+ * This function shows a save file dialog to export the current configuration
+ * as a file.
  */
 void StartupDialog::export_config()
 {
@@ -306,74 +288,15 @@ void StartupDialog::export_config()
 		return;
 	}
 
-	// assemble config file content
-	m_config = "";
-
-	m_config += "processes_per_node=";
-	m_config += std::to_string(m_processes_per_node);
-	m_config += "\n";
-
-	m_config += "num_nodes=";
-	m_config += std::to_string(m_num_nodes);
-	m_config += "\n";
-
-	m_config += "launcher=";
-	m_config += m_mpirun ? "mpirun" : "srun";
-	m_config += "\n";
-
-	m_config += "slave=";
-	m_config += m_slave;
-	m_config += "\n";
-
-	m_config += "target=";
-	m_config += m_target;
-	m_config += "\n";
-
-	m_config += "arguments=";
-	m_config += m_arguments;
-	m_config += "\n";
-
-	m_config += "ip_address=";
-	m_config += m_ip_address;
-	m_config += "\n";
-
-	m_config += "ssh=";
-	m_config += m_ssh ? "true" : "false";
-	m_config += "\n";
-
-	m_config += "ssh_address=";
-	m_config += m_ssh_address;
-	m_config += "\n";
-
-	m_config += "ssh_user=";
-	m_config += m_ssh_user;
-	m_config += "\n";
-
-	m_config += "ssh_password=";
-	m_config += Base64::encode(m_ssh_password);
-	m_config += "\n";
-
-	m_config += "launcher_args=";
-	m_config += m_launcher_args;
-	m_config += "\n";
-
-	m_config += "custom_launcher=";
-	m_config += m_custom_launcher ? "true" : "false";
-	m_config += "\n";
-
-	m_config += "custom_cmd=";
-	m_config += m_launcher_cmd;
-	m_config += "\n\n";
-
-	// open file-saver dialog
-	m_file_chooser_dialog = new Gtk::FileChooserDialog(
+	Gtk::FileChooserDialog *file_chooser_dialog = new Gtk::FileChooserDialog(
 		*dynamic_cast<Gtk::Window *>(m_dialog), string("Select Save Location"),
 		Gtk::FILE_CHOOSER_ACTION_SAVE);
-	m_file_chooser_dialog->add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_OK);
-	m_file_chooser_dialog->signal_response().connect(
-		sigc::mem_fun(*this, &StartupDialog::on_save_dialog_response));
-	m_file_chooser_dialog->run();
-	delete m_file_chooser_dialog;
+	file_chooser_dialog->add_button("Save", Gtk::RESPONSE_OK);
+	file_chooser_dialog->signal_response().connect(sigc::bind(
+		sigc::mem_fun(*this, &StartupDialog::on_save_dialog_response),
+		file_chooser_dialog));
+	file_chooser_dialog->run();
+	delete file_chooser_dialog;
 }
 
 /**
@@ -382,24 +305,87 @@ void StartupDialog::export_config()
  *
  * @param response_id The response ID.
  */
-void StartupDialog::on_save_dialog_response(const int response_id)
+void StartupDialog::on_save_dialog_response(const int response_id,
+											Gtk::FileChooserDialog *file_chooser_dialog)
 {
 	if (Gtk::RESPONSE_OK != response_id)
 	{
 		return;
 	}
 
-	string filename = m_file_chooser_dialog->get_filename();
+	// assemble config file content
+	string config = "";
 
+	config += "number_of_processes=";
+	config += m_number_of_processes > 0 ? std::to_string(m_number_of_processes) : "";
+	config += "\n";
+
+	config += "processes_per_node=";
+	config += m_processes_per_node > 0 ? std::to_string(m_processes_per_node) : "";
+	config += "\n";
+
+	config += "num_nodes=";
+	config += m_num_nodes > 0 ? std::to_string(m_num_nodes) : "";
+	config += "\n";
+
+	config += "launcher=";
+	config += m_mpirun ? "mpirun" : "srun";
+	config += "\n";
+
+	config += "launcher_args=";
+	config += m_launcher_args;
+	config += "\n";
+
+	config += "slave=";
+	config += m_slave;
+	config += "\n";
+
+	config += "target=";
+	config += m_target;
+	config += "\n";
+
+	config += "arguments=";
+	config += m_arguments;
+	config += "\n";
+
+	config += "ip_address=";
+	config += m_ip_address;
+	config += "\n";
+
+	config += "ssh=";
+	config += m_ssh ? "true" : "false";
+	config += "\n";
+
+	config += "ssh_address=";
+	config += m_ssh_address;
+	config += "\n";
+
+	config += "ssh_user=";
+	config += m_ssh_user;
+	config += "\n";
+
+	config += "ssh_password=";
+	config += Base64::encode(m_ssh_password);
+	config += "\n";
+
+	config += "custom_launcher=";
+	config += m_custom_launcher ? "true" : "false";
+	config += "\n";
+
+	config += "custom_cmd=";
+	config += m_launcher_cmd;
+	config += "\n\n";
+
+	string filename = file_chooser_dialog->get_filename();
 	std::ofstream file(filename);
-	file << m_config;
+	file << config;
 	file.close();
 }
 
 /**
  * This function parses the current configuration. Empty entries are valid,
- * except the processes_per_node and num_nodes entries, as the are parsed as an
- * integer.
+ * except @ref m_number_of_processes, as this is needed by the master  to know
+ * the number of TCP sockets to wait for.
  *
  * @return @c true on success, @c false on error.
  */
@@ -426,6 +412,26 @@ bool StartupDialog::read_values()
 	try
 	{
 		std::size_t pos;
+		string text = m_entry_number_of_processes->get_text();
+		m_number_of_processes = std::stoi(text, &pos, 10);
+		if (pos != text.size())
+		{
+			throw std::exception();
+		}
+	}
+	catch (const std::exception &)
+	{
+		m_number_of_processes = -1;
+		Gtk::MessageDialog dialog(*dynamic_cast<Gtk::Window *>(m_dialog),
+								  "Invalid Number of Processes.", false,
+								  Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
+		dialog.run();
+		return false;
+	}
+
+	try
+	{
+		std::size_t pos;
 		string text = m_entry_processes_per_node->get_text();
 		m_processes_per_node = std::stoi(text, &pos, 10);
 		if (pos != text.size())
@@ -433,13 +439,9 @@ bool StartupDialog::read_values()
 			throw std::exception();
 		}
 	}
-	catch (const std::exception &e)
+	catch (const std::exception &)
 	{
-		Gtk::MessageDialog dialog(*dynamic_cast<Gtk::Window *>(m_dialog),
-								  "Invalid Number: Processes per Node.", false,
-								  Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
-		dialog.run();
-		return false;
+		m_processes_per_node = -1;
 	}
 
 	try
@@ -452,22 +454,17 @@ bool StartupDialog::read_values()
 			throw std::exception();
 		}
 	}
-	catch (const std::exception &e)
+	catch (const std::exception &)
 	{
-		Gtk::MessageDialog dialog(*dynamic_cast<Gtk::Window *>(m_dialog),
-								  "Invalid Number: Number of Nodes.", false,
-								  Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
-		dialog.run();
-		return false;
+		m_num_nodes = -1;
 	}
 
 	return true;
 }
 
 /**
- * This function updates the stored configuration ( @a m_config ) with the
- * current configuration. It is called, when the user clicks the "Ok" button
- * or closes the dialog.
+ * This function updates the current configuration. It is called, when the user
+ * clicks the "Ok" button or closes the dialog.
  *
  * @param response_id The response ID.
  */
@@ -535,17 +532,29 @@ string StartupDialog::get_cmd() const
 		cmd += "mpirun";
 
 		cmd += " -np ";
-		cmd += std::to_string(num_processes());
+		cmd += std::to_string(m_number_of_processes);
 	}
 	else if (m_srun)
 	{
 		cmd += "srun";
 
-		cmd += " --nodes=";
-		cmd += std::to_string(m_num_nodes);
+		if (m_number_of_processes > 0)
+		{
+			cmd += " --ntasks=";
+			cmd += std::to_string(m_number_of_processes);
+		}
 
-		cmd += " --ntasks-per-node=";
-		cmd += std::to_string(m_processes_per_node);
+		if (m_num_nodes > 0)
+		{
+			cmd += " --nodes=";
+			cmd += std::to_string(m_num_nodes);
+		}
+
+		if (m_processes_per_node > 0)
+		{
+			cmd += " --ntasks-per-node=";
+			cmd += std::to_string(m_processes_per_node);
+		}
 	}
 
 	cmd += " ";

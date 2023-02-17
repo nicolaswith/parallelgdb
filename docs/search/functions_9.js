@@ -9,7 +9,7 @@ var searchData=
   ['on_5fkey_5fpress_317',['on_key_press',['../classUIWindow.html#a679f5db0a5c299d0252161faf114ccc5',1,'UIWindow']]],
   ['on_5fline_5fmark_5fclicked_318',['on_line_mark_clicked',['../classUIWindow.html#aa20f683f45142300ff17e7ff445f50bc',1,'UIWindow']]],
   ['on_5fquit_5fclicked_319',['on_quit_clicked',['../classUIWindow.html#a56c434b8be8180dd65afa0a77e830f1c',1,'UIWindow']]],
-  ['on_5fsave_5fdialog_5fresponse_320',['on_save_dialog_response',['../classStartupDialog.html#a0625950ed3d3c47d6b33c24dc681a1bf',1,'StartupDialog']]],
+  ['on_5fsave_5fdialog_5fresponse_320',['on_save_dialog_response',['../classStartupDialog.html#ae368fc1cded7ec90c00f5a00c2ffff06',1,'StartupDialog']]],
   ['on_5fssh_5fbutton_5ftoggled_321',['on_ssh_button_toggled',['../classStartupDialog.html#ac6a10f9fa9674970f6dcaa34130432c2',1,'StartupDialog']]],
   ['one_5fcreated_322',['one_created',['../classBreakpoint.html#a8336aad83387aa92aa8b21e9361096f6',1,'Breakpoint']]],
   ['open_5ffile_323',['open_file',['../classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6',1,'UIWindow']]],
