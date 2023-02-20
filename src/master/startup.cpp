@@ -100,6 +100,7 @@ StartupDialog::StartupDialog()
 	m_entry_launcher_args = get_widget<Gtk::Entry>("launcher-args-entry");
 	m_checkbutton_launcher = get_widget<Gtk::CheckButton>("launcher-checkbutton");
 	m_entry_launcher = get_widget<Gtk::Entry>("launcher-entry");
+	m_file_chooser_button = get_widget<Gtk::FileChooserButton>("file-chooser-button");
 
 	// set button and entry sensitivity for empty configuration
 	set_sensitivity_ssh(false);
@@ -119,8 +120,6 @@ StartupDialog::StartupDialog()
 	get_widget<Gtk::Button>("export-config-button")
 		->signal_clicked()
 		.connect(sigc::mem_fun(*this, &StartupDialog::export_config));
-	m_file_chooser_button =
-		get_widget<Gtk::FileChooserButton>("file-chooser-button");
 
 	m_file_chooser_button->signal_selection_changed().connect(
 		sigc::mem_fun(*this, &StartupDialog::read_config));
@@ -303,7 +302,7 @@ void StartupDialog::export_config()
  * set by the user in the file-chooser-dialog.
  *
  * @param response_id The response ID.
- * 
+ *
  * @param file_chooser_dialog The file-chooser-dialog.
  */
 void StartupDialog::on_save_dialog_response(const int response_id,
@@ -318,7 +317,7 @@ void StartupDialog::on_save_dialog_response(const int response_id,
 	string config = "";
 
 	config += "number_of_processes=";
-	config += m_number_of_processes > 0 ? std::to_string(m_number_of_processes) : "";
+	config += std::to_string(m_number_of_processes);
 	config += "\n";
 
 	config += "processes_per_node=";
@@ -385,8 +384,8 @@ void StartupDialog::on_save_dialog_response(const int response_id,
 
 /**
  * This function parses the current configuration. Empty entries are valid,
- * except @ref m_number_of_processes, as this is needed by the master  to know
- * the number of TCP sockets to wait for.
+ * except @ref m_entry_number_of_processes, as this is needed by the master
+ * to know the number of TCP sockets to open.
  *
  * @return @c true on success, @c false on error.
  */
@@ -511,7 +510,19 @@ void StartupDialog::on_ssh_button_toggled(Gtk::CheckButton *button)
  */
 void StartupDialog::on_custom_launcher_toggled(Gtk::CheckButton *button)
 {
-	m_entry_launcher->set_sensitive(button->get_active());
+	const bool state = button->get_active();
+
+	m_entry_launcher->set_sensitive(state);
+
+	m_radiobutton_mpirun->set_sensitive(/*       */ !state);
+	m_radiobutton_srun->set_sensitive(/*         */ !state);
+	m_entry_launcher_args->set_sensitive(/*      */ !state);
+	m_entry_processes_per_node->set_sensitive(/* */ !state);
+	m_entry_num_nodes->set_sensitive(/*          */ !state);
+	m_entry_slave->set_sensitive(/*              */ !state);
+	m_entry_ip_address->set_sensitive(/*         */ !state);
+	m_entry_target->set_sensitive(/*             */ !state);
+	m_entry_arguments->set_sensitive(/*          */ !state);
 }
 
 /**
@@ -539,11 +550,8 @@ string StartupDialog::get_cmd() const
 	{
 		cmd += "srun";
 
-		if (m_number_of_processes > 0)
-		{
-			cmd += " --ntasks=";
-			cmd += std::to_string(m_number_of_processes);
-		}
+		cmd += " --ntasks=";
+		cmd += std::to_string(m_number_of_processes);
 
 		if (m_num_nodes > 0)
 		{
