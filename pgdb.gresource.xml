@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+	<gresource prefix="/pgdb">
+		<file>res/breakpoint.svg</file>
+		<file compressed="true">ui/about_dialog.glade</file>
+		<file compressed="true">ui/breakpoint_dialog.glade</file>
+		<file compressed="true">ui/startup_dialog.glade</file>
+		<file compressed="true">ui/window.glade</file>
+	</gresource>
+</gresources>

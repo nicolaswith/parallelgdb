@@ -73,7 +73,7 @@ BreakpointDialog::BreakpointDialog(const int num_processes,
 	  m_button_states(new bool[m_num_processes])
 {
 	// parse glade file
-	m_builder = Gtk::Builder::create_from_file("./ui/breakpoint_dialog.glade");
+	m_builder = Gtk::Builder::create_from_resource("/pgdb/ui/breakpoint_dialog.glade");
 	m_dialog = get_widget<Gtk::Dialog>("dialog");
 
 	// generate checkbutton grid

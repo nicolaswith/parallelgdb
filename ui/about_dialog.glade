@@ -10,7 +10,7 @@
     <property name="website-label" translatable="yes">Show on GitHub</property>
     <property name="authors">Nicolas With
 </property>
-    <property name="logo">../res/breakpoint.svg</property>
+    <property name="logo">resource:///pgdb/res/breakpoint.svg</property>
     <property name="license-type">gpl-3-0</property>
     <child internal-child="vbox">
       <object class="GtkBox">

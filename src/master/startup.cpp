@@ -78,7 +78,7 @@ StartupDialog::StartupDialog()
 	  m_launcher_cmd("")
 {
 	// parse the glade file
-	m_builder = Gtk::Builder::create_from_file("./ui/startup_dialog.glade");
+	m_builder = Gtk::Builder::create_from_resource("/pgdb/ui/startup_dialog.glade");
 	m_dialog = get_widget<Gtk::Dialog>("dialog");
 
 	// save pointer to widgets to simplify access

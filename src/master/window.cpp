@@ -272,7 +272,7 @@ bool UIWindow::init(Glib::RefPtr<Gtk::Application> app)
 		m_max_buttons_per_row *= 2;
 	}
 
-	m_builder = Gtk::Builder::create_from_file("./ui/window.glade");
+	m_builder = Gtk::Builder::create_from_resource("/pgdb/ui/window.glade");
 	m_root_window = get_widget<Gtk::Window>("window");
 	m_app = app;
 
@@ -380,7 +380,7 @@ bool UIWindow::init(Glib::RefPtr<Gtk::Application> app)
 void UIWindow::on_about_clicked()
 {
 	Glib::RefPtr<Gtk::Builder> builder =
-		Gtk::Builder::create_from_file("./ui/about_dialog.glade");
+		Gtk::Builder::create_from_resource("/pgdb/ui/about_dialog.glade");
 	Gtk::AboutDialog *dialog = new Gtk::AboutDialog;
 	builder->get_widget<Gtk::AboutDialog>("dialog", dialog);
 	dialog->run();
@@ -1109,17 +1109,10 @@ void UIWindow::append_source_file(const string &fullpath)
 	source_view->set_bottom_margin(30);
 	scrolled_window->add(*source_view);
 	// prepare breakpoint icon to be used on click events
-	string filename = "./res/breakpoint.svg";
-	char *path = realpath(filename.c_str(), nullptr);
-	if (path == nullptr)
-	{
-		throw std::runtime_error("Cannot find file: " + filename + "\n");
-	}
 	Glib::RefPtr<Gsv::MarkAttributes> attributes =
 		Gsv::MarkAttributes::create();
-	attributes->set_icon(Gio::Icon::create(path));
+	attributes->set_icon(Gio::Icon::create("resource:///pgdb/res/breakpoint.svg"));
 	source_view->set_mark_attributes(breakpoint_category, attributes, 0);
-	free(path);
 	// load the content of the source file
 	char *content;
 	size_t content_length;

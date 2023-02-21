@@ -4,12 +4,14 @@ TRGTS = pgdbmaster
 CC = g++
 RM = rm
 
-BUILDDIR = ../../bin
-INCLUDEDIR = ../../include
+ROOTDIR = ../..
+BUILDDIR = $(ROOTDIR)/bin
+INCLUDEDIR = $(ROOTDIR)/include
 
 CFLAGS  = -std=c++17 -Wall -Wextra -Wpedantic -Werror -I./ -I$(INCLUDEDIR) -O3
 LDFLAGS =
 
+GLIB = $(shell pkg-config --cflags --libs glib-2.0)
 GTKMM = $(shell pkg-config --cflags --libs gtkmm-3.0)
 GTKSRCVIEW = $(shell pkg-config --cflags --libs gtksourceviewmm-3.0)
 LIBSSH = $(shell pkg-config --cflags --libs libssh)
@@ -23,7 +25,10 @@ all: $(PRGS)
 $(BUILDDIR)/libmigdb.a:
 	+$(MAKE) -C $(INCLUDEDIR)/libmigdb
 
-$(BUILDDIR)/pgdbmaster: $(addprefix $(BUILDDIR)/, $(addsuffix .o, startup breakpoint breakpoint_dialog canvas window master)) $(BUILDDIR)/libmigdb.a
+$(BUILDDIR)/resources.c:
+	cd $(ROOTDIR) && glib-compile-resources pgdb.gresource.xml --target=bin/resources.c --generate-source
+
+$(BUILDDIR)/pgdbmaster: $(addprefix $(BUILDDIR)/, $(addsuffix .o, startup breakpoint breakpoint_dialog canvas window master resources)) $(BUILDDIR)/libmigdb.a
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(GTKMM) $(GTKSRCVIEW) $(LIBSSH)
 
 $(BUILDDIR)/%.o: %.cpp
@@ -31,3 +36,6 @@ $(BUILDDIR)/%.o: %.cpp
 
 $(BUILDDIR)/window.o: window.cpp
 	$(CC) $(CFLAGS) -c $< -o $@ $(GTKMM) $(GTKSRCVIEW)
+
+$(BUILDDIR)/resources.o: $(BUILDDIR)/resources.c
+	$(CC) $(CFLAGS) -c $< -o $@ $(GLIB)
