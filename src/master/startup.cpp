@@ -25,6 +25,7 @@
  * This file contains the implementation of the StartupDialog class.
  */
 
+#include <exception>
 #include <fstream>
 #include <string>
 #include <regex>
@@ -100,7 +101,12 @@ StartupDialog::StartupDialog()
 	m_entry_launcher_args = get_widget<Gtk::Entry>("launcher-args-entry");
 	m_checkbutton_launcher = get_widget<Gtk::CheckButton>("launcher-checkbutton");
 	m_entry_launcher = get_widget<Gtk::Entry>("launcher-entry");
-	m_file_chooser_button = get_widget<Gtk::FileChooserButton>("file-chooser-button");
+	m_file_chooser_button =
+		get_widget<Gtk::FileChooserButton>("config-file-chooser");
+	Gtk::FileChooserButton *slave_file_chooser =
+		get_widget<Gtk::FileChooserButton>("slave-file-chooser");
+	Gtk::FileChooserButton *target_file_chooser =
+		get_widget<Gtk::FileChooserButton>("target-file-chooser");
 
 	// set button and entry sensitivity for empty configuration
 	set_sensitivity_ssh(false);
@@ -123,6 +129,14 @@ StartupDialog::StartupDialog()
 
 	m_file_chooser_button->signal_selection_changed().connect(
 		sigc::mem_fun(*this, &StartupDialog::read_config));
+	slave_file_chooser->signal_selection_changed().connect(
+		sigc::bind(sigc::mem_fun(*this,
+								 &StartupDialog::set_path),
+				   slave_file_chooser, m_entry_slave));
+	target_file_chooser->signal_selection_changed().connect(
+		sigc::bind(sigc::mem_fun(*this,
+								 &StartupDialog::set_path),
+				   target_file_chooser, m_entry_target));
 	m_dialog->signal_response().connect(
 		sigc::mem_fun(*this, &StartupDialog::on_dialog_response));
 
@@ -135,6 +149,19 @@ StartupDialog::StartupDialog()
 StartupDialog::~StartupDialog()
 {
 	delete m_dialog;
+}
+
+/**
+ * This function sets the in the @a file_chooser selected file-path in the 
+ * @a entry.
+ * 
+ * @param file_chooser The file-chooser to get the file-path from.
+ * 
+ * @param entry The entry to write the file-path to.
+ */
+void StartupDialog::set_path(Gtk::FileChooserButton *file_chooser, Gtk::Entry *entry)
+{
+	entry->set_text(file_chooser->get_filename());
 }
 
 /**

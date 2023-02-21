@@ -100,6 +100,9 @@ class StartupDialog
 								 Gtk::FileChooserDialog *file_chooser_dialog);
 	/// Resets the dialog to be empty and clears the file in the file-chooser-button.
 	void clear_all();
+	/// Sets the in the @a file_chooser selected file-path in the @a entry.
+	void set_path(Gtk::FileChooserButton *file_chooser, Gtk::Entry *entry);
+
 
 	/// Wrapper for the Gtk::get_widget function.
 	template <class T>

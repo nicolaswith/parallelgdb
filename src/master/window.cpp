@@ -25,9 +25,9 @@
  * This file contains the implementation of the UIWindow class.
  */
 
+#include <exception>
 #include <tuple>
 #include <iterator>
-#include <iostream>
 #include <string>
 
 #pragma GCC diagnostic push

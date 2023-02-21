@@ -25,6 +25,7 @@
  * This file contains the implementation of the Master class.
  */
 
+#include <exception>
 #include <string>
 #include <string.h>
 #include <algorithm>

@@ -178,6 +178,9 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:a7ec3dcbd1f393f8553f6500b855057d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#a7ec3dcbd1f393f8553f6500b855057d4">clear_all</a> ()</td></tr>
 <tr class="memdesc:a7ec3dcbd1f393f8553f6500b855057d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the dialog to be empty and clears the file in the file-chooser-button.  <a href="classStartupDialog.html#a7ec3dcbd1f393f8553f6500b855057d4">More...</a><br /></td></tr>
 <tr class="separator:a7ec3dcbd1f393f8553f6500b855057d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83da9b51fe43c707ab3de6704c65936b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#a83da9b51fe43c707ab3de6704c65936b">set_path</a> (Gtk::FileChooserButton *file_chooser, Gtk::Entry *entry)</td></tr>
+<tr class="memdesc:a83da9b51fe43c707ab3de6704c65936b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the in the <em>file_chooser</em> selected file-path in the <em>entry</em>.  <a href="classStartupDialog.html#a83da9b51fe43c707ab3de6704c65936b">More...</a><br /></td></tr>
+<tr class="separator:a83da9b51fe43c707ab3de6704c65936b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb90cee233c729f223dfa5b5204a17a4"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:abb90cee233c729f223dfa5b5204a17a4"><td class="memTemplItemLeft" align="right" valign="top">T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#abb90cee233c729f223dfa5b5204a17a4">get_widget</a> (const std::string &amp;widget_name)</td></tr>
 <tr class="memdesc:abb90cee233c729f223dfa5b5204a17a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper for the Gtk::get_widget function.  <a href="classStartupDialog.html#abb90cee233c729f223dfa5b5204a17a4">More...</a><br /></td></tr>
@@ -282,14 +285,15 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classStartupDialog_a016c30fe4bc25cdb0fd0c3ec2c33e4a6_cgraph.png" border="0" usemap="#aclassStartupDialog_a016c30fe4bc25cdb0fd0c3ec2c33e4a6_cgraph" alt=""/></div>
 <map name="aclassStartupDialog_a016c30fe4bc25cdb0fd0c3ec2c33e4a6_cgraph" id="aclassStartupDialog_a016c30fe4bc25cdb0fd0c3ec2c33e4a6_cgraph">
-<area shape="rect" title="Default constructor." alt="" coords="5,209,213,235"/>
-<area shape="rect" href="classStartupDialog.html#a7ec3dcbd1f393f8553f6500b855057d4" title="Resets the dialog to be empty and clears the file in the file&#45;chooser&#45;button." alt="" coords="269,387,444,414"/>
+<area shape="rect" title="Default constructor." alt="" coords="5,238,213,265"/>
+<area shape="rect" href="classStartupDialog.html#a7ec3dcbd1f393f8553f6500b855057d4" title="Resets the dialog to be empty and clears the file in the file&#45;chooser&#45;button." alt="" coords="269,385,444,411"/>
 <area shape="rect" href="classStartupDialog.html#ab2d6ab6b84129961129868effaa196c9" title="Sets the sensitivity of the SSH related widgets." alt="" coords="721,289,860,331"/>
 <area shape="rect" href="classStartupDialog.html#ab54fa6d3e3745d7328ce8996f8dd4a82" title="Shows a save file dialog to export the current configuration as a file." alt="" coords="276,71,437,112"/>
 <area shape="rect" href="classStartupDialog.html#a388850ae7213401935f6f84de8935369" title="Signal handler for the Custom Launcher checkbutton." alt="" coords="261,201,452,243"/>
 <area shape="rect" href="classStartupDialog.html#a5fd5b58e94e3b1cfe0e1d393db678e94" title="Updates the current configuration." alt="" coords="265,136,448,177"/>
 <area shape="rect" href="classStartupDialog.html#ac6a10f9fa9674970f6dcaa34130432c2" title="Signal handler for the SSH checkbutton." alt="" coords="505,5,669,47"/>
 <area shape="rect" href="classStartupDialog.html#a14bacd4a1e6729487c63b8239381f01f" title="Opens and tokenizes a (configuration) file." alt="" coords="283,319,431,360"/>
+<area shape="rect" href="classStartupDialog.html#a83da9b51fe43c707ab3de6704c65936b" title="Sets the in the file_chooser selected file&#45;path in the entry." alt="" coords="269,435,444,462"/>
 <area shape="rect" href="classStartupDialog.html#ac789bc36cd7e4cb908b3dd69686e0c65" title="Resets the dialog to be empty." alt="" coords="511,384,662,425"/>
 <area shape="rect" href="classStartupDialog.html#ae368fc1cded7ec90c00f5a00c2ffff06" title="Writes the current configuration as a file." alt="" coords="500,71,673,112"/>
 <area shape="rect" href="classStartupDialog.html#ab85326592b6948d675667f65051980ce" title="Parses the current configuration." alt="" coords="513,136,661,177"/>
@@ -961,6 +965,59 @@ Here is the caller graph for this function:</div>
 <area shape="rect" title="Runs the startup dialog." alt="" coords="305,13,445,39"/>
 <area shape="rect" href="classMaster.html#ac4ceb59f0986493b9bb795d32ddf15db" title="Runs the startup dialog." alt="" coords="108,5,257,47"/>
 <area shape="rect" href="master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,13,60,39"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a83da9b51fe43c707ab3de6704c65936b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83da9b51fe43c707ab3de6704c65936b">&#9670;&nbsp;</a></span>set_path()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void StartupDialog::set_path </td>
+          <td>(</td>
+          <td class="paramtype">Gtk::FileChooserButton *&#160;</td>
+          <td class="paramname"><em>file_chooser</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Gtk::Entry *&#160;</td>
+          <td class="paramname"><em>entry</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function sets the in the <em>file_chooser</em> selected file-path in the <em>entry</em>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">file_chooser</td><td>The file-chooser to get the file-path from.</td></tr>
+    <tr><td class="paramname">entry</td><td>The entry to write the file-path to. </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classStartupDialog_a83da9b51fe43c707ab3de6704c65936b_icgraph.png" border="0" usemap="#aclassStartupDialog_a83da9b51fe43c707ab3de6704c65936b_icgraph" alt=""/></div>
+<map name="aclassStartupDialog_a83da9b51fe43c707ab3de6704c65936b_icgraph" id="aclassStartupDialog_a83da9b51fe43c707ab3de6704c65936b_icgraph">
+<area shape="rect" title="Sets the in the file_chooser selected file&#45;path in the entry." alt="" coords="261,5,436,32"/>
+<area shape="rect" href="classStartupDialog.html#a016c30fe4bc25cdb0fd0c3ec2c33e4a6" title="Default constructor." alt="" coords="5,5,213,32"/>
 </map>
 </div>
 

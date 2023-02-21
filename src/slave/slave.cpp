@@ -25,9 +25,10 @@
  * This file contains the implementation of the Slave class.
  */
 
+#include <exception>
 #include <string.h>
 #include <unistd.h>
-#include <iostream>
+#include <cstdio>
 #include <sstream>
 #include <iomanip>
 #include <vector>
@@ -359,7 +360,7 @@ bool Slave::set_rank()
 	{
 		m_rank = stoi(rank);
 	}
-	catch (const exception &e)
+	catch (const exception &)
 	{
 		fprintf(stderr, "Could not parse rank to integer. String: %s\n", rank);
 		print_help();
