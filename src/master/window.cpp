@@ -453,6 +453,10 @@ void UIWindow::scroll_bottom(Gtk::Allocation &,
  */
 bool UIWindow::send_data(tcp::socket *const socket, const string &data)
 {
+	if (nullptr == socket)
+	{
+		return false;
+	}
 	std::size_t bytes_sent =
 		asio::write(*socket, asio::buffer(data, data.length()));
 	return bytes_sent == data.length();
@@ -601,7 +605,7 @@ void UIWindow::send_input(const string &entry_name, const string &grid_name,
 		if (check_button->get_active())
 		{
 			one_selected = true;
-			asio::write(*socket[rank], asio::buffer(cmd, cmd.length()));
+			send_data(socket[rank], cmd);
 		}
 	}
 	if (one_selected)
