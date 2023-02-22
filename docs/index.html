@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <div class="title">Parallel GDB </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="md_README"></a>This program is for debugging parallel programs either on the local machine or on a remote cluster using SSH. It provides support to launch the processes via mpirun and srun.</p>
+<div class="textblock"><p><a class="anchor" id="md_README"></a>This program is for debugging parallel programs either on the local machine or on a remote cluster using SSH. It provides support to launch the processes via mpirun and srun. <img src="pgdb.png" alt="" class="inline" title="Screenshot of Parallel GDB"/></p>
 <h1><a class="anchor" id="autotoc_md1"></a>
 Structure</h1>
 <p>This debugger consists of two parts:</p><ol type="1">
@@ -98,13 +98,12 @@ Structure</h1>
 Building</h1>
 <p>To build these two separate executables, you can use the following command from the top level directory. </p><pre class="fragment">mkdir bin
 make
-</pre><p> This will generate a <code>pgdbmaster</code> and a <code>pgdbslave</code> executable in the <code>bin</code> directory.</p>
-<p>If you only want a specific executable you can run </p><pre class="fragment">make master
+</pre><p> This will generate a <code>pgdbmaster</code> and a <code>pgdbslave</code> executable in the <code>bin</code> directory. Use </p><pre class="fragment">make install
+</pre><p> to install these binaries into <code>/usr/local/bin</code>. If you only want a specific executable you can run </p><pre class="fragment">make master
 </pre><p> or </p><pre class="fragment">make slave
-</pre><p> to get the corresponding executable.</p>
-<p>Use </p><pre class="fragment">make clean
-</pre><p> to delete all generated files.</p>
-<h1><a class="anchor" id="autotoc_md3"></a>
+</pre><p> to get the corresponding executable. Use </p><pre class="fragment">make clean
+</pre><p> to delete all generated files. To delete the executable from the <code>/usr/local/bin</code> directory run </p><pre class="fragment">make uninstall
+</pre> <h1><a class="anchor" id="autotoc_md3"></a>
 Dependencies</h1>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Compile-Time</h2>
@@ -114,21 +113,23 @@ Compile-Time</h2>
 <li>libssh</li>
 </ul>
 <p>On Debian based systems, you can use the following command to install them: </p><pre class="fragment">apt install libgtkmm-3.0-dev libgtksourceviewmm-3.0-dev libssh-dev
-</pre> <h2><a class="anchor" id="autotoc_md5"></a>
+</pre><p> To build the slave only C++ standard libraries are needed.</p>
+<h2><a class="anchor" id="autotoc_md5"></a>
 Run-Time</h2>
 <p>For the debugger to work, the following programs need to be installed and be available in $PATH:</p><ul>
 <li>mpirun: To start the slave instances using MPI.</li>
 <li>srun: To start the slave instances using slurm.</li>
-<li>gdb: To debug the target program.</li>
-<li>socat: To handle the I/O of the gdb instance and the target instance.</li>
-<li>pidof: To check for socat instances.</li>
+<li>GDB: To debug the target program.</li>
+<li>socat: To handle the I/O of the GDB instance and the target instance.</li>
+<li>pidof: To check for socat instances. (Preinstalled on most UNIX-like systems)</li>
 </ul>
 <p>Furthermore, when debugging on a remote cluster, the <code>pgdbslave</code> executable needs to be copied to or build on this machine.</p>
 <h1><a class="anchor" id="autotoc_md6"></a>
 Using the debugger</h1>
-<p>The debugging master is started by using the command: </p><pre class="fragment">./bin/pgdbmaster
+<p>When installed (and <code>/usr/local/bin</code> is included in the PATH environment variable) the debugger is started by: </p><pre class="fragment">pgdbmaster
+</pre><p> If the debugger is only built it can be run with </p><pre class="fragment">./bin/pgdbmaster
 </pre><p> In the startup dialog you need to set the path to the <code>pgdbslave</code> and <code>target</code> executable, as well as some other parameters. This configuration can be exported and imported at the next start.</p>
-<p>The master will start the specified number of slaves, each of which will start the gdb instance, running the target program, and two socat instances, handling the I/O of gdb and the target.</p>
+<p>The master will start the specified number of slaves, each of which will start the GDB instance, running the target program, and two socat instances, handling the I/O of GDB and the target.</p>
 <p>If SSH is enabled, the master logs on to the remote cluster and starts the slaves there.</p>
 <h2><a class="anchor" id="autotoc_md7"></a>
 Custom launcher command</h2>
@@ -147,7 +148,7 @@ mkdir bin
 make
 </pre><p> After that the debugger can be started with: </p><pre class="fragment">cd ..
 ./bin/pgdbmaster
-</pre><p> Then, in the startup dialog, load the configuration file <code>config</code> and customize it to your needs. </p>
+</pre><p> Then, in the startup dialog, load the configuration file <code>config</code> from the <code>example</code> folder and customize it to your needs. </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->
