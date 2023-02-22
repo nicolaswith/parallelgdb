@@ -152,11 +152,11 @@ StartupDialog::~StartupDialog()
 }
 
 /**
- * This function sets the in the @a file_chooser selected file-path in the 
+ * This function sets the in the @a file_chooser selected file-path in the
  * @a entry.
- * 
+ *
  * @param file_chooser The file-chooser to get the file-path from.
- * 
+ *
  * @param entry The entry to write the file-path to.
  */
 void StartupDialog::set_path(Gtk::FileChooserButton *file_chooser, Gtk::Entry *entry)
@@ -484,6 +484,34 @@ bool StartupDialog::read_values()
 	catch (const std::exception &)
 	{
 		m_num_nodes = -1;
+	}
+
+	if (!m_custom_launcher)
+	{
+		if ("" == m_slave)
+		{
+			Gtk::MessageDialog dialog(*dynamic_cast<Gtk::Window *>(m_dialog),
+									  "Missing Slave Path.", false,
+									  Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
+			dialog.run();
+			return false;
+		}
+		if ("" == m_ip_address)
+		{
+			Gtk::MessageDialog dialog(*dynamic_cast<Gtk::Window *>(m_dialog),
+									  "Missing IP address.", false,
+									  Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
+			dialog.run();
+			return false;
+		}
+		if ("" == m_target)
+		{
+			Gtk::MessageDialog dialog(*dynamic_cast<Gtk::Window *>(m_dialog),
+									  "Missing Target Path.", false,
+									  Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
+			dialog.run();
+			return false;
+		}
 	}
 
 	return true;

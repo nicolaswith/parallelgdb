@@ -36,7 +36,7 @@
             </child>
           </object>
           <packing>
-            <property name="expand">True</property>
+            <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="position">0</property>
           </packing>
@@ -597,8 +597,10 @@
             </child>
             <child>
               <object class="GtkFileChooserButton" id="slave-file-chooser">
+                <property name="width-request">250</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="halign">start</property>
                 <property name="title" translatable="yes">Set Slave Location</property>
               </object>
               <packing>
@@ -608,8 +610,10 @@
             </child>
             <child>
               <object class="GtkFileChooserButton" id="target-file-chooser">
+                <property name="width-request">250</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="halign">start</property>
                 <property name="title" translatable="yes">Set Target Program</property>
               </object>
               <packing>
