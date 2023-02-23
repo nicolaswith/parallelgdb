@@ -4,7 +4,7 @@ This program is for debugging parallel programs either on the local machine or o
 
 # Structure
 This debugger consists of two parts: 
-1. The GUI master running on the host machine
+1. The GUI master running on the host machine (See screenshot)
 2. The slaves running on the host machine or the remote cluster
 
 # Building
@@ -29,7 +29,7 @@ to get the corresponding executable. Use
 
 	make clean
 
-to delete all generated files. To delete the executable from the `/usr/local/bin` directory run
+to delete all generated files. To delete the executables from the `/usr/local/bin` directory run
 
 	make uninstall
 
@@ -47,17 +47,17 @@ On Debian based systems, you can use the following command to install them:
 To build the slave only C++ standard libraries are needed.
 
 ## Run-Time
-For the debugger to work, the following programs need to be installed and be available in $PATH:
-- mpirun: To start the slave instances using MPI.
-- srun: To start the slave instances using slurm.
-- GDB: To debug the target program.
-- socat: To handle the I/O of the GDB instance and the target instance.
-- pidof: To check for socat instances. (Preinstalled on most UNIX-like systems)
+For the debugger to work, the following programs need to be installed and be available in the $PATH environment variable of the master/slave:
+- mpirun: To start the slave instances using MPI. (master)
+- srun: To start the slave instances using slurm. (master)
+- GDB: To debug the target program. (slave)
+- socat: To handle the I/O of the GDB instance and the target instance. (slave)
+- pidof: To check for socat instances. (Preinstalled on most UNIX-like systems) (slave)
 
 Furthermore, when debugging on a remote cluster, the `pgdbslave` executable needs to be copied to or build on this machine.
 
 # Using the debugger
-When installed (and `/usr/local/bin` is included in the PATH environment variable) the debugger is started by:
+When installed (and `/usr/local/bin` is included in the $PATH environment variable) the debugger is started by:
 
 	pgdb
 
@@ -72,9 +72,9 @@ The master will start the specified number of slaves, each of which will start t
 If SSH is enabled, the master logs on to the remote cluster and starts the slaves there.
 
 ## Custom launcher command
-If you need to make specific changes to the start command, or need to use a completely different launcher, you can check the Custom Command option in the startup dialog. This command will invalidate the set paths, IP address and partition. SSH options will not be influenced. 
+If you need to make specific changes to the start command, or need to use a completely different launcher, you can check the Custom Command option in the startup dialog. This command will invalidate all configurations except for the SSH options and the Number of Processes. For the master to know how many connections to open the Number of Processes still needs to be set in the startup dialog. Make SURE they match up with what you set in your custom command.
 
-For the master to know how many connections to open the number of processes and nodes still needs to be set in the startup dialog. Make SURE they match up with what you set in your custom command.
+If Parallel GDB should not start the slaves at all, check the Custom Command option and leaf the Launcher Command blank.
 
 The slave supports two possibilities to set its rank. Under normal conditions it will try to read the environment variables set by OpenMPI/MPICH/slurm:
 

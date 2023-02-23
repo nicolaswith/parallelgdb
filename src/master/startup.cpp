@@ -651,3 +651,16 @@ string StartupDialog::get_cmd() const
 
 	return cmd;
 }
+
+/**
+ * This function returns whether the master should start the slaves. When
+ * the custom command is used AND is left blank, the user wants to start
+ * the slaves manually.
+ *
+ * @return Whether the master should start the slaves.
+ */
+bool StartupDialog::master_starts_slaves() const
+{
+	string cmd = std::regex_replace(m_launcher_cmd, std::regex("[ \t]*"), "");
+	return !(m_custom_launcher && "" == cmd);
+}

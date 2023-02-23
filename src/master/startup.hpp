@@ -103,7 +103,6 @@ class StartupDialog
 	/// Sets the in the @a file_chooser selected file-path in the @a entry.
 	void set_path(Gtk::FileChooserButton *file_chooser, Gtk::Entry *entry);
 
-
 	/// Wrapper for the Gtk::get_widget function.
 	template <class T>
 	T *get_widget(const std::string &widget_name);
@@ -116,6 +115,8 @@ public:
 
 	/// Returns the launcher command.
 	std::string get_cmd() const;
+	/// Returns whether the master should start the slaves.
+	bool master_starts_slaves() const;
 
 	/// Runs the startup dialog.
 	/**
@@ -193,19 +194,6 @@ public:
 	inline const char *ssh_password() const
 	{
 		return m_ssh_password.c_str();
-	}
-
-	/// Returns whether the master should start the slaves.
-	/**
-	 * This function returns whether the master should start the slaves. When
-	 * the custom command is used AND is left blank, the user wants to start
-	 * the slaves manually.
-	 *
-	 * @return Whether the master should start the slaves.
-	 */
-	inline bool master_starts_slaves() const
-	{
-		return !(m_custom_launcher && m_launcher_cmd.empty());
 	}
 };
 
