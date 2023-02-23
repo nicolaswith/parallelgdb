@@ -15,14 +15,21 @@ master:
 
 slave:
 	+$(MAKE) -C $(SRCDIR)/slave
+
+resources:
+	+$(MAKE) -C $(SRCDIR)/master resources
 	
 install:
-	cp ./bin/pgdbmaster $(INSTALLDIR)
+	cp ./bin/pgdb $(INSTALLDIR)
 	cp ./bin/pgdbslave $(INSTALLDIR)
+	cp ./res/breakpoint.svg /usr/share/icons/hicolor/scalable/apps/pgdb.svg
+	cp ./pgdb.desktop /usr/share/applications
 
 uninstall:
-	rm -f $(INSTALLDIR)/pgdbmaster
+	rm -f $(INSTALLDIR)/pgdb
 	rm -f $(INSTALLDIR)/pgdbslave
+	rm -f /usr/share/icons/hicolor/scalable/apps/pgdb.svg
+	rm -f  /usr/share/applications/pgdb.desktop
 
 clean:
 	$(RM) -f $(BUILDDIR)/*

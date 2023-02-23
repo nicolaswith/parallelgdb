@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Parallel GDB
+Exec=/usr/local/bin/pgdb
+Icon=/usr/share/icons/hicolor/scalable/apps/pgdb.svg
+Terminal=false

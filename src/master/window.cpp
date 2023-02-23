@@ -276,6 +276,13 @@ bool UIWindow::init(Glib::RefPtr<Gtk::Application> app)
 	m_root_window = get_widget<Gtk::Window>("window");
 	m_app = app;
 
+	m_root_window->set_wmclass("Parallel GDB", "Parallel GDB");
+	string icon_path = "/usr/share/icons/hicolor/scalable/apps/pgdb.svg";
+	if (Glib::file_test(icon_path, Glib::FILE_TEST_EXISTS))
+	{
+		m_root_window->set_icon_from_file(icon_path);
+	}
+
 	// Signal are not compatible with glade and gtkmm ...
 	// So connect them the old-fashioned way.
 	get_widget<Gtk::Button>("gdb-send-button")

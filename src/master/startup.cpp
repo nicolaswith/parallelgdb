@@ -82,6 +82,13 @@ StartupDialog::StartupDialog()
 	m_builder = Gtk::Builder::create_from_resource("/pgdb/ui/startup_dialog.glade");
 	m_dialog = get_widget<Gtk::Dialog>("dialog");
 
+	m_dialog->set_wmclass("Parallel GDB", "Parallel GDB");
+	string icon_path = "/usr/share/icons/hicolor/scalable/apps/pgdb.svg";
+	if (Glib::file_test(icon_path, Glib::FILE_TEST_EXISTS))
+	{
+		m_dialog->set_icon_from_file(icon_path);
+	}
+
 	// save pointer to widgets to simplify access
 	m_entry_number_of_processes =
 		get_widget<Gtk::Entry>("number-of-processes-entry");
