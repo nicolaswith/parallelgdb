@@ -28,6 +28,7 @@ var classStartupDialog =
     [ "m_builder", "classStartupDialog.html#af79ed34950a715a9b0e4d0ed89ef7429", null ],
     [ "m_checkbutton_launcher", "classStartupDialog.html#a98ea8811864353b21bce70e8c4ba8c1f", null ],
     [ "m_checkbutton_ssh", "classStartupDialog.html#a4eafa444533c2412d46b2368e4690ae6", null ],
+    [ "m_config_file_chooser", "classStartupDialog.html#a03b3802114c520b87eef033d9041a325", null ],
     [ "m_custom_launcher", "classStartupDialog.html#ade82aa4e34a060a46fd62ede05743782", null ],
     [ "m_dialog", "classStartupDialog.html#a09f0cdbf3f68863e48f19054f3bbbe8d", null ],
     [ "m_entry_arguments", "classStartupDialog.html#a9c8cbfff7045dbab5c7d72fd22d1bf12", null ],
@@ -42,7 +43,6 @@ var classStartupDialog =
     [ "m_entry_ssh_password", "classStartupDialog.html#af48dadfda4acd508b732b0a345ef19a5", null ],
     [ "m_entry_ssh_user", "classStartupDialog.html#a18b1d3a086af89ddb32f020970a083f7", null ],
     [ "m_entry_target", "classStartupDialog.html#aa0e7346a019e4d94b16080e6b764906f", null ],
-    [ "m_file_chooser_button", "classStartupDialog.html#a694e2ba6007f228264142bd6197c8289", null ],
     [ "m_ip_address", "classStartupDialog.html#ab6de654482812d30b61649095ceaf299", null ],
     [ "m_is_valid", "classStartupDialog.html#ae4bf4cd60087581d8a7c828dd3abce1a", null ],
     [ "m_launcher_args", "classStartupDialog.html#a34f3e7f6e1d65c4483db31622805321d", null ],
@@ -54,10 +54,12 @@ var classStartupDialog =
     [ "m_radiobutton_mpirun", "classStartupDialog.html#a60132404934194223073672de97b4187", null ],
     [ "m_radiobutton_srun", "classStartupDialog.html#a5cf0397647d08d9ac15bd14668c7bc6a", null ],
     [ "m_slave", "classStartupDialog.html#ad26c2ecda89fceaafe43dd860a64b9c9", null ],
+    [ "m_slave_file_chooser", "classStartupDialog.html#a4c93623168944f50b988489c0953d781", null ],
     [ "m_srun", "classStartupDialog.html#af817ca81809881e60e16e9bf9c34337d", null ],
     [ "m_ssh", "classStartupDialog.html#a27153412b2d43efa3a3fc57c4ee7ff47", null ],
     [ "m_ssh_address", "classStartupDialog.html#a921444314959c1cbbea730d50410419b", null ],
     [ "m_ssh_password", "classStartupDialog.html#ae13912ab83e53657352b51771778bc20", null ],
     [ "m_ssh_user", "classStartupDialog.html#adfeee936d2a1bec7c2149e916e9309cf", null ],
-    [ "m_target", "classStartupDialog.html#a7f629976bd3c42f1eafc31847f73a9f4", null ]
+    [ "m_target", "classStartupDialog.html#a7f629976bd3c42f1eafc31847f73a9f4", null ],
+    [ "m_target_file_chooser", "classStartupDialog.html#a0a09aa08389900d65c33c9967194e2e0", null ]
 ];

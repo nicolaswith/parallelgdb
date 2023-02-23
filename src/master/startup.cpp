@@ -108,11 +108,12 @@ StartupDialog::StartupDialog()
 	m_entry_launcher_args = get_widget<Gtk::Entry>("launcher-args-entry");
 	m_checkbutton_launcher = get_widget<Gtk::CheckButton>("launcher-checkbutton");
 	m_entry_launcher = get_widget<Gtk::Entry>("launcher-entry");
-	m_file_chooser_button =
+
+	m_config_file_chooser =
 		get_widget<Gtk::FileChooserButton>("config-file-chooser");
-	Gtk::FileChooserButton *slave_file_chooser =
+	m_slave_file_chooser =
 		get_widget<Gtk::FileChooserButton>("slave-file-chooser");
-	Gtk::FileChooserButton *target_file_chooser =
+	m_target_file_chooser =
 		get_widget<Gtk::FileChooserButton>("target-file-chooser");
 
 	// set button and entry sensitivity for empty configuration
@@ -134,16 +135,16 @@ StartupDialog::StartupDialog()
 		->signal_clicked()
 		.connect(sigc::mem_fun(*this, &StartupDialog::export_config));
 
-	m_file_chooser_button->signal_selection_changed().connect(
+	m_config_file_chooser->signal_selection_changed().connect(
 		sigc::mem_fun(*this, &StartupDialog::read_config));
-	slave_file_chooser->signal_selection_changed().connect(
+	m_slave_file_chooser->signal_selection_changed().connect(
 		sigc::bind(sigc::mem_fun(*this,
 								 &StartupDialog::set_path),
-				   slave_file_chooser, m_entry_slave));
-	target_file_chooser->signal_selection_changed().connect(
+				   m_slave_file_chooser, m_entry_slave));
+	m_target_file_chooser->signal_selection_changed().connect(
 		sigc::bind(sigc::mem_fun(*this,
 								 &StartupDialog::set_path),
-				   target_file_chooser, m_entry_target));
+				   m_target_file_chooser, m_entry_target));
 	m_dialog->signal_response().connect(
 		sigc::mem_fun(*this, &StartupDialog::on_dialog_response));
 
@@ -204,7 +205,7 @@ void StartupDialog::clear_dialog()
 void StartupDialog::clear_all()
 {
 	clear_dialog();
-	m_file_chooser_button->unselect_all();
+	m_config_file_chooser->unselect_all();
 }
 
 /**
@@ -291,7 +292,7 @@ void StartupDialog::set_value(const std::string &key, const std::string &value)
 void StartupDialog::read_config()
 {
 	clear_dialog();
-	std::ifstream config_file(m_file_chooser_button->get_filename());
+	std::ifstream config_file(m_config_file_chooser->get_filename());
 	string line;
 	while (std::getline(config_file, line))
 	{
@@ -585,6 +586,8 @@ void StartupDialog::on_custom_launcher_toggled(Gtk::CheckButton *button)
 	m_entry_ip_address->set_sensitive(/*         */ !state);
 	m_entry_target->set_sensitive(/*             */ !state);
 	m_entry_arguments->set_sensitive(/*          */ !state);
+	m_slave_file_chooser->set_sensitive(/*       */ !state);
+	m_target_file_chooser->set_sensitive(/*      */ !state);
 }
 
 /**

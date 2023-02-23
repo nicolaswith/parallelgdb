@@ -226,8 +226,6 @@ Private Attributes</h2></td></tr>
 <tr class="separator:af79ed34950a715a9b0e4d0ed89ef7429"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09f0cdbf3f68863e48f19054f3bbbe8d"><td class="memItemLeft" align="right" valign="top">Gtk::Dialog *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#a09f0cdbf3f68863e48f19054f3bbbe8d">m_dialog</a></td></tr>
 <tr class="separator:a09f0cdbf3f68863e48f19054f3bbbe8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a694e2ba6007f228264142bd6197c8289"><td class="memItemLeft" align="right" valign="top">Gtk::FileChooserButton *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#a694e2ba6007f228264142bd6197c8289">m_file_chooser_button</a></td></tr>
-<tr class="separator:a694e2ba6007f228264142bd6197c8289"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04030c11b7af9f0690400d3e94db3b5b"><td class="memItemLeft" align="right" valign="top">Gtk::Entry *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#a04030c11b7af9f0690400d3e94db3b5b">m_entry_number_of_processes</a></td></tr>
 <tr class="separator:a04030c11b7af9f0690400d3e94db3b5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89e06b920cd5016411699c025e272cfb"><td class="memItemLeft" align="right" valign="top">Gtk::Entry *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#a89e06b920cd5016411699c025e272cfb">m_entry_processes_per_node</a></td></tr>
@@ -260,6 +258,12 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a98ea8811864353b21bce70e8c4ba8c1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae948cca5a7ecb136837bad1313efb60c"><td class="memItemLeft" align="right" valign="top">Gtk::Entry *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#ae948cca5a7ecb136837bad1313efb60c">m_entry_launcher</a></td></tr>
 <tr class="separator:ae948cca5a7ecb136837bad1313efb60c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03b3802114c520b87eef033d9041a325"><td class="memItemLeft" align="right" valign="top">Gtk::FileChooserButton *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#a03b3802114c520b87eef033d9041a325">m_config_file_chooser</a></td></tr>
+<tr class="separator:a03b3802114c520b87eef033d9041a325"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c93623168944f50b988489c0953d781"><td class="memItemLeft" align="right" valign="top">Gtk::FileChooserButton *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#a4c93623168944f50b988489c0953d781">m_slave_file_chooser</a></td></tr>
+<tr class="separator:a4c93623168944f50b988489c0953d781"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a09aa08389900d65c33c9967194e2e0"><td class="memItemLeft" align="right" valign="top">Gtk::FileChooserButton *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#a0a09aa08389900d65c33c9967194e2e0">m_target_file_chooser</a></td></tr>
+<tr class="separator:a0a09aa08389900d65c33c9967194e2e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This is a wrapper class for a Gtk::Dialog. It generates the startup dialog, where the user configures ParallelGDB. </p>
@@ -1365,6 +1369,28 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="a03b3802114c520b87eef033d9041a325"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03b3802114c520b87eef033d9041a325">&#9670;&nbsp;</a></span>m_config_file_chooser</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Gtk::FileChooserButton* StartupDialog::m_config_file_chooser</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ade82aa4e34a060a46fd62ede05743782"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ade82aa4e34a060a46fd62ede05743782">&#9670;&nbsp;</a></span>m_custom_launcher</h2>
 
@@ -1673,28 +1699,6 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a694e2ba6007f228264142bd6197c8289"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a694e2ba6007f228264142bd6197c8289">&#9670;&nbsp;</a></span>m_file_chooser_button</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Gtk::FileChooserButton* StartupDialog::m_file_chooser_button</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="ab6de654482812d30b61649095ceaf299"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab6de654482812d30b61649095ceaf299">&#9670;&nbsp;</a></span>m_ip_address</h2>
 
@@ -1937,6 +1941,28 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="a4c93623168944f50b988489c0953d781"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c93623168944f50b988489c0953d781">&#9670;&nbsp;</a></span>m_slave_file_chooser</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Gtk::FileChooserButton* StartupDialog::m_slave_file_chooser</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="af817ca81809881e60e16e9bf9c34337d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af817ca81809881e60e16e9bf9c34337d">&#9670;&nbsp;</a></span>m_srun</h2>
 
@@ -2058,6 +2084,28 @@ Here is the caller graph for this function:</div>
       <table class="memname">
         <tr>
           <td class="memname">std::string StartupDialog::m_target</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0a09aa08389900d65c33c9967194e2e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a09aa08389900d65c33c9967194e2e0">&#9670;&nbsp;</a></span>m_target_file_chooser</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Gtk::FileChooserButton* StartupDialog::m_target_file_chooser</td>
         </tr>
       </table>
   </td>

@@ -59,7 +59,6 @@ class StartupDialog
 	Glib::RefPtr<Gtk::Builder> m_builder;
 	Gtk::Dialog *m_dialog;
 
-	Gtk::FileChooserButton *m_file_chooser_button;
 	Gtk::Entry *m_entry_number_of_processes;
 	Gtk::Entry *m_entry_processes_per_node;
 	Gtk::Entry *m_entry_num_nodes;
@@ -76,6 +75,10 @@ class StartupDialog
 	Gtk::Entry *m_entry_launcher_args;
 	Gtk::CheckButton *m_checkbutton_launcher;
 	Gtk::Entry *m_entry_launcher;
+
+	Gtk::FileChooserButton *m_config_file_chooser;
+	Gtk::FileChooserButton *m_slave_file_chooser;
+	Gtk::FileChooserButton *m_target_file_chooser;
 
 	/// Updates the current configuration.
 	void on_dialog_response(const int response_id);
