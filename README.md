@@ -13,7 +13,7 @@ To build these two separate executables, you can use the following command from 
 	mkdir bin
 	make
 
-This will generate a `pgdbmaster` and a `pgdbslave` executable in the `bin` directory. Use
+This will generate a `pgdb` and a `pgdbslave` executable in the `bin` directory. Use
 
 	make install
 
@@ -59,11 +59,11 @@ Furthermore, when debugging on a remote cluster, the `pgdbslave` executable need
 # Using the debugger
 When installed (and `/usr/local/bin` is included in the PATH environment variable) the debugger is started by:
 
-	pgdbmaster
+	pgdb
 
-If the debugger is only built it can be run with 
+or by searching for it in the desktop application menu. If the debugger is only built it can be run with 
 
-	./bin/pgdbmaster
+	./bin/pgdb
 
 In the startup dialog you need to set the path to the `pgdbslave` and `target` executable, as well as some other parameters. This configuration can be exported and imported at the next start.
 
@@ -103,6 +103,6 @@ In this project a small example target and configuration file for it is included
 After that the debugger can be started with:
 
 	cd ..
-	./bin/pgdbmaster
+	./bin/pgdb
 
 Then, in the startup dialog, load the configuration file `config` from the `example` folder and customize it to your needs.

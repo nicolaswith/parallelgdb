@@ -98,7 +98,7 @@ Structure</h1>
 Building</h1>
 <p>To build these two separate executables, you can use the following command from the top level directory. </p><pre class="fragment">mkdir bin
 make
-</pre><p> This will generate a <code>pgdbmaster</code> and a <code>pgdbslave</code> executable in the <code>bin</code> directory. Use </p><pre class="fragment">make install
+</pre><p> This will generate a <code>pgdb</code> and a <code>pgdbslave</code> executable in the <code>bin</code> directory. Use </p><pre class="fragment">make install
 </pre><p> to install these binaries into <code>/usr/local/bin</code>. If you only want a specific executable you can run </p><pre class="fragment">make master
 </pre><p> or </p><pre class="fragment">make slave
 </pre><p> to get the corresponding executable. Use </p><pre class="fragment">make clean
@@ -126,8 +126,8 @@ Run-Time</h2>
 <p>Furthermore, when debugging on a remote cluster, the <code>pgdbslave</code> executable needs to be copied to or build on this machine.</p>
 <h1><a class="anchor" id="autotoc_md6"></a>
 Using the debugger</h1>
-<p>When installed (and <code>/usr/local/bin</code> is included in the PATH environment variable) the debugger is started by: </p><pre class="fragment">pgdbmaster
-</pre><p> If the debugger is only built it can be run with </p><pre class="fragment">./bin/pgdbmaster
+<p>When installed (and <code>/usr/local/bin</code> is included in the PATH environment variable) the debugger is started by: </p><pre class="fragment">pgdb
+</pre><p> or by searching for it in the desktop application menu. If the debugger is only built it can be run with </p><pre class="fragment">./bin/pgdb
 </pre><p> In the startup dialog you need to set the path to the <code>pgdbslave</code> and <code>target</code> executable, as well as some other parameters. This configuration can be exported and imported at the next start.</p>
 <p>The master will start the specified number of slaves, each of which will start the GDB instance, running the target program, and two socat instances, handling the I/O of GDB and the target.</p>
 <p>If SSH is enabled, the master logs on to the remote cluster and starts the slaves there.</p>
@@ -147,7 +147,7 @@ Example Target</h1>
 mkdir bin
 make
 </pre><p> After that the debugger can be started with: </p><pre class="fragment">cd ..
-./bin/pgdbmaster
+./bin/pgdb
 </pre><p> Then, in the startup dialog, load the configuration file <code>config</code> from the <code>example</code> folder and customize it to your needs. </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->

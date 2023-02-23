@@ -1,0 +1,4 @@
+<map id="UIWindow::send_input" name="UIWindow::send_input">
+<area shape="rect" id="node1" title="Writes the text in an entry to a TCP socket." alt="" coords="5,5,172,32"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#af7d2b8be24892c57aa9b40a3ccada1b8" title="Writes data to the TCP socket." alt="" coords="220,5,383,32"/>
+</map>

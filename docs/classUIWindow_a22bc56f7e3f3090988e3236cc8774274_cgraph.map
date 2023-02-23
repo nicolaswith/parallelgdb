@@ -1,4 +1,5 @@
 <map id="UIWindow::send_input_trgt" name="UIWindow::send_input_trgt">
 <area shape="rect" id="node1" title="Sends text to the socat instances connected to the target program." alt="" coords="5,5,201,32"/>
 <area shape="rect" id="node2" href="$classUIWindow.html#a162a36247228bf4ca885a921f106b3b4" title="Writes the text in an entry to a TCP socket." alt="" coords="249,5,416,32"/>
+<area shape="rect" id="node3" href="$classUIWindow.html#af7d2b8be24892c57aa9b40a3ccada1b8" title="Writes data to the TCP socket." alt="" coords="464,5,627,32"/>
 </map>
