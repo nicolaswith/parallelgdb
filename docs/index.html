@@ -91,7 +91,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <h1><a class="anchor" id="autotoc_md1"></a>
 Structure</h1>
 <p>This debugger consists of two parts:</p><ol type="1">
-<li>The GUI master running on the host machine</li>
+<li>The GUI master running on the host machine (See screenshot)</li>
 <li>The slaves running on the host machine or the remote cluster</li>
 </ol>
 <h1><a class="anchor" id="autotoc_md2"></a>
@@ -102,7 +102,7 @@ make
 </pre><p> to install these binaries into <code>/usr/local/bin</code>. If you only want a specific executable you can run </p><pre class="fragment">make master
 </pre><p> or </p><pre class="fragment">make slave
 </pre><p> to get the corresponding executable. Use </p><pre class="fragment">make clean
-</pre><p> to delete all generated files. To delete the executable from the <code>/usr/local/bin</code> directory run </p><pre class="fragment">make uninstall
+</pre><p> to delete all generated files. To delete the executables from the <code>/usr/local/bin</code> directory run </p><pre class="fragment">make uninstall
 </pre> <h1><a class="anchor" id="autotoc_md3"></a>
 Dependencies</h1>
 <h2><a class="anchor" id="autotoc_md4"></a>
@@ -116,25 +116,25 @@ Compile-Time</h2>
 </pre><p> To build the slave only C++ standard libraries are needed.</p>
 <h2><a class="anchor" id="autotoc_md5"></a>
 Run-Time</h2>
-<p>For the debugger to work, the following programs need to be installed and be available in $PATH:</p><ul>
-<li>mpirun: To start the slave instances using MPI.</li>
-<li>srun: To start the slave instances using slurm.</li>
-<li>GDB: To debug the target program.</li>
-<li>socat: To handle the I/O of the GDB instance and the target instance.</li>
-<li>pidof: To check for socat instances. (Preinstalled on most UNIX-like systems)</li>
+<p>For the debugger to work, the following programs need to be installed and be available in the $PATH environment variable of the master/slave:</p><ul>
+<li>mpirun: To start the slave instances using MPI. (master)</li>
+<li>srun: To start the slave instances using slurm. (master)</li>
+<li>GDB: To debug the target program. (slave)</li>
+<li>socat: To handle the I/O of the GDB instance and the target instance. (slave)</li>
+<li>pidof: To check for socat instances. (Preinstalled on most UNIX-like systems) (slave)</li>
 </ul>
 <p>Furthermore, when debugging on a remote cluster, the <code>pgdbslave</code> executable needs to be copied to or build on this machine.</p>
 <h1><a class="anchor" id="autotoc_md6"></a>
 Using the debugger</h1>
-<p>When installed (and <code>/usr/local/bin</code> is included in the PATH environment variable) the debugger is started by: </p><pre class="fragment">pgdb
+<p>When installed (and <code>/usr/local/bin</code> is included in the $PATH environment variable) the debugger is started by: </p><pre class="fragment">pgdb
 </pre><p> or by searching for it in the desktop application menu. If the debugger is only built it can be run with </p><pre class="fragment">./bin/pgdb
 </pre><p> In the startup dialog you need to set the path to the <code>pgdbslave</code> and <code>target</code> executable, as well as some other parameters. This configuration can be exported and imported at the next start.</p>
 <p>The master will start the specified number of slaves, each of which will start the GDB instance, running the target program, and two socat instances, handling the I/O of GDB and the target.</p>
 <p>If SSH is enabled, the master logs on to the remote cluster and starts the slaves there.</p>
 <h2><a class="anchor" id="autotoc_md7"></a>
 Custom launcher command</h2>
-<p>If you need to make specific changes to the start command, or need to use a completely different launcher, you can check the Custom Command option in the startup dialog. This command will invalidate the set paths, IP address and partition. SSH options will not be influenced.</p>
-<p>For the master to know how many connections to open the number of processes and nodes still needs to be set in the startup dialog. Make SURE they match up with what you set in your custom command.</p>
+<p>If you need to make specific changes to the start command, or need to use a completely different launcher, you can check the Custom Command option in the startup dialog. This command will invalidate all configurations except for the SSH options and the Number of Processes. For the master to know how many connections to open the Number of Processes still needs to be set in the startup dialog. Make SURE they match up with what you set in your custom command.</p>
+<p>If Parallel GDB should not start the slaves at all, check the Custom Command option and leaf the Launcher Command blank.</p>
 <p>The slave supports two possibilities to set its rank. Under normal conditions it will try to read the environment variables set by OpenMPI/MPICH/slurm: </p><pre class="fragment">OMPI_COMM_WORLD_RANK
 PMI_RANK
 </pre><p> If neither of those is set (NOT using OpenMPI/MPICH/slurm as launcher) there are two command line arguments which can be used to set the rank. First is </p><pre class="fragment">-e &lt;name&gt;

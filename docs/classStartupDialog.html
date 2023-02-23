@@ -118,6 +118,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3dd518b4edebb588ba60b8b5538cc903"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#a3dd518b4edebb588ba60b8b5538cc903">get_cmd</a> () const</td></tr>
 <tr class="memdesc:a3dd518b4edebb588ba60b8b5538cc903"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the launcher command.  <a href="classStartupDialog.html#a3dd518b4edebb588ba60b8b5538cc903">More...</a><br /></td></tr>
 <tr class="separator:a3dd518b4edebb588ba60b8b5538cc903"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6306bbf09822abe76847e406e3e3071"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#ac6306bbf09822abe76847e406e3e3071">master_starts_slaves</a> () const</td></tr>
+<tr class="memdesc:ac6306bbf09822abe76847e406e3e3071"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether the master should start the slaves.  <a href="classStartupDialog.html#ac6306bbf09822abe76847e406e3e3071">More...</a><br /></td></tr>
+<tr class="separator:ac6306bbf09822abe76847e406e3e3071"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af47f73e01a8a6450694bac12940f14de"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#af47f73e01a8a6450694bac12940f14de">run</a> ()</td></tr>
 <tr class="memdesc:af47f73e01a8a6450694bac12940f14de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the startup dialog.  <a href="classStartupDialog.html#af47f73e01a8a6450694bac12940f14de">More...</a><br /></td></tr>
 <tr class="separator:af47f73e01a8a6450694bac12940f14de"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -139,9 +142,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad505fcb515c6c991031165f406836f87"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#ad505fcb515c6c991031165f406836f87">ssh_password</a> () const</td></tr>
 <tr class="memdesc:ad505fcb515c6c991031165f406836f87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the SSH password.  <a href="classStartupDialog.html#ad505fcb515c6c991031165f406836f87">More...</a><br /></td></tr>
 <tr class="separator:ad505fcb515c6c991031165f406836f87"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6306bbf09822abe76847e406e3e3071"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#ac6306bbf09822abe76847e406e3e3071">master_starts_slaves</a> () const</td></tr>
-<tr class="memdesc:ac6306bbf09822abe76847e406e3e3071"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether the master should start the slaves.  <a href="classStartupDialog.html#ac6306bbf09822abe76847e406e3e3071">More...</a><br /></td></tr>
-<tr class="separator:ac6306bbf09822abe76847e406e3e3071"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -582,9 +582,6 @@ Here is the caller graph for this function:</div>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">bool StartupDialog::master_starts_slaves </td>
@@ -593,11 +590,6 @@ Here is the caller graph for this function:</div>
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 <p>This function returns whether the master should start the slaves. When the custom command is used AND is left blank, the user wants to start the slaves manually.</p>
 <dl class="section return"><dt>Returns</dt><dd>Whether the master should start the slaves. </dd></dl>
