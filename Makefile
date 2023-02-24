@@ -29,7 +29,7 @@ uninstall:
 	rm -f $(INSTALLDIR)/pgdb
 	rm -f $(INSTALLDIR)/pgdbslave
 	rm -f /usr/share/icons/hicolor/scalable/apps/pgdb.svg
-	rm -f  /usr/share/applications/pgdb.desktop
+	rm -f /usr/share/applications/pgdb.desktop
 
 clean:
 	$(RM) -f $(BUILDDIR)/*

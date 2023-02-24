@@ -29,6 +29,7 @@
 #include <string>
 #include <string.h>
 #include <algorithm>
+#include <utility>
 #include <libssh/libssh.h>
 
 #include "master.hpp"
@@ -198,7 +199,7 @@ bool Master::start_slaves_local()
 }
 
 /**
- * This function handles the TCP communication between socat and the master. 
+ * This function handles the TCP communication between socat and the master.
  * It waits (blocking) for data. When data is received, a copy is sent to be
  * displayed/parsed. On error the connection is closed and the master
  * terminates.
@@ -207,8 +208,7 @@ bool Master::start_slaves_local()
  *
  * @param port The assigned port of the @p socket.
  */
-void Master::process_session(tcp::socket socket,
-							 const asio::ip::port_type port)
+void Master::process_session(tcp::socket socket, const asio::ip::port_type port)
 {
 	const int rank = UIWindow::get_rank(port);
 	if (UIWindow::src_is_gdb(port))
@@ -260,7 +260,9 @@ void Master::start_acceptor(const asio::ip::port_type port)
 {
 	asio::io_context io_context;
 	tcp::acceptor acceptor(io_context, tcp::endpoint(tcp::v4(), port));
-	process_session(acceptor.accept(), port);
+	tcp::socket socket(acceptor.accept());
+	acceptor.close();
+	process_session(std::move(socket), port);
 }
 
 /**
