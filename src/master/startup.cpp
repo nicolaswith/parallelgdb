@@ -61,22 +61,21 @@ T *StartupDialog::get_widget(const std::string &widget_name)
  */
 StartupDialog::StartupDialog()
 	: m_is_valid(false),
+	  m_launcher_mpirun(false),
+	  m_launcher_srun(false),
+	  m_launcher_custom(false),
+	  m_launcher_args(""),
 	  m_number_of_processes(-1),
 	  m_processes_per_node(-1),
 	  m_num_nodes(-1),
-	  m_mpirun(false),
-	  m_srun(false),
-	  m_ssh(false),
-	  m_custom_launcher(false),
-	  m_slave(""),
-	  m_target(""),
-	  m_arguments(""),
+	  m_slave_path(""),
 	  m_ip_address(""),
+	  m_target_path(""),
+	  m_target_args(""),
+	  m_ssh(false),
 	  m_ssh_address(""),
 	  m_ssh_user(""),
-	  m_ssh_password(""),
-	  m_launcher_args(""),
-	  m_launcher_cmd("")
+	  m_ssh_password("")
 {
 	// parse the glade file
 	m_builder = Gtk::Builder::create_from_resource("/pgdb/ui/startup_dialog.glade");
@@ -90,25 +89,23 @@ StartupDialog::StartupDialog()
 	}
 
 	// save pointer to widgets to simplify access
+	m_radiobutton_mpirun = get_widget<Gtk::RadioButton>("mpirun-radiobutton");
+	m_radiobutton_srun = get_widget<Gtk::RadioButton>("srun-radiobutton");
+	m_radiobutton_custom = get_widget<Gtk::RadioButton>("custom-radiobutton");
+	m_entry_launcher_args = get_widget<Gtk::Entry>("launcher-args-entry");
 	m_entry_number_of_processes =
 		get_widget<Gtk::Entry>("number-of-processes-entry");
 	m_entry_processes_per_node =
 		get_widget<Gtk::Entry>("processes-per-node-entry");
 	m_entry_num_nodes = get_widget<Gtk::Entry>("num-nodes-entry");
-	m_radiobutton_mpirun = get_widget<Gtk::RadioButton>("mpirun-radiobutton");
-	m_radiobutton_srun = get_widget<Gtk::RadioButton>("srun-radiobutton");
-	m_entry_slave = get_widget<Gtk::Entry>("slave-entry");
-	m_entry_target = get_widget<Gtk::Entry>("target-entry");
-	m_entry_arguments = get_widget<Gtk::Entry>("arguments-entry");
+	m_entry_slave_path = get_widget<Gtk::Entry>("slave-entry");
 	m_entry_ip_address = get_widget<Gtk::Entry>("ip-address-entry");
+	m_entry_target_path = get_widget<Gtk::Entry>("target-entry");
+	m_entry_target_args = get_widget<Gtk::Entry>("arguments-entry");
 	m_checkbutton_ssh = get_widget<Gtk::CheckButton>("ssh-checkbutton");
 	m_entry_ssh_address = get_widget<Gtk::Entry>("ssh-address-entry");
 	m_entry_ssh_user = get_widget<Gtk::Entry>("ssh-user-entry");
 	m_entry_ssh_password = get_widget<Gtk::Entry>("ssh-password-entry");
-	m_entry_launcher_args = get_widget<Gtk::Entry>("launcher-args-entry");
-	m_checkbutton_launcher = get_widget<Gtk::CheckButton>("launcher-checkbutton");
-	m_entry_launcher = get_widget<Gtk::Entry>("launcher-entry");
-
 	m_config_file_chooser =
 		get_widget<Gtk::FileChooserButton>("config-file-chooser");
 	m_slave_file_chooser =
@@ -118,33 +115,28 @@ StartupDialog::StartupDialog()
 
 	// set button and entry sensitivity for empty configuration
 	set_sensitivity_ssh(false);
-	m_entry_launcher->set_sensitive(false);
 
 	// connect signal handlers to buttons
 	m_checkbutton_ssh->signal_toggled().connect(
-		sigc::bind(sigc::mem_fun(*this, &StartupDialog::on_ssh_button_toggled),
-				   m_checkbutton_ssh));
-	m_checkbutton_launcher->signal_toggled().connect(sigc::bind(
-		sigc::mem_fun(*this, &StartupDialog::on_custom_launcher_toggled),
-		m_checkbutton_launcher));
-
+		sigc::mem_fun(*this, &StartupDialog::on_ssh_button_toggled));
+	m_radiobutton_custom->signal_toggled().connect(
+		sigc::mem_fun(*this, &StartupDialog::on_custom_launcher_toggled));
 	get_widget<Gtk::Button>("clear-config-button")
 		->signal_clicked()
 		.connect(sigc::mem_fun(*this, &StartupDialog::clear_all));
 	get_widget<Gtk::Button>("export-config-button")
 		->signal_clicked()
 		.connect(sigc::mem_fun(*this, &StartupDialog::export_config));
-
 	m_config_file_chooser->signal_selection_changed().connect(
 		sigc::mem_fun(*this, &StartupDialog::read_config));
 	m_slave_file_chooser->signal_selection_changed().connect(
 		sigc::bind(sigc::mem_fun(*this,
 								 &StartupDialog::set_path),
-				   m_slave_file_chooser, m_entry_slave));
+				   m_slave_file_chooser, m_entry_slave_path));
 	m_target_file_chooser->signal_selection_changed().connect(
 		sigc::bind(sigc::mem_fun(*this,
 								 &StartupDialog::set_path),
-				   m_target_file_chooser, m_entry_target));
+				   m_target_file_chooser, m_entry_target_path));
 	m_dialog->signal_response().connect(
 		sigc::mem_fun(*this, &StartupDialog::on_dialog_response));
 
@@ -177,25 +169,23 @@ void StartupDialog::set_path(Gtk::FileChooserButton *file_chooser, Gtk::Entry *e
  */
 void StartupDialog::clear_dialog()
 {
+	m_radiobutton_mpirun->set_active(true);
+	m_radiobutton_srun->set_active(false);
+	m_radiobutton_custom->set_active(false);
+	m_entry_launcher_args->set_text("");
 	m_entry_number_of_processes->set_text("");
 	m_entry_processes_per_node->set_text("");
 	m_entry_num_nodes->set_text("");
-	m_radiobutton_mpirun->set_active(true);
-	m_radiobutton_srun->set_active(false);
-	m_entry_slave->set_text("");
-	m_entry_target->set_text("");
-	m_entry_arguments->set_text("");
+	m_entry_slave_path->set_text("");
 	m_entry_ip_address->set_text("");
+	m_entry_target_path->set_text("");
+	m_entry_target_args->set_text("");
 	m_checkbutton_ssh->set_active(false);
 	m_entry_ssh_address->set_text("");
 	m_entry_ssh_user->set_text("");
 	m_entry_ssh_password->set_text("");
-	m_entry_launcher_args->set_text("");
-	m_checkbutton_launcher->set_active(false);
-	m_entry_launcher->set_text("");
 
 	set_sensitivity_ssh(false);
-	m_entry_launcher->set_sensitive(false);
 }
 
 /**
@@ -220,30 +210,43 @@ void StartupDialog::clear_all()
  */
 void StartupDialog::set_value(const std::string &key, const std::string &value)
 {
+	if ("launcher_args" == key)
+		m_entry_launcher_args->set_text(value);
 	if ("number_of_processes" == key)
 		m_entry_number_of_processes->set_text(value);
 	if ("processes_per_node" == key)
 		m_entry_processes_per_node->set_text(value);
 	if ("num_nodes" == key)
 		m_entry_num_nodes->set_text(value);
-	if ("slave" == key)
-		m_entry_slave->set_text(value);
-	if ("target" == key)
-		m_entry_target->set_text(value);
-	if ("arguments" == key)
-		m_entry_arguments->set_text(value);
+	if ("slave_path" == key)
+		m_entry_slave_path->set_text(value);
 	if ("ip_address" == key)
 		m_entry_ip_address->set_text(value);
+	if ("target_path" == key)
+		m_entry_target_path->set_text(value);
+	if ("target_args" == key)
+		m_entry_target_args->set_text(value);
 	if ("ssh_address" == key)
 		m_entry_ssh_address->set_text(value);
 	if ("ssh_user" == key)
 		m_entry_ssh_user->set_text(value);
 	if ("ssh_password" == key)
 		m_entry_ssh_password->set_text(Base64::decode(value));
-	if ("launcher_args" == key)
-		m_entry_launcher_args->set_text(value);
-	if ("custom_cmd" == key)
-		m_entry_launcher->set_text(value);
+	if ("launcher" == key)
+	{
+		if ("mpirun" == value)
+		{
+			m_radiobutton_mpirun->set_active(true);
+		}
+		else if ("srun" == value)
+		{
+			m_radiobutton_srun->set_active(true);
+		}
+		else if ("custom" == value)
+		{
+			m_radiobutton_custom->set_active(true);
+		}
+	}
 	if ("ssh" == key)
 	{
 		if ("true" == value)
@@ -255,32 +258,6 @@ void StartupDialog::set_value(const std::string &key, const std::string &value)
 		{
 			m_checkbutton_ssh->set_active(false);
 			set_sensitivity_ssh(false);
-		}
-	}
-	if ("launcher" == key)
-	{
-		if ("mpirun" == value)
-		{
-			m_radiobutton_mpirun->set_active(true);
-			m_radiobutton_srun->set_active(false);
-		}
-		else if ("srun" == value)
-		{
-			m_radiobutton_mpirun->set_active(false);
-			m_radiobutton_srun->set_active(true);
-		}
-	}
-	if ("custom_launcher" == key)
-	{
-		if ("true" == value)
-		{
-			m_checkbutton_launcher->set_active(true);
-			m_entry_launcher->set_sensitive(true);
-		}
-		else
-		{
-			m_checkbutton_launcher->set_active(false);
-			m_entry_launcher->set_sensitive(false);
 		}
 	}
 }
@@ -351,6 +328,14 @@ void StartupDialog::on_save_dialog_response(const int response_id,
 	// assemble config file content
 	string config = "";
 
+	config += "launcher=";
+	config += m_launcher_mpirun ? "mpirun" : (m_launcher_srun ? "srun" : "custom");
+	config += "\n";
+
+	config += "launcher_args=";
+	config += m_launcher_args;
+	config += "\n";
+
 	config += "number_of_processes=";
 	config += std::to_string(m_number_of_processes);
 	config += "\n";
@@ -363,28 +348,20 @@ void StartupDialog::on_save_dialog_response(const int response_id,
 	config += m_num_nodes > 0 ? std::to_string(m_num_nodes) : "";
 	config += "\n";
 
-	config += "launcher=";
-	config += m_mpirun ? "mpirun" : "srun";
-	config += "\n";
-
-	config += "launcher_args=";
-	config += m_launcher_args;
-	config += "\n";
-
-	config += "slave=";
-	config += m_slave;
-	config += "\n";
-
-	config += "target=";
-	config += m_target;
-	config += "\n";
-
-	config += "arguments=";
-	config += m_arguments;
+	config += "slave_path=";
+	config += m_slave_path;
 	config += "\n";
 
 	config += "ip_address=";
 	config += m_ip_address;
+	config += "\n";
+
+	config += "target_path=";
+	config += m_target_path;
+	config += "\n";
+
+	config += "target_args=";
+	config += m_target_args;
 	config += "\n";
 
 	config += "ssh=";
@@ -403,14 +380,6 @@ void StartupDialog::on_save_dialog_response(const int response_id,
 	config += Base64::encode(m_ssh_password);
 	config += "\n";
 
-	config += "custom_launcher=";
-	config += m_custom_launcher ? "true" : "false";
-	config += "\n";
-
-	config += "custom_cmd=";
-	config += m_launcher_cmd;
-	config += "\n\n";
-
 	string filename = file_chooser_dialog->get_filename();
 	std::ofstream file(filename);
 	file << config;
@@ -427,21 +396,20 @@ void StartupDialog::on_save_dialog_response(const int response_id,
 bool StartupDialog::read_values()
 {
 	// get button states
-	m_mpirun = m_radiobutton_mpirun->get_active();
-	m_srun = m_radiobutton_srun->get_active();
+	m_launcher_mpirun = m_radiobutton_mpirun->get_active();
+	m_launcher_srun = m_radiobutton_srun->get_active();
+	m_launcher_custom = m_radiobutton_custom->get_active();
 	m_ssh = m_checkbutton_ssh->get_active();
-	m_custom_launcher = m_checkbutton_launcher->get_active();
 
 	// copy new configs
-	m_slave = m_entry_slave->get_text();
-	m_target = m_entry_target->get_text();
-	m_arguments = m_entry_arguments->get_text();
+	m_launcher_args = m_entry_launcher_args->get_text();
+	m_slave_path = m_entry_slave_path->get_text();
 	m_ip_address = m_entry_ip_address->get_text();
+	m_target_path = m_entry_target_path->get_text();
+	m_target_args = m_entry_target_args->get_text();
 	m_ssh_address = m_entry_ssh_address->get_text();
 	m_ssh_user = m_entry_ssh_user->get_text();
 	m_ssh_password = m_entry_ssh_password->get_text();
-	m_launcher_cmd = m_entry_launcher->get_text();
-	m_launcher_args = m_entry_launcher_args->get_text();
 
 	// parse intergers
 	try
@@ -494,9 +462,9 @@ bool StartupDialog::read_values()
 		m_num_nodes = -1;
 	}
 
-	if (!m_custom_launcher)
+	if (!m_launcher_custom)
 	{
-		if ("" == m_slave)
+		if ("" == m_slave_path)
 		{
 			Gtk::MessageDialog dialog(*dynamic_cast<Gtk::Window *>(m_dialog),
 									  "Missing Slave Path.", false,
@@ -512,7 +480,7 @@ bool StartupDialog::read_values()
 			dialog.run();
 			return false;
 		}
-		if ("" == m_target)
+		if ("" == m_target_path)
 		{
 			Gtk::MessageDialog dialog(*dynamic_cast<Gtk::Window *>(m_dialog),
 									  "Missing Target Path.", false,
@@ -560,9 +528,9 @@ void StartupDialog::set_sensitivity_ssh(const bool state)
  *
  * @param[in] button The checkbutton which got clicked.
  */
-void StartupDialog::on_ssh_button_toggled(Gtk::CheckButton *button)
+void StartupDialog::on_ssh_button_toggled()
 {
-	set_sensitivity_ssh(button->get_active());
+	set_sensitivity_ssh(m_checkbutton_ssh->get_active());
 }
 
 /**
@@ -571,23 +539,17 @@ void StartupDialog::on_ssh_button_toggled(Gtk::CheckButton *button)
  *
  * @param[in] button The checkbutton which got clicked.
  */
-void StartupDialog::on_custom_launcher_toggled(Gtk::CheckButton *button)
+void StartupDialog::on_custom_launcher_toggled()
 {
-	const bool state = button->get_active();
-
-	m_entry_launcher->set_sensitive(state);
-
-	m_radiobutton_mpirun->set_sensitive(/*       */ !state);
-	m_radiobutton_srun->set_sensitive(/*         */ !state);
-	m_entry_launcher_args->set_sensitive(/*      */ !state);
-	m_entry_processes_per_node->set_sensitive(/* */ !state);
-	m_entry_num_nodes->set_sensitive(/*          */ !state);
-	m_entry_slave->set_sensitive(/*              */ !state);
-	m_entry_ip_address->set_sensitive(/*         */ !state);
-	m_entry_target->set_sensitive(/*             */ !state);
-	m_entry_arguments->set_sensitive(/*          */ !state);
-	m_slave_file_chooser->set_sensitive(/*       */ !state);
-	m_target_file_chooser->set_sensitive(/*      */ !state);
+	const bool state = m_radiobutton_custom->get_active();
+	m_entry_processes_per_node->set_sensitive(!state);
+	m_entry_num_nodes->set_sensitive(!state);
+	m_entry_slave_path->set_sensitive(!state);
+	m_entry_ip_address->set_sensitive(!state);
+	m_entry_target_path->set_sensitive(!state);
+	m_entry_target_args->set_sensitive(!state);
+	m_slave_file_chooser->set_sensitive(!state);
+	m_target_file_chooser->set_sensitive(!state);
 }
 
 /**
@@ -597,21 +559,21 @@ void StartupDialog::on_custom_launcher_toggled(Gtk::CheckButton *button)
  */
 string StartupDialog::get_cmd() const
 {
-	if (m_custom_launcher)
+	if (m_launcher_custom)
 	{
-		return m_launcher_cmd;
+		return m_launcher_args;
 	}
 
 	string cmd = "";
 
-	if (m_mpirun)
+	if (m_launcher_mpirun)
 	{
 		cmd += "mpirun";
 
 		cmd += " -np ";
 		cmd += std::to_string(m_number_of_processes);
 	}
-	else if (m_srun)
+	else if (m_launcher_srun)
 	{
 		cmd += "srun";
 
@@ -635,16 +597,16 @@ string StartupDialog::get_cmd() const
 	cmd += m_launcher_args;
 
 	cmd += " ";
-	cmd += m_slave;
+	cmd += m_slave_path;
 
 	cmd += " -i ";
 	cmd += m_ip_address;
 
 	cmd += " ";
-	cmd += m_target;
+	cmd += m_target_path;
 
 	cmd += " ";
-	cmd += m_arguments;
+	cmd += m_target_args;
 
 	// Remove all preceding and trailing whitespace
 	cmd = std::regex_replace(cmd, std::regex("^[ \t]+"), "");
@@ -664,6 +626,6 @@ string StartupDialog::get_cmd() const
  */
 bool StartupDialog::master_starts_slaves() const
 {
-	string cmd = std::regex_replace(m_launcher_cmd, std::regex("[ \t]*"), "");
-	return !(m_custom_launcher && "" == cmd);
+	string cmd = std::regex_replace(m_launcher_args, std::regex("[ \t]*"), "");
+	return !(m_launcher_custom && "" == cmd);
 }

@@ -1,7 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"classUIWindow.html#ae369ac9ebde283b0469f363624040626":[5,0,6,53],
-"classUIWindow.html#aee371ffb7ff1f2cdf4c0a735dc0df349":[5,0,6,51],
 "classUIWindow.html#af0ef03c9ebd1f694e7dfc9326d7104f1":[5,0,6,33],
 "classUIWindow.html#af1f63a8241611c1a9c252311830bcac2":[5,0,6,84],
 "classUIWindow.html#af28cb60749093d8cd3e36426b32e5052":[5,0,6,23],
@@ -17,8 +15,8 @@ var NAVTREEINDEX1 =
 "dir_80f0d4a0945c74dfa611dba2ec326a39.html":[6,0,0,1],
 "dir_ae1a660fbe587eff2b475b14d217c1ef.html":[6,0,0,0],
 "files.html":[6,0],
-"functions.html":[5,3,0],
 "functions.html":[5,3,0,0],
+"functions.html":[5,3,0],
 "functions_b.html":[5,3,0,1],
 "functions_c.html":[5,3,0,2],
 "functions_d.html":[5,3,0,3],

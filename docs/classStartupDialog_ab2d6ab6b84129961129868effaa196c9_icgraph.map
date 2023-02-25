@@ -2,7 +2,7 @@
 <area shape="rect" id="node1" title="Sets the sensitivity of the SSH related widgets." alt="" coords="683,100,821,141"/>
 <area shape="rect" id="node2" href="$classStartupDialog.html#ac789bc36cd7e4cb908b3dd69686e0c65" title="Resets the dialog to be empty." alt="" coords="484,5,635,47"/>
 <area shape="rect" id="node4" href="$classStartupDialog.html#a016c30fe4bc25cdb0fd0c3ec2c33e4a6" title="Default constructor." alt="" coords="5,107,213,134"/>
-<area shape="rect" id="node6" href="$classStartupDialog.html#ac6a10f9fa9674970f6dcaa34130432c2" title="Signal handler for the SSH checkbutton." alt="" coords="267,188,431,229"/>
+<area shape="rect" id="node6" href="$classStartupDialog.html#a51d3f01fe3cb4718545d1a77edca39dd" title="Signal handler for the SSH checkbutton." alt="" coords="267,188,431,229"/>
 <area shape="rect" id="node7" href="$classStartupDialog.html#acafba25bdc1da15ee0eb63b217e76254" title="Set a value to an widget in the dialog." alt="" coords="490,71,629,112"/>
 <area shape="rect" id="node3" href="$classStartupDialog.html#a7ec3dcbd1f393f8553f6500b855057d4" title="Resets the dialog to be empty and clears the file in the file&#45;chooser&#45;button." alt="" coords="261,15,436,42"/>
 <area shape="rect" id="node5" href="$classStartupDialog.html#a14bacd4a1e6729487c63b8239381f01f" title="Opens and tokenizes a (configuration) file." alt="" coords="275,71,423,112"/>

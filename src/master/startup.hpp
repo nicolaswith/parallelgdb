@@ -39,55 +39,53 @@
 class StartupDialog
 {
 	bool m_is_valid;
+
+	bool m_launcher_mpirun;
+	bool m_launcher_srun;
+	bool m_launcher_custom;
+	std::string m_launcher_args;
 	int m_number_of_processes;
 	int m_processes_per_node;
 	int m_num_nodes;
-	bool m_mpirun;
-	bool m_srun;
-	bool m_ssh;
-	bool m_custom_launcher;
-	std::string m_slave;
-	std::string m_target;
-	std::string m_arguments;
+	std::string m_slave_path;
 	std::string m_ip_address;
+	std::string m_target_path;
+	std::string m_target_args;
+	bool m_ssh;
 	std::string m_ssh_address;
 	std::string m_ssh_user;
 	std::string m_ssh_password;
-	std::string m_launcher_args;
-	std::string m_launcher_cmd;
 
-	Glib::RefPtr<Gtk::Builder> m_builder;
-	Gtk::Dialog *m_dialog;
-
+	Gtk::RadioButton *m_radiobutton_mpirun;
+	Gtk::RadioButton *m_radiobutton_srun;
+	Gtk::RadioButton *m_radiobutton_custom;
+	Gtk::Entry *m_entry_launcher_args;
 	Gtk::Entry *m_entry_number_of_processes;
 	Gtk::Entry *m_entry_processes_per_node;
 	Gtk::Entry *m_entry_num_nodes;
-	Gtk::RadioButton *m_radiobutton_mpirun;
-	Gtk::RadioButton *m_radiobutton_srun;
-	Gtk::Entry *m_entry_slave;
-	Gtk::Entry *m_entry_target;
-	Gtk::Entry *m_entry_arguments;
+	Gtk::Entry *m_entry_slave_path;
 	Gtk::Entry *m_entry_ip_address;
+	Gtk::Entry *m_entry_target_path;
+	Gtk::Entry *m_entry_target_args;
 	Gtk::CheckButton *m_checkbutton_ssh;
 	Gtk::Entry *m_entry_ssh_address;
 	Gtk::Entry *m_entry_ssh_user;
 	Gtk::Entry *m_entry_ssh_password;
-	Gtk::Entry *m_entry_launcher_args;
-	Gtk::CheckButton *m_checkbutton_launcher;
-	Gtk::Entry *m_entry_launcher;
-
 	Gtk::FileChooserButton *m_config_file_chooser;
 	Gtk::FileChooserButton *m_slave_file_chooser;
 	Gtk::FileChooserButton *m_target_file_chooser;
+
+	Glib::RefPtr<Gtk::Builder> m_builder;
+	Gtk::Dialog *m_dialog;
 
 	/// Updates the current configuration.
 	void on_dialog_response(const int response_id);
 	/// Sets the sensitivity of the SSH related widgets.
 	void set_sensitivity_ssh(const bool state);
 	/// Signal handler for the SSH checkbutton.
-	void on_ssh_button_toggled(Gtk::CheckButton *button);
+	void on_ssh_button_toggled();
 	/// Signal handler for the Custom Launcher checkbutton.
-	void on_custom_launcher_toggled(Gtk::CheckButton *button);
+	void on_custom_launcher_toggled();
 	/// Resets the dialog to be empty.
 	void clear_dialog();
 	/// Set a value to an widget in the dialog.
