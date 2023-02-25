@@ -14,7 +14,7 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with ParallelGDB.  If not, see <https://www.gnu.org/licenses/gpl-3.0.txt>.
+	along with ParallelGDB.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 /**
@@ -73,7 +73,8 @@ BreakpointDialog::BreakpointDialog(const int num_processes,
 	  m_button_states(new bool[m_num_processes])
 {
 	// parse glade file
-	m_builder = Gtk::Builder::create_from_resource("/pgdb/ui/breakpoint_dialog.glade");
+	m_builder =
+		Gtk::Builder::create_from_resource("/pgdb/ui/breakpoint_dialog.glade");
 	m_dialog = get_widget<Gtk::Dialog>("dialog");
 
 	// generate checkbutton grid

@@ -14,7 +14,7 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with ParallelGDB.  If not, see <https://www.gnu.org/licenses/gpl-3.0.txt>.
+	along with ParallelGDB.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 /**
@@ -159,7 +159,8 @@ StartupDialog::~StartupDialog()
  *
  * @param entry The entry to write the file-path to.
  */
-void StartupDialog::set_path(Gtk::FileChooserButton *file_chooser, Gtk::Entry *entry)
+void StartupDialog::set_path(Gtk::FileChooserButton *file_chooser,
+							 Gtk::Entry *entry)
 {
 	entry->set_text(file_chooser->get_filename());
 }

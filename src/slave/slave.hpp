@@ -14,7 +14,7 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with ParallelGDB.  If not, see <https://www.gnu.org/licenses/gpl-3.0.txt>.
+	along with ParallelGDBm.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 /**
@@ -24,6 +24,9 @@
  *
  * This file is the header file for the Slave class.
  */
+
+#ifndef SLAVE_HPP
+#define SLAVE_HPP
 
 #include <iosfwd>
 
@@ -77,3 +80,5 @@ public:
 
 	static void print_help();
 };
+
+#endif /* SLAVE_HPP */
