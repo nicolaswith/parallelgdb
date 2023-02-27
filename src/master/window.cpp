@@ -59,7 +59,7 @@ const char *const open_file_id = "open-file";
  */
 UIWindow::UIWindow(const int num_processes)
 	: m_num_processes(num_processes),
-	  m_follow_rank(0),
+	  m_follow_rank(FOLLOW_ALL),
 	  m_sent_run(false)
 {
 	// allocate memory
@@ -440,8 +440,16 @@ void UIWindow::on_follow_button_clicked()
 		return;
 	}
 	m_follow_rank = dialog->follow_rank();
-	get_widget<Gtk::Button>("follow-process-button")
-		->set_label("Following Process " + std::to_string(m_follow_rank));
+	string label;
+	if (m_follow_rank == FOLLOW_ALL)
+	{
+		label = "Following All Processes";
+	}
+	else
+	{
+		label = "Following Process: " + std::to_string(m_follow_rank);
+	}
+	get_widget<Gtk::Button>("follow-process-button")->set_label(label);
 }
 
 /**
@@ -1124,7 +1132,7 @@ void UIWindow::append_source_file(const string &fullpath, const int rank)
 	// check that file is not opened already
 	if (m_opened_files.find(fullpath) != m_opened_files.end())
 	{
-		if (rank == m_follow_rank)
+		if (rank == m_follow_rank || FOLLOW_ALL == m_follow_rank)
 		{
 			m_files_notebook->set_current_page(m_path_2_pagenum[fullpath]);
 		}
@@ -1181,7 +1189,7 @@ void UIWindow::append_source_file(const string &fullpath, const int rank)
 	}
 	scrolled_window->show_all();
 	int page_num = m_files_notebook->append_page(*scrolled_window, *label);
-	if (rank == m_follow_rank)
+	if (rank == m_follow_rank || FOLLOW_ALL == m_follow_rank)
 	{
 		m_files_notebook->set_current_page(page_num);
 	}
@@ -1430,7 +1438,7 @@ void UIWindow::do_scroll(const int rank) const
  */
 void UIWindow::scroll_to_line(const int rank) const
 {
-	if (rank == m_follow_rank)
+	if (rank == m_follow_rank || FOLLOW_ALL == m_follow_rank)
 	{
 		Glib::signal_idle().connect_once(
 			sigc::bind(sigc::mem_fun(this, &UIWindow::do_scroll), rank));

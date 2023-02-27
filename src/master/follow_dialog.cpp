@@ -79,6 +79,10 @@ FollowDialog::FollowDialog(const int num_processes, const int max_buttons_per_ro
 					   rank / m_max_buttons_per_row);
 	}
 
+	m_follow_all_radiobutton =
+		get_widget<Gtk::RadioButton>("follow-all-radiobutton");
+	m_follow_all_radiobutton->set_group(radiobutton_group);
+
 	// connect signal handlers
 	m_dialog->signal_response().connect(
 		sigc::mem_fun(*this, &FollowDialog::on_dialog_response));
@@ -106,6 +110,11 @@ void FollowDialog::on_dialog_response(const int response_id)
 {
 	if (Gtk::RESPONSE_OK != response_id)
 	{
+		return;
+	}
+	if (m_follow_all_radiobutton->get_active())
+	{
+		m_follow_rank = FOLLOW_ALL;
 		return;
 	}
 	for (int rank = 0; rank < m_num_processes; ++rank)

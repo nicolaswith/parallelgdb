@@ -31,6 +31,8 @@
 #include <gtkmm.h>
 #include <iosfwd>
 
+#define FOLLOW_ALL -1
+
 /// A wrapper class for a Gtk::Dialog.
 /**
  * This is a wrapper class for a Gtk::Dialog. It will generate a dialog for the
@@ -45,7 +47,9 @@ class FollowDialog
 
 	Glib::RefPtr<Gtk::Builder> m_builder;
 	Gtk::Dialog *m_dialog;
+
 	Gtk::Grid *m_grid;
+	Gtk::RadioButton *m_follow_all_radiobutton;
 
 	/// Signal handler for the accept/close action of the dialog.
 	void on_dialog_response(const int response_id);
