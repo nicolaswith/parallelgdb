@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"classUIWindow.html#aca014421c237b9f7369d4b797fbcdb31":[5,0,7,69],
 "classUIWindow.html#ace8f25365719ac41580ea53d7ee09454":[5,0,7,87],
 "classUIWindow.html#ad2ae26f40482c5fb327e3dd4e27ffebb":[5,0,7,83],
 "classUIWindow.html#ad42a582b2ecac29ba67b2906a9a1873d":[5,0,7,37],
@@ -32,6 +33,7 @@ var NAVTREEINDEX1 =
 "files.html":[6,0],
 "follow__dialog_8cpp.html":[6,0,0,0,6],
 "follow__dialog_8hpp.html":[6,0,0,0,7],
+"follow__dialog_8hpp.html#a88ebe801c0ac9b4b76dfdeff72c57de8":[6,0,0,0,7,1],
 "functions.html":[5,3,0],
 "functions.html":[5,3,0,0],
 "functions_b.html":[5,3,0,1],
@@ -54,6 +56,7 @@ var NAVTREEINDEX1 =
 "functions_w.html":[5,3,0,16],
 "functions_~.html":[5,3,0,17],
 "globals.html":[6,1,0],
+"globals_defs.html":[6,1,5],
 "globals_enum.html":[6,1,3],
 "globals_eval.html":[6,1,4],
 "globals_func.html":[6,1,1],
