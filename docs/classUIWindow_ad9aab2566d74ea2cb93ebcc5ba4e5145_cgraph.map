@@ -1,6 +1,6 @@
 <map id="UIWindow::print_data_gdb" name="UIWindow::print_data_gdb">
 <area shape="rect" id="node1" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="5,327,197,353"/>
-<area shape="rect" id="node2" href="$classUIWindow.html#acf4ea013c774568bd14b79f4486eb067" title="Appends a source file page to the source view notebook." alt="" coords="245,200,465,227"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="245,200,465,227"/>
 <area shape="rect" id="node25" href="$classUIWindow.html#a280911307d72c0277043340ec513b5d4" title="Updates the running and exited row for a processes." alt="" coords="255,377,455,404"/>
 <area shape="rect" id="node26" href="$classUIWindow.html#a07a87970f8669d0e209b039699a226b0" title="Clears all columns of a process in the Overview." alt="" coords="519,345,693,386"/>
 <area shape="rect" id="node27" href="$classUIWindow.html#ad42a582b2ecac29ba67b2906a9a1873d" title="Appends scrolling a scrolled window to the Gdk idle handler." alt="" coords="265,428,446,455"/>

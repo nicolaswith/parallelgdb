@@ -1,10 +1,12 @@
 var searchData=
 [
-  ['init_41',['init',['../classUIWindow.html#a237131d5aa62c32799cf1f0d0e913110',1,'UIWindow']]],
-  ['init_5fgrid_42',['init_grid',['../classUIWindow.html#a90f6e11b3d717e1b45e0462499e03b8f',1,'UIWindow']]],
-  ['init_5fnotebook_43',['init_notebook',['../classUIWindow.html#a286e53c542b81365dbfcde1662899925',1,'UIWindow']]],
-  ['init_5foverview_44',['init_overview',['../classUIWindow.html#a84b9b7bc3de08ad346f4d06735fdf6ac',1,'UIWindow']]],
-  ['interact_5fwith_5fgdb_45',['interact_with_gdb',['../classUIWindow.html#a06f629dcbc6ff6c5c4eb0a1025a36496',1,'UIWindow']]],
-  ['is_5fcreated_46',['is_created',['../classBreakpoint.html#ab12850b9f6287dd4b98e75c093329773',1,'Breakpoint']]],
-  ['is_5fvalid_47',['is_valid',['../classStartupDialog.html#a92f4cf1bc14ff2c0a0daece576720ea8',1,'StartupDialog']]]
+  ['get_5fbutton_5fstates_36',['get_button_states',['../classBreakpointDialog.html#ab7e13a5ff963405d9376548d16987a44',1,'BreakpointDialog']]],
+  ['get_5fcmd_37',['get_cmd',['../classStartupDialog.html#a3dd518b4edebb588ba60b8b5538cc903',1,'StartupDialog']]],
+  ['get_5fconns_5fgdb_38',['get_conns_gdb',['../classUIWindow.html#a17b365bb1177f5f8e1306c5ac2d41198',1,'UIWindow']]],
+  ['get_5fconns_5ftrgt_39',['get_conns_trgt',['../classUIWindow.html#ad46c85636eec03da4bf3c8744d56989f',1,'UIWindow']]],
+  ['get_5fline_5fnumber_40',['get_line_number',['../classBreakpoint.html#a40fe4a865e93c2dbe1c9d75698514e95',1,'Breakpoint']]],
+  ['get_5flist_41',['get_list',['../classBreakpoint.html#a57d9849b5661c53ad12c69b407b920de',1,'Breakpoint']]],
+  ['get_5frank_42',['get_rank',['../classUIWindow.html#afb01300d48a3af10ed8b08574e8d0f66',1,'UIWindow']]],
+  ['get_5fstop_5fall_43',['get_stop_all',['../classBreakpoint.html#a625897163309d3e95624f4cf71060227',1,'Breakpoint']]],
+  ['get_5fwidget_44',['get_widget',['../classBreakpointDialog.html#aff022edd8ed0692be1f67ac66adee592',1,'BreakpointDialog::get_widget()'],['../classFollowDialog.html#af7328550ed711942e62a37efc65fd5c2',1,'FollowDialog::get_widget()'],['../classStartupDialog.html#abb90cee233c729f223dfa5b5204a17a4',1,'StartupDialog::get_widget()'],['../classUIWindow.html#a71acff47d752a838c5a8a9bd55d486fe',1,'UIWindow::get_widget()']]]
 ];

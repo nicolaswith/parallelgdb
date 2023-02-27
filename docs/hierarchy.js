@@ -5,6 +5,7 @@ var hierarchy =
     [ "Gtk::DrawingArea", null, [
       [ "UIDrawingArea", "classUIDrawingArea.html", null ]
     ] ],
+    [ "FollowDialog", "classFollowDialog.html", null ],
     [ "Master", "classMaster.html", null ],
     [ "Slave", "classSlave.html", null ],
     [ "StartupDialog", "classStartupDialog.html", null ],

@@ -184,9 +184,9 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:a8c927adbf781e88754dcc9caabc6ae0b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUIWindow.html#a8c927adbf781e88754dcc9caabc6ae0b">append_overview_row</a> (const std::string &amp;basename, const std::string &amp;fullpath)</td></tr>
 <tr class="memdesc:a8c927adbf781e88754dcc9caabc6ae0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends a new row for a source file to the Overview.  <a href="classUIWindow.html#a8c927adbf781e88754dcc9caabc6ae0b">More...</a><br /></td></tr>
 <tr class="separator:a8c927adbf781e88754dcc9caabc6ae0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf4ea013c774568bd14b79f4486eb067"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUIWindow.html#acf4ea013c774568bd14b79f4486eb067">append_source_file</a> (const std::string &amp;fullpath)</td></tr>
-<tr class="memdesc:acf4ea013c774568bd14b79f4486eb067"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends a source file page to the source view notebook.  <a href="classUIWindow.html#acf4ea013c774568bd14b79f4486eb067">More...</a><br /></td></tr>
-<tr class="separator:acf4ea013c774568bd14b79f4486eb067"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fcd37aa1dc69913be544f5e23473e7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d">append_source_file</a> (const std::string &amp;fullpath, const int rank)</td></tr>
+<tr class="memdesc:a3fcd37aa1dc69913be544f5e23473e7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends a source file page to the source view notebook.  <a href="classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d">More...</a><br /></td></tr>
+<tr class="separator:a3fcd37aa1dc69913be544f5e23473e7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9aab2566d74ea2cb93ebcc5ba4e5145"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145">print_data_gdb</a> (const char *const data, const int rank)</td></tr>
 <tr class="memdesc:ad9aab2566d74ea2cb93ebcc5ba4e5145"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tokenizes, parses and analyzes the received GDB output.  <a href="classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145">More...</a><br /></td></tr>
 <tr class="separator:ad9aab2566d74ea2cb93ebcc5ba4e5145"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -250,6 +250,9 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:a56c434b8be8180dd65afa0a77e830f1c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUIWindow.html#a56c434b8be8180dd65afa0a77e830f1c">on_quit_clicked</a> ()</td></tr>
 <tr class="memdesc:a56c434b8be8180dd65afa0a77e830f1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Terminates the slaves and then quits the application.  <a href="classUIWindow.html#a56c434b8be8180dd65afa0a77e830f1c">More...</a><br /></td></tr>
 <tr class="separator:a56c434b8be8180dd65afa0a77e830f1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5c481eedd36aa3da52acefdafabc57e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUIWindow.html#ae5c481eedd36aa3da52acefdafabc57e">on_follow_button_clicked</a> ()</td></tr>
+<tr class="memdesc:ae5c481eedd36aa3da52acefdafabc57e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens a dialog to select the process to follow.  <a href="classUIWindow.html#ae5c481eedd36aa3da52acefdafabc57e">More...</a><br /></td></tr>
+<tr class="separator:ae5c481eedd36aa3da52acefdafabc57e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8eb980e3513ccea5d0b9b17fcfe06ea7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUIWindow.html#a8eb980e3513ccea5d0b9b17fcfe06ea7">on_interaction_button_clicked</a> (const int key_value)</td></tr>
 <tr class="memdesc:a8eb980e3513ccea5d0b9b17fcfe06ea7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal handler for all the interaction buttons.  <a href="classUIWindow.html#a8eb980e3513ccea5d0b9b17fcfe06ea7">More...</a><br /></td></tr>
 <tr class="separator:a8eb980e3513ccea5d0b9b17fcfe06ea7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -291,6 +294,8 @@ Private Attributes</h2></td></tr>
 <tr class="separator:aa6ab0774e00b724e8f57066dee944fac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24353b5609efe81f21d610dbeea2b2c9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUIWindow.html#a24353b5609efe81f21d610dbeea2b2c9">m_max_buttons_per_row</a></td></tr>
 <tr class="separator:a24353b5609efe81f21d610dbeea2b2c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5366764972f409dafeae322acb97c671"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUIWindow.html#a5366764972f409dafeae322acb97c671">m_follow_rank</a></td></tr>
+<tr class="separator:a5366764972f409dafeae322acb97c671"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa50482ee73050019a9438ce01518a558"><td class="memItemLeft" align="right" valign="top">int *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUIWindow.html#aa50482ee73050019a9438ce01518a558">m_current_line</a></td></tr>
 <tr class="separator:aa50482ee73050019a9438ce01518a558"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb0c861b935f8aba276bdd75c4f9f347"><td class="memItemLeft" align="right" valign="top">std::string *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUIWindow.html#adb0c861b935f8aba276bdd75c4f9f347">m_current_file</a></td></tr>
@@ -471,7 +476,7 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="classUIWindow_a8c927adbf781e88754dcc9caabc6ae0b_icgraph.png" border="0" usemap="#aclassUIWindow_a8c927adbf781e88754dcc9caabc6ae0b_icgraph" alt=""/></div>
 <map name="aclassUIWindow_a8c927adbf781e88754dcc9caabc6ae0b_icgraph" id="aclassUIWindow_a8c927adbf781e88754dcc9caabc6ae0b_icgraph">
 <area shape="rect" title="Appends a new row for a source file to the Overview." alt="" coords="1479,31,1720,57"/>
-<area shape="rect" href="classUIWindow.html#acf4ea013c774568bd14b79f4486eb067" title="Appends a source file page to the source view notebook." alt="" coords="1211,31,1431,57"/>
+<area shape="rect" href="classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="1211,31,1431,57"/>
 <area shape="rect" href="classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="989,5,1144,32"/>
 <area shape="rect" href="classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="971,56,1163,83"/>
 <area shape="rect" href="classUIWindow.html#a237131d5aa62c32799cf1f0d0e913110" title="Loads the glade file and connects the signal handlers." alt="" coords="784,5,900,32"/>
@@ -486,8 +491,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="acf4ea013c774568bd14b79f4486eb067"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acf4ea013c774568bd14b79f4486eb067">&#9670;&nbsp;</a></span>append_source_file()</h2>
+<a id="a3fcd37aa1dc69913be544f5e23473e7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3fcd37aa1dc69913be544f5e23473e7d">&#9670;&nbsp;</a></span>append_source_file()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -499,8 +504,18 @@ Here is the caller graph for this function:</div>
           <td class="memname">void UIWindow::append_source_file </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>fullpath</em></td><td>)</td>
+          <td class="paramname"><em>fullpath</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>rank</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -519,8 +534,8 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classUIWindow_acf4ea013c774568bd14b79f4486eb067_cgraph.png" border="0" usemap="#aclassUIWindow_acf4ea013c774568bd14b79f4486eb067_cgraph" alt=""/></div>
-<map name="aclassUIWindow_acf4ea013c774568bd14b79f4486eb067_cgraph" id="aclassUIWindow_acf4ea013c774568bd14b79f4486eb067_cgraph">
+<div class="center"><img src="classUIWindow_a3fcd37aa1dc69913be544f5e23473e7d_cgraph.png" border="0" usemap="#aclassUIWindow_a3fcd37aa1dc69913be544f5e23473e7d_cgraph" alt=""/></div>
+<map name="aclassUIWindow_a3fcd37aa1dc69913be544f5e23473e7d_cgraph" id="aclassUIWindow_a3fcd37aa1dc69913be544f5e23473e7d_cgraph">
 <area shape="rect" title="Appends a source file page to the source view notebook." alt="" coords="5,101,225,127"/>
 <area shape="rect" href="classUIWindow.html#a8c927adbf781e88754dcc9caabc6ae0b" title="Appends a new row for a source file to the Overview." alt="" coords="273,49,515,75"/>
 <area shape="rect" href="classUIWindow.html#aa20f683f45142300ff17e7ff445f50bc" title="Signal handler for the Gsv::View line mark clicked signal." alt="" coords="575,149,757,191"/>
@@ -549,8 +564,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classUIWindow_acf4ea013c774568bd14b79f4486eb067_icgraph.png" border="0" usemap="#aclassUIWindow_acf4ea013c774568bd14b79f4486eb067_icgraph" alt=""/></div>
-<map name="aclassUIWindow_acf4ea013c774568bd14b79f4486eb067_icgraph" id="aclassUIWindow_acf4ea013c774568bd14b79f4486eb067_icgraph">
+<div class="center"><img src="classUIWindow_a3fcd37aa1dc69913be544f5e23473e7d_icgraph.png" border="0" usemap="#aclassUIWindow_a3fcd37aa1dc69913be544f5e23473e7d_icgraph" alt=""/></div>
+<map name="aclassUIWindow_a3fcd37aa1dc69913be544f5e23473e7d_icgraph" id="aclassUIWindow_a3fcd37aa1dc69913be544f5e23473e7d_icgraph">
 <area shape="rect" title="Appends a source file page to the source view notebook." alt="" coords="1211,31,1431,57"/>
 <area shape="rect" href="classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="989,5,1144,32"/>
 <area shape="rect" href="classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="971,56,1163,83"/>
@@ -732,7 +747,7 @@ Here is the caller graph for this function:</div>
 <area shape="rect" href="classUIWindow.html#a19ed8774685ac8a1a223f958d6376d74" title="Deletes the breakpoint for all processes and then the mark itself." alt="" coords="1943,5,2120,32"/>
 <area shape="rect" href="classUIWindow.html#ab3135faddc758530ac3e34b8973130ad" title="Displays the BreakpointDialog dialog." alt="" coords="1951,56,2112,83"/>
 <area shape="rect" href="classUIWindow.html#aa20f683f45142300ff17e7ff445f50bc" title="Signal handler for the Gsv::View line mark clicked signal." alt="" coords="1712,23,1895,65"/>
-<area shape="rect" href="classUIWindow.html#acf4ea013c774568bd14b79f4486eb067" title="Appends a source file page to the source view notebook." alt="" coords="1211,31,1431,57"/>
+<area shape="rect" href="classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="1211,31,1431,57"/>
 <area shape="rect" href="classUIWindow.html#a1b85f5b4298b721830e9b162a65c664e" title="Opens a file for a source file which was not found." alt="" coords="1479,56,1664,83"/>
 <area shape="rect" href="classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="989,5,1144,32"/>
 <area shape="rect" href="classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="971,56,1163,83"/>
@@ -820,7 +835,7 @@ Here is the caller graph for this function:</div>
 <area shape="rect" title="Sets the color for the line numbers in the Overview." alt="" coords="2001,31,2196,57"/>
 <area shape="rect" href="classUIWindow.html#a8c927adbf781e88754dcc9caabc6ae0b" title="Appends a new row for a source file to the Overview." alt="" coords="1712,5,1953,32"/>
 <area shape="rect" href="classUIWindow.html#adf6ab1f7b18f7ee63dbc0d2b63660949" title="Updates all labels and their tooltip for a process." alt="" coords="1729,56,1936,83"/>
-<area shape="rect" href="classUIWindow.html#acf4ea013c774568bd14b79f4486eb067" title="Appends a source file page to the source view notebook." alt="" coords="1211,56,1431,83"/>
+<area shape="rect" href="classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="1211,56,1431,83"/>
 <area shape="rect" href="classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="989,56,1144,83"/>
 <area shape="rect" href="classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="971,107,1163,133"/>
 <area shape="rect" href="classUIWindow.html#a237131d5aa62c32799cf1f0d0e913110" title="Loads the glade file and connects the signal handlers." alt="" coords="784,56,900,83"/>
@@ -911,7 +926,7 @@ Here is the caller graph for this function:</div>
 <map name="aclassUIWindow_a447e57e6deef4c794c8b8da1ec50141e_icgraph" id="aclassUIWindow_a447e57e6deef4c794c8b8da1ec50141e_icgraph">
 <area shape="rect" title="Creates a line mark in a Gsv::View." alt="" coords="1943,31,2120,57"/>
 <area shape="rect" href="classUIWindow.html#aa20f683f45142300ff17e7ff445f50bc" title="Signal handler for the Gsv::View line mark clicked signal." alt="" coords="1712,23,1895,65"/>
-<area shape="rect" href="classUIWindow.html#acf4ea013c774568bd14b79f4486eb067" title="Appends a source file page to the source view notebook." alt="" coords="1211,31,1431,57"/>
+<area shape="rect" href="classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="1211,31,1431,57"/>
 <area shape="rect" href="classUIWindow.html#a1b85f5b4298b721830e9b162a65c664e" title="Opens a file for a source file which was not found." alt="" coords="1479,56,1664,83"/>
 <area shape="rect" href="classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="989,5,1144,32"/>
 <area shape="rect" href="classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="971,56,1163,83"/>
@@ -993,7 +1008,7 @@ Here is the caller graph for this function:</div>
 <map name="aclassUIWindow_a19ed8774685ac8a1a223f958d6376d74_icgraph" id="aclassUIWindow_a19ed8774685ac8a1a223f958d6376d74_icgraph">
 <area shape="rect" title="Deletes the breakpoint for all processes and then the mark itself." alt="" coords="1943,31,2120,57"/>
 <area shape="rect" href="classUIWindow.html#aa20f683f45142300ff17e7ff445f50bc" title="Signal handler for the Gsv::View line mark clicked signal." alt="" coords="1712,23,1895,65"/>
-<area shape="rect" href="classUIWindow.html#acf4ea013c774568bd14b79f4486eb067" title="Appends a source file page to the source view notebook." alt="" coords="1211,31,1431,57"/>
+<area shape="rect" href="classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="1211,31,1431,57"/>
 <area shape="rect" href="classUIWindow.html#a1b85f5b4298b721830e9b162a65c664e" title="Opens a file for a source file which was not found." alt="" coords="1479,56,1664,83"/>
 <area shape="rect" href="classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="989,5,1144,32"/>
 <area shape="rect" href="classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="971,56,1163,83"/>
@@ -1126,7 +1141,7 @@ Here is the caller graph for this function:</div>
 <map name="aclassUIWindow_ab3135faddc758530ac3e34b8973130ad_icgraph" id="aclassUIWindow_ab3135faddc758530ac3e34b8973130ad_icgraph">
 <area shape="rect" title="Displays the BreakpointDialog dialog." alt="" coords="1943,31,2104,57"/>
 <area shape="rect" href="classUIWindow.html#aa20f683f45142300ff17e7ff445f50bc" title="Signal handler for the Gsv::View line mark clicked signal." alt="" coords="1712,23,1895,65"/>
-<area shape="rect" href="classUIWindow.html#acf4ea013c774568bd14b79f4486eb067" title="Appends a source file page to the source view notebook." alt="" coords="1211,31,1431,57"/>
+<area shape="rect" href="classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="1211,31,1431,57"/>
 <area shape="rect" href="classUIWindow.html#a1b85f5b4298b721830e9b162a65c664e" title="Opens a file for a source file which was not found." alt="" coords="1479,56,1664,83"/>
 <area shape="rect" href="classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="989,5,1144,32"/>
 <area shape="rect" href="classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="971,56,1163,83"/>
@@ -1185,7 +1200,7 @@ Here is the caller graph for this function:</div>
 <area shape="rect" href="classUIWindow.html#a447e57e6deef4c794c8b8da1ec50141e" title="Creates a line mark in a Gsv::View." alt="" coords="1943,5,2120,32"/>
 <area shape="rect" href="classUIWindow.html#ab3135faddc758530ac3e34b8973130ad" title="Displays the BreakpointDialog dialog." alt="" coords="1951,56,2112,83"/>
 <area shape="rect" href="classUIWindow.html#aa20f683f45142300ff17e7ff445f50bc" title="Signal handler for the Gsv::View line mark clicked signal." alt="" coords="1712,49,1895,90"/>
-<area shape="rect" href="classUIWindow.html#acf4ea013c774568bd14b79f4486eb067" title="Appends a source file page to the source view notebook." alt="" coords="1211,56,1431,83"/>
+<area shape="rect" href="classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="1211,56,1431,83"/>
 <area shape="rect" href="classUIWindow.html#a1b85f5b4298b721830e9b162a65c664e" title="Opens a file for a source file which was not found." alt="" coords="1479,81,1664,108"/>
 <area shape="rect" href="classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="989,31,1144,57"/>
 <area shape="rect" href="classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="971,81,1163,108"/>
@@ -1354,53 +1369,54 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classUIWindow_a237131d5aa62c32799cf1f0d0e913110_cgraph.png" border="0" usemap="#aclassUIWindow_a237131d5aa62c32799cf1f0d0e913110_cgraph" alt=""/></div>
 <map name="aclassUIWindow_a237131d5aa62c32799cf1f0d0e913110_cgraph" id="aclassUIWindow_a237131d5aa62c32799cf1f0d0e913110_cgraph">
-<area shape="rect" title="Loads the glade file and connects the signal handlers." alt="" coords="5,471,121,498"/>
-<area shape="rect" href="classUIWindow.html#adf1424cd3dede540dd982fcf53de8ebb" title="Closes all unused source files." alt="" coords="685,54,904,81"/>
-<area shape="rect" href="classUIWindow.html#a90f6e11b3d717e1b45e0462499e03b8f" title="Attaches checkbuttons in a grid layout." alt="" coords="195,370,343,397"/>
-<area shape="rect" href="classUIWindow.html#a286e53c542b81365dbfcde1662899925" title="Adds a page in the GDB/target I/O notebook for every process." alt="" coords="177,421,361,447"/>
-<area shape="rect" href="classUIWindow.html#a84b9b7bc3de08ad346f4d06735fdf6ac" title="Initializes the table&#45;like grid layout in the overview." alt="" coords="178,471,361,498"/>
-<area shape="rect" href="classUIWindow.html#af28cb60749093d8cd3e36426b32e5052" title="Displays the about dialog." alt="" coords="192,523,347,564"/>
-<area shape="rect" href="classUIWindow.html#a2cdd05512bbdfc3f1fb08111c3e0b8bc" title="Closes the GDB TCP sockets and thus the slaves." alt="" coords="448,614,607,641"/>
-<area shape="rect" href="classUIWindow.html#a8eb980e3513ccea5d0b9b17fcfe06ea7" title="Signal handler for all the interaction buttons." alt="" coords="175,152,363,193"/>
-<area shape="rect" href="classUIWindow.html#a679f5db0a5c299d0252161faf114ccc5" title="Signal handler for key&#45;press events." alt="" coords="178,101,361,127"/>
-<area shape="rect" href="classUIWindow.html#a56c434b8be8180dd65afa0a77e830f1c" title="Terminates the slaves and then quits the application." alt="" coords="172,589,367,615"/>
-<area shape="rect" href="classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="192,319,347,346"/>
-<area shape="rect" href="classUIDrawingArea.html#a0efe30d5e68d4233aeeb40878c7a9cca" title="Returns the radius of the dots." alt="" coords="711,690,879,717"/>
-<area shape="rect" href="classUIWindow.html#af347fa10ac769b7317f73795e18852bc" title="Sends text to the socat instances connected to GDB." alt="" coords="171,269,368,295"/>
-<area shape="rect" href="classUIWindow.html#a22bc56f7e3f3090988e3236cc8774274" title="Sends text to the socat instances connected to the target program." alt="" coords="171,218,367,245"/>
-<area shape="rect" href="classUIDrawingArea.html#a802481f1adca4637078fdecafd3ccee1" title="Returns the spacing of the dots." alt="" coords="180,807,359,834"/>
-<area shape="rect" href="classUIWindow.html#a7f0274883889305c8ea893ddfebd77ec" title="Toggles all checkbuttons in the GDB I/O section grid." alt="" coords="174,909,365,935"/>
-<area shape="rect" href="classUIWindow.html#aee371ffb7ff1f2cdf4c0a735dc0df349" title="Toggles all checkbuttons in the target I/O section grid." alt="" coords="175,858,364,885"/>
-<area shape="rect" href="classUIWindow.html#ae369ac9ebde283b0469f363624040626" title="Checks if the source file notebook has pages and updates the dots if so." alt="" coords="169,741,369,783"/>
-<area shape="rect" href="classUIWindow.html#a06f629dcbc6ff6c5c4eb0a1025a36496" title="Maps the buttons/hot&#45;keys to the corresponding action." alt="" coords="455,101,600,143"/>
-<area shape="rect" href="classUIWindow.html#aa69cad1ed3b5f47f4f25aa5e2f88795b" title="Sends data to all selected processes." alt="" coords="991,101,1154,143"/>
-<area shape="rect" href="classUIWindow.html#af7d2b8be24892c57aa9b40a3ccada1b8" title="Writes data to the TCP socket." alt="" coords="1955,257,2117,283"/>
-<area shape="rect" href="classUIWindow.html#acf4ea013c774568bd14b79f4486eb067" title="Appends a source file page to the source view notebook." alt="" coords="417,343,637,370"/>
-<area shape="rect" href="classUIWindow.html#a8c927adbf781e88754dcc9caabc6ae0b" title="Appends a new row for a source file to the Overview." alt="" coords="952,427,1193,454"/>
-<area shape="rect" href="classUIWindow.html#aa20f683f45142300ff17e7ff445f50bc" title="Signal handler for the Gsv::View line mark clicked signal." alt="" coords="981,311,1164,352"/>
-<area shape="rect" href="classUIWindow.html#a1b85f5b4298b721830e9b162a65c664e" title="Opens a file for a source file which was not found." alt="" coords="702,369,887,395"/>
-<area shape="rect" href="classUIWindow.html#aa4f6b1a4b49767fcc71a6a72ba9a461c" title="Sets the color for the line numbers in the Overview." alt="" coords="1241,423,1436,450"/>
-<area shape="rect" href="classUIWindow.html#a447e57e6deef4c794c8b8da1ec50141e" title="Creates a line mark in a Gsv::View." alt="" coords="1250,371,1427,398"/>
-<area shape="rect" href="classUIWindow.html#a19ed8774685ac8a1a223f958d6376d74" title="Deletes the breakpoint for all processes and then the mark itself." alt="" coords="1250,270,1427,297"/>
-<area shape="rect" href="classUIWindow.html#ab3135faddc758530ac3e34b8973130ad" title="Displays the BreakpointDialog dialog." alt="" coords="1258,321,1419,347"/>
-<area shape="rect" href="classBreakpoint.html#a8336aad83387aa92aa8b21e9361096f6" title="Checks if at least one breakpoint is existing." alt="" coords="1484,350,1665,377"/>
-<area shape="rect" href="classBreakpoint.html#a530ad76e3382517101cf28ce6bdabaf7" title="Modifies the breakpoints according to button_states." alt="" coords="1501,401,1648,443"/>
-<area shape="rect" href="classBreakpoint.html#abc03d69a380841a3e15cd39a11b7d60b" title="Creates a breakpoint for a process." alt="" coords="1731,519,1874,560"/>
-<area shape="rect" href="classBreakpoint.html#ac27741795e2f0c8627128fe2ffd221e8" title="Deletes a breakpoint for a process." alt="" coords="1731,284,1874,325"/>
-<area shape="rect" href="classBreakpoint.html#a57d9849b5661c53ad12c69b407b920de" title="Generates a comma separated list of processes for which the breakpoint is in the state state." alt="" coords="1728,467,1877,494"/>
-<area shape="rect" href="classUIWindow.html#a206ec747a9c2589eac08719d221ce218" title="Gets the Gtk window object." alt="" coords="1713,350,1892,377"/>
-<area shape="rect" href="classBreakpoint.html#a84d8c1b691a7687552af36500a63392e" title="Resets the error states to their corresponding base state." alt="" coords="1729,401,1876,443"/>
-<area shape="rect" href="classUIWindow.html#a17b365bb1177f5f8e1306c5ac2d41198" title="Gets the TCP socket associated to a process. (GDB)" alt="" coords="1940,327,2132,354"/>
-<area shape="rect" href="classUIWindow.html#a85567fb5c7d2674f3be31fe5a01a2e3a" title="Stores a pointer to a Breakpoint object." alt="" coords="1940,526,2132,553"/>
-<area shape="rect" href="classUIWindow.html#a655257a1db3090889ead987fcdffcaaa" title="Gets the state of a process." alt="" coords="1949,419,2123,446"/>
-<area shape="rect" href="classUIWindow.html#a32dd4b6056237371b87bc2ffe701b1a6" title="Delete a line mark in a Gsv::View." alt="" coords="1491,233,1659,259"/>
-<area shape="rect" href="classBreakpoint.html#aab6298c6cb7b4c1fb1e2995ccd23a32a" title="Deletes the breakpoints for all process." alt="" coords="1503,284,1646,325"/>
-<area shape="rect" href="classBreakpoint.html#a40fe4a865e93c2dbe1c9d75698514e95" title="Returns the line number of the associated source file." alt="" coords="1726,219,1879,260"/>
-<area shape="rect" href="classUIWindow.html#adf6ab1f7b18f7ee63dbc0d2b63660949" title="Updates all labels and their tooltip for a process." alt="" coords="969,377,1176,403"/>
-<area shape="rect" href="classUIWindow.html#a162a36247228bf4ca885a921f106b3b4" title="Writes the text in an entry to a TCP socket." alt="" coords="444,218,611,245"/>
-<area shape="rect" href="classUIWindow.html#a6a12f21b7519fae0cfaad1e698085b4f" title="Toggle all checkbuttons in a grid." alt="" coords="448,883,607,910"/>
-<area shape="rect" href="classUIWindow.html#a8805706e8ed834473e3690ac4b5f1614" title="Sets the positions of the dots in the drawing area." alt="" coords="427,749,627,775"/>
-<area shape="rect" href="classUIDrawingArea.html#a768f592a688a0d04b72e1312121658d4" title="Sets the vertical offset for a process." alt="" coords="721,741,869,783"/>
+<area shape="rect" title="Loads the glade file and connects the signal handlers." alt="" coords="5,501,121,528"/>
+<area shape="rect" href="classUIWindow.html#adf1424cd3dede540dd982fcf53de8ebb" title="Closes all unused source files." alt="" coords="685,55,904,81"/>
+<area shape="rect" href="classUIWindow.html#a90f6e11b3d717e1b45e0462499e03b8f" title="Attaches checkbuttons in a grid layout." alt="" coords="195,371,343,397"/>
+<area shape="rect" href="classUIWindow.html#a286e53c542b81365dbfcde1662899925" title="Adds a page in the GDB/target I/O notebook for every process." alt="" coords="177,421,361,448"/>
+<area shape="rect" href="classUIWindow.html#a84b9b7bc3de08ad346f4d06735fdf6ac" title="Initializes the table&#45;like grid layout in the overview." alt="" coords="178,472,361,499"/>
+<area shape="rect" href="classUIWindow.html#af28cb60749093d8cd3e36426b32e5052" title="Displays the about dialog." alt="" coords="192,523,347,565"/>
+<area shape="rect" href="classUIWindow.html#a2cdd05512bbdfc3f1fb08111c3e0b8bc" title="Closes the GDB TCP sockets and thus the slaves." alt="" coords="448,615,607,641"/>
+<area shape="rect" href="classUIWindow.html#ae5c481eedd36aa3da52acefdafabc57e" title="Opens a dialog to select the process to follow." alt="" coords="190,691,349,733"/>
+<area shape="rect" href="classUIWindow.html#a8eb980e3513ccea5d0b9b17fcfe06ea7" title="Signal handler for all the interaction buttons." alt="" coords="175,102,363,143"/>
+<area shape="rect" href="classUIWindow.html#a679f5db0a5c299d0252161faf114ccc5" title="Signal handler for key&#45;press events." alt="" coords="178,168,361,195"/>
+<area shape="rect" href="classUIWindow.html#a56c434b8be8180dd65afa0a77e830f1c" title="Terminates the slaves and then quits the application." alt="" coords="172,640,367,667"/>
+<area shape="rect" href="classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="192,320,347,347"/>
+<area shape="rect" href="classUIDrawingArea.html#a0efe30d5e68d4233aeeb40878c7a9cca" title="Returns the radius of the dots." alt="" coords="711,757,879,784"/>
+<area shape="rect" href="classUIWindow.html#af347fa10ac769b7317f73795e18852bc" title="Sends text to the socat instances connected to GDB." alt="" coords="171,219,368,245"/>
+<area shape="rect" href="classUIWindow.html#a22bc56f7e3f3090988e3236cc8774274" title="Sends text to the socat instances connected to the target program." alt="" coords="171,269,367,296"/>
+<area shape="rect" href="classUIDrawingArea.html#a802481f1adca4637078fdecafd3ccee1" title="Returns the spacing of the dots." alt="" coords="180,875,359,901"/>
+<area shape="rect" href="classUIWindow.html#a7f0274883889305c8ea893ddfebd77ec" title="Toggles all checkbuttons in the GDB I/O section grid." alt="" coords="174,925,365,952"/>
+<area shape="rect" href="classUIWindow.html#aee371ffb7ff1f2cdf4c0a735dc0df349" title="Toggles all checkbuttons in the target I/O section grid." alt="" coords="175,976,364,1003"/>
+<area shape="rect" href="classUIWindow.html#ae369ac9ebde283b0469f363624040626" title="Checks if the source file notebook has pages and updates the dots if so." alt="" coords="169,809,369,850"/>
+<area shape="rect" href="classUIWindow.html#a06f629dcbc6ff6c5c4eb0a1025a36496" title="Maps the buttons/hot&#45;keys to the corresponding action." alt="" coords="455,102,600,143"/>
+<area shape="rect" href="classUIWindow.html#aa69cad1ed3b5f47f4f25aa5e2f88795b" title="Sends data to all selected processes." alt="" coords="991,102,1154,143"/>
+<area shape="rect" href="classUIWindow.html#af7d2b8be24892c57aa9b40a3ccada1b8" title="Writes data to the TCP socket." alt="" coords="1955,257,2117,284"/>
+<area shape="rect" href="classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="417,344,637,371"/>
+<area shape="rect" href="classUIWindow.html#a8c927adbf781e88754dcc9caabc6ae0b" title="Appends a new row for a source file to the Overview." alt="" coords="952,428,1193,455"/>
+<area shape="rect" href="classUIWindow.html#aa20f683f45142300ff17e7ff445f50bc" title="Signal handler for the Gsv::View line mark clicked signal." alt="" coords="981,311,1164,353"/>
+<area shape="rect" href="classUIWindow.html#a1b85f5b4298b721830e9b162a65c664e" title="Opens a file for a source file which was not found." alt="" coords="702,369,887,396"/>
+<area shape="rect" href="classUIWindow.html#aa4f6b1a4b49767fcc71a6a72ba9a461c" title="Sets the color for the line numbers in the Overview." alt="" coords="1241,424,1436,451"/>
+<area shape="rect" href="classUIWindow.html#a447e57e6deef4c794c8b8da1ec50141e" title="Creates a line mark in a Gsv::View." alt="" coords="1250,372,1427,399"/>
+<area shape="rect" href="classUIWindow.html#a19ed8774685ac8a1a223f958d6376d74" title="Deletes the breakpoint for all processes and then the mark itself." alt="" coords="1250,271,1427,297"/>
+<area shape="rect" href="classUIWindow.html#ab3135faddc758530ac3e34b8973130ad" title="Displays the BreakpointDialog dialog." alt="" coords="1258,321,1419,348"/>
+<area shape="rect" href="classBreakpoint.html#a8336aad83387aa92aa8b21e9361096f6" title="Checks if at least one breakpoint is existing." alt="" coords="1484,351,1665,377"/>
+<area shape="rect" href="classBreakpoint.html#a530ad76e3382517101cf28ce6bdabaf7" title="Modifies the breakpoints according to button_states." alt="" coords="1501,402,1648,443"/>
+<area shape="rect" href="classBreakpoint.html#abc03d69a380841a3e15cd39a11b7d60b" title="Creates a breakpoint for a process." alt="" coords="1731,519,1874,561"/>
+<area shape="rect" href="classBreakpoint.html#ac27741795e2f0c8627128fe2ffd221e8" title="Deletes a breakpoint for a process." alt="" coords="1731,285,1874,326"/>
+<area shape="rect" href="classBreakpoint.html#a57d9849b5661c53ad12c69b407b920de" title="Generates a comma separated list of processes for which the breakpoint is in the state state." alt="" coords="1728,468,1877,495"/>
+<area shape="rect" href="classUIWindow.html#a206ec747a9c2589eac08719d221ce218" title="Gets the Gtk window object." alt="" coords="1713,351,1892,377"/>
+<area shape="rect" href="classBreakpoint.html#a84d8c1b691a7687552af36500a63392e" title="Resets the error states to their corresponding base state." alt="" coords="1729,402,1876,443"/>
+<area shape="rect" href="classUIWindow.html#a17b365bb1177f5f8e1306c5ac2d41198" title="Gets the TCP socket associated to a process. (GDB)" alt="" coords="1940,328,2132,355"/>
+<area shape="rect" href="classUIWindow.html#a85567fb5c7d2674f3be31fe5a01a2e3a" title="Stores a pointer to a Breakpoint object." alt="" coords="1940,527,2132,553"/>
+<area shape="rect" href="classUIWindow.html#a655257a1db3090889ead987fcdffcaaa" title="Gets the state of a process." alt="" coords="1949,420,2123,447"/>
+<area shape="rect" href="classUIWindow.html#a32dd4b6056237371b87bc2ffe701b1a6" title="Delete a line mark in a Gsv::View." alt="" coords="1491,233,1659,260"/>
+<area shape="rect" href="classBreakpoint.html#aab6298c6cb7b4c1fb1e2995ccd23a32a" title="Deletes the breakpoints for all process." alt="" coords="1503,285,1646,326"/>
+<area shape="rect" href="classBreakpoint.html#a40fe4a865e93c2dbe1c9d75698514e95" title="Returns the line number of the associated source file." alt="" coords="1726,219,1879,261"/>
+<area shape="rect" href="classUIWindow.html#adf6ab1f7b18f7ee63dbc0d2b63660949" title="Updates all labels and their tooltip for a process." alt="" coords="969,377,1176,404"/>
+<area shape="rect" href="classUIWindow.html#a162a36247228bf4ca885a921f106b3b4" title="Writes the text in an entry to a TCP socket." alt="" coords="444,219,611,245"/>
+<area shape="rect" href="classUIWindow.html#a6a12f21b7519fae0cfaad1e698085b4f" title="Toggle all checkbuttons in a grid." alt="" coords="448,951,607,977"/>
+<area shape="rect" href="classUIWindow.html#a8805706e8ed834473e3690ac4b5f1614" title="Sets the positions of the dots in the drawing area." alt="" coords="427,816,627,843"/>
+<area shape="rect" href="classUIDrawingArea.html#a768f592a688a0d04b72e1312121658d4" title="Sets the vertical offset for a process." alt="" coords="721,809,869,850"/>
 </map>
 </div>
 <div class="dynheader">
@@ -1723,6 +1739,43 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="ae5c481eedd36aa3da52acefdafabc57e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5c481eedd36aa3da52acefdafabc57e">&#9670;&nbsp;</a></span>on_follow_button_clicked()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void UIWindow::on_follow_button_clicked </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function opens a dialog to select the process to follow. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classUIWindow_ae5c481eedd36aa3da52acefdafabc57e_icgraph.png" border="0" usemap="#aclassUIWindow_ae5c481eedd36aa3da52acefdafabc57e_icgraph" alt=""/></div>
+<map name="aclassUIWindow_ae5c481eedd36aa3da52acefdafabc57e_icgraph" id="aclassUIWindow_ae5c481eedd36aa3da52acefdafabc57e_icgraph">
+<area shape="rect" title="Opens a dialog to select the process to follow." alt="" coords="456,5,615,47"/>
+<area shape="rect" href="classUIWindow.html#a237131d5aa62c32799cf1f0d0e913110" title="Loads the glade file and connects the signal handlers." alt="" coords="292,13,408,39"/>
+<area shape="rect" href="classMaster.html#a6cb4d31abc26317bccf2251edca321bb" title="Starts the GUI main window." alt="" coords="108,13,244,39"/>
+<area shape="rect" href="master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,13,60,39"/>
+</map>
+</div>
+
+</div>
+</div>
 <a id="a8eb980e3513ccea5d0b9b17fcfe06ea7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8eb980e3513ccea5d0b9b17fcfe06ea7">&#9670;&nbsp;</a></span>on_interaction_button_clicked()</h2>
 
@@ -1915,7 +1968,7 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="classUIWindow_aa20f683f45142300ff17e7ff445f50bc_icgraph.png" border="0" usemap="#aclassUIWindow_aa20f683f45142300ff17e7ff445f50bc_icgraph" alt=""/></div>
 <map name="aclassUIWindow_aa20f683f45142300ff17e7ff445f50bc_icgraph" id="aclassUIWindow_aa20f683f45142300ff17e7ff445f50bc_icgraph">
 <area shape="rect" title="Signal handler for the Gsv::View line mark clicked signal." alt="" coords="1712,23,1895,65"/>
-<area shape="rect" href="classUIWindow.html#acf4ea013c774568bd14b79f4486eb067" title="Appends a source file page to the source view notebook." alt="" coords="1211,31,1431,57"/>
+<area shape="rect" href="classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="1211,31,1431,57"/>
 <area shape="rect" href="classUIWindow.html#a1b85f5b4298b721830e9b162a65c664e" title="Opens a file for a source file which was not found." alt="" coords="1479,56,1664,83"/>
 <area shape="rect" href="classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="989,5,1144,32"/>
 <area shape="rect" href="classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="971,56,1163,83"/>
@@ -2006,7 +2059,7 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="classUIWindow_abb4c1204e48678e7037dd0ea44004bd6_cgraph.png" border="0" usemap="#aclassUIWindow_abb4c1204e48678e7037dd0ea44004bd6_cgraph" alt=""/></div>
 <map name="aclassUIWindow_abb4c1204e48678e7037dd0ea44004bd6_cgraph" id="aclassUIWindow_abb4c1204e48678e7037dd0ea44004bd6_cgraph">
 <area shape="rect" title="Open a source file in the source view notebook." alt="" coords="5,101,160,127"/>
-<area shape="rect" href="classUIWindow.html#acf4ea013c774568bd14b79f4486eb067" title="Appends a source file page to the source view notebook." alt="" coords="208,101,428,127"/>
+<area shape="rect" href="classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="208,101,428,127"/>
 <area shape="rect" href="classUIWindow.html#a8c927adbf781e88754dcc9caabc6ae0b" title="Appends a new row for a source file to the Overview." alt="" coords="476,49,717,75"/>
 <area shape="rect" href="classUIWindow.html#aa20f683f45142300ff17e7ff445f50bc" title="Signal handler for the Gsv::View line mark clicked signal." alt="" coords="777,149,960,191"/>
 <area shape="rect" href="classUIWindow.html#a1b85f5b4298b721830e9b162a65c664e" title="Opens a file for a source file which was not found." alt="" coords="504,101,689,127"/>
@@ -2125,7 +2178,7 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="classUIWindow_a1b85f5b4298b721830e9b162a65c664e_icgraph.png" border="0" usemap="#aclassUIWindow_a1b85f5b4298b721830e9b162a65c664e_icgraph" alt=""/></div>
 <map name="aclassUIWindow_a1b85f5b4298b721830e9b162a65c664e_icgraph" id="aclassUIWindow_a1b85f5b4298b721830e9b162a65c664e_icgraph">
 <area shape="rect" title="Opens a file for a source file which was not found." alt="" coords="1479,31,1664,57"/>
-<area shape="rect" href="classUIWindow.html#acf4ea013c774568bd14b79f4486eb067" title="Appends a source file page to the source view notebook." alt="" coords="1211,31,1431,57"/>
+<area shape="rect" href="classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="1211,31,1431,57"/>
 <area shape="rect" href="classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="989,5,1144,32"/>
 <area shape="rect" href="classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="971,56,1163,83"/>
 <area shape="rect" href="classUIWindow.html#a237131d5aa62c32799cf1f0d0e913110" title="Loads the glade file and connects the signal handlers." alt="" coords="784,5,900,32"/>
@@ -2186,7 +2239,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" href="classUIWindow.html#a367f6c7fc5761af2c7b9ba95a5ad6ae6" title="Scrolls a scrolled window to the bottom." alt="" coords="219,403,403,429"/>
 <area shape="rect" href="classUIWindow.html#aa69cad1ed3b5f47f4f25aa5e2f88795b" title="Sends data to all selected processes." alt="" coords="995,450,1158,491"/>
 <area shape="rect" href="classUIWindow.html#adcac347655db8e31194add4d428579c2" title="Checks whether the port is associated with GDB." alt="" coords="229,504,392,531"/>
-<area shape="rect" href="classUIWindow.html#acf4ea013c774568bd14b79f4486eb067" title="Appends a source file page to the source view notebook." alt="" coords="455,149,675,176"/>
+<area shape="rect" href="classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="455,149,675,176"/>
 <area shape="rect" href="classUIWindow.html#a280911307d72c0277043340ec513b5d4" title="Updates the running and exited row for a processes." alt="" coords="465,301,665,328"/>
 <area shape="rect" href="classUIWindow.html#a07a87970f8669d0e209b039699a226b0" title="Clears all columns of a process in the Overview." alt="" coords="729,337,902,378"/>
 <area shape="rect" href="classUIWindow.html#ad42a582b2ecac29ba67b2906a9a1873d" title="Appends scrolling a scrolled window to the Gdk idle handler." alt="" coords="474,91,655,117"/>
@@ -2281,7 +2334,7 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="classUIWindow_ad9aab2566d74ea2cb93ebcc5ba4e5145_cgraph.png" border="0" usemap="#aclassUIWindow_ad9aab2566d74ea2cb93ebcc5ba4e5145_cgraph" alt=""/></div>
 <map name="aclassUIWindow_ad9aab2566d74ea2cb93ebcc5ba4e5145_cgraph" id="aclassUIWindow_ad9aab2566d74ea2cb93ebcc5ba4e5145_cgraph">
 <area shape="rect" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="5,327,197,353"/>
-<area shape="rect" href="classUIWindow.html#acf4ea013c774568bd14b79f4486eb067" title="Appends a source file page to the source view notebook." alt="" coords="245,200,465,227"/>
+<area shape="rect" href="classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="245,200,465,227"/>
 <area shape="rect" href="classUIWindow.html#a280911307d72c0277043340ec513b5d4" title="Updates the running and exited row for a processes." alt="" coords="255,377,455,404"/>
 <area shape="rect" href="classUIWindow.html#a07a87970f8669d0e209b039699a226b0" title="Clears all columns of a process in the Overview." alt="" coords="519,345,693,386"/>
 <area shape="rect" href="classUIWindow.html#ad42a582b2ecac29ba67b2906a9a1873d" title="Appends scrolling a scrolled window to the Gdk idle handler." alt="" coords="265,428,446,455"/>
@@ -2421,7 +2474,7 @@ Here is the caller graph for this function:</div>
 <area shape="rect" href="classBreakpoint.html#a530ad76e3382517101cf28ce6bdabaf7" title="Modifies the breakpoints according to button_states." alt="" coords="2168,109,2315,150"/>
 <area shape="rect" href="classUIWindow.html#a19ed8774685ac8a1a223f958d6376d74" title="Deletes the breakpoint for all processes and then the mark itself." alt="" coords="1943,51,2120,77"/>
 <area shape="rect" href="classUIWindow.html#aa20f683f45142300ff17e7ff445f50bc" title="Signal handler for the Gsv::View line mark clicked signal." alt="" coords="1712,94,1895,135"/>
-<area shape="rect" href="classUIWindow.html#acf4ea013c774568bd14b79f4486eb067" title="Appends a source file page to the source view notebook." alt="" coords="1211,83,1431,109"/>
+<area shape="rect" href="classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="1211,83,1431,109"/>
 <area shape="rect" href="classUIWindow.html#a1b85f5b4298b721830e9b162a65c664e" title="Opens a file for a source file which was not found." alt="" coords="1479,72,1664,99"/>
 <area shape="rect" href="classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="989,43,1144,69"/>
 <area shape="rect" href="classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="971,93,1163,120"/>
@@ -2613,7 +2666,7 @@ Here is the caller graph for this function:</div>
 <area shape="rect" href="classUIWindow.html#a447e57e6deef4c794c8b8da1ec50141e" title="Creates a line mark in a Gsv::View." alt="" coords="1948,111,2125,138"/>
 <area shape="rect" href="classUIWindow.html#ab3135faddc758530ac3e34b8973130ad" title="Displays the BreakpointDialog dialog." alt="" coords="1956,60,2117,87"/>
 <area shape="rect" href="classUIWindow.html#aa20f683f45142300ff17e7ff445f50bc" title="Signal handler for the Gsv::View line mark clicked signal." alt="" coords="1717,104,1900,145"/>
-<area shape="rect" href="classUIWindow.html#acf4ea013c774568bd14b79f4486eb067" title="Appends a source file page to the source view notebook." alt="" coords="1216,60,1436,87"/>
+<area shape="rect" href="classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="1216,60,1436,87"/>
 <area shape="rect" href="classUIWindow.html#a1b85f5b4298b721830e9b162a65c664e" title="Opens a file for a source file which was not found." alt="" coords="1484,60,1669,87"/>
 <area shape="rect" href="classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="992,60,1147,87"/>
 <area shape="rect" href="classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="973,10,1165,36"/>
@@ -2927,7 +2980,7 @@ Here is the caller graph for this function:</div>
 <area shape="rect" href="classUIWindow.html#a447e57e6deef4c794c8b8da1ec50141e" title="Creates a line mark in a Gsv::View." alt="" coords="1943,5,2120,32"/>
 <area shape="rect" href="classUIWindow.html#ab3135faddc758530ac3e34b8973130ad" title="Displays the BreakpointDialog dialog." alt="" coords="1951,56,2112,83"/>
 <area shape="rect" href="classUIWindow.html#aa20f683f45142300ff17e7ff445f50bc" title="Signal handler for the Gsv::View line mark clicked signal." alt="" coords="1712,23,1895,65"/>
-<area shape="rect" href="classUIWindow.html#acf4ea013c774568bd14b79f4486eb067" title="Appends a source file page to the source view notebook." alt="" coords="1211,31,1431,57"/>
+<area shape="rect" href="classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="1211,31,1431,57"/>
 <area shape="rect" href="classUIWindow.html#a1b85f5b4298b721830e9b162a65c664e" title="Opens a file for a source file which was not found." alt="" coords="1479,56,1664,83"/>
 <area shape="rect" href="classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="989,5,1144,32"/>
 <area shape="rect" href="classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="971,56,1163,83"/>
@@ -3271,7 +3324,7 @@ Here is the caller graph for this function:</div>
 <area shape="rect" href="classUIWindow.html#a447e57e6deef4c794c8b8da1ec50141e" title="Creates a line mark in a Gsv::View." alt="" coords="1943,5,2120,32"/>
 <area shape="rect" href="classUIWindow.html#ab3135faddc758530ac3e34b8973130ad" title="Displays the BreakpointDialog dialog." alt="" coords="1951,56,2112,83"/>
 <area shape="rect" href="classUIWindow.html#aa20f683f45142300ff17e7ff445f50bc" title="Signal handler for the Gsv::View line mark clicked signal." alt="" coords="1712,49,1895,90"/>
-<area shape="rect" href="classUIWindow.html#acf4ea013c774568bd14b79f4486eb067" title="Appends a source file page to the source view notebook." alt="" coords="1211,56,1431,83"/>
+<area shape="rect" href="classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="1211,56,1431,83"/>
 <area shape="rect" href="classUIWindow.html#a1b85f5b4298b721830e9b162a65c664e" title="Opens a file for a source file which was not found." alt="" coords="1479,81,1664,108"/>
 <area shape="rect" href="classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="989,31,1144,57"/>
 <area shape="rect" href="classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="971,81,1163,108"/>
@@ -3597,7 +3650,7 @@ Here is the caller graph for this function:</div>
 <area shape="rect" title="Updates all labels and their tooltip for a process." alt="" coords="1712,31,1919,57"/>
 <area shape="rect" href="classUIWindow.html#a1b85f5b4298b721830e9b162a65c664e" title="Opens a file for a source file which was not found." alt="" coords="1479,5,1664,32"/>
 <area shape="rect" href="classUIWindow.html#aa18935ac7bf79e5a10c8d536b81ca25f" title="Updates the current line and file for a process." alt="" coords="1233,56,1408,83"/>
-<area shape="rect" href="classUIWindow.html#acf4ea013c774568bd14b79f4486eb067" title="Appends a source file page to the source view notebook." alt="" coords="1211,5,1431,32"/>
+<area shape="rect" href="classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="1211,5,1431,32"/>
 <area shape="rect" href="classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="989,5,1144,32"/>
 <area shape="rect" href="classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="971,56,1163,83"/>
 <area shape="rect" href="classUIWindow.html#a237131d5aa62c32799cf1f0d0e913110" title="Loads the glade file and connects the signal handlers." alt="" coords="784,5,900,32"/>
@@ -3866,6 +3919,28 @@ Here is the caller graph for this function:</div>
       <table class="memname">
         <tr>
           <td class="memname">int UIWindow::m_first_row_idx</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5366764972f409dafeae322acb97c671"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5366764972f409dafeae322acb97c671">&#9670;&nbsp;</a></span>m_follow_rank</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int UIWindow::m_follow_rank</td>
         </tr>
       </table>
   </td>

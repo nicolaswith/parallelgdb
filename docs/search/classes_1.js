@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['master_253',['Master',['../classMaster.html',1,'']]]
+  ['followdialog_260',['FollowDialog',['../classFollowDialog.html',1,'']]]
 ];

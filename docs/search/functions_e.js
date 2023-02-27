@@ -1,10 +1,7 @@
 var searchData=
 [
-  ['uidrawingarea_381',['UIDrawingArea',['../classUIDrawingArea.html#abd5c80328dd763ea9c85bdb114ce935e',1,'UIDrawingArea']]],
-  ['uiwindow_382',['UIWindow',['../classUIWindow.html#adac9a8e7758a30e16e948ee7ac1471fb',1,'UIWindow']]],
-  ['update_5fbreakpoints_383',['update_breakpoints',['../classBreakpoint.html#a530ad76e3382517101cf28ce6bdabaf7',1,'Breakpoint']]],
-  ['update_5fmarkers_384',['update_markers',['../classUIWindow.html#a8805706e8ed834473e3690ac4b5f1614',1,'UIWindow']]],
-  ['update_5fmarkers_5ftimeout_385',['update_markers_timeout',['../classUIWindow.html#ae369ac9ebde283b0469f363624040626',1,'UIWindow']]],
-  ['update_5foverview_386',['update_overview',['../classUIWindow.html#adf6ab1f7b18f7ee63dbc0d2b63660949',1,'UIWindow']]],
-  ['update_5fstates_387',['update_states',['../classBreakpoint.html#a84d8c1b691a7687552af36500a63392e',1,'Breakpoint']]]
+  ['target_5fstate_390',['target_state',['../classUIWindow.html#a655257a1db3090889ead987fcdffcaaa',1,'UIWindow']]],
+  ['toggle_5fall_391',['toggle_all',['../classBreakpointDialog.html#a03b06c33b18c064666df56f574258bee',1,'BreakpointDialog::toggle_all()'],['../classUIWindow.html#a6a12f21b7519fae0cfaad1e698085b4f',1,'UIWindow::toggle_all(const std::string &amp;grid_name)']]],
+  ['toggle_5fall_5fgdb_392',['toggle_all_gdb',['../classUIWindow.html#a7f0274883889305c8ea893ddfebd77ec',1,'UIWindow']]],
+  ['toggle_5fall_5ftrgt_393',['toggle_all_trgt',['../classUIWindow.html#aee371ffb7ff1f2cdf4c0a735dc0df349',1,'UIWindow']]]
 ];

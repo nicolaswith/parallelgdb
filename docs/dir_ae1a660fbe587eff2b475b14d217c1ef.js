@@ -10,6 +10,10 @@ var dir_ae1a660fbe587eff2b475b14d217c1ef =
     [ "canvas.hpp", "canvas_8hpp.html", [
       [ "UIDrawingArea", "classUIDrawingArea.html", "classUIDrawingArea" ]
     ] ],
+    [ "follow_dialog.cpp", "follow__dialog_8cpp.html", null ],
+    [ "follow_dialog.hpp", "follow__dialog_8hpp.html", [
+      [ "FollowDialog", "classFollowDialog.html", "classFollowDialog" ]
+    ] ],
     [ "master.cpp", "master_8cpp.html", "master_8cpp" ],
     [ "master.hpp", "master_8hpp.html", "master_8hpp" ],
     [ "startup.cpp", "startup_8cpp.html", null ],

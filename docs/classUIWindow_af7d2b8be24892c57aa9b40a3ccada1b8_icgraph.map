@@ -9,7 +9,7 @@
 <area shape="rect" id="node4" href="$classUIWindow.html#a447e57e6deef4c794c8b8da1ec50141e" title="Creates a line mark in a Gsv::View." alt="" coords="1948,111,2125,138"/>
 <area shape="rect" id="node17" href="$classUIWindow.html#ab3135faddc758530ac3e34b8973130ad" title="Displays the BreakpointDialog dialog." alt="" coords="1956,60,2117,87"/>
 <area shape="rect" id="node5" href="$classUIWindow.html#aa20f683f45142300ff17e7ff445f50bc" title="Signal handler for the Gsv::View line mark clicked signal." alt="" coords="1717,104,1900,145"/>
-<area shape="rect" id="node6" href="$classUIWindow.html#acf4ea013c774568bd14b79f4486eb067" title="Appends a source file page to the source view notebook." alt="" coords="1216,60,1436,87"/>
+<area shape="rect" id="node6" href="$classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="1216,60,1436,87"/>
 <area shape="rect" id="node16" href="$classUIWindow.html#a1b85f5b4298b721830e9b162a65c664e" title="Opens a file for a source file which was not found." alt="" coords="1484,60,1669,87"/>
 <area shape="rect" id="node7" href="$classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="992,60,1147,87"/>
 <area shape="rect" id="node11" href="$classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="973,10,1165,36"/>
