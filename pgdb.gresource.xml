@@ -4,6 +4,7 @@
 		<file>res/breakpoint.svg</file>
 		<file compressed="true">ui/about_dialog.glade</file>
 		<file compressed="true">ui/breakpoint_dialog.glade</file>
+		<file compressed="true">ui/follow_dialog.glade</file>
 		<file compressed="true">ui/startup_dialog.glade</file>
 		<file compressed="true">ui/window.glade</file>
 	</gresource>

@@ -64,6 +64,7 @@ class UIWindow
 {
 	const int m_num_processes;
 	int m_max_buttons_per_row;
+	int m_follow_rank;
 
 	int *m_current_line;
 	std::string *m_current_file;
@@ -127,7 +128,7 @@ class UIWindow
 	void append_overview_row(const std::string &basename,
 							 const std::string &fullpath);
 	/// Appends a source file page to the source view notebook.
-	void append_source_file(const std::string &fullpath);
+	void append_source_file(const std::string &fullpath, const int rank);
 	/// Tokenizes, parses and analyzes the received GDB output.
 	void print_data_gdb(const char *const data, const int rank);
 	/// Appends text to the target I/O text view.
@@ -182,6 +183,8 @@ class UIWindow
 	void on_about_clicked();
 	/// Terminates the slaves and then quits the application.
 	void on_quit_clicked();
+	/// Opens a dialog to select the process to follow.
+	void on_follow_button_clicked();
 	/// Signal handler for all the interaction buttons.
 	void on_interaction_button_clicked(const int key_value);
 	/// Signal handler for key-press events.

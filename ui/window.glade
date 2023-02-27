@@ -78,6 +78,34 @@
                 <property name="margin-end">10</property>
                 <property name="spacing">10</property>
                 <child>
+                  <object class="GtkButton" id="follow-process-button">
+                    <property name="label" translatable="yes">Following Process 0</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">True</property>
+                    <property name="tooltip-text" translatable="yes">Click to change.</property>
+                    <property name="margin-top">10</property>
+                    <property name="margin-bottom">10</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSeparator">
+                    <property name="width-request">2</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkButton" id="step-over-button">
                     <property name="label" translatable="yes">Step Over</property>
                     <property name="visible">True</property>
@@ -90,7 +118,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">0</property>
+                    <property name="position">3</property>
                   </packing>
                 </child>
                 <child>
@@ -106,7 +134,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">1</property>
+                    <property name="position">4</property>
                   </packing>
                 </child>
                 <child>
@@ -122,7 +150,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">2</property>
+                    <property name="position">5</property>
                   </packing>
                 </child>
                 <child>
@@ -138,7 +166,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">3</property>
+                    <property name="position">6</property>
                   </packing>
                 </child>
                 <child>
@@ -154,7 +182,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">4</property>
+                    <property name="position">7</property>
                   </packing>
                 </child>
                 <child>
@@ -170,7 +198,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">5</property>
+                    <property name="position">8</property>
                   </packing>
                 </child>
                 <child>
@@ -182,7 +210,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">6</property>
+                    <property name="position">9</property>
                   </packing>
                 </child>
                 <child>
@@ -197,7 +225,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">7</property>
+                    <property name="position">10</property>
                   </packing>
                 </child>
                 <child>
@@ -209,7 +237,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">8</property>
+                    <property name="position">11</property>
                   </packing>
                 </child>
                 <child>
@@ -224,7 +252,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">9</property>
+                    <property name="position">12</property>
                   </packing>
                 </child>
                 <child>
@@ -240,7 +268,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">10</property>
+                    <property name="position">13</property>
                   </packing>
                 </child>
               </object>

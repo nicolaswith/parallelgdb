@@ -39,6 +39,7 @@
 #include "window.hpp"
 #include "breakpoint.hpp"
 #include "breakpoint_dialog.hpp"
+#include "follow_dialog.hpp"
 #include "canvas.hpp"
 
 using asio::ip::tcp;
@@ -58,6 +59,7 @@ const char *const open_file_id = "open-file";
  */
 UIWindow::UIWindow(const int num_processes)
 	: m_num_processes(num_processes),
+	  m_follow_rank(0),
 	  m_sent_run(false)
 {
 	// allocate memory
@@ -307,6 +309,10 @@ bool UIWindow::init(Glib::RefPtr<Gtk::Application> app)
 		sigc::mem_fun(*this, &UIWindow::on_key_press), false);
 	m_root_window->signal_delete_event().connect(
 		sigc::mem_fun(*this, &UIWindow::on_delete));
+	get_widget<Gtk::Button>("follow-process-button")
+		->signal_clicked()
+		.connect(
+			sigc::mem_fun(*this, &UIWindow::on_follow_button_clicked));
 	get_widget<Gtk::Button>("step-over-button")
 		->signal_clicked()
 		.connect(sigc::bind(
@@ -420,6 +426,22 @@ bool UIWindow::on_delete(GdkEventAny *)
 		}
 	}
 	return false;
+}
+
+/**
+ * This function opens a dialog to select the process to follow.
+ */
+void UIWindow::on_follow_button_clicked()
+{
+	std::unique_ptr<FollowDialog> dialog = std::make_unique<FollowDialog>(
+		m_num_processes, m_max_buttons_per_row);
+	if (Gtk::RESPONSE_OK != dialog->run())
+	{
+		return;
+	}
+	m_follow_rank = dialog->follow_rank();
+	get_widget<Gtk::Button>("follow-process-button")
+		->set_label("Following Process " + std::to_string(m_follow_rank));
 }
 
 /**
@@ -1097,12 +1119,15 @@ void UIWindow::append_overview_row(const string &basename,
  *
  * @param[in] fullpath The fullpath of the source file to append.
  */
-void UIWindow::append_source_file(const string &fullpath)
+void UIWindow::append_source_file(const string &fullpath, const int rank)
 {
 	// check that file is not opened already
 	if (m_opened_files.find(fullpath) != m_opened_files.end())
 	{
-		m_files_notebook->set_current_page(m_path_2_pagenum[fullpath]);
+		if (rank == m_follow_rank)
+		{
+			m_files_notebook->set_current_page(m_path_2_pagenum[fullpath]);
+		}
 		return;
 	}
 	m_opened_files.insert(fullpath);
@@ -1156,7 +1181,10 @@ void UIWindow::append_source_file(const string &fullpath)
 	}
 	scrolled_window->show_all();
 	int page_num = m_files_notebook->append_page(*scrolled_window, *label);
-	m_files_notebook->set_current_page(page_num);
+	if (rank == m_follow_rank)
+	{
+		m_files_notebook->set_current_page(page_num);
+	}
 	m_path_2_pagenum[fullpath] = page_num;
 	m_pagenum_2_path[page_num] = fullpath;
 	m_path_2_view[fullpath] = source_view;
@@ -1228,7 +1256,7 @@ void UIWindow::open_file()
 	if (Gtk::RESPONSE_OK == dialog->run())
 	{
 		string fullpath = dialog->get_filename();
-		append_source_file(fullpath);
+		append_source_file(fullpath, m_follow_rank);
 	}
 	dialog.reset();
 }
@@ -1402,8 +1430,11 @@ void UIWindow::do_scroll(const int rank) const
  */
 void UIWindow::scroll_to_line(const int rank) const
 {
-	Glib::signal_idle().connect_once(
-		sigc::bind(sigc::mem_fun(this, &UIWindow::do_scroll), rank));
+	if (rank == m_follow_rank)
+	{
+		Glib::signal_idle().connect_once(
+			sigc::bind(sigc::mem_fun(this, &UIWindow::do_scroll), rank));
+	}
 }
 
 /**
@@ -1523,7 +1554,7 @@ void UIWindow::print_data_gdb(const char *const data, const int rank)
 					// this index is one-based!
 					const int line = stop_record->frame->line;
 					set_position(rank, fullpath, line);
-					append_source_file(fullpath);
+					append_source_file(fullpath, rank);
 					scroll_to_line(rank);
 				}
 				mi_free_stop(stop_record);

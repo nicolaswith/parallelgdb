@@ -28,7 +28,7 @@ $(BUILDDIR)/libmigdb.a:
 $(BUILDDIR)/resources.c:
 	cd $(ROOTDIR) && glib-compile-resources pgdb.gresource.xml --target=bin/resources.c --generate-source
 
-$(BUILDDIR)/pgdb: $(addprefix $(BUILDDIR)/, $(addsuffix .o, startup breakpoint breakpoint_dialog canvas window master resources)) $(BUILDDIR)/libmigdb.a
+$(BUILDDIR)/pgdb: $(addprefix $(BUILDDIR)/, $(addsuffix .o, startup breakpoint breakpoint_dialog follow_dialog canvas window master resources)) $(BUILDDIR)/libmigdb.a
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(GTKMM) $(GTKSRCVIEW) $(LIBSSH)
 
 $(BUILDDIR)/%.o: %.cpp
