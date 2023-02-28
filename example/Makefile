@@ -1,7 +1,7 @@
 #!/usr/bin/make
 TRGTS = target
 
-CC = g++
+CC = mpic++
 RM = rm
 
 BUILDDIR = ./bin
