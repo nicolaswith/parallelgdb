@@ -18,7 +18,7 @@ int main(int argc, char const **argv)
 
 	string send_str = string("Hello from Rank ") + to_string(rank) + ".\n";
 
-	if (rank == 0)
+	if (0 == rank)
 	{
 		char **rec_strs = new char *[size];
 		for (int i = 0; i < size; i++)
@@ -27,7 +27,7 @@ int main(int argc, char const **argv)
 		}
 		rec_strs[0] = strdup(send_str.c_str());
 
-		for (int i = 1; i < size; i++)
+		for (int i = 1; i < size; ++i)
 		{
 			MPI_Status status;
 			char *tmp_rec = new char[SEND_LENGTH]();
@@ -39,10 +39,13 @@ int main(int argc, char const **argv)
 		}
 
 		cout << "\n";
-		for (int i = 0; i < size; i++)
+		for (int i = 0; i < size; ++i)
 		{
 			cout << rec_strs[i];
+			delete rec_strs[i];
 		}
+	
+		delete rec_strs;
 	}
 	else
 	{
