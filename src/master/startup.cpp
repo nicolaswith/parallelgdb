@@ -294,10 +294,7 @@ void StartupDialog::read_config()
 void StartupDialog::export_config()
 {
 	// parse current config
-	if (!read_values())
-	{
-		return;
-	}
+	read_values(true);
 
 	Gtk::FileChooserDialog *file_chooser_dialog = new Gtk::FileChooserDialog(
 		*dynamic_cast<Gtk::Window *>(m_dialog), string("Select Save Location"),
@@ -338,7 +335,7 @@ void StartupDialog::on_save_dialog_response(const int response_id,
 	config += "\n";
 
 	config += "number_of_processes=";
-	config += std::to_string(m_number_of_processes);
+	config += m_number_of_processes > 0 ? std::to_string(m_number_of_processes) : "";
 	config += "\n";
 
 	config += "processes_per_node=";
@@ -388,13 +385,16 @@ void StartupDialog::on_save_dialog_response(const int response_id,
 }
 
 /**
- * This function parses the current configuration. Empty entries are valid,
- * except @ref m_entry_number_of_processes, as this is needed by the master
- * to know the number of TCP sockets to open.
+ * This function parses the current configuration and saves it to the member
+ * variables for later access. If @a exporting is set to @c true no message
+ * dialogs will be shown.
+ *
+ * @param exporting A flag indicating if parsing to start the application
+ * ( @c false ) or exporting the configuration to a file ( @c true ).
  *
  * @return @c true on success, @c false on error.
  */
-bool StartupDialog::read_values()
+bool StartupDialog::read_values(const bool exporting)
 {
 	// get button states
 	m_launcher_mpirun = m_radiobutton_mpirun->get_active();
@@ -418,7 +418,7 @@ bool StartupDialog::read_values()
 		std::size_t pos;
 		string text = m_entry_number_of_processes->get_text();
 		m_number_of_processes = std::stoi(text, &pos, 10);
-		if (pos != text.size())
+		if (pos != text.size() || m_number_of_processes <= 0)
 		{
 			throw std::exception();
 		}
@@ -426,11 +426,6 @@ bool StartupDialog::read_values()
 	catch (const std::exception &)
 	{
 		m_number_of_processes = -1;
-		Gtk::MessageDialog dialog(*dynamic_cast<Gtk::Window *>(m_dialog),
-								  "Invalid Number of Processes.", false,
-								  Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
-		dialog.run();
-		return false;
 	}
 
 	try
@@ -438,7 +433,7 @@ bool StartupDialog::read_values()
 		std::size_t pos;
 		string text = m_entry_processes_per_node->get_text();
 		m_processes_per_node = std::stoi(text, &pos, 10);
-		if (pos != text.size())
+		if (pos != text.size() || m_processes_per_node <= 0)
 		{
 			throw std::exception();
 		}
@@ -453,7 +448,7 @@ bool StartupDialog::read_values()
 		std::size_t pos;
 		string text = m_entry_num_nodes->get_text();
 		m_num_nodes = std::stoi(text, &pos, 10);
-		if (pos != text.size())
+		if (pos != text.size() || m_num_nodes <= 0)
 		{
 			throw std::exception();
 		}
@@ -463,8 +458,16 @@ bool StartupDialog::read_values()
 		m_num_nodes = -1;
 	}
 
-	if (!m_launcher_custom)
+	if (!m_launcher_custom && !exporting)
 	{
+		if (-1 == m_number_of_processes)
+		{
+			Gtk::MessageDialog dialog(*dynamic_cast<Gtk::Window *>(m_dialog),
+									  "Invalid Number of Processes.", false,
+									  Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
+			dialog.run();
+			return false;
+		}
 		if ("" == m_slave_path)
 		{
 			Gtk::MessageDialog dialog(*dynamic_cast<Gtk::Window *>(m_dialog),
@@ -507,7 +510,7 @@ void StartupDialog::on_dialog_response(const int response_id)
 		return;
 	}
 
-	m_is_valid = read_values();
+	m_is_valid = read_values(false);
 }
 
 /**

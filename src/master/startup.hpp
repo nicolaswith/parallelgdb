@@ -95,7 +95,7 @@ class StartupDialog
 	/// Shows a save file dialog to export the current configuration as a file
 	void export_config();
 	/// Parses the current configuration.
-	bool read_values();
+	bool read_values(const bool exporting);
 	/// Writes the current configuration as a file.
 	void on_save_dialog_response(const int response_id,
 								 Gtk::FileChooserDialog *file_chooser_dialog);
