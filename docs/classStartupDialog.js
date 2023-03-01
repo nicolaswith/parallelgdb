@@ -15,7 +15,7 @@ var classStartupDialog =
     [ "on_save_dialog_response", "classStartupDialog.html#ae368fc1cded7ec90c00f5a00c2ffff06", null ],
     [ "on_ssh_button_toggled", "classStartupDialog.html#a51d3f01fe3cb4718545d1a77edca39dd", null ],
     [ "read_config", "classStartupDialog.html#a14bacd4a1e6729487c63b8239381f01f", null ],
-    [ "read_values", "classStartupDialog.html#ab85326592b6948d675667f65051980ce", null ],
+    [ "read_values", "classStartupDialog.html#a48c1505091abc4228eac4b0048490991", null ],
     [ "run", "classStartupDialog.html#af47f73e01a8a6450694bac12940f14de", null ],
     [ "set_path", "classStartupDialog.html#a83da9b51fe43c707ab3de6704c65936b", null ],
     [ "set_sensitivity_ssh", "classStartupDialog.html#ab2d6ab6b84129961129868effaa196c9", null ],

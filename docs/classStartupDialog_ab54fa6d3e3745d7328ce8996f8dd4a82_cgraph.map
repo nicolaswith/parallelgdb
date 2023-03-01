@@ -1,5 +1,5 @@
 <map id="StartupDialog::export_config" name="StartupDialog::export_config">
 <area shape="rect" id="node1" title="Shows a save file dialog to export the current configuration as a file." alt="" coords="5,39,167,80"/>
 <area shape="rect" id="node2" href="$classStartupDialog.html#ae368fc1cded7ec90c00f5a00c2ffff06" title="Writes the current configuration as a file." alt="" coords="215,5,388,47"/>
-<area shape="rect" id="node3" href="$classStartupDialog.html#ab85326592b6948d675667f65051980ce" title="Parses the current configuration." alt="" coords="227,71,375,112"/>
+<area shape="rect" id="node3" href="$classStartupDialog.html#a48c1505091abc4228eac4b0048490991" title="Parses the current configuration." alt="" coords="227,71,375,112"/>
 </map>
