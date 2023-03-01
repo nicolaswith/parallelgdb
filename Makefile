@@ -23,7 +23,7 @@ install:
 	cp ./bin/pgdb $(INSTALLDIR)
 	cp ./bin/pgdbslave $(INSTALLDIR)
 	cp ./res/breakpoint.svg /usr/share/icons/hicolor/scalable/apps/pgdb.svg
-	cp ./pgdb.desktop /usr/share/applications
+	cp ./res/pgdb.desktop /usr/share/applications
 
 uninstall:
 	rm -f $(INSTALLDIR)/pgdb
