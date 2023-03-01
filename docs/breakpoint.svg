@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="200px" height="200px" viewBox="0 0 200 200">
-	<polygon fill="red" points="58.579,0 141.422,0 200,58.579 200,141.422 141.422,200 58.579,200 0,141.422 0,58.579"/>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="96px" height="96px" viewBox="0 0 96 96">
+	<polygon fill="red" points="28,0 68,0 96,28 96,68 68,96 28,96 0,68 0,28"/>
 </svg>
