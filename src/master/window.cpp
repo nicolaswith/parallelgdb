@@ -62,39 +62,29 @@ UIWindow::UIWindow(const int num_processes)
 	  m_follow_rank(FOLLOW_ALL),
 	  m_sent_run(false)
 {
-	// allocate memory
-	m_current_line = new int[m_num_processes];
-	m_current_file = new string[m_num_processes];
-	m_target_state = new TargetState[m_num_processes];
-	m_gdb_handle = new mi_h *[m_num_processes];
-	m_exit_code = new int[m_num_processes];
-	m_conns_gdb = new tcp::socket *[m_num_processes];
-	m_conns_trgt = new tcp::socket *[m_num_processes];
-	m_separators = new Gtk::Separator *[m_num_processes];
-	m_text_buffers_gdb = new Gtk::TextBuffer *[m_num_processes];
-	m_text_buffers_trgt = new Gtk::TextBuffer *[m_num_processes];
-	m_scrolled_windows_gdb = new Gtk::ScrolledWindow *[m_num_processes];
-	m_scrolled_windows_trgt = new Gtk::ScrolledWindow *[m_num_processes];
+	// allocate memory and zero-initialize values
+	m_current_line = new int[m_num_processes]();
+	m_current_file = new string[m_num_processes]();
+	m_target_state = new TargetState[m_num_processes]();
+	m_gdb_handle = new mi_h *[m_num_processes]();
+	m_exit_code = new int[m_num_processes]();
+	m_conns_gdb = new tcp::socket *[m_num_processes]();
+	m_conns_trgt = new tcp::socket *[m_num_processes]();
+	m_separators = new Gtk::Separator *[m_num_processes]();
+	m_text_buffers_gdb = new Gtk::TextBuffer *[m_num_processes]();
+	m_text_buffers_trgt = new Gtk::TextBuffer *[m_num_processes]();
+	m_scrolled_windows_gdb = new Gtk::ScrolledWindow *[m_num_processes]();
+	m_scrolled_windows_trgt = new Gtk::ScrolledWindow *[m_num_processes]();
 	m_bkptno_2_bkpt = new std::map<int, Breakpoint *>[m_num_processes];
 	m_scroll_connections_gdb = new sigc::connection[m_num_processes];
 	m_scroll_connections_trgt = new sigc::connection[m_num_processes];
-	m_breakpoints = new Breakpoint *[m_num_processes];
-	m_started = new bool[m_num_processes];
-	m_sent_stop = new bool[m_num_processes];
-	// initialize values
+	m_breakpoints = new Breakpoint *[m_num_processes]();
+	m_started = new bool[m_num_processes]();
+	m_sent_stop = new bool[m_num_processes]();
+	// allocate GDB output parsers
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
-		m_target_state[rank] = TargetState::UNKNOWN;
-		m_exit_code[rank] = 0;
-		m_conns_gdb[rank] = nullptr;
-		m_conns_trgt[rank] = nullptr;
-		m_current_line[rank] = 0;
-		m_breakpoints[rank] = nullptr;
-		m_started[rank] = false;
-		m_sent_stop[rank] = false;
-		// allocate the GDB output parser per rank
 		m_gdb_handle[rank] = mi_alloc_h();
-		m_gdb_handle[rank]->line = nullptr;
 	}
 }
 
