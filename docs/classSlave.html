@@ -107,6 +107,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a99d0908d38f846fae1e7417acf78796b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a99d0908d38f846fae1e7417acf78796b">~Slave</a> ()</td></tr>
 <tr class="memdesc:a99d0908d38f846fae1e7417acf78796b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="classSlave.html#a99d0908d38f846fae1e7417acf78796b">More...</a><br /></td></tr>
 <tr class="separator:a99d0908d38f846fae1e7417acf78796b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd2d7a416fab3368b857b4a45094c5e1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#abd2d7a416fab3368b857b4a45094c5e1">monitor_processes</a> () const</td></tr>
+<tr class="memdesc:abd2d7a416fab3368b857b4a45094c5e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Monitors the socat and GDB instances.  <a href="classSlave.html#abd2d7a416fab3368b857b4a45094c5e1">More...</a><br /></td></tr>
+<tr class="separator:abd2d7a416fab3368b857b4a45094c5e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a842e443fdf7cfb25921ecc0bb8bfe673"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a842e443fdf7cfb25921ecc0bb8bfe673">parse_cl_args</a> ()</td></tr>
 <tr class="memdesc:a842e443fdf7cfb25921ecc0bb8bfe673"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses the command line arguments.  <a href="classSlave.html#a842e443fdf7cfb25921ecc0bb8bfe673">More...</a><br /></td></tr>
 <tr class="separator:a842e443fdf7cfb25921ecc0bb8bfe673"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -116,9 +119,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a32d41a6530cc160039a3b350b694fa51"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a32d41a6530cc160039a3b350b694fa51">start_processes</a> ()</td></tr>
 <tr class="memdesc:a32d41a6530cc160039a3b350b694fa51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates the name for the PTYs and starts GDB and socat.  <a href="classSlave.html#a32d41a6530cc160039a3b350b694fa51">More...</a><br /></td></tr>
 <tr class="separator:a32d41a6530cc160039a3b350b694fa51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd2d7a416fab3368b857b4a45094c5e1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#abd2d7a416fab3368b857b4a45094c5e1">monitor_processes</a> () const</td></tr>
-<tr class="memdesc:abd2d7a416fab3368b857b4a45094c5e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Monitors the socat and GDB instances.  <a href="classSlave.html#abd2d7a416fab3368b857b4a45094c5e1">More...</a><br /></td></tr>
-<tr class="separator:abd2d7a416fab3368b857b4a45094c5e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -128,44 +128,44 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:afb4b4faa40456a75e111244357ffdd3a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#afb4b4faa40456a75e111244357ffdd3a">wait_for_socat</a> () const</td></tr>
-<tr class="memdesc:afb4b4faa40456a75e111244357ffdd3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Waits for the socat instances to start.  <a href="classSlave.html#afb4b4faa40456a75e111244357ffdd3a">More...</a><br /></td></tr>
-<tr class="separator:afb4b4faa40456a75e111244357ffdd3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd3f800842bf7c91d584018d8e416687"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#abd3f800842bf7c91d584018d8e416687">start_gdb</a> (const std::string &amp;tty_gdb, const std::string &amp;tty_trgt) const</td></tr>
 <tr class="memdesc:abd3f800842bf7c91d584018d8e416687"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts the GDB instance.  <a href="classSlave.html#abd3f800842bf7c91d584018d8e416687">More...</a><br /></td></tr>
 <tr class="separator:abd3f800842bf7c91d584018d8e416687"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6593d74b5a6f61ea27a26c8b1a24f9e8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a6593d74b5a6f61ea27a26c8b1a24f9e8">start_socat</a> (const std::string &amp;tty_name, const int port) const</td></tr>
 <tr class="memdesc:a6593d74b5a6f61ea27a26c8b1a24f9e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts a socat instance.  <a href="classSlave.html#a6593d74b5a6f61ea27a26c8b1a24f9e8">More...</a><br /></td></tr>
 <tr class="separator:a6593d74b5a6f61ea27a26c8b1a24f9e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb4b4faa40456a75e111244357ffdd3a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#afb4b4faa40456a75e111244357ffdd3a">wait_for_socat</a> () const</td></tr>
+<tr class="memdesc:afb4b4faa40456a75e111244357ffdd3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Waits for the socat instances to start.  <a href="classSlave.html#afb4b4faa40456a75e111244357ffdd3a">More...</a><br /></td></tr>
+<tr class="separator:afb4b4faa40456a75e111244357ffdd3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a68cc3a81adbeab743a8394fb372a900c"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a68cc3a81adbeab743a8394fb372a900c">m_argc</a></td></tr>
 <tr class="separator:a68cc3a81adbeab743a8394fb372a900c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab7c289967a2fb21532d14f2a4166484"><td class="memItemLeft" align="right" valign="top">char **&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#aab7c289967a2fb21532d14f2a4166484">m_argv</a></td></tr>
-<tr class="separator:aab7c289967a2fb21532d14f2a4166484"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a282d55a2149a792fdbefe620a9ab1e10"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a282d55a2149a792fdbefe620a9ab1e10">m_args_offset</a></td></tr>
 <tr class="separator:a282d55a2149a792fdbefe620a9ab1e10"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80cae3b9c12e89f2579390c1a1be4f49"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a80cae3b9c12e89f2579390c1a1be4f49">m_ip_addr</a></td></tr>
-<tr class="separator:a80cae3b9c12e89f2579390c1a1be4f49"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a558e5134ef7a7cba540ab17010ce7c12"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a558e5134ef7a7cba540ab17010ce7c12">m_target</a></td></tr>
-<tr class="separator:a558e5134ef7a7cba540ab17010ce7c12"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ec0b531f43aa57bbba41dd87c213073"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a4ec0b531f43aa57bbba41dd87c213073">m_rank_str</a></td></tr>
-<tr class="separator:a4ec0b531f43aa57bbba41dd87c213073"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14d95258e843b7398e6b12fcb2f5d095"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a14d95258e843b7398e6b12fcb2f5d095">m_env_str</a></td></tr>
-<tr class="separator:a14d95258e843b7398e6b12fcb2f5d095"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab108cafe26db486694d6172ae97f5e58"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#ab108cafe26db486694d6172ae97f5e58">m_rank</a></td></tr>
-<tr class="separator:ab108cafe26db486694d6172ae97f5e58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab7c289967a2fb21532d14f2a4166484"><td class="memItemLeft" align="right" valign="top">char **&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#aab7c289967a2fb21532d14f2a4166484">m_argv</a></td></tr>
+<tr class="separator:aab7c289967a2fb21532d14f2a4166484"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef8b1e4a4d24d0ad8283d5f3385514d5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#aef8b1e4a4d24d0ad8283d5f3385514d5">m_base_port_gdb</a></td></tr>
 <tr class="separator:aef8b1e4a4d24d0ad8283d5f3385514d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f371c7665186090fff801614de18538"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a3f371c7665186090fff801614de18538">m_base_port_trgt</a></td></tr>
 <tr class="separator:a3f371c7665186090fff801614de18538"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14d95258e843b7398e6b12fcb2f5d095"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a14d95258e843b7398e6b12fcb2f5d095">m_env_str</a></td></tr>
+<tr class="separator:a14d95258e843b7398e6b12fcb2f5d095"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80cae3b9c12e89f2579390c1a1be4f49"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a80cae3b9c12e89f2579390c1a1be4f49">m_ip_addr</a></td></tr>
+<tr class="separator:a80cae3b9c12e89f2579390c1a1be4f49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84840f60e0806a4a84ac8830ad1e837b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a84840f60e0806a4a84ac8830ad1e837b">m_pid_gdb</a></td></tr>
+<tr class="separator:a84840f60e0806a4a84ac8830ad1e837b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af32802ce22fb2e488f9f14188cfa4bc3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#af32802ce22fb2e488f9f14188cfa4bc3">m_pid_socat_gdb</a></td></tr>
 <tr class="separator:af32802ce22fb2e488f9f14188cfa4bc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7568b604f68b8e9a5eb809817262c8c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#aa7568b604f68b8e9a5eb809817262c8c">m_pid_socat_trgt</a></td></tr>
 <tr class="separator:aa7568b604f68b8e9a5eb809817262c8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84840f60e0806a4a84ac8830ad1e837b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a84840f60e0806a4a84ac8830ad1e837b">m_pid_gdb</a></td></tr>
-<tr class="separator:a84840f60e0806a4a84ac8830ad1e837b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab108cafe26db486694d6172ae97f5e58"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#ab108cafe26db486694d6172ae97f5e58">m_rank</a></td></tr>
+<tr class="separator:ab108cafe26db486694d6172ae97f5e58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ec0b531f43aa57bbba41dd87c213073"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a4ec0b531f43aa57bbba41dd87c213073">m_rank_str</a></td></tr>
+<tr class="separator:a4ec0b531f43aa57bbba41dd87c213073"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a558e5134ef7a7cba540ab17010ce7c12"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a558e5134ef7a7cba540ab17010ce7c12">m_target</a></td></tr>
+<tr class="separator:a558e5134ef7a7cba540ab17010ce7c12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class holds the state of the slave program. It contains all utility to analyze the configuration, start the socat and GDB instances, and then monitor them. </p>
@@ -514,7 +514,7 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The PID of the forked process, or <code>-1</code> on error.</dd></dl>
-<dl class="section note"><dt>Note</dt><dd>This function is called for twice. Once to create the PTY for GDB and once for the target program. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This function is called twice. Once to create the PTY for GDB and once for the target program. </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">

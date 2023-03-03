@@ -1116,6 +1116,8 @@ void UIWindow::append_overview_row(const string &basename,
  * This function appends a source file page to the source view notebook.
  *
  * @param[in] fullpath The fullpath of the source file to append.
+ * 
+ * @param rank The process rank the call originates from.
  */
 void UIWindow::append_source_file(const string &fullpath, const int rank)
 {

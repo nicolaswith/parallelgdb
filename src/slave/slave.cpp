@@ -203,7 +203,7 @@ int Slave::start_gdb(const string &tty_gdb, const string &tty_trgt) const
  * @return The PID of the forked process, or @c -1 on error.
  *
  * @note
- * This function is called for twice. Once to create the PTY for GDB and once
+ * This function is called twice. Once to create the PTY for GDB and once
  * for the target program.
  */
 int Slave::start_socat(const string &tty_name, const int port) const
