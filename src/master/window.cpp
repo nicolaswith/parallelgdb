@@ -1533,6 +1533,7 @@ void UIWindow::print_data_gdb(const char *const data, const int rank)
 			if (stop_record)
 			{
 				if (stop_record->have_bkptno && stop_record->bkptno > 1 &&
+					m_bkptno_2_bkpt[rank].find(stop_record->bkptno) != m_bkptno_2_bkpt[rank].end() &&
 					m_bkptno_2_bkpt[rank][stop_record->bkptno]->get_stop_all())
 				{
 					stop_all();
