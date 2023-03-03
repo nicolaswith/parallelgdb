@@ -111,6 +111,7 @@ bool Slave::wait_for_socat() const
 			}
 			if (found_gdb && found_trgt)
 			{
+				pclose(cmd);
 				return true;
 			}
 		}
