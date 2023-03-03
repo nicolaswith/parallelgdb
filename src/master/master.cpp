@@ -31,6 +31,7 @@
 #include <algorithm>
 #include <utility>
 #include <libssh/libssh.h>
+#include <unistd.h>
 
 #include "master.hpp"
 #include "window.hpp"
@@ -177,6 +178,13 @@ bool Master::start_slaves_local()
 	const int pid = fork();
 	if (0 == pid)
 	{
+		// close all file descriptors except stdin, stdout and stderr
+		int fd_limit = (int)sysconf(_SC_OPEN_MAX);
+		for (int fd = STDERR_FILENO + 1; fd < fd_limit; fd++)
+		{
+			close(fd);
+		}
+
 		string cmd = m_dialog->get_cmd();
 		printf("Started slaves with command:\n%s\n", cmd.c_str());
 		const int num_spaces =
