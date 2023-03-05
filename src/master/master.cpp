@@ -242,6 +242,14 @@ void Master::process_session(tcp::socket socket, const asio::ip::port_type port)
 			socket.read_some(asio::buffer(data, m_max_length), error);
 		if (asio::error::eof == error)
 		{
+			if (UIWindow::src_is_gdb(port))
+			{
+				m_window->set_conns_gdb(rank, nullptr);
+			}
+			else
+			{
+				m_window->set_conns_trgt(rank, nullptr);
+			}
 			// there should be no data on eof ... ?
 			break;
 		}

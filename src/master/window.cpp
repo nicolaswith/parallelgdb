@@ -395,7 +395,8 @@ void UIWindow::on_about_clicked()
  */
 void UIWindow::on_quit_clicked()
 {
-	on_delete(new GdkEventAny);
+	GdkEventAny event;
+	on_delete(&event);
 	m_app->quit();
 }
 
@@ -413,6 +414,10 @@ bool UIWindow::on_delete(GdkEventAny *)
 		if (m_conns_gdb[rank])
 		{
 			m_conns_gdb[rank]->shutdown(asio::ip::tcp::socket::shutdown_both);
+		}
+		if (m_conns_trgt[rank])
+		{
+			m_conns_trgt[rank]->shutdown(asio::ip::tcp::socket::shutdown_both);
 		}
 	}
 	return false;
@@ -1116,7 +1121,7 @@ void UIWindow::append_overview_row(const string &basename,
  * This function appends a source file page to the source view notebook.
  *
  * @param[in] fullpath The fullpath of the source file to append.
- * 
+ *
  * @param rank The process rank the call originates from.
  */
 void UIWindow::append_source_file(const string &fullpath, const int rank)

@@ -142,6 +142,9 @@ int Slave::start_gdb(const string &tty_gdb, const string &tty_trgt) const
 	{
 		return -1;
 	}
+	// PTY creation takes time and TCP connection takes time to establish.
+	// So this should be a test if it is REALLY connected not just started... 
+	// For now, give it enough time to connect after starting...
 	usleep(500000);
 
 	int pid = fork();
@@ -211,7 +214,7 @@ int Slave::start_socat(const string &tty_name, const int port) const
 	int pid = fork();
 	if (0 == pid)
 	{
-		string tty = "pty,echo=0,link=" + tty_name;
+		string tty = "PTY,echo=0,link=" + tty_name;
 		string tcp = "TCP:" + string(m_ip_addr) + ":" + to_string(port);
 
 		char *argv[] = {
