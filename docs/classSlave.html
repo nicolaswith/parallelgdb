@@ -98,6 +98,15 @@ $(document).ready(function(){initNavTree('classSlave.html',''); initResizable();
  <a href="classSlave.html#details">More...</a></p>
 
 <p><code>#include &lt;slave.hpp&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for Slave:</div>
+<div class="dyncontent">
+<div class="center"><img src="classSlave__coll__graph.png" border="0" usemap="#aSlave_coll__map" alt="Collaboration graph"/></div>
+<map name="aSlave_coll__map" id="aSlave_coll__map">
+<area shape="rect" title="Holds the state of the slave program." alt="" coords="5,109,64,136"/>
+<area shape="rect" title=" " alt="" coords="5,5,64,32"/>
+</map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -107,6 +116,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a99d0908d38f846fae1e7417acf78796b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a99d0908d38f846fae1e7417acf78796b">~Slave</a> ()</td></tr>
 <tr class="memdesc:a99d0908d38f846fae1e7417acf78796b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="classSlave.html#a99d0908d38f846fae1e7417acf78796b">More...</a><br /></td></tr>
 <tr class="separator:a99d0908d38f846fae1e7417acf78796b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d471675961008b213da187f480d8666"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a4d471675961008b213da187f480d8666">kill_children</a> () const</td></tr>
+<tr class="memdesc:a4d471675961008b213da187f480d8666"><td class="mdescLeft">&#160;</td><td class="mdescRight">Kills all children that were successfully started.  <a href="classSlave.html#a4d471675961008b213da187f480d8666">More...</a><br /></td></tr>
+<tr class="separator:a4d471675961008b213da187f480d8666"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd2d7a416fab3368b857b4a45094c5e1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#abd2d7a416fab3368b857b4a45094c5e1">monitor_processes</a> () const</td></tr>
 <tr class="memdesc:abd2d7a416fab3368b857b4a45094c5e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Monitors the socat and GDB instances.  <a href="classSlave.html#abd2d7a416fab3368b857b4a45094c5e1">More...</a><br /></td></tr>
 <tr class="separator:abd2d7a416fab3368b857b4a45094c5e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -128,9 +140,9 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:abd3f800842bf7c91d584018d8e416687"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#abd3f800842bf7c91d584018d8e416687">start_gdb</a> (const std::string &amp;tty_gdb, const std::string &amp;tty_trgt) const</td></tr>
-<tr class="memdesc:abd3f800842bf7c91d584018d8e416687"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts the GDB instance.  <a href="classSlave.html#abd3f800842bf7c91d584018d8e416687">More...</a><br /></td></tr>
-<tr class="separator:abd3f800842bf7c91d584018d8e416687"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95ec6ce1ca94cf8e95dbd42544803dc3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a95ec6ce1ca94cf8e95dbd42544803dc3">start_gdb</a> () const</td></tr>
+<tr class="memdesc:a95ec6ce1ca94cf8e95dbd42544803dc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts the GDB instance.  <a href="classSlave.html#a95ec6ce1ca94cf8e95dbd42544803dc3">More...</a><br /></td></tr>
+<tr class="separator:a95ec6ce1ca94cf8e95dbd42544803dc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6593d74b5a6f61ea27a26c8b1a24f9e8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a6593d74b5a6f61ea27a26c8b1a24f9e8">start_socat</a> (const std::string &amp;tty_name, const int port) const</td></tr>
 <tr class="memdesc:a6593d74b5a6f61ea27a26c8b1a24f9e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts a socat instance.  <a href="classSlave.html#a6593d74b5a6f61ea27a26c8b1a24f9e8">More...</a><br /></td></tr>
 <tr class="separator:a6593d74b5a6f61ea27a26c8b1a24f9e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -166,6 +178,10 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a4ec0b531f43aa57bbba41dd87c213073"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a558e5134ef7a7cba540ab17010ce7c12"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a558e5134ef7a7cba540ab17010ce7c12">m_target</a></td></tr>
 <tr class="separator:a558e5134ef7a7cba540ab17010ce7c12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15e9f9d03df215a2fcedddbeb5b41825"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a15e9f9d03df215a2fcedddbeb5b41825">m_tty_gdb</a></td></tr>
+<tr class="separator:a15e9f9d03df215a2fcedddbeb5b41825"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acca21a1d8c6848782a540313ec9a8e94"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#acca21a1d8c6848782a540313ec9a8e94">m_tty_trgt</a></td></tr>
+<tr class="separator:acca21a1d8c6848782a540313ec9a8e94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class holds the state of the slave program. It contains all utility to analyze the configuration, start the socat and GDB instances, and then monitor them. </p>
@@ -225,6 +241,34 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a4d471675961008b213da187f480d8666"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d471675961008b213da187f480d8666">&#9670;&nbsp;</a></span>kill_children()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Slave::kill_children </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function kills all children (socat 2x, GDB) that were successfully started. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classSlave_a4d471675961008b213da187f480d8666_icgraph.png" border="0" usemap="#aclassSlave_a4d471675961008b213da187f480d8666_icgraph" alt=""/></div>
+<map name="aclassSlave_a4d471675961008b213da187f480d8666_icgraph" id="aclassSlave_a4d471675961008b213da187f480d8666_icgraph">
+<area shape="rect" title="Kills all children that were successfully started." alt="" coords="345,5,491,32"/>
+<area shape="rect" href="slave_8cpp.html#aa06f5fbe915d0bf149dcf793acea47a1" title="Entry point for the slave program." alt="" coords="5,5,60,32"/>
+<area shape="rect" href="classSlave.html#abd2d7a416fab3368b857b4a45094c5e1" title="Monitors the socat and GDB instances." alt="" coords="108,31,297,57"/>
+</map>
+</div>
+
+</div>
+</div>
 <a id="abd2d7a416fab3368b857b4a45094c5e1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abd2d7a416fab3368b857b4a45094c5e1">&#9670;&nbsp;</a></span>monitor_processes()</h2>
 
@@ -240,6 +284,15 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>This function monitors the socat and GDB instances for exiting. When either of these processes exits, all others are killed as well. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classSlave_abd2d7a416fab3368b857b4a45094c5e1_cgraph.png" border="0" usemap="#aclassSlave_abd2d7a416fab3368b857b4a45094c5e1_cgraph" alt=""/></div>
+<map name="aclassSlave_abd2d7a416fab3368b857b4a45094c5e1_cgraph" id="aclassSlave_abd2d7a416fab3368b857b4a45094c5e1_cgraph">
+<area shape="rect" title="Monitors the socat and GDB instances." alt="" coords="5,5,195,32"/>
+<area shape="rect" href="classSlave.html#a4d471675961008b213da187f480d8666" title="Kills all children that were successfully started." alt="" coords="243,5,388,32"/>
+</map>
+</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -368,8 +421,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="abd3f800842bf7c91d584018d8e416687"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd3f800842bf7c91d584018d8e416687">&#9670;&nbsp;</a></span>start_gdb()</h2>
+<a id="a95ec6ce1ca94cf8e95dbd42544803dc3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95ec6ce1ca94cf8e95dbd42544803dc3">&#9670;&nbsp;</a></span>start_gdb()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -380,19 +433,8 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="memname">int Slave::start_gdb </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>tty_gdb</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>tty_trgt</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -402,19 +444,12 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 <p>This function starts the GDB instance. It ensures both socat instances are running, by calling the <a class="el" href="classSlave.html#afb4b4faa40456a75e111244357ffdd3a">wait_for_socat</a> function before forking. The I/O of the new process is connected to the PTY created by socat. The target I/O will be connected to the second PTY created by the other socat instance. This is done by GBD with the &ndash;tty option. The user arguments are forwarded to the target program.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">tty_gdb</td><td>The name of the PTY created by socat for the GDB instance.</td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">tty_trgt</td><td>The name of the PTY created by socat for the target program.</td></tr>
-  </table>
-  </dd>
-</dl>
 <dl class="section return"><dt>Returns</dt><dd>The PID of the forked process, or <code>-1</code> on error. </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classSlave_abd3f800842bf7c91d584018d8e416687_cgraph.png" border="0" usemap="#aclassSlave_abd3f800842bf7c91d584018d8e416687_cgraph" alt=""/></div>
-<map name="aclassSlave_abd3f800842bf7c91d584018d8e416687_cgraph" id="aclassSlave_abd3f800842bf7c91d584018d8e416687_cgraph">
+<div class="center"><img src="classSlave_a95ec6ce1ca94cf8e95dbd42544803dc3_cgraph.png" border="0" usemap="#aclassSlave_a95ec6ce1ca94cf8e95dbd42544803dc3_cgraph" alt=""/></div>
+<map name="aclassSlave_a95ec6ce1ca94cf8e95dbd42544803dc3_cgraph" id="aclassSlave_a95ec6ce1ca94cf8e95dbd42544803dc3_cgraph">
 <area shape="rect" title="Starts the GDB instance." alt="" coords="5,5,132,32"/>
 <area shape="rect" href="classSlave.html#afb4b4faa40456a75e111244357ffdd3a" title="Waits for the socat instances to start." alt="" coords="180,5,341,32"/>
 </map>
@@ -422,8 +457,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classSlave_abd3f800842bf7c91d584018d8e416687_icgraph.png" border="0" usemap="#aclassSlave_abd3f800842bf7c91d584018d8e416687_icgraph" alt=""/></div>
-<map name="aclassSlave_abd3f800842bf7c91d584018d8e416687_icgraph" id="aclassSlave_abd3f800842bf7c91d584018d8e416687_icgraph">
+<div class="center"><img src="classSlave_a95ec6ce1ca94cf8e95dbd42544803dc3_icgraph.png" border="0" usemap="#aclassSlave_a95ec6ce1ca94cf8e95dbd42544803dc3_icgraph" alt=""/></div>
+<map name="aclassSlave_a95ec6ce1ca94cf8e95dbd42544803dc3_icgraph" id="aclassSlave_a95ec6ce1ca94cf8e95dbd42544803dc3_icgraph">
 <area shape="rect" title="Starts the GDB instance." alt="" coords="324,5,451,32"/>
 <area shape="rect" href="classSlave.html#a32d41a6530cc160039a3b350b694fa51" title="Generates the name for the PTYs and starts GDB and socat." alt="" coords="108,5,276,32"/>
 <area shape="rect" href="slave_8cpp.html#aa06f5fbe915d0bf149dcf793acea47a1" title="Entry point for the slave program." alt="" coords="5,5,60,32"/>
@@ -454,7 +489,7 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="classSlave_a32d41a6530cc160039a3b350b694fa51_cgraph.png" border="0" usemap="#aclassSlave_a32d41a6530cc160039a3b350b694fa51_cgraph" alt=""/></div>
 <map name="aclassSlave_a32d41a6530cc160039a3b350b694fa51_cgraph" id="aclassSlave_a32d41a6530cc160039a3b350b694fa51_cgraph">
 <area shape="rect" title="Generates the name for the PTYs and starts GDB and socat." alt="" coords="5,31,173,57"/>
-<area shape="rect" href="classSlave.html#abd3f800842bf7c91d584018d8e416687" title="Starts the GDB instance." alt="" coords="227,5,354,32"/>
+<area shape="rect" href="classSlave.html#a95ec6ce1ca94cf8e95dbd42544803dc3" title="Starts the GDB instance." alt="" coords="227,5,354,32"/>
 <area shape="rect" href="classSlave.html#a6593d74b5a6f61ea27a26c8b1a24f9e8" title="Starts a socat instance." alt="" coords="221,56,360,83"/>
 <area shape="rect" href="classSlave.html#afb4b4faa40456a75e111244357ffdd3a" title="Waits for the socat instances to start." alt="" coords="408,5,569,32"/>
 </map>
@@ -505,7 +540,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 <p>This function starts a socat instance. This is done by forking and then calling exec to replace the process image.</p>
-<p>socat will create a temporal PTY, to which the GDB instance is connected to in the <a class="el" href="classSlave.html#abd3f800842bf7c91d584018d8e416687">start_gdb</a> function.</p>
+<p>socat will create a temporal PTY, to which the GDB instance is connected to in the <a class="el" href="classSlave.html#a95ec6ce1ca94cf8e95dbd42544803dc3">start_gdb</a> function.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">tty_name</td><td>The name of the PTY to be created.</td></tr>
@@ -550,7 +585,7 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This function waits for the socat instances to start. It checks that both instances are alive and then checks if the forked processes are already running socat.</p>
+<p>This function waits for the socat instances to start. It checks that both instances are alive and whether the PTY has been created. This is only done when the TCP connection is established, so everything is ready for GDB to start.</p>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> on success, <code>false</code> when either of the socat instances dies. </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -558,7 +593,7 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="classSlave_afb4b4faa40456a75e111244357ffdd3a_icgraph.png" border="0" usemap="#aclassSlave_afb4b4faa40456a75e111244357ffdd3a_icgraph" alt=""/></div>
 <map name="aclassSlave_afb4b4faa40456a75e111244357ffdd3a_icgraph" id="aclassSlave_afb4b4faa40456a75e111244357ffdd3a_icgraph">
 <area shape="rect" title="Waits for the socat instances to start." alt="" coords="499,5,660,32"/>
-<area shape="rect" href="classSlave.html#abd3f800842bf7c91d584018d8e416687" title="Starts the GDB instance." alt="" coords="324,5,451,32"/>
+<area shape="rect" href="classSlave.html#a95ec6ce1ca94cf8e95dbd42544803dc3" title="Starts the GDB instance." alt="" coords="324,5,451,32"/>
 <area shape="rect" href="classSlave.html#a32d41a6530cc160039a3b350b694fa51" title="Generates the name for the PTYs and starts GDB and socat." alt="" coords="108,5,276,32"/>
 <area shape="rect" href="slave_8cpp.html#aa06f5fbe915d0bf149dcf793acea47a1" title="Entry point for the slave program." alt="" coords="5,5,60,32"/>
 </map>
@@ -842,6 +877,50 @@ Here is the caller graph for this function:</div>
       <table class="memname">
         <tr>
           <td class="memname">char* Slave::m_target</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a15e9f9d03df215a2fcedddbeb5b41825"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15e9f9d03df215a2fcedddbeb5b41825">&#9670;&nbsp;</a></span>m_tty_gdb</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string Slave::m_tty_gdb</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acca21a1d8c6848782a540313ec9a8e94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acca21a1d8c6848782a540313ec9a8e94">&#9670;&nbsp;</a></span>m_tty_trgt</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string Slave::m_tty_trgt</td>
         </tr>
       </table>
   </td>

@@ -52,7 +52,6 @@ For the debugger to work, the following programs need to be installed and be ava
 - srun: To start the slave instances using slurm. (master)
 - GDB: To debug the target program. (slave)
 - socat: To handle the I/O of the GDB instance and the target instance. (slave)
-- pidof: To check for socat instances. (Preinstalled on most UNIX-like systems) (slave)
 
 Furthermore, when debugging on a remote cluster, the `pgdbslave` executable needs to be copied to or build on this machine.
 

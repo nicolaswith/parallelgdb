@@ -101,13 +101,14 @@ $(document).ready(function(){initNavTree('slave_8cpp.html',''); initResizable();
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;fcntl.h&gt;</code><br />
 <code>#include &lt;sys/wait.h&gt;</code><br />
+<code>#include &lt;filesystem&gt;</code><br />
 <code>#include &quot;<a class="el" href="slave_8hpp.html">slave.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for slave.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="slave_8cpp__incl.png" border="0" usemap="#asrc_2slave_2slave_8cpp" alt=""/></div>
 <map name="asrc_2slave_2slave_8cpp" id="asrc_2slave_2slave_8cpp">
-<area shape="rect" title="Contains the implementation of the Slave class." alt="" coords="409,5,555,32"/>
+<area shape="rect" title="Contains the implementation of the Slave class." alt="" coords="458,5,605,32"/>
 <area shape="rect" title=" " alt="" coords="5,80,92,107"/>
 <area shape="rect" title=" " alt="" coords="116,80,187,107"/>
 <area shape="rect" title=" " alt="" coords="211,80,286,107"/>
@@ -117,8 +118,9 @@ Include dependency graph for slave.cpp:</div>
 <area shape="rect" title=" " alt="" coords="593,80,656,107"/>
 <area shape="rect" title=" " alt="" coords="680,80,743,107"/>
 <area shape="rect" title=" " alt="" coords="767,80,855,107"/>
-<area shape="rect" href="slave_8hpp.html" title="Header file for the Slave class." alt="" coords="879,80,965,107"/>
-<area shape="rect" title=" " alt="" coords="890,155,954,181"/>
+<area shape="rect" title=" " alt="" coords="879,80,970,107"/>
+<area shape="rect" href="slave_8hpp.html" title="Header file for the Slave class." alt="" coords="994,80,1079,107"/>
+<area shape="rect" title=" " alt="" coords="1005,155,1069,181"/>
 </map>
 </div>
 </div><table class="memberdecls">
@@ -170,15 +172,16 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="slave_8cpp_aa06f5fbe915d0bf149dcf793acea47a1_cgraph.png" border="0" usemap="#aslave_8cpp_aa06f5fbe915d0bf149dcf793acea47a1_cgraph" alt=""/></div>
 <map name="aslave_8cpp_aa06f5fbe915d0bf149dcf793acea47a1_cgraph" id="aslave_8cpp_aa06f5fbe915d0bf149dcf793acea47a1_cgraph">
-<area shape="rect" title="Entry point for the slave program." alt="" coords="5,81,60,108"/>
-<area shape="rect" href="classSlave.html#abd2d7a416fab3368b857b4a45094c5e1" title="Monitors the socat and GDB instances." alt="" coords="108,5,297,32"/>
-<area shape="rect" href="classSlave.html#a842e443fdf7cfb25921ecc0bb8bfe673" title="Parses the command line arguments." alt="" coords="125,56,280,83"/>
-<area shape="rect" href="classSlave.html#a402591a478e93c1f1e505619b46ebc46" title="Obtains the rank assigned to this process." alt="" coords="141,107,264,133"/>
-<area shape="rect" href="classSlave.html#a32d41a6530cc160039a3b350b694fa51" title="Generates the name for the PTYs and starts GDB and socat." alt="" coords="119,157,287,184"/>
-<area shape="rect" href="classSlave.html#a23cb3fd44e3d83317046810abb68902a" title="Prints the help text." alt="" coords="349,69,480,96"/>
-<area shape="rect" href="classSlave.html#abd3f800842bf7c91d584018d8e416687" title="Starts the GDB instance." alt="" coords="351,132,478,159"/>
-<area shape="rect" href="classSlave.html#a6593d74b5a6f61ea27a26c8b1a24f9e8" title="Starts a socat instance." alt="" coords="345,183,484,209"/>
-<area shape="rect" href="classSlave.html#afb4b4faa40456a75e111244357ffdd3a" title="Waits for the socat instances to start." alt="" coords="532,132,693,159"/>
+<area shape="rect" title="Entry point for the slave program." alt="" coords="5,88,60,115"/>
+<area shape="rect" href="classSlave.html#a4d471675961008b213da187f480d8666" title="Kills all children that were successfully started." alt="" coords="345,32,491,59"/>
+<area shape="rect" href="classSlave.html#abd2d7a416fab3368b857b4a45094c5e1" title="Monitors the socat and GDB instances." alt="" coords="108,37,297,64"/>
+<area shape="rect" href="classSlave.html#a842e443fdf7cfb25921ecc0bb8bfe673" title="Parses the command line arguments." alt="" coords="125,88,280,115"/>
+<area shape="rect" href="classSlave.html#a402591a478e93c1f1e505619b46ebc46" title="Obtains the rank assigned to this process." alt="" coords="141,139,264,165"/>
+<area shape="rect" href="classSlave.html#a32d41a6530cc160039a3b350b694fa51" title="Generates the name for the PTYs and starts GDB and socat." alt="" coords="119,189,287,216"/>
+<area shape="rect" href="classSlave.html#a23cb3fd44e3d83317046810abb68902a" title="Prints the help text." alt="" coords="353,95,483,121"/>
+<area shape="rect" href="classSlave.html#a95ec6ce1ca94cf8e95dbd42544803dc3" title="Starts the GDB instance." alt="" coords="355,164,481,191"/>
+<area shape="rect" href="classSlave.html#a6593d74b5a6f61ea27a26c8b1a24f9e8" title="Starts a socat instance." alt="" coords="349,215,487,241"/>
+<area shape="rect" href="classSlave.html#afb4b4faa40456a75e111244357ffdd3a" title="Waits for the socat instances to start." alt="" coords="539,164,700,191"/>
 </map>
 </div>
 

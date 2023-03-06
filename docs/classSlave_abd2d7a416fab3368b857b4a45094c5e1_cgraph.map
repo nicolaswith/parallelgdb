@@ -1,0 +1,4 @@
+<map id="Slave::monitor_processes" name="Slave::monitor_processes">
+<area shape="rect" id="node1" title="Monitors the socat and GDB instances." alt="" coords="5,5,195,32"/>
+<area shape="rect" id="node2" href="$classSlave.html#a4d471675961008b213da187f480d8666" title="Kills all children that were successfully started." alt="" coords="243,5,388,32"/>
+</map>

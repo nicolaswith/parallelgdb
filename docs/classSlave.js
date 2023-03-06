@@ -2,11 +2,12 @@ var classSlave =
 [
     [ "Slave", "classSlave.html#aa89102bd2daaf756b06e0912f7fab963", null ],
     [ "~Slave", "classSlave.html#a99d0908d38f846fae1e7417acf78796b", null ],
+    [ "kill_children", "classSlave.html#a4d471675961008b213da187f480d8666", null ],
     [ "monitor_processes", "classSlave.html#abd2d7a416fab3368b857b4a45094c5e1", null ],
     [ "parse_cl_args", "classSlave.html#a842e443fdf7cfb25921ecc0bb8bfe673", null ],
     [ "print_help", "classSlave.html#a23cb3fd44e3d83317046810abb68902a", null ],
     [ "set_rank", "classSlave.html#a402591a478e93c1f1e505619b46ebc46", null ],
-    [ "start_gdb", "classSlave.html#abd3f800842bf7c91d584018d8e416687", null ],
+    [ "start_gdb", "classSlave.html#a95ec6ce1ca94cf8e95dbd42544803dc3", null ],
     [ "start_processes", "classSlave.html#a32d41a6530cc160039a3b350b694fa51", null ],
     [ "start_socat", "classSlave.html#a6593d74b5a6f61ea27a26c8b1a24f9e8", null ],
     [ "wait_for_socat", "classSlave.html#afb4b4faa40456a75e111244357ffdd3a", null ],
@@ -22,5 +23,7 @@ var classSlave =
     [ "m_pid_socat_trgt", "classSlave.html#aa7568b604f68b8e9a5eb809817262c8c", null ],
     [ "m_rank", "classSlave.html#ab108cafe26db486694d6172ae97f5e58", null ],
     [ "m_rank_str", "classSlave.html#a4ec0b531f43aa57bbba41dd87c213073", null ],
-    [ "m_target", "classSlave.html#a558e5134ef7a7cba540ab17010ce7c12", null ]
+    [ "m_target", "classSlave.html#a558e5134ef7a7cba540ab17010ce7c12", null ],
+    [ "m_tty_gdb", "classSlave.html#a15e9f9d03df215a2fcedddbeb5b41825", null ],
+    [ "m_tty_trgt", "classSlave.html#acca21a1d8c6848782a540313ec9a8e94", null ]
 ];
