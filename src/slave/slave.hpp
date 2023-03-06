@@ -56,10 +56,13 @@ class Slave
 	int m_pid_socat_trgt;
 	int m_pid_gdb;
 
+	std::string m_tty_gdb;
+	std::string m_tty_trgt;
+
 	/// Waits for the socat instances to start.
 	bool wait_for_socat() const;
 	/// Starts the GDB instance.
-	int start_gdb(const std::string &tty_gdb, const std::string &tty_trgt) const;
+	int start_gdb() const;
 	/// Starts a socat instance.
 	int start_socat(const std::string &tty_name, const int port) const;
 
@@ -77,7 +80,10 @@ public:
 	bool start_processes();
 	/// Monitors the socat and GDB instances.
 	void monitor_processes() const;
+	/// Kills all children that were successfully started.
+	void kill_children() const;
 
+	/// Prints the help text.
 	static void print_help();
 };
 

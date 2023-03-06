@@ -34,6 +34,7 @@
 #include <vector>
 #include <fcntl.h>
 #include <sys/wait.h>
+#include <filesystem>
 
 #include "slave.hpp"
 
@@ -77,8 +78,9 @@ Slave::~Slave()
 
 /**
  * This function waits for the socat instances to start. It checks that both
- * instances are alive and then checks if the forked processes are already
- * running socat.
+ * instances are alive and whether the PTY has been created. This is only done
+ * when the TCP connection is established, so everything is ready for GDB to
+ * start.
  *
  * @return @c true on success, @c false when either of the socat instances dies.
  */
@@ -90,33 +92,13 @@ bool Slave::wait_for_socat() const
 		exited = 0;
 		exited |= waitpid(m_pid_socat_gdb, nullptr, WNOHANG);
 		exited |= waitpid(m_pid_socat_trgt, nullptr, WNOHANG);
-		FILE *cmd = popen("pidof socat", "r");
-		char result[1024] = {0};
-		bool found_gdb = false;
-		bool found_trgt = false;
-		while (fgets(result, sizeof(result), cmd) != NULL)
+		const bool found_gdb = std::filesystem::exists(m_tty_gdb);
+		const bool found_trgt = std::filesystem::exists(m_tty_trgt);
+		if (found_gdb && found_trgt)
 		{
-			int pid;
-			istringstream stream(result);
-			while (stream >> pid)
-			{
-				if (pid == m_pid_socat_gdb)
-				{
-					found_gdb = true;
-				}
-				if (pid == m_pid_socat_trgt)
-				{
-					found_trgt = true;
-				}
-			}
-			if (found_gdb && found_trgt)
-			{
-				pclose(cmd);
-				return true;
-			}
+			return true;
 		}
-		pclose(cmd);
-		usleep(100000);
+		usleep(1000);
 	}
 	return false;
 }
@@ -129,28 +111,19 @@ bool Slave::wait_for_socat() const
  * is done by GBD with the --tty option. The user arguments are forwarded to
  * the target program.
  *
- * @param[in] tty_gdb The name of the PTY created by socat for the GDB instance.
- *
- * @param[in] tty_trgt The name of the PTY created by socat for the
- * target program.
- *
  * @return The PID of the forked process, or @c -1 on error.
  */
-int Slave::start_gdb(const string &tty_gdb, const string &tty_trgt) const
+int Slave::start_gdb() const
 {
 	if (!wait_for_socat())
 	{
 		return -1;
 	}
-	// PTY creation takes time and TCP connection takes time to establish.
-	// So this should be a test if it is REALLY connected not just started... 
-	// For now, give it enough time to connect after starting...
-	usleep(500000);
 
-	int pid = fork();
+	const int pid = fork();
 	if (0 == pid)
 	{
-		int tty_fd = open(tty_gdb.c_str(), O_RDWR);
+		const int tty_fd = open(m_tty_gdb.c_str(), O_RDWR);
 
 		// connect I/O of GDB to PTY
 		dup2(tty_fd, STDIN_FILENO);
@@ -158,7 +131,7 @@ int Slave::start_gdb(const string &tty_gdb, const string &tty_trgt) const
 		dup2(tty_fd, STDERR_FILENO);
 
 		// prepare command to instruct GDB to send the target output on this PTY
-		string tty = "--tty=" + tty_trgt;
+		const string tty = "--tty=" + m_tty_trgt;
 
 		const int num_args = m_argc - m_args_offset;
 		char **argv_gdb = (char **)malloc((10 + num_args) * sizeof(char *));
@@ -168,13 +141,13 @@ int Slave::start_gdb(const string &tty_gdb, const string &tty_trgt) const
 		argv_gdb[idx++] = (char *)"-q";
 		argv_gdb[idx++] = (char *)"-i";
 		argv_gdb[idx++] = (char *)"mi3";
-		argv_gdb[idx++] = (char *)"-ex=set auto-load safe-path /";
-		argv_gdb[idx++] = (char *)"-ex=b main";
 		argv_gdb[idx++] = (char *)tty.c_str();
 		if (0 != num_args)
 		{
 			argv_gdb[idx++] = (char *)"--args";
 		}
+		argv_gdb[idx++] = (char *)"-ex=set auto-load safe-path /";
+		argv_gdb[idx++] = (char *)"-ex=b main";
 		argv_gdb[idx++] = (char *)m_target;
 		// append user arguments
 		for (int i = 0; i < num_args; ++i)
@@ -211,16 +184,16 @@ int Slave::start_gdb(const string &tty_gdb, const string &tty_trgt) const
  */
 int Slave::start_socat(const string &tty_name, const int port) const
 {
-	int pid = fork();
+	const int pid = fork();
 	if (0 == pid)
 	{
-		string tty = "PTY,echo=0,link=" + tty_name;
-		string tcp = "TCP:" + string(m_ip_addr) + ":" + to_string(port);
+		const string tcp = "TCP:" + string(m_ip_addr) + ":" + to_string(port);
+		const string tty = "PTY,echo=0,link=" + tty_name;
 
 		char *argv[] = {
 			(char *)"socat",
-			(char *)tty.c_str(),
 			(char *)tcp.c_str(),
+			(char *)tty.c_str(),
 			(char *)nullptr};
 		execvp(argv[0], argv);
 		// Only reached if exec fails
@@ -384,20 +357,22 @@ bool Slave::start_processes()
 {
 	ostringstream tty_gdb_oss;
 	ostringstream tty_trgt_oss;
-	tty_gdb_oss << "/tmp/ttyGDB_" << setw(4) << setfill('0') << to_string(m_rank);
-	tty_trgt_oss << "/tmp/ttyTRGT_" << setw(4) << setfill('0') << to_string(m_rank);
-	string tty_gdb = tty_gdb_oss.str();
-	string tty_trgt = tty_trgt_oss.str();
+	tty_gdb_oss << "/tmp/ttyGDB"
+				<< setw(4) << setfill('0') << to_string(m_rank);
+	tty_trgt_oss << "/tmp/ttyTRGT"
+				 << setw(4) << setfill('0') << to_string(m_rank);
+	m_tty_gdb = tty_gdb_oss.str();
+	m_tty_trgt = tty_trgt_oss.str();
 
 	const int port_gdb = m_base_port_gdb + m_rank;
 	const int port_trgt = m_base_port_trgt + m_rank;
 
-	m_pid_socat_gdb = start_socat(tty_gdb, port_gdb);
-	m_pid_socat_trgt = start_socat(tty_trgt, port_trgt);
+	m_pid_socat_gdb = start_socat(m_tty_gdb, port_gdb);
+	m_pid_socat_trgt = start_socat(m_tty_trgt, port_trgt);
 
 	if (m_pid_socat_gdb > 0 && m_pid_socat_trgt > 0)
 	{
-		m_pid_gdb = start_gdb(tty_gdb, tty_trgt);
+		m_pid_gdb = start_gdb();
 	}
 
 	return (m_pid_gdb > 0) && (m_pid_socat_gdb > 0) && (m_pid_socat_trgt > 0);
@@ -418,7 +393,15 @@ void Slave::monitor_processes() const
 		exited |= waitpid(m_pid_socat_gdb, nullptr, WNOHANG);
 		exited |= waitpid(m_pid_socat_trgt, nullptr, WNOHANG);
 	}
+	kill_children();
+}
 
+/**
+ * This function kills all children (socat 2x, GDB) that were
+ * successfully started.
+ */
+void Slave::kill_children() const
+{
 	if (m_pid_gdb > 0)
 	{
 		kill(m_pid_gdb, SIGKILL);
@@ -433,7 +416,6 @@ void Slave::monitor_processes() const
 	}
 }
 
-/// Prints the help text.
 /**
  * This function prints the help text.
  */
@@ -475,6 +457,7 @@ int main(const int argc, char **argv)
 	}
 	if (!slave.start_processes())
 	{
+		slave.kill_children();
 		return EXIT_FAILURE;
 	}
 	slave.monitor_processes();
