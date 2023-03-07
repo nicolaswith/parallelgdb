@@ -1,5 +1,5 @@
 <map id="StartupDialog::num_processes" name="StartupDialog::num_processes">
 <area shape="rect" id="node1" title="Returns the total number of processes." alt="" coords="316,5,464,47"/>
-<area shape="rect" id="node2" href="$classMaster.html#ab15d4163aba6881bbfd079414566ab12" title="Creates threads for each blocking TCP acceptor call." alt="" coords="108,13,268,39"/>
+<area shape="rect" id="node2" href="$classMaster.html#a5795d8ffc12cec35b9ecb6ef10dab7e3" title="Creates threads for each blocking TCP acceptor call." alt="" coords="108,13,268,39"/>
 <area shape="rect" id="node3" href="$master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,13,60,39"/>
 </map>

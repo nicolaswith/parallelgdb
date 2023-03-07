@@ -1,6 +1,6 @@
 <map id="Master::process_session" name="Master::process_session">
 <area shape="rect" id="node1" title="Handles the TCP communication between socat and the master." alt="" coords="532,5,713,32"/>
-<area shape="rect" id="node2" href="$classMaster.html#a8f01bcecf27dbe029c4181f72133c536" title="Waits (blocking) for a TCP connection on the TCP port." alt="" coords="316,5,484,32"/>
-<area shape="rect" id="node3" href="$classMaster.html#ab15d4163aba6881bbfd079414566ab12" title="Creates threads for each blocking TCP acceptor call." alt="" coords="108,5,268,32"/>
+<area shape="rect" id="node2" href="$classMaster.html#ad960ade5e2ad4a42bc183f19653bf7a4" title="Waits (blocking) for a TCP connection on the TCP port." alt="" coords="316,5,484,32"/>
+<area shape="rect" id="node3" href="$classMaster.html#a5795d8ffc12cec35b9ecb6ef10dab7e3" title="Creates threads for each blocking TCP acceptor call." alt="" coords="108,5,268,32"/>
 <area shape="rect" id="node4" href="$master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,5,60,32"/>
 </map>
