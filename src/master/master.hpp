@@ -41,7 +41,7 @@ typedef struct ssh_session_struct *ssh_session;
 /// Holds the state of the master program.
 /**
  * This class holds the state of the master program. It contains the utility to
- * start the master and slave program. Additionally it handles the TCP 
+ * start the master and slave program. Additionally it handles the TCP
  * connections between the master and socat.
  */
 class Master
@@ -65,7 +65,8 @@ private:
 	void process_session(asio::ip::tcp::socket socket,
 						 const asio::ip::port_type port);
 	/// Waits (blocking) for a TCP connection on the TCP @p port.
-	void start_acceptor(const asio::ip::port_type port);
+	void start_acceptor(asio::ip::tcp::acceptor acceptor,
+						const asio::ip::port_type port);
 
 public:
 	/// Default constructor.
@@ -76,7 +77,7 @@ public:
 	/// Runs the startup dialog.
 	bool run_startup_dialog();
 	/// Creates threads for each blocking TCP acceptor call.
-	void start_servers();
+	bool start_servers();
 	/// Starts the slaves on the desired debug platform.
 	bool start_slaves();
 	/// Starts the GUI main window.

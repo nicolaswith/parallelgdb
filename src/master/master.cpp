@@ -32,6 +32,7 @@
 #include <utility>
 #include <libssh/libssh.h>
 #include <unistd.h>
+#include <cstdio>
 
 #include "master.hpp"
 #include "window.hpp"
@@ -272,10 +273,9 @@ void Master::process_session(tcp::socket socket, const asio::ip::port_type port)
  *
  * @param port The assigned port of the @p socket.
  */
-void Master::start_acceptor(const asio::ip::port_type port)
+void Master::start_acceptor(tcp::acceptor acceptor,
+							const asio::ip::port_type port)
 {
-	asio::io_context io_context;
-	tcp::acceptor acceptor(io_context, tcp::endpoint(tcp::v4(), port));
 	tcp::socket socket(acceptor.accept());
 	acceptor.close();
 	process_session(std::move(socket), port);
@@ -284,17 +284,38 @@ void Master::start_acceptor(const asio::ip::port_type port)
 /**
  * This function creates threads for each blocking TCP acceptor call.
  */
-void Master::start_servers()
+bool Master::start_servers()
 {
 	m_window = new UIWindow{m_dialog->num_processes()};
 
-	for (int rank = 0; rank < m_window->num_processes(); ++rank)
+	int base_ports[] = {m_base_port_gdb, m_base_port_trgt};
+	for (int i = 0; i < 2; ++i)
 	{
-		std::thread(&Master::start_acceptor, this, (m_base_port_gdb + rank))
-			.detach();
-		std::thread(&Master::start_acceptor, this, (m_base_port_trgt + rank))
-			.detach();
+		const int base_port = base_ports[i];
+		for (int rank = 0; rank < m_dialog->num_processes(); ++rank)
+		{
+			const int port = base_port + rank;
+			try
+			{
+				std::thread(&Master::start_acceptor,
+							this,
+							tcp::acceptor(
+								*(new asio::io_context),
+								tcp::endpoint(tcp::v4(), port)),
+							port)
+					.detach();
+			}
+			catch (const std::exception &)
+			{
+				fprintf(stderr,
+						"Error: TCP port %d needed but already in use.\n",
+						port);
+				return false;
+			}
+		}
 	}
+
+	return true;
 }
 
 /**
@@ -391,7 +412,10 @@ int main(int, char const **)
 	}
 	signal(SIGINT, sigint_handler);
 
-	master.start_servers();
+	if (!master.start_servers())
+	{
+		return EXIT_FAILURE;
+	}
 	if (!master.start_slaves())
 	{
 		fprintf(stderr, "Could not start slaves.\n");
