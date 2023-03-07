@@ -271,6 +271,8 @@ void Master::process_session(tcp::socket socket, const asio::ip::port_type port)
 /**
  * This function waits for a TCP connection on the TCP @p port.
  *
+ * @param acceptor The asio acceptor bound to the TCP address and port.
+ *
  * @param port The assigned port of the @p socket.
  */
 void Master::start_acceptor(tcp::acceptor acceptor,
@@ -282,7 +284,11 @@ void Master::start_acceptor(tcp::acceptor acceptor,
 }
 
 /**
- * This function creates threads for each blocking TCP acceptor call.
+ * This function creates threads for each blocking TCP acceptor call. It checks
+ * for port collision when creating the acceptor.
+ *
+ * @return @c true when all acceptors could be created, @c false on
+ * port collision.
  */
 bool Master::start_servers()
 {

@@ -436,6 +436,7 @@ Here is the caller graph for this function:</div>
 <p>This function waits for a TCP connection on the TCP <code>port</code>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">acceptor</td><td>The asio acceptor bound to the TCP address and port.</td></tr>
     <tr><td class="paramname">port</td><td>The assigned port of the <code>socket</code>. </td></tr>
   </table>
   </dd>
@@ -598,7 +599,8 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function creates threads for each blocking TCP acceptor call. </p>
+<p>This function creates threads for each blocking TCP acceptor call. It checks for port collision when creating the acceptor.</p>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code> when all acceptors could be created, <code>false</code> on port collision. </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
