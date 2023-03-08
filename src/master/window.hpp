@@ -207,6 +207,12 @@ class UIWindow
 	void check_overview(const int rank);
 	/// Opens a file for a source file which was not found.
 	void open_missing(Gtk::TextIter &, GdkEvent *, const std::string &fullpath);
+	/// Parses the GDB output for printable output and state changes of the target program.
+	void parse_target_state(mi_output *first_output, const int rank);
+	/// Searches for a breakpoint record in the GDB output.
+	void parse_breakpoint(mi_output *first_output, const int rank);
+	/// Searches for a stop record and extracts information from it.
+	void parse_stop_record(mi_output *first_output, const int rank);
 
 	/// Wrapper for the Gtk::get_widget function.
 	template <class T>

@@ -1465,6 +1465,106 @@ void UIWindow::set_position(const int rank, const string &fullpath,
 }
 
 /**
+ * This function parses the GDB output for printable output and state changes of
+ * the target program.
+ *
+ * @param[in] first_output A pointer to the first output in the list of outputs
+ * sent by GDB.
+ *
+ * @param rank The process rank the GDB output originates from.
+ */
+void UIWindow::parse_target_state(mi_output *first_output, const int rank)
+{
+	Gtk::TextBuffer *buffer = m_text_buffers_gdb[rank];
+	mi_output *current_output = first_output;
+	while (NULL != current_output)
+	{
+		if (MI_CL_RUNNING == current_output->tclass)
+		{
+			m_target_state[rank] = TargetState::RUNNING;
+			m_current_file[rank] = "";
+		}
+		else if (MI_CL_STOPPED == current_output->tclass)
+		{
+			m_target_state[rank] = TargetState::STOPPED;
+			m_sent_stop[rank] = false;
+		}
+		if (current_output->type == MI_T_OUT_OF_BAND &&
+			current_output->stype == MI_ST_STREAM)
+		{
+			char *text = get_cstr(current_output);
+			buffer->insert(buffer->end(), text);
+		}
+		current_output = current_output->next;
+	}
+}
+
+/**
+ * This function searches for a breakpoint record in the GDB output. When
+ * found, the number (ID) of the breakpoint is saved. It is needed to delete the
+ * breakpoint later on.
+ *
+ * @param[in] first_output A pointer to the first output in the list of outputs
+ * sent by GDB.
+ *
+ * @param rank The process rank the GDB output originates from.
+ */
+void UIWindow::parse_breakpoint(mi_output *first_output, const int rank)
+{
+	mi_bkpt *breakpoint = mi_res_bkpt(first_output);
+	if (breakpoint)
+	{
+		m_breakpoints[rank]->set_number(rank, breakpoint->number);
+		m_bkptno_2_bkpt[rank][breakpoint->number] = m_breakpoints[rank];
+		m_breakpoints[rank] = nullptr;
+	}
+	mi_free_bkpt(breakpoint);
+}
+
+/**
+ * This function searches for a stop record and extracts information from it.
+ * This includes current file, line and when exited, the exit code.
+ *
+ * @param[in] first_output A pointer to the first output in the list of outputs
+ * sent by GDB.
+ *
+ * @param rank The process rank the GDB output originates from.
+ */
+void UIWindow::parse_stop_record(mi_output *first_output, const int rank)
+{
+	mi_stop *stop_record = mi_res_stop(first_output);
+	if (stop_record)
+	{
+		if (stop_record->have_bkptno && stop_record->bkptno > 1 &&
+			m_bkptno_2_bkpt[rank].find(stop_record->bkptno) !=
+				m_bkptno_2_bkpt[rank].end() &&
+			m_bkptno_2_bkpt[rank][stop_record->bkptno]->get_stop_all())
+		{
+			stop_all();
+		}
+		if (mi_stop_reason::sr_exited_signalled == stop_record->reason ||
+			mi_stop_reason::sr_exited == stop_record->reason ||
+			mi_stop_reason::sr_exited_normally == stop_record->reason)
+		{
+			m_target_state[rank] = TargetState::EXITED;
+			m_current_file[rank] = "";
+			m_exit_code[rank] = stop_record->exit_code;
+			clear_labels_overview(rank);
+		}
+		if (stop_record->frame && stop_record->frame->fullname)
+		{
+			const string fullpath = stop_record->frame->fullname;
+			// this index is one-based!
+			const int line = stop_record->frame->line;
+			set_position(rank, fullpath, line);
+			append_source_file(fullpath, rank);
+			scroll_to_line(rank);
+		}
+	}
+	mi_free_stop(stop_record);
+}
+
+/**
  * This function tokenizes the received GDB output and feeds it to the output
  * parser. The resulting response objects are then analyzed and based on that
  * states are updated.
@@ -1472,14 +1572,9 @@ void UIWindow::set_position(const int rank, const string &fullpath,
  * @param[in] data The received GDB output.
  *
  * @param rank The process rank.
- *
- * @note
- * This should probably be refactored...
  */
 void UIWindow::print_data_gdb(const char *const data, const int rank)
 {
-	Gtk::TextBuffer *buffer = m_text_buffers_gdb[rank];
-
 	char *token = strtok((char *)data, "\n");
 	while (NULL != token)
 	{
@@ -1491,7 +1586,6 @@ void UIWindow::print_data_gdb(const char *const data, const int rank)
 		}
 		free(m_gdb_handle[rank]->line);
 		m_gdb_handle[rank]->line = strdup(token);
-
 		int response = mi_get_response(m_gdb_handle[rank]);
 		if (0 != response)
 		{
@@ -1499,73 +1593,13 @@ void UIWindow::print_data_gdb(const char *const data, const int rank)
 			{
 				m_started[rank] = true;
 			}
-
 			mi_output *first_output = mi_retire_response(m_gdb_handle[rank]);
-			mi_output *current_output = first_output;
-
-			while (NULL != current_output)
-			{
-				if (MI_CL_RUNNING == current_output->tclass)
-				{
-					m_target_state[rank] = TargetState::RUNNING;
-					m_current_file[rank] = "";
-				}
-				else if (MI_CL_STOPPED == current_output->tclass)
-				{
-					m_target_state[rank] = TargetState::STOPPED;
-					m_sent_stop[rank] = false;
-				}
-				if (current_output->type == MI_T_OUT_OF_BAND &&
-					current_output->stype == MI_ST_STREAM)
-				{
-					char *text = get_cstr(current_output);
-					buffer->insert(buffer->end(), text);
-				}
-				current_output = current_output->next;
-			}
-
+			parse_target_state(first_output, rank);
+			parse_stop_record(first_output, rank);
 			if (nullptr != m_breakpoints[rank])
 			{
-				mi_bkpt *breakpoint = mi_res_bkpt(first_output);
-				if (breakpoint)
-				{
-					m_breakpoints[rank]->set_number(rank, breakpoint->number);
-					m_bkptno_2_bkpt[rank][breakpoint->number] = m_breakpoints[rank];
-					m_breakpoints[rank] = nullptr;
-				}
-				mi_free_bkpt(breakpoint);
+				parse_breakpoint(first_output, rank);
 			}
-
-			mi_stop *stop_record = mi_res_stop(first_output);
-			if (stop_record)
-			{
-				if (stop_record->have_bkptno && stop_record->bkptno > 1 &&
-					m_bkptno_2_bkpt[rank].find(stop_record->bkptno) != m_bkptno_2_bkpt[rank].end() &&
-					m_bkptno_2_bkpt[rank][stop_record->bkptno]->get_stop_all())
-				{
-					stop_all();
-				}
-				if (mi_stop_reason::sr_exited_signalled == stop_record->reason ||
-					mi_stop_reason::sr_exited == stop_record->reason ||
-					mi_stop_reason::sr_exited_normally == stop_record->reason)
-				{
-					m_target_state[rank] = TargetState::EXITED;
-					m_current_file[rank] = "";
-					m_exit_code[rank] = stop_record->exit_code;
-					clear_labels_overview(rank);
-				}
-				if (stop_record->frame && stop_record->frame->fullname)
-				{
-					const string fullpath = stop_record->frame->fullname;
-					// this index is one-based!
-					const int line = stop_record->frame->line;
-					set_position(rank, fullpath, line);
-					append_source_file(fullpath, rank);
-					scroll_to_line(rank);
-				}
-				mi_free_stop(stop_record);
-			}
-
 			mi_free_output(first_output);
 		}
 		token = strtok(NULL, "\n");
