@@ -77,11 +77,11 @@ enum mi_val_type
 #define MI_CL_STOPPED      1
 #define MI_CL_DOWNLOAD     2
 /* Result classes. */
-#define MI_CL_DONE         2
-#define MI_CL_RUNNING      3
-#define MI_CL_CONNECTED    4
-#define MI_CL_ERROR        5
-#define MI_CL_EXIT         6
+#define MI_CL_DONE         3
+#define MI_CL_RUNNING      4
+#define MI_CL_CONNECTED    5
+#define MI_CL_ERROR        6
+#define MI_CL_EXIT         7
 
 #define MI_VERSION_STR "0.8.13"
 #define MI_VERSION_MAJOR  0
