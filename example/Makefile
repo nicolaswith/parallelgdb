@@ -2,7 +2,7 @@
 TRGTS = target
 
 CC = mpic++
-RM = rm
+RM = rm -f
 
 BUILDDIR = ./bin
 
@@ -24,4 +24,4 @@ $(BUILDDIR)/%.o: %.cpp
 
 
 clean:
-	$(RM) -f $(BUILDDIR)/*
+	$(RM) $(BUILDDIR)/*

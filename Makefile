@@ -1,5 +1,7 @@
 #!/usr/bin/make
 
+RM = rm -f
+
 BUILDDIR = ./bin
 INCLUDEDIR = ./include
 SRCDIR = ./src
@@ -26,10 +28,10 @@ install:
 	cp ./res/pgdb.desktop /usr/share/applications
 
 uninstall:
-	rm -f $(INSTALLDIR)/pgdb
-	rm -f $(INSTALLDIR)/pgdbslave
-	rm -f /usr/share/icons/hicolor/scalable/apps/pgdb.svg
-	rm -f /usr/share/applications/pgdb.desktop
+	$(RM) $(INSTALLDIR)/pgdb
+	$(RM) $(INSTALLDIR)/pgdbslave
+	$(RM) /usr/share/icons/hicolor/scalable/apps/pgdb.svg
+	$(RM) /usr/share/applications/pgdb.desktop
 
 clean:
-	$(RM) -f $(BUILDDIR)/*
+	$(RM) $(BUILDDIR)/*

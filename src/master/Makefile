@@ -2,7 +2,6 @@
 TRGTS = pgdb
 
 CC = g++
-RM = rm
 
 ROOTDIR = ../..
 BUILDDIR = $(ROOTDIR)/bin

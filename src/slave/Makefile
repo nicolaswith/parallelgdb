@@ -2,7 +2,6 @@
 TRGTS = pgdbslave
 
 CC = g++
-RM = rm
 
 BUILDDIR = ../../bin
 
