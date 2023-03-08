@@ -1,10 +1,11 @@
 <map id="UIWindow::clear_labels_overview" name="UIWindow::clear_labels_overview">
-<area shape="rect" id="node1" title="Clears all columns of a process in the Overview." alt="" coords="1459,23,1632,65"/>
+<area shape="rect" id="node1" title="Clears all columns of a process in the Overview." alt="" coords="1459,27,1632,69"/>
 <area shape="rect" id="node2" href="$classUIWindow.html#a280911307d72c0277043340ec513b5d4" title="Updates the running and exited row for a processes." alt="" coords="1211,5,1411,32"/>
-<area shape="rect" id="node3" href="$classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="971,31,1163,57"/>
-<area shape="rect" id="node4" href="$classUIWindow.html#a4c13def5a6f4685ef6088c68cafc3937" title="Forwards the received data to the corresponding data handler." alt="" coords="761,31,923,57"/>
-<area shape="rect" id="node5" href="$classMaster.html#ae56b3474ea28e62abfe0c183a874fa9d" title="Handles the TCP communication between socat and the master." alt="" coords="532,31,713,57"/>
-<area shape="rect" id="node6" href="$classMaster.html#ad960ade5e2ad4a42bc183f19653bf7a4" title="Waits (blocking) for a TCP connection on the TCP port." alt="" coords="316,31,484,57"/>
-<area shape="rect" id="node7" href="$classMaster.html#a5795d8ffc12cec35b9ecb6ef10dab7e3" title="Creates threads for each blocking TCP acceptor call." alt="" coords="108,31,268,57"/>
-<area shape="rect" id="node8" href="$master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,31,60,57"/>
+<area shape="rect" id="node9" href="$classUIWindow.html#a6d9dcccd238bba0e3e967f0c852391a1" title="Searches for a stop record and extracts information from it." alt="" coords="1227,57,1394,98"/>
+<area shape="rect" id="node3" href="$classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="971,35,1163,61"/>
+<area shape="rect" id="node4" href="$classUIWindow.html#a4c13def5a6f4685ef6088c68cafc3937" title="Forwards the received data to the corresponding data handler." alt="" coords="761,35,923,61"/>
+<area shape="rect" id="node5" href="$classMaster.html#ae56b3474ea28e62abfe0c183a874fa9d" title="Handles the TCP communication between socat and the master." alt="" coords="532,35,713,61"/>
+<area shape="rect" id="node6" href="$classMaster.html#ad960ade5e2ad4a42bc183f19653bf7a4" title="Waits (blocking) for a TCP connection on the TCP port." alt="" coords="316,35,484,61"/>
+<area shape="rect" id="node7" href="$classMaster.html#a5795d8ffc12cec35b9ecb6ef10dab7e3" title="Creates threads for each blocking TCP acceptor call." alt="" coords="108,35,268,61"/>
+<area shape="rect" id="node8" href="$master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,35,60,61"/>
 </map>

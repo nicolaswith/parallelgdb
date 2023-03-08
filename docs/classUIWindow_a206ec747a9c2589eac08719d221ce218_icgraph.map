@@ -1,20 +1,21 @@
 <map id="UIWindow::root_window" name="UIWindow::root_window">
-<area shape="rect" id="node1" title="Gets the Gtk window object." alt="" coords="2363,51,2541,77"/>
-<area shape="rect" id="node2" href="$classBreakpoint.html#aab6298c6cb7b4c1fb1e2995ccd23a32a" title="Deletes the breakpoints for all process." alt="" coords="2170,43,2313,85"/>
-<area shape="rect" id="node8" href="$classMaster.html#a6cb4d31abc26317bccf2251edca321bb" title="Starts the GUI main window." alt="" coords="555,43,691,69"/>
-<area shape="rect" id="node16" href="$classBreakpoint.html#a530ad76e3382517101cf28ce6bdabaf7" title="Modifies the breakpoints according to button_states." alt="" coords="2168,109,2315,150"/>
-<area shape="rect" id="node3" href="$classUIWindow.html#a19ed8774685ac8a1a223f958d6376d74" title="Deletes the breakpoint for all processes and then the mark itself." alt="" coords="1943,51,2120,77"/>
-<area shape="rect" id="node4" href="$classUIWindow.html#aa20f683f45142300ff17e7ff445f50bc" title="Signal handler for the Gsv::View line mark clicked signal." alt="" coords="1712,94,1895,135"/>
-<area shape="rect" id="node5" href="$classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="1211,83,1431,109"/>
-<area shape="rect" id="node15" href="$classUIWindow.html#a1b85f5b4298b721830e9b162a65c664e" title="Opens a file for a source file which was not found." alt="" coords="1479,72,1664,99"/>
-<area shape="rect" id="node6" href="$classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="989,43,1144,69"/>
-<area shape="rect" id="node10" href="$classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="971,93,1163,120"/>
-<area shape="rect" id="node7" href="$classUIWindow.html#a237131d5aa62c32799cf1f0d0e913110" title="Loads the glade file and connects the signal handlers." alt="" coords="784,43,900,69"/>
+<area shape="rect" id="node1" title="Gets the Gtk window object." alt="" coords="2577,51,2756,77"/>
+<area shape="rect" id="node2" href="$classBreakpoint.html#aab6298c6cb7b4c1fb1e2995ccd23a32a" title="Deletes the breakpoints for all process." alt="" coords="2385,43,2527,85"/>
+<area shape="rect" id="node8" href="$classMaster.html#a6cb4d31abc26317bccf2251edca321bb" title="Starts the GUI main window." alt="" coords="774,43,910,69"/>
+<area shape="rect" id="node17" href="$classBreakpoint.html#a530ad76e3382517101cf28ce6bdabaf7" title="Modifies the breakpoints according to button_states." alt="" coords="2383,109,2529,150"/>
+<area shape="rect" id="node3" href="$classUIWindow.html#a19ed8774685ac8a1a223f958d6376d74" title="Deletes the breakpoint for all processes and then the mark itself." alt="" coords="2157,51,2335,77"/>
+<area shape="rect" id="node4" href="$classUIWindow.html#aa20f683f45142300ff17e7ff445f50bc" title="Signal handler for the Gsv::View line mark clicked signal." alt="" coords="1927,94,2109,135"/>
+<area shape="rect" id="node5" href="$classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="1425,89,1645,116"/>
+<area shape="rect" id="node16" href="$classUIWindow.html#a1b85f5b4298b721830e9b162a65c664e" title="Opens a file for a source file which was not found." alt="" coords="1693,76,1879,103"/>
+<area shape="rect" id="node6" href="$classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="1217,43,1371,69"/>
+<area shape="rect" id="node10" href="$classUIWindow.html#a6d9dcccd238bba0e3e967f0c852391a1" title="Searches for a stop record and extracts information from it." alt="" coords="1211,94,1377,135"/>
+<area shape="rect" id="node7" href="$classUIWindow.html#a237131d5aa62c32799cf1f0d0e913110" title="Loads the glade file and connects the signal handlers." alt="" coords="1009,43,1125,69"/>
 <area shape="rect" id="node9" href="$master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,68,60,95"/>
-<area shape="rect" id="node11" href="$classUIWindow.html#a4c13def5a6f4685ef6088c68cafc3937" title="Forwards the received data to the corresponding data handler." alt="" coords="761,93,923,120"/>
-<area shape="rect" id="node12" href="$classMaster.html#ae56b3474ea28e62abfe0c183a874fa9d" title="Handles the TCP communication between socat and the master." alt="" coords="532,93,713,120"/>
-<area shape="rect" id="node13" href="$classMaster.html#ad960ade5e2ad4a42bc183f19653bf7a4" title="Waits (blocking) for a TCP connection on the TCP port." alt="" coords="316,93,484,120"/>
-<area shape="rect" id="node14" href="$classMaster.html#a5795d8ffc12cec35b9ecb6ef10dab7e3" title="Creates threads for each blocking TCP acceptor call." alt="" coords="108,93,268,120"/>
-<area shape="rect" id="node17" href="$classUIWindow.html#a447e57e6deef4c794c8b8da1ec50141e" title="Creates a line mark in a Gsv::View." alt="" coords="1943,152,2120,179"/>
-<area shape="rect" id="node18" href="$classUIWindow.html#ab3135faddc758530ac3e34b8973130ad" title="Displays the BreakpointDialog dialog." alt="" coords="1951,101,2112,128"/>
+<area shape="rect" id="node11" href="$classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="971,100,1163,127"/>
+<area shape="rect" id="node12" href="$classUIWindow.html#a4c13def5a6f4685ef6088c68cafc3937" title="Forwards the received data to the corresponding data handler." alt="" coords="761,96,923,123"/>
+<area shape="rect" id="node13" href="$classMaster.html#ae56b3474ea28e62abfe0c183a874fa9d" title="Handles the TCP communication between socat and the master." alt="" coords="532,95,713,121"/>
+<area shape="rect" id="node14" href="$classMaster.html#ad960ade5e2ad4a42bc183f19653bf7a4" title="Waits (blocking) for a TCP connection on the TCP port." alt="" coords="316,93,484,120"/>
+<area shape="rect" id="node15" href="$classMaster.html#a5795d8ffc12cec35b9ecb6ef10dab7e3" title="Creates threads for each blocking TCP acceptor call." alt="" coords="108,93,268,120"/>
+<area shape="rect" id="node18" href="$classUIWindow.html#a447e57e6deef4c794c8b8da1ec50141e" title="Creates a line mark in a Gsv::View." alt="" coords="2157,152,2335,179"/>
+<area shape="rect" id="node19" href="$classUIWindow.html#ab3135faddc758530ac3e34b8973130ad" title="Displays the BreakpointDialog dialog." alt="" coords="2165,101,2327,128"/>
 </map>
