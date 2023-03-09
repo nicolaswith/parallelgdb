@@ -1477,7 +1477,7 @@ void UIWindow::parse_target_state(mi_output *first_output, const int rank)
 {
 	Gtk::TextBuffer *buffer = m_text_buffers_gdb[rank];
 	mi_output *current_output = first_output;
-	while (NULL != current_output)
+	while (nullptr != current_output)
 	{
 		if (MI_CL_RUNNING == current_output->tclass)
 		{
@@ -1493,7 +1493,10 @@ void UIWindow::parse_target_state(mi_output *first_output, const int rank)
 			current_output->stype == MI_ST_STREAM)
 		{
 			char *text = get_cstr(current_output);
-			buffer->insert(buffer->end(), text);
+			if (text)
+			{
+				buffer->insert(buffer->end(), text);
+			}
 		}
 		current_output = current_output->next;
 	}
@@ -1511,6 +1514,10 @@ void UIWindow::parse_target_state(mi_output *first_output, const int rank)
  */
 void UIWindow::parse_breakpoint(mi_output *first_output, const int rank)
 {
+	if (nullptr == m_breakpoints[rank])
+	{
+		return;
+	}
 	mi_bkpt *breakpoint = mi_res_bkpt(first_output);
 	if (breakpoint)
 	{
@@ -1576,7 +1583,7 @@ void UIWindow::parse_stop_record(mi_output *first_output, const int rank)
 void UIWindow::print_data_gdb(const char *const data, const int rank)
 {
 	char *token = strtok((char *)data, "\n");
-	while (NULL != token)
+	while (nullptr != token)
 	{
 		int token_length = strlen(token);
 		// token[token_length]: '\n', replaced with '\0' by strtok
@@ -1584,8 +1591,7 @@ void UIWindow::print_data_gdb(const char *const data, const int rank)
 		{
 			token[token_length - 1] = '\0';
 		}
-		free(m_gdb_handle[rank]->line);
-		m_gdb_handle[rank]->line = strdup(token);
+		m_gdb_handle[rank]->line = token;
 		int response = mi_get_response(m_gdb_handle[rank]);
 		if (0 != response)
 		{
@@ -1596,14 +1602,12 @@ void UIWindow::print_data_gdb(const char *const data, const int rank)
 			mi_output *first_output = mi_retire_response(m_gdb_handle[rank]);
 			parse_target_state(first_output, rank);
 			parse_stop_record(first_output, rank);
-			if (nullptr != m_breakpoints[rank])
-			{
-				parse_breakpoint(first_output, rank);
-			}
+			parse_breakpoint(first_output, rank);
 			mi_free_output(first_output);
 		}
-		token = strtok(NULL, "\n");
+		token = strtok(nullptr, "\n");
 	}
+	m_gdb_handle[rank]->line = nullptr;
 	check_overview(rank);
 }
 
