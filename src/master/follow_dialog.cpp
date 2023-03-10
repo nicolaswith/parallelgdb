@@ -56,11 +56,11 @@ T *FollowDialog::get_widget(const std::string &widget_name)
  *
  * @param max_buttons_per_row The number of buttons per grid row.
  *
- * @param follow_rank The currently selected process(es) to follow.
+ * @param current_follow_rank The currently selected process(es) to follow.
  */
 FollowDialog::FollowDialog(const int num_processes,
 						   const int max_buttons_per_row,
-						   const int follow_rank)
+						   const int current_follow_rank)
 	: m_num_processes(num_processes),
 	  m_max_buttons_per_row(max_buttons_per_row)
 {
@@ -79,7 +79,7 @@ FollowDialog::FollowDialog(const int num_processes,
 		Gtk::RadioButton *radiobutton =
 			Gtk::manage(new Gtk::RadioButton(std::to_string(rank)));
 		radiobutton->set_group(radiobutton_group);
-		if (rank == follow_rank)
+		if (rank == current_follow_rank)
 		{
 			radiobutton->set_active(true);
 		}
@@ -90,7 +90,7 @@ FollowDialog::FollowDialog(const int num_processes,
 	m_follow_all_radiobutton =
 		get_widget<Gtk::RadioButton>("follow-all-radiobutton");
 	m_follow_all_radiobutton->set_group(radiobutton_group);
-	if (FOLLOW_ALL == follow_rank)
+	if (FOLLOW_ALL == current_follow_rank)
 	{
 		m_follow_all_radiobutton->set_active(true);
 	}
@@ -98,7 +98,7 @@ FollowDialog::FollowDialog(const int num_processes,
 	m_follow_none_radiobutton =
 		get_widget<Gtk::RadioButton>("follow-none-radiobutton");
 	m_follow_none_radiobutton->set_group(radiobutton_group);
-	if (FOLLOW_NONE == follow_rank)
+	if (FOLLOW_NONE == current_follow_rank)
 	{
 		m_follow_none_radiobutton->set_active(true);
 	}
