@@ -22,7 +22,7 @@
  *
  * @brief Header file for the Slave class.
  *
- * This file is the header file for the Slave class.
+ * This is the header file for the Slave class.
  */
 
 #ifndef SLAVE_HPP

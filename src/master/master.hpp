@@ -22,7 +22,7 @@
  *
  * @brief Header file for the Master class.
  *
- * This file is the header file for the Master class.
+ * This is the header file for the Master class.
  */
 
 #ifndef MASTER_HPP

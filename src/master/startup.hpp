@@ -22,7 +22,7 @@
  *
  * @brief Header file for the StartupDialog class.
  *
- * This file is the header file for the StartupDialog class.
+ * This is the header file for the StartupDialog class.
  */
 
 #ifndef STARTUP_HPP

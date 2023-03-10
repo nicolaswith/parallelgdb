@@ -22,7 +22,7 @@
  *
  * @brief Header file for the Breakpoint class.
  *
- * This file is the header file for the Breakpoint class.
+ * This is the header file for the Breakpoint class.
  */
 
 #ifndef BREAKPOINT_HPP

@@ -22,7 +22,7 @@
  *
  * @brief Header file for the UIDrawingArea class.
  *
- * This file is the header file for the UIDrawingArea class.
+ * This is the header file for the UIDrawingArea class.
  */
 
 #ifndef CANVAS_HPP
@@ -54,7 +54,7 @@ public:
 	static const int NUM_COLORS;
 
 protected:
-	/// Draws the processes current location on the canvas.
+	/// Draws the processes current location on the drawing area.
 	virtual bool on_draw(const Cairo::RefPtr<Cairo::Context> &c);
 
 public:

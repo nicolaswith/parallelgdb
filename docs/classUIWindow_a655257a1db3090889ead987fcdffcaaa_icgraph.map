@@ -2,7 +2,7 @@
 <area shape="rect" id="node1" title="Gets the state of a process." alt="" coords="2808,107,2983,133"/>
 <area shape="rect" id="node2" href="$classBreakpoint.html#abc03d69a380841a3e15cd39a11b7d60b" title="Creates a breakpoint for a process." alt="" coords="2597,34,2740,75"/>
 <area shape="rect" id="node19" href="$classBreakpoint.html#ac27741795e2f0c8627128fe2ffd221e8" title="Deletes a breakpoint for a process." alt="" coords="2597,99,2740,141"/>
-<area shape="rect" id="node22" href="$classUIDrawingArea.html#a267364e332ff5fe9459aa732daf4725b" title="Draws the processes current location on the canvas." alt="" coords="2577,165,2760,192"/>
+<area shape="rect" id="node22" href="$classUIDrawingArea.html#a267364e332ff5fe9459aa732daf4725b" title="Draws the processes current location on the drawing area." alt="" coords="2577,165,2760,192"/>
 <area shape="rect" id="node3" href="$classBreakpoint.html#a530ad76e3382517101cf28ce6bdabaf7" title="Modifies the breakpoints according to button_states." alt="" coords="2383,34,2529,75"/>
 <area shape="rect" id="node4" href="$classUIWindow.html#a447e57e6deef4c794c8b8da1ec50141e" title="Creates a line mark in a Gsv::View." alt="" coords="2157,5,2335,32"/>
 <area shape="rect" id="node18" href="$classUIWindow.html#ab3135faddc758530ac3e34b8973130ad" title="Displays the BreakpointDialog dialog." alt="" coords="2165,56,2327,83"/>

@@ -1,0 +1,5 @@
+<map id="FollowDialog::FollowDialog" name="FollowDialog::FollowDialog">
+<area shape="rect" id="node1" title="Default constructor." alt="" coords="5,35,204,61"/>
+<area shape="rect" id="node2" href="$classFollowDialog.html#ab64fd649524ba0523148c2a9280c0af9" title="Returns the process rank to follow." alt="" coords="252,5,443,32"/>
+<area shape="rect" id="node3" href="$classFollowDialog.html#a9e81b2065e123616d06db1bed3ef568c" title="Signal handler for the accept/close action of the dialog." alt="" coords="259,57,436,98"/>
+</map>

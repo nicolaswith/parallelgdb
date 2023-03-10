@@ -1,6 +1,6 @@
 var classFollowDialog =
 [
-    [ "FollowDialog", "classFollowDialog.html#a9d965faef502bd9a4fd4b8880aa089e4", null ],
+    [ "FollowDialog", "classFollowDialog.html#a99a7473a831d88516cbafc546f3847d0", null ],
     [ "~FollowDialog", "classFollowDialog.html#a6e483fce43bb9ef46229c204281d43a6", null ],
     [ "follow_rank", "classFollowDialog.html#ab64fd649524ba0523148c2a9280c0af9", null ],
     [ "get_widget", "classFollowDialog.html#af7328550ed711942e62a37efc65fd5c2", null ],
@@ -9,6 +9,7 @@ var classFollowDialog =
     [ "m_builder", "classFollowDialog.html#a29a8d3478bcc3667d4bc0ae2632882db", null ],
     [ "m_dialog", "classFollowDialog.html#a32ce73f1a7738d7a7195728ce9f3a3e6", null ],
     [ "m_follow_all_radiobutton", "classFollowDialog.html#a79ebb6d83221fce3bc91b3eff0eef096", null ],
+    [ "m_follow_none_radiobutton", "classFollowDialog.html#ad89b51f466c59bae2d1544c002c400f8", null ],
     [ "m_follow_rank", "classFollowDialog.html#a6322763ca002760622dbdce189ea38c3", null ],
     [ "m_grid", "classFollowDialog.html#a62b4a0c2aafed816c8f0871ab0fb1460", null ],
     [ "m_max_buttons_per_row", "classFollowDialog.html#a2b5e380eecb60d485085083e0f6119da", null ],

@@ -22,7 +22,7 @@
  *
  * @brief Header file for the BreakpointDialog class.
  *
- * This file is the header file for the BreakpointDialog class.
+ * This is the header file for the BreakpointDialog class.
  */
 
 #ifndef BREAKPOINT_DIALOG_HPP

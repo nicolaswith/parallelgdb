@@ -22,7 +22,7 @@
  *
  * @brief Header file for the UIWindow class.
  *
- * This file is the header file for the UIWindow class.
+ * This is the header file for the UIWindow class.
  */
 
 #ifndef WINDOW_HPP

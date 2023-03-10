@@ -100,9 +100,9 @@ $(document).ready(function(){initNavTree('classFollowDialog.html',''); initResiz
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9d965faef502bd9a4fd4b8880aa089e4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFollowDialog.html#a9d965faef502bd9a4fd4b8880aa089e4">FollowDialog</a> (const int num_processes, const int max_buttons_per_row)</td></tr>
-<tr class="memdesc:a9d965faef502bd9a4fd4b8880aa089e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="classFollowDialog.html#a9d965faef502bd9a4fd4b8880aa089e4">More...</a><br /></td></tr>
-<tr class="separator:a9d965faef502bd9a4fd4b8880aa089e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99a7473a831d88516cbafc546f3847d0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFollowDialog.html#a99a7473a831d88516cbafc546f3847d0">FollowDialog</a> (const int num_processes, const int max_buttons_per_row, const int <a class="el" href="classFollowDialog.html#ab64fd649524ba0523148c2a9280c0af9">follow_rank</a>)</td></tr>
+<tr class="memdesc:a99a7473a831d88516cbafc546f3847d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="classFollowDialog.html#a99a7473a831d88516cbafc546f3847d0">More...</a><br /></td></tr>
+<tr class="separator:a99a7473a831d88516cbafc546f3847d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e483fce43bb9ef46229c204281d43a6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFollowDialog.html#a6e483fce43bb9ef46229c204281d43a6">~FollowDialog</a> ()</td></tr>
 <tr class="memdesc:a6e483fce43bb9ef46229c204281d43a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="classFollowDialog.html#a6e483fce43bb9ef46229c204281d43a6">More...</a><br /></td></tr>
 <tr class="separator:a6e483fce43bb9ef46229c204281d43a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -131,6 +131,8 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a32ce73f1a7738d7a7195728ce9f3a3e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79ebb6d83221fce3bc91b3eff0eef096"><td class="memItemLeft" align="right" valign="top">Gtk::RadioButton *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFollowDialog.html#a79ebb6d83221fce3bc91b3eff0eef096">m_follow_all_radiobutton</a></td></tr>
 <tr class="separator:a79ebb6d83221fce3bc91b3eff0eef096"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad89b51f466c59bae2d1544c002c400f8"><td class="memItemLeft" align="right" valign="top">Gtk::RadioButton *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFollowDialog.html#ad89b51f466c59bae2d1544c002c400f8">m_follow_none_radiobutton</a></td></tr>
+<tr class="separator:ad89b51f466c59bae2d1544c002c400f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6322763ca002760622dbdce189ea38c3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFollowDialog.html#a6322763ca002760622dbdce189ea38c3">m_follow_rank</a></td></tr>
 <tr class="separator:a6322763ca002760622dbdce189ea38c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62b4a0c2aafed816c8f0871ab0fb1460"><td class="memItemLeft" align="right" valign="top">Gtk::Grid *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFollowDialog.html#a62b4a0c2aafed816c8f0871ab0fb1460">m_grid</a></td></tr>
@@ -143,8 +145,8 @@ Private Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This is a wrapper class for a Gtk::Dialog. It will generate a dialog for the user to select the processes to follow. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a9d965faef502bd9a4fd4b8880aa089e4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9d965faef502bd9a4fd4b8880aa089e4">&#9670;&nbsp;</a></span>FollowDialog()</h2>
+<a id="a99a7473a831d88516cbafc546f3847d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99a7473a831d88516cbafc546f3847d0">&#9670;&nbsp;</a></span>FollowDialog()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -159,7 +161,13 @@ Private Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const int&#160;</td>
-          <td class="paramname"><em>max_buttons_per_row</em>&#160;</td>
+          <td class="paramname"><em>max_buttons_per_row</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>follow_rank</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -172,17 +180,19 @@ Private Attributes</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">num_processes</td><td>The number of processes.</td></tr>
-    <tr><td class="paramname">max_buttons_per_row</td><td>The number of buttons per grid row. </td></tr>
+    <tr><td class="paramname">max_buttons_per_row</td><td>The number of buttons per grid row.</td></tr>
+    <tr><td class="paramname">follow_rank</td><td>The currently selected process(es) to follow. </td></tr>
   </table>
   </dd>
 </dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classFollowDialog_a9d965faef502bd9a4fd4b8880aa089e4_cgraph.png" border="0" usemap="#aclassFollowDialog_a9d965faef502bd9a4fd4b8880aa089e4_cgraph" alt=""/></div>
-<map name="aclassFollowDialog_a9d965faef502bd9a4fd4b8880aa089e4_cgraph" id="aclassFollowDialog_a9d965faef502bd9a4fd4b8880aa089e4_cgraph">
-<area shape="rect" title="Default constructor." alt="" coords="5,13,204,39"/>
-<area shape="rect" href="classFollowDialog.html#a9e81b2065e123616d06db1bed3ef568c" title="Signal handler for the accept/close action of the dialog." alt="" coords="252,5,429,47"/>
+<div class="center"><img src="classFollowDialog_a99a7473a831d88516cbafc546f3847d0_cgraph.png" border="0" usemap="#aclassFollowDialog_a99a7473a831d88516cbafc546f3847d0_cgraph" alt=""/></div>
+<map name="aclassFollowDialog_a99a7473a831d88516cbafc546f3847d0_cgraph" id="aclassFollowDialog_a99a7473a831d88516cbafc546f3847d0_cgraph">
+<area shape="rect" title="Default constructor." alt="" coords="5,35,204,61"/>
+<area shape="rect" href="classFollowDialog.html#ab64fd649524ba0523148c2a9280c0af9" title="Returns the process rank to follow." alt="" coords="252,5,443,32"/>
+<area shape="rect" href="classFollowDialog.html#a9e81b2065e123616d06db1bed3ef568c" title="Signal handler for the accept/close action of the dialog." alt="" coords="259,57,436,98"/>
 </map>
 </div>
 
@@ -230,6 +240,15 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The processes rank to follow. </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classFollowDialog_ab64fd649524ba0523148c2a9280c0af9_icgraph.png" border="0" usemap="#aclassFollowDialog_ab64fd649524ba0523148c2a9280c0af9_icgraph" alt=""/></div>
+<map name="aclassFollowDialog_ab64fd649524ba0523148c2a9280c0af9_icgraph" id="aclassFollowDialog_ab64fd649524ba0523148c2a9280c0af9_icgraph">
+<area shape="rect" title="Returns the process rank to follow." alt="" coords="252,5,443,32"/>
+<area shape="rect" href="classFollowDialog.html#a99a7473a831d88516cbafc546f3847d0" title="Default constructor." alt="" coords="5,5,204,32"/>
+</map>
+</div>
 
 </div>
 </div>
@@ -311,7 +330,7 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="classFollowDialog_a9e81b2065e123616d06db1bed3ef568c_icgraph.png" border="0" usemap="#aclassFollowDialog_a9e81b2065e123616d06db1bed3ef568c_icgraph" alt=""/></div>
 <map name="aclassFollowDialog_a9e81b2065e123616d06db1bed3ef568c_icgraph" id="aclassFollowDialog_a9e81b2065e123616d06db1bed3ef568c_icgraph">
 <area shape="rect" title="Signal handler for the accept/close action of the dialog." alt="" coords="252,5,429,47"/>
-<area shape="rect" href="classFollowDialog.html#a9d965faef502bd9a4fd4b8880aa089e4" title="Default constructor." alt="" coords="5,13,204,39"/>
+<area shape="rect" href="classFollowDialog.html#a99a7473a831d88516cbafc546f3847d0" title="Default constructor." alt="" coords="5,13,204,39"/>
 </map>
 </div>
 
@@ -400,6 +419,28 @@ Here is the caller graph for this function:</div>
       <table class="memname">
         <tr>
           <td class="memname">Gtk::RadioButton* FollowDialog::m_follow_all_radiobutton</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad89b51f466c59bae2d1544c002c400f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad89b51f466c59bae2d1544c002c400f8">&#9670;&nbsp;</a></span>m_follow_none_radiobutton</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Gtk::RadioButton* FollowDialog::m_follow_none_radiobutton</td>
         </tr>
       </table>
   </td>
