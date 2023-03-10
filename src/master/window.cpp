@@ -386,7 +386,7 @@ void UIWindow::on_about_clicked()
 {
 	Glib::RefPtr<Gtk::Builder> builder =
 		Gtk::Builder::create_from_resource("/pgdb/ui/about_dialog.glade");
-	Gtk::AboutDialog *dialog = new Gtk::AboutDialog;
+	Gtk::AboutDialog *dialog = nullptr;
 	builder->get_widget<Gtk::AboutDialog>("dialog", dialog);
 	dialog->run();
 	delete dialog;
@@ -430,13 +430,12 @@ bool UIWindow::on_delete(GdkEventAny *)
  */
 void UIWindow::on_follow_button_clicked()
 {
-	std::unique_ptr<FollowDialog> dialog = std::make_unique<FollowDialog>(
-		m_num_processes, m_max_buttons_per_row, m_follow_rank);
-	if (Gtk::RESPONSE_OK != dialog->run())
+	FollowDialog dialog(m_num_processes, m_max_buttons_per_row, m_follow_rank);
+	if (Gtk::RESPONSE_OK != dialog.run())
 	{
 		return;
 	}
-	m_follow_rank = dialog->follow_rank();
+	m_follow_rank = dialog.follow_rank();
 	string label;
 	if (m_follow_rank == FOLLOW_ALL)
 	{
@@ -786,14 +785,14 @@ void UIWindow::create_mark(Gtk::TextIter &iter,
 	Breakpoint *breakpoint =
 		new Breakpoint{m_num_processes, line + 1, fullpath, this};
 	// create the dialog to configure the breakpoint
-	std::unique_ptr<BreakpointDialog> dialog = std::make_unique<BreakpointDialog>(
-		m_num_processes, m_max_buttons_per_row, breakpoint, true);
-	if (Gtk::RESPONSE_OK != dialog->run())
+	BreakpointDialog dialog(m_num_processes, m_max_buttons_per_row,
+							breakpoint, true);
+	if (Gtk::RESPONSE_OK != dialog.run())
 	{
 		return;
 	}
 	// set all selected breakpoints
-	breakpoint->update_breakpoints(dialog->get_button_states());
+	breakpoint->update_breakpoints(dialog.get_button_states());
 	if (breakpoint->one_created())
 	{
 		// create the line mark
@@ -827,13 +826,13 @@ void UIWindow::edit_mark(Glib::RefPtr<Gtk::TextMark> &mark,
 						 Glib::RefPtr<Gsv::Buffer> &source_buffer)
 {
 	Breakpoint *breakpoint = (Breakpoint *)mark->get_data(line_number_id);
-	std::unique_ptr<BreakpointDialog> dialog = std::make_unique<BreakpointDialog>(
-		m_num_processes, m_max_buttons_per_row, breakpoint, false);
-	if (Gtk::RESPONSE_OK != dialog->run())
+	BreakpointDialog dialog(m_num_processes, m_max_buttons_per_row,
+							breakpoint, false);
+	if (Gtk::RESPONSE_OK != dialog.run())
 	{
 		return;
 	}
-	breakpoint->update_breakpoints(dialog->get_button_states());
+	breakpoint->update_breakpoints(dialog.get_button_states());
 	if (!breakpoint->one_created())
 	{
 		clear_mark(mark, source_buffer, breakpoint);
@@ -1212,22 +1211,21 @@ void UIWindow::open_missing(Gtk::TextIter &, GdkEvent *, const string &fullpath)
 {
 	Gsv::View *source_view = m_path_2_view[fullpath];
 	Glib::RefPtr<Gsv::Buffer> source_buffer = source_view->get_source_buffer();
-
-	std::unique_ptr<Gtk::FileChooserDialog> dialog =
-		std::make_unique<Gtk::FileChooserDialog>(
-			*m_root_window,
-			string("Open File for: ") + fullpath);
-	dialog->add_button("Cancel", Gtk::RESPONSE_CANCEL);
-	dialog->add_button("Open", Gtk::RESPONSE_OK);
 	string open_path = "";
-	if (Gtk::RESPONSE_OK == dialog->run())
+	// scope for dialog, it will close only on destruction
 	{
-		open_path = dialog->get_filename();
-	}
-	dialog.reset();
-	if ("" == open_path)
-	{
-		return;
+		Gtk::FileChooserDialog dialog(*m_root_window,
+									  string("Open File for: ") + fullpath);
+		dialog.add_button("Cancel", Gtk::RESPONSE_CANCEL);
+		dialog.add_button("Open", Gtk::RESPONSE_OK);
+		if (Gtk::RESPONSE_OK == dialog.run())
+		{
+			open_path = dialog.get_filename();
+		}
+		if ("" == open_path)
+		{
+			return;
+		}
 	}
 	char *content;
 	size_t content_length;
@@ -1259,17 +1257,14 @@ void UIWindow::open_missing(Gtk::TextIter &, GdkEvent *, const string &fullpath)
  */
 void UIWindow::open_file()
 {
-	std::unique_ptr<Gtk::FileChooserDialog> dialog =
-		std::make_unique<Gtk::FileChooserDialog>(*m_root_window,
-												 "Open Source File");
-	dialog->add_button("Cancel", Gtk::RESPONSE_CANCEL);
-	dialog->add_button("Open", Gtk::RESPONSE_OK);
-	if (Gtk::RESPONSE_OK == dialog->run())
+	Gtk::FileChooserDialog dialog(*m_root_window, "Open Source File");
+	dialog.add_button("Cancel", Gtk::RESPONSE_CANCEL);
+	dialog.add_button("Open", Gtk::RESPONSE_OK);
+	if (Gtk::RESPONSE_OK == dialog.run())
 	{
-		string fullpath = dialog->get_filename();
+		string fullpath = dialog.get_filename();
 		append_source_file(fullpath, m_follow_rank);
 	}
-	dialog.reset();
 }
 
 /**

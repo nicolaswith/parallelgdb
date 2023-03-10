@@ -332,7 +332,7 @@ bool Master::start_servers()
  */
 bool Master::run_startup_dialog()
 {
-	m_dialog = new StartupDialog();
+	m_dialog = new StartupDialog;
 	for (;;)
 	{
 		const int res = m_dialog->run();

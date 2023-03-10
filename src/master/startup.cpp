@@ -296,15 +296,14 @@ void StartupDialog::export_config()
 	// parse current config
 	read_values(true);
 
-	Gtk::FileChooserDialog *file_chooser_dialog = new Gtk::FileChooserDialog(
-		*dynamic_cast<Gtk::Window *>(m_dialog), string("Select Save Location"),
-		Gtk::FILE_CHOOSER_ACTION_SAVE);
-	file_chooser_dialog->add_button("Save", Gtk::RESPONSE_OK);
-	file_chooser_dialog->signal_response().connect(sigc::bind(
+	Gtk::FileChooserDialog file_chooser_dialog(*dynamic_cast<Gtk::Window *>(m_dialog),
+											   string("Select Save Location"),
+											   Gtk::FILE_CHOOSER_ACTION_SAVE);
+	file_chooser_dialog.add_button("Save", Gtk::RESPONSE_OK);
+	file_chooser_dialog.signal_response().connect(sigc::bind(
 		sigc::mem_fun(*this, &StartupDialog::on_save_dialog_response),
-		file_chooser_dialog));
-	file_chooser_dialog->run();
-	delete file_chooser_dialog;
+		&file_chooser_dialog));
+	file_chooser_dialog.run();
 }
 
 /**
