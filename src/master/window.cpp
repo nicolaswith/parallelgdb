@@ -352,7 +352,9 @@ bool UIWindow::init(Glib::RefPtr<Gtk::Application> app)
 		(2 * UIDrawingArea::radius() + UIDrawingArea::spacing()) *
 			m_num_processes,
 		-1);
-	get_widget<Gtk::Box>("files-canvas-box")->pack_start(*m_drawing_area);
+	m_drawing_area->set_halign(Gtk::Align::ALIGN_END);
+	get_widget<Gtk::ScrolledWindow>("drawing-area-scrolled-window")
+		->add(*m_drawing_area);
 
 	m_files_notebook = get_widget<Gtk::Notebook>("files-notebook");
 	Glib::signal_timeout().connect(
