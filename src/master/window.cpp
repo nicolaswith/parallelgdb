@@ -431,7 +431,7 @@ bool UIWindow::on_delete(GdkEventAny *)
 void UIWindow::on_follow_button_clicked()
 {
 	std::unique_ptr<FollowDialog> dialog = std::make_unique<FollowDialog>(
-		m_num_processes, m_max_buttons_per_row);
+		m_num_processes, m_max_buttons_per_row, m_follow_rank);
 	if (Gtk::RESPONSE_OK != dialog->run())
 	{
 		return;
@@ -441,6 +441,10 @@ void UIWindow::on_follow_button_clicked()
 	if (m_follow_rank == FOLLOW_ALL)
 	{
 		label = "Following All Processes";
+	}
+	else if (m_follow_rank == FOLLOW_NONE)
+	{
+		label = "Following No Process";
 	}
 	else
 	{

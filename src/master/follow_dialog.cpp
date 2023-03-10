@@ -55,8 +55,12 @@ T *FollowDialog::get_widget(const std::string &widget_name)
  * @param num_processes The number of processes.
  *
  * @param max_buttons_per_row The number of buttons per grid row.
+ *
+ * @param follow_rank The currently selected process(es) to follow.
  */
-FollowDialog::FollowDialog(const int num_processes, const int max_buttons_per_row)
+FollowDialog::FollowDialog(const int num_processes,
+						   const int max_buttons_per_row,
+						   const int follow_rank)
 	: m_num_processes(num_processes),
 	  m_max_buttons_per_row(max_buttons_per_row)
 {
@@ -75,6 +79,10 @@ FollowDialog::FollowDialog(const int num_processes, const int max_buttons_per_ro
 		Gtk::RadioButton *radiobutton =
 			Gtk::manage(new Gtk::RadioButton(std::to_string(rank)));
 		radiobutton->set_group(radiobutton_group);
+		if (rank == follow_rank)
+		{
+			radiobutton->set_active(true);
+		}
 		m_grid->attach(*radiobutton, rank % m_max_buttons_per_row,
 					   rank / m_max_buttons_per_row);
 	}
@@ -82,6 +90,18 @@ FollowDialog::FollowDialog(const int num_processes, const int max_buttons_per_ro
 	m_follow_all_radiobutton =
 		get_widget<Gtk::RadioButton>("follow-all-radiobutton");
 	m_follow_all_radiobutton->set_group(radiobutton_group);
+	if (FOLLOW_ALL == follow_rank)
+	{
+		m_follow_all_radiobutton->set_active(true);
+	}
+
+	m_follow_none_radiobutton =
+		get_widget<Gtk::RadioButton>("follow-none-radiobutton");
+	m_follow_none_radiobutton->set_group(radiobutton_group);
+	if (FOLLOW_NONE == follow_rank)
+	{
+		m_follow_none_radiobutton->set_active(true);
+	}
 
 	// connect signal handlers
 	m_dialog->signal_response().connect(
@@ -115,6 +135,11 @@ void FollowDialog::on_dialog_response(const int response_id)
 	if (m_follow_all_radiobutton->get_active())
 	{
 		m_follow_rank = FOLLOW_ALL;
+		return;
+	}
+	if (m_follow_none_radiobutton->get_active())
+	{
+		m_follow_rank = FOLLOW_NONE;
 		return;
 	}
 	for (int rank = 0; rank < m_num_processes; ++rank)

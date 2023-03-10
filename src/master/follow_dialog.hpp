@@ -32,17 +32,18 @@
 #include <iosfwd>
 
 #define FOLLOW_ALL -1
+#define FOLLOW_NONE -2
 
 /// A wrapper class for a Gtk::Dialog.
 /**
  * This is a wrapper class for a Gtk::Dialog. It will generate a dialog for the
- * user to select the processes to follow. 
+ * user to select the processes to follow.
  */
 class FollowDialog
 {
 	const int m_num_processes;
 	const int m_max_buttons_per_row;
-	
+
 	int m_follow_rank;
 
 	Glib::RefPtr<Gtk::Builder> m_builder;
@@ -50,6 +51,7 @@ class FollowDialog
 
 	Gtk::Grid *m_grid;
 	Gtk::RadioButton *m_follow_all_radiobutton;
+	Gtk::RadioButton *m_follow_none_radiobutton;
 
 	/// Signal handler for the accept/close action of the dialog.
 	void on_dialog_response(const int response_id);
@@ -60,7 +62,9 @@ class FollowDialog
 
 public:
 	/// Default constructor.
-	FollowDialog(const int num_processes, const int max_buttons_per_row);
+	FollowDialog(const int num_processes,
+				 const int max_buttons_per_row,
+				 const int follow_rank);
 	/// Destructor.
 	~FollowDialog();
 
