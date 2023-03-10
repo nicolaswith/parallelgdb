@@ -1,0 +1,5 @@
+<map id="UIWindow::on_follow_button_clicked" name="UIWindow::on_follow_button_clicked">
+<area shape="rect" id="node1" title="Opens a dialog to select the process to follow." alt="" coords="5,23,164,65"/>
+<area shape="rect" id="node2" href="$classFollowDialog.html#ab64fd649524ba0523148c2a9280c0af9" title="Returns the process rank to follow." alt="" coords="212,5,403,32"/>
+<area shape="rect" id="node3" href="$classFollowDialog.html#a466d39b7b38c81a64206289bd614bb1c" title="Runs the dialog." alt="" coords="240,56,375,83"/>
+</map>
