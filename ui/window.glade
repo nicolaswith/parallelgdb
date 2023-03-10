@@ -302,12 +302,12 @@
           <object class="GtkStack" id="view-stack">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
+            <property name="margin-start">10</property>
+            <property name="margin-end">10</property>
             <child>
               <object class="GtkBox" id="files-box">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="margin-start">10</property>
-                <property name="margin-end">10</property>
                 <child>
                   <object class="GtkScrolledWindow" id="drawing-area-scrolled-window">
                     <property name="visible">True</property>
@@ -345,8 +345,6 @@
               <object class="GtkScrolledWindow" id="overview-scrolled-window">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
-                <property name="margin-start">10</property>
-                <property name="margin-end">10</property>
                 <child>
                   <object class="GtkViewport" id="overview-viewport">
                     <property name="visible">True</property>
