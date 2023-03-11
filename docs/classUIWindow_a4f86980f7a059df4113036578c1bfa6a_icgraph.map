@@ -1,10 +1,10 @@
 <map id="UIWindow::do_scroll" name="UIWindow::do_scroll">
-<area shape="rect" id="node1" title="Scrolls a scrolled window to a line." alt="" coords="1655,13,1808,39"/>
-<area shape="rect" id="node2" href="$classUIWindow.html#ad42a582b2ecac29ba67b2906a9a1873d" title="Appends scrolling a scrolled window to the Gdk idle handler." alt="" coords="1425,13,1607,39"/>
-<area shape="rect" id="node3" href="$classUIWindow.html#a6d9dcccd238bba0e3e967f0c852391a1" title="Searches for a stop record and extracts information from it." alt="" coords="1211,5,1377,47"/>
-<area shape="rect" id="node4" href="$classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="971,13,1163,39"/>
-<area shape="rect" id="node5" href="$classUIWindow.html#a4c13def5a6f4685ef6088c68cafc3937" title="Forwards the received data to the corresponding data handler." alt="" coords="761,13,923,39"/>
-<area shape="rect" id="node6" href="$classMaster.html#ae56b3474ea28e62abfe0c183a874fa9d" title="Handles the TCP communication between socat and the master." alt="" coords="532,13,713,39"/>
+<area shape="rect" id="node1" title="Scrolls a scrolled window to a line." alt="" coords="1613,13,1767,39"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#ad42a582b2ecac29ba67b2906a9a1873d" title="Appends scrolling a scrolled window to the Gdk idle handler." alt="" coords="1384,13,1565,39"/>
+<area shape="rect" id="node3" href="$classUIWindow.html#a6d9dcccd238bba0e3e967f0c852391a1" title="Searches for a stop record and extracts information from it." alt="" coords="1169,5,1336,47"/>
+<area shape="rect" id="node4" href="$classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="929,13,1121,39"/>
+<area shape="rect" id="node5" href="$classUIWindow.html#a4c13def5a6f4685ef6088c68cafc3937" title="Forwards the received data to the corresponding data handler." alt="" coords="720,13,881,39"/>
+<area shape="rect" id="node6" href="$classMaster.html#a25f8d33c802d2bede9354352e07bd3d8" title="Handles the TCP communication between socat and the master." alt="" coords="532,13,672,39"/>
 <area shape="rect" id="node7" href="$classMaster.html#ad960ade5e2ad4a42bc183f19653bf7a4" title="Waits (blocking) for a TCP connection on the TCP port." alt="" coords="316,13,484,39"/>
 <area shape="rect" id="node8" href="$classMaster.html#a5795d8ffc12cec35b9ecb6ef10dab7e3" title="Creates threads for each blocking TCP acceptor call." alt="" coords="108,13,268,39"/>
 <area shape="rect" id="node9" href="$master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,13,60,39"/>

@@ -36,7 +36,7 @@
 <area shape="rect" id="node32" href="$classUIWindow.html#a8805706e8ed834473e3690ac4b5f1614" title="Sets the positions of the dots in the drawing area." alt="" coords="805,895,1005,921"/>
 <area shape="rect" id="node35" href="$classStartupDialog.html#ac1b9a18530bb5ffc903f83c88448bb1d" title="Returns the total number of processes." alt="" coords="333,715,481,757"/>
 <area shape="rect" id="node36" href="$classMaster.html#ad960ade5e2ad4a42bc183f19653bf7a4" title="Waits (blocking) for a TCP connection on the TCP port." alt="" coords="323,811,491,837"/>
-<area shape="rect" id="node37" href="$classMaster.html#ae56b3474ea28e62abfe0c183a874fa9d" title="Handles the TCP communication between socat and the master." alt="" coords="556,996,737,1023"/>
+<area shape="rect" id="node37" href="$classMaster.html#a25f8d33c802d2bede9354352e07bd3d8" title="Handles the TCP communication between socat and the master." alt="" coords="577,996,717,1023"/>
 <area shape="rect" id="node38" href="$classUIWindow.html#afb01300d48a3af10ed8b08574e8d0f66" title="Retrieves the process rank from the TCP port." alt="" coords="1096,959,1248,985"/>
 <area shape="rect" id="node39" href="$classUIWindow.html#a4c13def5a6f4685ef6088c68cafc3937" title="Forwards the received data to the corresponding data handler." alt="" coords="824,996,985,1023"/>
 <area shape="rect" id="node40" href="$classUIWindow.html#a37091955820dfb6b2c292477e14dcfb2" title="Sets the TCP socket associated to a process. (GDB)" alt="" coords="809,1047,1000,1073"/>

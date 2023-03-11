@@ -1,18 +1,18 @@
 <map id="UIWindow::color_overview" name="UIWindow::color_overview">
-<area shape="rect" id="node1" title="Sets the color for the line numbers in the Overview." alt="" coords="2216,31,2411,57"/>
-<area shape="rect" id="node2" href="$classUIWindow.html#a8c927adbf781e88754dcc9caabc6ae0b" title="Appends a new row for a source file to the Overview." alt="" coords="1927,5,2168,32"/>
-<area shape="rect" id="node14" href="$classUIWindow.html#adf6ab1f7b18f7ee63dbc0d2b63660949" title="Updates all labels and their tooltip for a process." alt="" coords="1944,56,2151,83"/>
-<area shape="rect" id="node3" href="$classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="1425,52,1645,79"/>
-<area shape="rect" id="node4" href="$classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="1217,48,1371,75"/>
-<area shape="rect" id="node8" href="$classUIWindow.html#a6d9dcccd238bba0e3e967f0c852391a1" title="Searches for a stop record and extracts information from it." alt="" coords="1211,99,1377,141"/>
-<area shape="rect" id="node5" href="$classUIWindow.html#a237131d5aa62c32799cf1f0d0e913110" title="Loads the glade file and connects the signal handlers." alt="" coords="1009,49,1125,76"/>
-<area shape="rect" id="node6" href="$classMaster.html#a6cb4d31abc26317bccf2251edca321bb" title="Starts the GUI main window." alt="" coords="555,49,691,76"/>
+<area shape="rect" id="node1" title="Sets the color for the line numbers in the Overview." alt="" coords="2175,31,2369,57"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#a8c927adbf781e88754dcc9caabc6ae0b" title="Appends a new row for a source file to the Overview." alt="" coords="1885,5,2127,32"/>
+<area shape="rect" id="node14" href="$classUIWindow.html#adf6ab1f7b18f7ee63dbc0d2b63660949" title="Updates all labels and their tooltip for a process." alt="" coords="1903,56,2109,83"/>
+<area shape="rect" id="node3" href="$classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="1384,52,1604,79"/>
+<area shape="rect" id="node4" href="$classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="1175,48,1330,75"/>
+<area shape="rect" id="node8" href="$classUIWindow.html#a6d9dcccd238bba0e3e967f0c852391a1" title="Searches for a stop record and extracts information from it." alt="" coords="1169,99,1336,141"/>
+<area shape="rect" id="node5" href="$classUIWindow.html#a237131d5aa62c32799cf1f0d0e913110" title="Loads the glade file and connects the signal handlers." alt="" coords="967,49,1083,76"/>
+<area shape="rect" id="node6" href="$classMaster.html#a6cb4d31abc26317bccf2251edca321bb" title="Starts the GUI main window." alt="" coords="534,49,670,76"/>
 <area shape="rect" id="node7" href="$master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,75,60,101"/>
-<area shape="rect" id="node9" href="$classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="971,103,1163,129"/>
-<area shape="rect" id="node10" href="$classUIWindow.html#a4c13def5a6f4685ef6088c68cafc3937" title="Forwards the received data to the corresponding data handler." alt="" coords="761,101,923,128"/>
-<area shape="rect" id="node11" href="$classMaster.html#ae56b3474ea28e62abfe0c183a874fa9d" title="Handles the TCP communication between socat and the master." alt="" coords="532,100,713,127"/>
+<area shape="rect" id="node9" href="$classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="929,103,1121,129"/>
+<area shape="rect" id="node10" href="$classUIWindow.html#a4c13def5a6f4685ef6088c68cafc3937" title="Forwards the received data to the corresponding data handler." alt="" coords="720,101,881,128"/>
+<area shape="rect" id="node11" href="$classMaster.html#a25f8d33c802d2bede9354352e07bd3d8" title="Handles the TCP communication between socat and the master." alt="" coords="532,100,672,127"/>
 <area shape="rect" id="node12" href="$classMaster.html#ad960ade5e2ad4a42bc183f19653bf7a4" title="Waits (blocking) for a TCP connection on the TCP port." alt="" coords="316,100,484,127"/>
 <area shape="rect" id="node13" href="$classMaster.html#a5795d8ffc12cec35b9ecb6ef10dab7e3" title="Creates threads for each blocking TCP acceptor call." alt="" coords="108,100,268,127"/>
-<area shape="rect" id="node15" href="$classUIWindow.html#a1b85f5b4298b721830e9b162a65c664e" title="Opens a file for a source file which was not found." alt="" coords="1693,56,1879,83"/>
-<area shape="rect" id="node16" href="$classUIWindow.html#aa18935ac7bf79e5a10c8d536b81ca25f" title="Updates the current line and file for a process." alt="" coords="1448,107,1623,133"/>
+<area shape="rect" id="node15" href="$classUIWindow.html#a1b85f5b4298b721830e9b162a65c664e" title="Opens a file for a source file which was not found." alt="" coords="1652,56,1837,83"/>
+<area shape="rect" id="node16" href="$classUIWindow.html#aa18935ac7bf79e5a10c8d536b81ca25f" title="Updates the current line and file for a process." alt="" coords="1407,107,1581,133"/>
 </map>

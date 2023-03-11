@@ -1,8 +1,8 @@
 <map id="UIWindow::parse_breakpoint" name="UIWindow::parse_breakpoint">
-<area shape="rect" id="node1" title="Searches for a breakpoint record in the GDB output." alt="" coords="1211,5,1419,32"/>
-<area shape="rect" id="node2" href="$classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="971,5,1163,32"/>
-<area shape="rect" id="node3" href="$classUIWindow.html#a4c13def5a6f4685ef6088c68cafc3937" title="Forwards the received data to the corresponding data handler." alt="" coords="761,5,923,32"/>
-<area shape="rect" id="node4" href="$classMaster.html#ae56b3474ea28e62abfe0c183a874fa9d" title="Handles the TCP communication between socat and the master." alt="" coords="532,5,713,32"/>
+<area shape="rect" id="node1" title="Searches for a breakpoint record in the GDB output." alt="" coords="1169,5,1377,32"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="929,5,1121,32"/>
+<area shape="rect" id="node3" href="$classUIWindow.html#a4c13def5a6f4685ef6088c68cafc3937" title="Forwards the received data to the corresponding data handler." alt="" coords="720,5,881,32"/>
+<area shape="rect" id="node4" href="$classMaster.html#a25f8d33c802d2bede9354352e07bd3d8" title="Handles the TCP communication between socat and the master." alt="" coords="532,5,672,32"/>
 <area shape="rect" id="node5" href="$classMaster.html#ad960ade5e2ad4a42bc183f19653bf7a4" title="Waits (blocking) for a TCP connection on the TCP port." alt="" coords="316,5,484,32"/>
 <area shape="rect" id="node6" href="$classMaster.html#a5795d8ffc12cec35b9ecb6ef10dab7e3" title="Creates threads for each blocking TCP acceptor call." alt="" coords="108,5,268,32"/>
 <area shape="rect" id="node7" href="$master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,5,60,32"/>

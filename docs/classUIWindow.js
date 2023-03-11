@@ -89,10 +89,8 @@ var classUIWindow =
     [ "m_scroll_connections_trgt", "classUIWindow.html#ad2ae26f40482c5fb327e3dd4e27ffebb", null ],
     [ "m_scrolled_windows_gdb", "classUIWindow.html#a49853176a82340e6447b36124352e769", null ],
     [ "m_scrolled_windows_trgt", "classUIWindow.html#af5cd9a75055de1a9d520b1c030435ace", null ],
-    [ "m_sent_run", "classUIWindow.html#af1f63a8241611c1a9c252311830bcac2", null ],
     [ "m_sent_stop", "classUIWindow.html#ace8f25365719ac41580ea53d7ee09454", null ],
     [ "m_separators", "classUIWindow.html#a422f493b448faa9f6a67e4ab647e49a6", null ],
-    [ "m_started", "classUIWindow.html#af762d989eec932d45080c642e537a296", null ],
     [ "m_target_state", "classUIWindow.html#a327af1fc63dd384949964760917eec71", null ],
     [ "m_text_buffers_gdb", "classUIWindow.html#a2dd3188764527f76055b7f93d4c3206a", null ],
     [ "m_text_buffers_trgt", "classUIWindow.html#a4e523e3225e6102e8bc0d7856afc9e68", null ]

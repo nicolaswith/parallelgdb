@@ -2,7 +2,7 @@ var classMaster =
 [
     [ "Master", "classMaster.html#ab917c3763c181ccad46ac6da8843c6e9", null ],
     [ "~Master", "classMaster.html#a20f70958ed75532ba672af1b780f59eb", null ],
-    [ "process_session", "classMaster.html#ae56b3474ea28e62abfe0c183a874fa9d", null ],
+    [ "read_data", "classMaster.html#a25f8d33c802d2bede9354352e07bd3d8", null ],
     [ "run_cmd", "classMaster.html#a467656f8e61095d188fae547d967b2c8", null ],
     [ "run_startup_dialog", "classMaster.html#ac4ceb59f0986493b9bb795d32ddf15db", null ],
     [ "start_acceptor", "classMaster.html#ad960ade5e2ad4a42bc183f19653bf7a4", null ],
