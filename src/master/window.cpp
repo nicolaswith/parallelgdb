@@ -59,8 +59,7 @@ const char *const open_file_id = "open-file";
  */
 UIWindow::UIWindow(const int num_processes)
 	: m_num_processes(num_processes),
-	  m_follow_rank(FOLLOW_ALL),
-	  m_sent_run(false)
+	  m_follow_rank(FOLLOW_ALL)
 {
 	// allocate memory and zero-initialize values
 	m_current_line = new int[m_num_processes]();
@@ -79,7 +78,6 @@ UIWindow::UIWindow(const int num_processes)
 	m_scroll_connections_gdb = new sigc::connection[m_num_processes];
 	m_scroll_connections_trgt = new sigc::connection[m_num_processes];
 	m_breakpoints = new Breakpoint *[m_num_processes]();
-	m_started = new bool[m_num_processes]();
 	m_sent_stop = new bool[m_num_processes]();
 	// allocate GDB output parsers
 	for (int rank = 0; rank < m_num_processes; ++rank)
@@ -109,7 +107,6 @@ UIWindow::~UIWindow()
 	delete[] m_scroll_connections_gdb;
 	delete[] m_scroll_connections_trgt;
 	delete[] m_breakpoints;
-	delete[] m_started;
 	delete[] m_sent_stop;
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
@@ -437,11 +434,11 @@ void UIWindow::on_follow_button_clicked()
 	}
 	m_follow_rank = dialog.follow_rank();
 	string label;
-	if (m_follow_rank == FOLLOW_ALL)
+	if (FOLLOW_ALL == m_follow_rank)
 	{
 		label = "Following All Processes";
 	}
-	else if (m_follow_rank == FOLLOW_NONE)
+	else if (FOLLOW_NONE == m_follow_rank)
 	{
 		label = "Following No Process";
 	}
@@ -1596,10 +1593,6 @@ void UIWindow::print_data_gdb(const char *const data, const int rank)
 		int response = mi_get_response(m_gdb_handle[rank]);
 		if (0 != response)
 		{
-			if (!m_started[rank])
-			{
-				m_started[rank] = true;
-			}
 			mi_output *first_output = mi_retire_response(m_gdb_handle[rank]);
 			parse_target_state(first_output, rank);
 			parse_stop_record(first_output, rank);
@@ -1628,9 +1621,6 @@ void UIWindow::print_data_trgt(const char *const data, const int rank)
 /**
  * This function forwards the received data to the corresponding data handler.
  * When the data has been handled it is free'd.
- *
- * Furthermore it is responsible for sending the first @c run command, after all
- * GDB instances have started.
  *
  * @param[in] data The received text.
  *
@@ -1665,20 +1655,6 @@ void UIWindow::print_data(const char *const data, const int port)
 				scrolled_window->signal_size_allocate().connect(
 					sigc::bind(sigc::mem_fun(*this, &UIWindow::scroll_bottom),
 							   scrolled_window, is_gdb, rank));
-		}
-	}
-
-	if (!m_sent_run)
-	{
-		bool all_started = true;
-		for (int rank = 0; rank < m_num_processes; ++rank)
-		{
-			all_started &= m_started[rank];
-		}
-		if (all_started)
-		{
-			send_data_to_active(m_conns_gdb, "run\n");
-			m_sent_run = true;
 		}
 	}
 

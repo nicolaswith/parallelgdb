@@ -107,9 +107,6 @@ class UIWindow
 	asio::ip::tcp::socket **m_conns_trgt;
 
 	Breakpoint **m_breakpoints;
-
-	volatile bool *m_started;
-	volatile bool m_sent_run;
 	volatile bool *m_sent_stop;
 
 	/// Initializes the table-like grid layout in the overview.

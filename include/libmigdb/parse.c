@@ -124,8 +124,16 @@ char *mi_get_var_name(const char *str, const char **end)
 	const char *s;
 	char *r;
 	int l;
+	// Search for meaningless strings ... why GDB ???
+	// Example: *stopped,"Starting program",execfile=...
+	const char *start = str;
+	if (*start == '"')
+	{
+		for (start++; *start && *start != '"'; start++) {}
+		start += 2;
+	}
 	/* Meassure. */
-	for (s = str; *s && mi_is_var_name_char(*s); s++)
+	for (s = start; *s && mi_is_var_name_char(*s); s++)
 		;
 	if (*s != '=')
 	{
@@ -222,7 +230,7 @@ int mi_get_tuple(mi_results *r, const char *str, const char **end)
 	}
 #ifdef __APPLE__
 	if (mi_is_var_name_char(*str))
-		return mi_get_list_res(r, str, end, '}');
+	return mi_get_list_res(r, str, end, '}');
 	return mi_get_tuple_val(r, str, end);
 #else  /* __APPLE__ */
 	return mi_get_list_res(r, str, end, '}');

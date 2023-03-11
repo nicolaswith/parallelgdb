@@ -134,7 +134,7 @@ int Slave::start_gdb() const
 		const string tty = "--tty=" + m_tty_trgt;
 
 		const int num_args = m_argc - m_args_offset;
-		char **argv_gdb = (char **)malloc((10 + num_args) * sizeof(char *));
+		char **argv_gdb = new char *[11];
 
 		int idx = 0;
 		argv_gdb[idx++] = (char *)"gdb";
@@ -147,7 +147,8 @@ int Slave::start_gdb() const
 			argv_gdb[idx++] = (char *)"--args";
 		}
 		argv_gdb[idx++] = (char *)"-ex=set auto-load safe-path /";
-		argv_gdb[idx++] = (char *)"-ex=b main";
+		argv_gdb[idx++] = (char *)"-ex=break main";
+		argv_gdb[idx++] = (char *)"-ex=run";
 		argv_gdb[idx++] = (char *)m_target;
 		// append user arguments
 		for (int i = 0; i < num_args; ++i)
