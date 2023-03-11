@@ -217,7 +217,7 @@ bool Master::start_slaves_local()
  *
  * @param port The assigned port of the @p socket.
  */
-void Master::process_session(tcp::socket socket, const asio::ip::port_type port)
+void Master::read_data(tcp::socket socket, const asio::ip::port_type port)
 {
 	const int rank = UIWindow::get_rank(port);
 	if (UIWindow::src_is_gdb(port))
@@ -280,7 +280,7 @@ void Master::start_acceptor(tcp::acceptor acceptor,
 {
 	tcp::socket socket(acceptor.accept());
 	acceptor.close();
-	process_session(std::move(socket), port);
+	read_data(std::move(socket), port);
 }
 
 /**

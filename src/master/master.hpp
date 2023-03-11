@@ -62,7 +62,7 @@ private:
 	/// Starts the slave instances on the local (host) machine.
 	bool start_slaves_local();
 	/// Handles the TCP communication between socat and the master.
-	void process_session(asio::ip::tcp::socket socket,
+	void read_data(asio::ip::tcp::socket socket,
 						 const asio::ip::port_type port);
 	/// Waits (blocking) for a TCP connection on the TCP @p port.
 	void start_acceptor(asio::ip::tcp::acceptor acceptor,
