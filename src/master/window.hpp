@@ -117,6 +117,8 @@ class UIWindow
 	void init_notebook(Gtk::Notebook *notebook,
 					   Gtk::ScrolledWindow **scrolled_windows,
 					   Gtk::TextBuffer **text_buffers);
+	/// Adds the "All" page into the target IO notebook.
+	void init_all_page(Gtk::Notebook *notebook);
 	/// Scrolls a scrolled window to a line.
 	void do_scroll(const int rank) const;
 	/// Appends scrolling a scrolled window to the Gdk idle handler.

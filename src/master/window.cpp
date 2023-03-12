@@ -71,9 +71,9 @@ UIWindow::UIWindow(const int num_processes)
 	m_conns_trgt = new tcp::socket *[m_num_processes]();
 	m_separators = new Gtk::Separator *[m_num_processes]();
 	m_text_buffers_gdb = new Gtk::TextBuffer *[m_num_processes]();
-	m_text_buffers_trgt = new Gtk::TextBuffer *[m_num_processes]();
+	m_text_buffers_trgt = new Gtk::TextBuffer *[m_num_processes + 1]();
 	m_scrolled_windows_gdb = new Gtk::ScrolledWindow *[m_num_processes]();
-	m_scrolled_windows_trgt = new Gtk::ScrolledWindow *[m_num_processes]();
+	m_scrolled_windows_trgt = new Gtk::ScrolledWindow *[m_num_processes + 1]();
 	m_bkptno_2_bkpt = new std::map<int, Breakpoint *>[m_num_processes];
 	m_scroll_connections_gdb = new sigc::connection[m_num_processes];
 	m_scroll_connections_trgt = new sigc::connection[m_num_processes];
@@ -178,6 +178,25 @@ void UIWindow::init_notebook(Gtk::Notebook *notebook,
 		scrolled_window->set_size_request(-1, 200);
 		notebook->append_page(*scrolled_window, *tab);
 	}
+}
+
+/**
+ * This function adds the "All" page into the target IO notebook.
+ * 
+ * @param[in] notebook The target IO notebook. 
+ */
+void UIWindow::init_all_page(Gtk::Notebook *notebook)
+{
+	Gtk::Label *tab = Gtk::manage(new Gtk::Label("All"));
+	Gtk::ScrolledWindow *scrolled_window =
+		Gtk::manage(new Gtk::ScrolledWindow());
+	m_scrolled_windows_trgt[m_num_processes] = scrolled_window;
+	Gtk::TextView *text_view = Gtk::manage(new Gtk::TextView());
+	text_view->set_editable(false);
+	m_text_buffers_trgt[m_num_processes] = text_view->get_buffer().get();
+	scrolled_window->add(*text_view);
+	scrolled_window->set_size_request(-1, 200);
+	notebook->prepend_page(*scrolled_window, *tab);
 }
 
 /**
@@ -367,6 +386,7 @@ bool UIWindow::init(Glib::RefPtr<Gtk::Application> app)
 		get_widget<Gtk::Notebook>("target-output-notebook");
 	Gtk::Grid *grid_trgt = get_widget<Gtk::Grid>("target-send-select-grid");
 	init_notebook(notebook_trgt, m_scrolled_windows_trgt, m_text_buffers_trgt);
+	init_all_page(notebook_trgt);
 	init_grid(grid_trgt);
 
 	init_overview();
@@ -1617,6 +1637,8 @@ void UIWindow::print_data_gdb(const char *const data, const int rank)
 void UIWindow::print_data_trgt(const char *const data, const int rank)
 {
 	Gtk::TextBuffer *buffer = m_text_buffers_trgt[rank];
+	buffer->insert(buffer->end(), data);
+	buffer = m_text_buffers_trgt[m_num_processes];
 	buffer->insert(buffer->end(), data);
 }
 
