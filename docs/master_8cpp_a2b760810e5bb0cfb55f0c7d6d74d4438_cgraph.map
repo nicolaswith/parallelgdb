@@ -1,52 +1,52 @@
 <map id="main" name="main">
-<area shape="rect" id="node1" title="Master entry point." alt="" coords="5,649,60,676"/>
-<area shape="rect" id="node2" href="$classMaster.html#ac4ceb59f0986493b9bb795d32ddf15db" title="Runs the startup dialog." alt="" coords="113,491,263,533"/>
-<area shape="rect" id="node5" href="$master_8cpp.html#ab10c0c50c02a59ae9bd74c78c49b559d" title="Handles the SIGINT signal." alt="" coords="131,599,245,625"/>
-<area shape="rect" id="node6" href="$classMaster.html#a6cb4d31abc26317bccf2251edca321bb" title="Starts the GUI main window." alt="" coords="120,649,256,676"/>
-<area shape="rect" id="node34" href="$classMaster.html#a5795d8ffc12cec35b9ecb6ef10dab7e3" title="Creates threads for each blocking TCP acceptor call." alt="" coords="108,723,268,749"/>
-<area shape="rect" id="node41" href="$classMaster.html#a9bb6425799975f544c846ae7d67e947e" title="Starts the slaves on the desired debug platform." alt="" coords="111,988,265,1015"/>
-<area shape="rect" id="node3" href="$classStartupDialog.html#a92f4cf1bc14ff2c0a0daece576720ea8" title="Returns whether the configuration could be successfully parsed." alt="" coords="323,448,492,475"/>
-<area shape="rect" id="node4" href="$classStartupDialog.html#af47f73e01a8a6450694bac12940f14de" title="Runs the startup dialog." alt="" coords="337,499,477,525"/>
-<area shape="rect" id="node7" href="$classUIWindow.html#a237131d5aa62c32799cf1f0d0e913110" title="Loads the glade file and connects the signal handlers." alt="" coords="349,549,465,576"/>
-<area shape="rect" id="node33" href="$classUIWindow.html#a206ec747a9c2589eac08719d221ce218" title="Gets the Gtk window object." alt="" coords="318,649,497,676"/>
-<area shape="rect" id="node8" href="$classUIWindow.html#adf1424cd3dede540dd982fcf53de8ebb" title="Closes all unused source files." alt="" coords="1063,244,1281,271"/>
-<area shape="rect" id="node9" href="$classUIWindow.html#a90f6e11b3d717e1b45e0462499e03b8f" title="Attaches checkbuttons in a grid layout." alt="" coords="573,72,721,99"/>
-<area shape="rect" id="node10" href="$classUIWindow.html#a286e53c542b81365dbfcde1662899925" title="Adds a page in the GDB/target I/O notebook for every process." alt="" coords="555,123,739,149"/>
-<area shape="rect" id="node11" href="$classUIWindow.html#a84b9b7bc3de08ad346f4d06735fdf6ac" title="Initializes the table&#45;like grid layout in the overview." alt="" coords="555,173,738,200"/>
-<area shape="rect" id="node12" href="$classUIWindow.html#af28cb60749093d8cd3e36426b32e5052" title="Displays the about dialog." alt="" coords="569,225,724,266"/>
-<area shape="rect" id="node13" href="$classUIWindow.html#a2cdd05512bbdfc3f1fb08111c3e0b8bc" title="Closes the GDB TCP sockets and thus the slaves." alt="" coords="825,295,984,321"/>
-<area shape="rect" id="node14" href="$classUIWindow.html#ae5c481eedd36aa3da52acefdafabc57e" title="Opens a dialog to select the process to follow." alt="" coords="567,393,726,434"/>
-<area shape="rect" id="node17" href="$classUIWindow.html#a8eb980e3513ccea5d0b9b17fcfe06ea7" title="Signal handler for all the interaction buttons." alt="" coords="553,458,741,499"/>
-<area shape="rect" id="node19" href="$classUIWindow.html#a679f5db0a5c299d0252161faf114ccc5" title="Signal handler for key&#45;press events." alt="" coords="555,524,738,551"/>
-<area shape="rect" id="node20" href="$classUIWindow.html#a56c434b8be8180dd65afa0a77e830f1c" title="Terminates the slaves and then quits the application." alt="" coords="549,341,744,368"/>
-<area shape="rect" id="node21" href="$classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="569,575,724,601"/>
-<area shape="rect" id="node23" href="$classUIDrawingArea.html#a0efe30d5e68d4233aeeb40878c7a9cca" title="Returns the radius of the dots." alt="" coords="1088,883,1256,909"/>
-<area shape="rect" id="node24" href="$classUIWindow.html#af347fa10ac769b7317f73795e18852bc" title="Sends text to the socat instances connected to GDB." alt="" coords="548,676,745,703"/>
-<area shape="rect" id="node26" href="$classUIWindow.html#a22bc56f7e3f3090988e3236cc8774274" title="Sends text to the socat instances connected to the target program." alt="" coords="549,727,745,753"/>
-<area shape="rect" id="node27" href="$classUIDrawingArea.html#a802481f1adca4637078fdecafd3ccee1" title="Returns the spacing of the dots." alt="" coords="557,777,736,804"/>
-<area shape="rect" id="node28" href="$classUIWindow.html#a7f0274883889305c8ea893ddfebd77ec" title="Toggles all checkbuttons in the GDB I/O section grid." alt="" coords="551,828,742,855"/>
-<area shape="rect" id="node30" href="$classUIWindow.html#aee371ffb7ff1f2cdf4c0a735dc0df349" title="Toggles all checkbuttons in the target I/O section grid." alt="" coords="552,879,741,905"/>
-<area shape="rect" id="node31" href="$classUIWindow.html#ae369ac9ebde283b0469f363624040626" title="Checks if the source file notebook has pages and updates the dots if so." alt="" coords="547,930,747,971"/>
-<area shape="rect" id="node15" href="$classFollowDialog.html#ab64fd649524ba0523148c2a9280c0af9" title="Returns the process rank to follow." alt="" coords="809,352,1000,379"/>
-<area shape="rect" id="node16" href="$classFollowDialog.html#a466d39b7b38c81a64206289bd614bb1c" title="Runs the dialog." alt="" coords="837,403,972,429"/>
-<area shape="rect" id="node18" href="$classUIWindow.html#a06f629dcbc6ff6c5c4eb0a1025a36496" title="Maps the buttons/hot&#45;keys to the corresponding action." alt="" coords="832,458,977,499"/>
-<area shape="rect" id="node22" href="$classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="795,575,1015,601"/>
-<area shape="rect" id="node25" href="$classUIWindow.html#a162a36247228bf4ca885a921f106b3b4" title="Writes the text in an entry to a TCP socket." alt="" coords="821,701,988,728"/>
-<area shape="rect" id="node29" href="$classUIWindow.html#a6a12f21b7519fae0cfaad1e698085b4f" title="Toggle all checkbuttons in a grid." alt="" coords="825,836,984,863"/>
-<area shape="rect" id="node32" href="$classUIWindow.html#a8805706e8ed834473e3690ac4b5f1614" title="Sets the positions of the dots in the drawing area." alt="" coords="805,895,1005,921"/>
-<area shape="rect" id="node35" href="$classStartupDialog.html#ac1b9a18530bb5ffc903f83c88448bb1d" title="Returns the total number of processes." alt="" coords="333,715,481,757"/>
-<area shape="rect" id="node36" href="$classMaster.html#ad960ade5e2ad4a42bc183f19653bf7a4" title="Waits (blocking) for a TCP connection on the TCP port." alt="" coords="323,811,491,837"/>
-<area shape="rect" id="node37" href="$classMaster.html#a25f8d33c802d2bede9354352e07bd3d8" title="Handles the TCP communication between socat and the master." alt="" coords="577,996,717,1023"/>
-<area shape="rect" id="node38" href="$classUIWindow.html#afb01300d48a3af10ed8b08574e8d0f66" title="Retrieves the process rank from the TCP port." alt="" coords="1096,959,1248,985"/>
-<area shape="rect" id="node39" href="$classUIWindow.html#a4c13def5a6f4685ef6088c68cafc3937" title="Forwards the received data to the corresponding data handler." alt="" coords="824,996,985,1023"/>
-<area shape="rect" id="node40" href="$classUIWindow.html#a37091955820dfb6b2c292477e14dcfb2" title="Sets the TCP socket associated to a process. (GDB)" alt="" coords="809,1047,1000,1073"/>
-<area shape="rect" id="node42" href="$classStartupDialog.html#ac6306bbf09822abe76847e406e3e3071" title="Returns whether the master should start the slaves." alt="" coords="325,922,490,963"/>
-<area shape="rect" id="node43" href="$classStartupDialog.html#ae81bb7e197594bb4325bd6308e78ef58" title="Returns whether SSH should be used." alt="" coords="337,988,478,1015"/>
-<area shape="rect" id="node44" href="$classMaster.html#a5d92c75cf1ae471e47cb1cbcca6a6669" title="Starts the slave instances on the local (host) machine." alt="" coords="330,1039,485,1081"/>
-<area shape="rect" id="node46" href="$classMaster.html#a375a3d5f77d5333e789276348157d61f" title="Establishes a SSH connection to the remote server." alt="" coords="316,1156,499,1183"/>
-<area shape="rect" id="node45" href="$classStartupDialog.html#a3dd518b4edebb588ba60b8b5538cc903" title="Returns the launcher command." alt="" coords="817,1097,992,1124"/>
-<area shape="rect" id="node47" href="$classMaster.html#a467656f8e61095d188fae547d967b2c8" title="Executes the launcher command on the remote server." alt="" coords="581,1097,712,1124"/>
-<area shape="rect" id="node48" href="$classStartupDialog.html#a6667956beed62c38c50659365c5a8411" title="Returns the SSH address." alt="" coords="576,1149,717,1190"/>
-<area shape="rect" id="node49" href="$classStartupDialog.html#ad505fcb515c6c991031165f406836f87" title="Returns the SSH password." alt="" coords="576,1214,717,1255"/>
-<area shape="rect" id="node50" href="$classStartupDialog.html#afb409d2ec8daa554d089dcea4939e4e5" title="Returns the SSH username." alt="" coords="559,1280,735,1307"/>
+<area shape="rect" id="node1" title="Master entry point." alt="" coords="5,653,60,680"/>
+<area shape="rect" id="node2" href="$classMaster.html#ac4ceb59f0986493b9bb795d32ddf15db" title="Runs the startup dialog." alt="" coords="113,515,263,557"/>
+<area shape="rect" id="node5" href="$master_8cpp.html#ab10c0c50c02a59ae9bd74c78c49b559d" title="Handles the SIGINT signal." alt="" coords="131,603,245,629"/>
+<area shape="rect" id="node6" href="$classMaster.html#a6cb4d31abc26317bccf2251edca321bb" title="Starts the GUI main window." alt="" coords="120,653,256,680"/>
+<area shape="rect" id="node35" href="$classMaster.html#a5795d8ffc12cec35b9ecb6ef10dab7e3" title="Creates threads for each blocking TCP acceptor call." alt="" coords="108,733,268,760"/>
+<area shape="rect" id="node41" href="$classMaster.html#a9bb6425799975f544c846ae7d67e947e" title="Starts the slaves on the desired debug platform." alt="" coords="111,1037,265,1064"/>
+<area shape="rect" id="node3" href="$classStartupDialog.html#a92f4cf1bc14ff2c0a0daece576720ea8" title="Returns whether the configuration could be successfully parsed." alt="" coords="323,472,492,499"/>
+<area shape="rect" id="node4" href="$classStartupDialog.html#af47f73e01a8a6450694bac12940f14de" title="Runs the startup dialog." alt="" coords="337,523,477,549"/>
+<area shape="rect" id="node7" href="$classUIWindow.html#a237131d5aa62c32799cf1f0d0e913110" title="Loads the glade file and connects the signal handlers." alt="" coords="349,573,465,600"/>
+<area shape="rect" id="node34" href="$classUIWindow.html#a206ec747a9c2589eac08719d221ce218" title="Gets the Gtk window object." alt="" coords="318,653,497,680"/>
+<area shape="rect" id="node8" href="$classUIWindow.html#adf1424cd3dede540dd982fcf53de8ebb" title="Closes all unused source files." alt="" coords="1063,268,1281,295"/>
+<area shape="rect" id="node9" href="$classUIWindow.html#aa81dd64a8a95ba787c07119f14be4e18" title="Adds the &quot;All&quot; page into the target IO notebook." alt="" coords="557,71,736,97"/>
+<area shape="rect" id="node10" href="$classUIWindow.html#a90f6e11b3d717e1b45e0462499e03b8f" title="Attaches checkbuttons in a grid layout." alt="" coords="573,121,721,148"/>
+<area shape="rect" id="node11" href="$classUIWindow.html#a286e53c542b81365dbfcde1662899925" title="Adds a page in the GDB/target I/O notebook for every process." alt="" coords="555,172,739,199"/>
+<area shape="rect" id="node12" href="$classUIWindow.html#a84b9b7bc3de08ad346f4d06735fdf6ac" title="Initializes the table&#45;like grid layout in the overview." alt="" coords="555,223,738,249"/>
+<area shape="rect" id="node13" href="$classUIWindow.html#af28cb60749093d8cd3e36426b32e5052" title="Displays the about dialog." alt="" coords="569,274,724,315"/>
+<area shape="rect" id="node14" href="$classUIWindow.html#a2cdd05512bbdfc3f1fb08111c3e0b8bc" title="Closes the GDB TCP sockets and thus the slaves." alt="" coords="825,347,984,373"/>
+<area shape="rect" id="node15" href="$classUIWindow.html#ae5c481eedd36aa3da52acefdafabc57e" title="Opens a dialog to select the process to follow." alt="" coords="567,442,726,483"/>
+<area shape="rect" id="node18" href="$classUIWindow.html#a8eb980e3513ccea5d0b9b17fcfe06ea7" title="Signal handler for all the interaction buttons." alt="" coords="553,507,741,549"/>
+<area shape="rect" id="node20" href="$classUIWindow.html#a679f5db0a5c299d0252161faf114ccc5" title="Signal handler for key&#45;press events." alt="" coords="555,573,738,600"/>
+<area shape="rect" id="node21" href="$classUIWindow.html#a56c434b8be8180dd65afa0a77e830f1c" title="Terminates the slaves and then quits the application." alt="" coords="549,391,744,417"/>
+<area shape="rect" id="node22" href="$classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="569,624,724,651"/>
+<area shape="rect" id="node24" href="$classUIDrawingArea.html#a0efe30d5e68d4233aeeb40878c7a9cca" title="Returns the radius of the dots." alt="" coords="1088,808,1256,835"/>
+<area shape="rect" id="node25" href="$classUIWindow.html#af347fa10ac769b7317f73795e18852bc" title="Sends text to the socat instances connected to GDB." alt="" coords="548,725,745,752"/>
+<area shape="rect" id="node27" href="$classUIWindow.html#a22bc56f7e3f3090988e3236cc8774274" title="Sends text to the socat instances connected to the target program." alt="" coords="549,776,745,803"/>
+<area shape="rect" id="node28" href="$classUIDrawingArea.html#a802481f1adca4637078fdecafd3ccee1" title="Returns the spacing of the dots." alt="" coords="557,827,736,853"/>
+<area shape="rect" id="node29" href="$classUIWindow.html#a7f0274883889305c8ea893ddfebd77ec" title="Toggles all checkbuttons in the GDB I/O section grid." alt="" coords="551,877,742,904"/>
+<area shape="rect" id="node31" href="$classUIWindow.html#aee371ffb7ff1f2cdf4c0a735dc0df349" title="Toggles all checkbuttons in the target I/O section grid." alt="" coords="552,928,741,955"/>
+<area shape="rect" id="node32" href="$classUIWindow.html#ae369ac9ebde283b0469f363624040626" title="Checks if the source file notebook has pages and updates the dots if so." alt="" coords="547,979,747,1021"/>
+<area shape="rect" id="node16" href="$classFollowDialog.html#ab64fd649524ba0523148c2a9280c0af9" title="Returns the process rank to follow." alt="" coords="809,403,1000,429"/>
+<area shape="rect" id="node17" href="$classFollowDialog.html#a466d39b7b38c81a64206289bd614bb1c" title="Runs the dialog." alt="" coords="837,453,972,480"/>
+<area shape="rect" id="node19" href="$classUIWindow.html#a06f629dcbc6ff6c5c4eb0a1025a36496" title="Maps the buttons/hot&#45;keys to the corresponding action." alt="" coords="832,507,977,549"/>
+<area shape="rect" id="node23" href="$classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="795,624,1015,651"/>
+<area shape="rect" id="node26" href="$classUIWindow.html#a162a36247228bf4ca885a921f106b3b4" title="Writes the text in an entry to a TCP socket." alt="" coords="821,751,988,777"/>
+<area shape="rect" id="node30" href="$classUIWindow.html#a6a12f21b7519fae0cfaad1e698085b4f" title="Toggle all checkbuttons in a grid." alt="" coords="825,885,984,912"/>
+<area shape="rect" id="node33" href="$classUIWindow.html#a8805706e8ed834473e3690ac4b5f1614" title="Sets the positions of the dots in the drawing area." alt="" coords="805,940,1005,967"/>
+<area shape="rect" id="node36" href="$classStartupDialog.html#ac1b9a18530bb5ffc903f83c88448bb1d" title="Returns the total number of processes." alt="" coords="333,726,481,767"/>
+<area shape="rect" id="node37" href="$classMaster.html#ad960ade5e2ad4a42bc183f19653bf7a4" title="Waits (blocking) for a TCP connection on the TCP port." alt="" coords="323,835,491,861"/>
+<area shape="rect" id="node38" href="$classMaster.html#a25f8d33c802d2bede9354352e07bd3d8" title="Handles the TCP communication between socat and the master." alt="" coords="577,1045,717,1072"/>
+<area shape="rect" id="node39" href="$classUIWindow.html#afb01300d48a3af10ed8b08574e8d0f66" title="Retrieves the process rank from the TCP port." alt="" coords="1096,1020,1248,1047"/>
+<area shape="rect" id="node40" href="$classUIWindow.html#a4c13def5a6f4685ef6088c68cafc3937" title="Forwards the received data to the corresponding data handler." alt="" coords="824,1045,985,1072"/>
+<area shape="rect" id="node42" href="$classStartupDialog.html#ac6306bbf09822abe76847e406e3e3071" title="Returns whether the master should start the slaves." alt="" coords="325,971,490,1013"/>
+<area shape="rect" id="node43" href="$classStartupDialog.html#ae81bb7e197594bb4325bd6308e78ef58" title="Returns whether SSH should be used." alt="" coords="337,1037,478,1064"/>
+<area shape="rect" id="node44" href="$classMaster.html#a5d92c75cf1ae471e47cb1cbcca6a6669" title="Starts the slave instances on the local (host) machine." alt="" coords="330,1089,485,1130"/>
+<area shape="rect" id="node46" href="$classMaster.html#a375a3d5f77d5333e789276348157d61f" title="Establishes a SSH connection to the remote server." alt="" coords="316,1205,499,1232"/>
+<area shape="rect" id="node45" href="$classStartupDialog.html#a3dd518b4edebb588ba60b8b5538cc903" title="Returns the launcher command." alt="" coords="817,1121,992,1148"/>
+<area shape="rect" id="node47" href="$classMaster.html#a467656f8e61095d188fae547d967b2c8" title="Executes the launcher command on the remote server." alt="" coords="581,1147,712,1173"/>
+<area shape="rect" id="node48" href="$classStartupDialog.html#a6667956beed62c38c50659365c5a8411" title="Returns the SSH address." alt="" coords="576,1198,717,1239"/>
+<area shape="rect" id="node49" href="$classStartupDialog.html#ad505fcb515c6c991031165f406836f87" title="Returns the SSH password." alt="" coords="576,1263,717,1305"/>
+<area shape="rect" id="node50" href="$classStartupDialog.html#afb409d2ec8daa554d089dcea4939e4e5" title="Returns the SSH username." alt="" coords="559,1329,735,1356"/>
 </map>

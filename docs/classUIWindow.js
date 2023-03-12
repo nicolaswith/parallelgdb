@@ -18,6 +18,7 @@ var classUIWindow =
     [ "get_rank", "classUIWindow.html#afb01300d48a3af10ed8b08574e8d0f66", null ],
     [ "get_widget", "classUIWindow.html#a71acff47d752a838c5a8a9bd55d486fe", null ],
     [ "init", "classUIWindow.html#a237131d5aa62c32799cf1f0d0e913110", null ],
+    [ "init_all_page", "classUIWindow.html#aa81dd64a8a95ba787c07119f14be4e18", null ],
     [ "init_grid", "classUIWindow.html#a90f6e11b3d717e1b45e0462499e03b8f", null ],
     [ "init_notebook", "classUIWindow.html#a286e53c542b81365dbfcde1662899925", null ],
     [ "init_overview", "classUIWindow.html#a84b9b7bc3de08ad346f4d06735fdf6ac", null ],
