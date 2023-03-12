@@ -99,7 +99,7 @@ public:
 	 */
 	inline bool is_created(const int rank) const
 	{
-		return m_breakpoint_state[rank] == BreakpointState::CREATED;
+		return (BreakpointState::CREATED == m_breakpoint_state[rank]);
 	}
 
 	/// Returns the line number of the associated source file.

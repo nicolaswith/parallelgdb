@@ -94,7 +94,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="stop-all-checkbutton">
-                <property name="label" translatable="yes">Stop all Processes when hit</property>
+                <property name="label" translatable="yes">Stop all selected Processes when hit</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>

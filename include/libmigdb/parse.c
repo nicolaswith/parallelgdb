@@ -230,7 +230,7 @@ int mi_get_tuple(mi_results *r, const char *str, const char **end)
 	}
 #ifdef __APPLE__
 	if (mi_is_var_name_char(*str))
-	return mi_get_list_res(r, str, end, '}');
+		return mi_get_list_res(r, str, end, '}');
 	return mi_get_tuple_val(r, str, end);
 #else  /* __APPLE__ */
 	return mi_get_list_res(r, str, end, '}');

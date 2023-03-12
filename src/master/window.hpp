@@ -107,7 +107,7 @@ class UIWindow
 	asio::ip::tcp::socket **m_conns_trgt;
 
 	Breakpoint **m_breakpoints;
-	volatile bool *m_sent_stop;
+	bool *m_sent_stop;
 
 	/// Initializes the table-like grid layout in the overview.
 	void init_overview();
@@ -146,8 +146,8 @@ class UIWindow
 	void send_input_gdb();
 	/// Sends text to the socat instances connected to the target program.
 	void send_input_trgt();
-	/// Stops all processes.
-	void stop_all();
+	/// Stops all processes for which the breakpoint is created.
+	void stop_all(Breakpoint *breakpoint);
 	/// Toggle all checkbuttons in a grid.
 	void toggle_all(const std::string &grid_name);
 	/// Toggles all checkbuttons in the GDB I/O section grid.

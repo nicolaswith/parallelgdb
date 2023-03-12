@@ -673,13 +673,15 @@ void UIWindow::send_input_trgt()
 }
 
 /**
- * This function stops all processes.
+ * This function stops all processes for which the breakpoint is created.
  */
-void UIWindow::stop_all()
+void UIWindow::stop_all(Breakpoint *breakpoint)
 {
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
-		if (m_target_state[rank] != TargetState::RUNNING || m_sent_stop[rank])
+		if (TargetState::RUNNING != m_target_state[rank] ||
+			m_sent_stop[rank] ||
+			!breakpoint->is_created(rank))
 		{
 			continue;
 		}
@@ -1545,7 +1547,7 @@ void UIWindow::parse_stop_record(mi_output *first_output, const int rank)
 				m_bkptno_2_bkpt[rank].end() &&
 			m_bkptno_2_bkpt[rank][stop_record->bkptno]->get_stop_all())
 		{
-			stop_all();
+			stop_all(m_bkptno_2_bkpt[rank][stop_record->bkptno]);
 		}
 		if (mi_stop_reason::sr_exited_signalled == stop_record->reason ||
 			mi_stop_reason::sr_exited == stop_record->reason ||

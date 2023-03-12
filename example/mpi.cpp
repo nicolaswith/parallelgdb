@@ -44,7 +44,7 @@ int main(int argc, char const **argv)
 			cout << rec_strs[i];
 			delete rec_strs[i];
 		}
-	
+
 		delete rec_strs;
 	}
 	else
