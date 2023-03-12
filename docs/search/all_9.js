@@ -78,7 +78,7 @@ var searchData=
   ['m_5fscroll_5fconnections_5ftrgt_130',['m_scroll_connections_trgt',['../classUIWindow.html#ad2ae26f40482c5fb327e3dd4e27ffebb',1,'UIWindow']]],
   ['m_5fscrolled_5fwindows_5fgdb_131',['m_scrolled_windows_gdb',['../classUIWindow.html#a49853176a82340e6447b36124352e769',1,'UIWindow']]],
   ['m_5fscrolled_5fwindows_5ftrgt_132',['m_scrolled_windows_trgt',['../classUIWindow.html#af5cd9a75055de1a9d520b1c030435ace',1,'UIWindow']]],
-  ['m_5fsent_5fstop_133',['m_sent_stop',['../classUIWindow.html#ace8f25365719ac41580ea53d7ee09454',1,'UIWindow']]],
+  ['m_5fsent_5fstop_133',['m_sent_stop',['../classUIWindow.html#aa71b39d5128045ba3418612b7e8cde0f',1,'UIWindow']]],
   ['m_5fseparators_134',['m_separators',['../classUIWindow.html#a422f493b448faa9f6a67e4ab647e49a6',1,'UIWindow']]],
   ['m_5fslave_5ffile_5fchooser_135',['m_slave_file_chooser',['../classStartupDialog.html#a4c93623168944f50b988489c0953d781',1,'StartupDialog']]],
   ['m_5fslave_5fpath_136',['m_slave_path',['../classStartupDialog.html#ae55c48030fa5cbc757facbec8a2b5724',1,'StartupDialog']]],

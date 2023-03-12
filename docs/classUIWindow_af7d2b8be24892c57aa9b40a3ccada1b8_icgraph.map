@@ -4,7 +4,7 @@
 <area shape="rect" id="node19" href="$classBreakpoint.html#ac27741795e2f0c8627128fe2ffd221e8" title="Deletes a breakpoint for a process." alt="" coords="2577,169,2719,210"/>
 <area shape="rect" id="node22" href="$classUIWindow.html#aa69cad1ed3b5f47f4f25aa5e2f88795b" title="Sends data to all selected processes." alt="" coords="2567,103,2729,145"/>
 <area shape="rect" id="node26" href="$classUIWindow.html#a162a36247228bf4ca885a921f106b3b4" title="Writes the text in an entry to a TCP socket." alt="" coords="1441,52,1608,79"/>
-<area shape="rect" id="node29" href="$classUIWindow.html#afd8134a65eb457f80d6e47bcfb360e56" title="Stops all processes." alt="" coords="1934,308,2081,335"/>
+<area shape="rect" id="node29" href="$classUIWindow.html#aa22803bbfb48ff8cdc37fbf0696d144a" title="Stops all processes for which the breakpoint is created." alt="" coords="1934,308,2081,335"/>
 <area shape="rect" id="node3" href="$classBreakpoint.html#a530ad76e3382517101cf28ce6bdabaf7" title="Modifies the breakpoints according to button_states." alt="" coords="2372,231,2519,273"/>
 <area shape="rect" id="node4" href="$classUIWindow.html#a447e57e6deef4c794c8b8da1ec50141e" title="Creates a line mark in a Gsv::View." alt="" coords="2147,212,2324,239"/>
 <area shape="rect" id="node18" href="$classUIWindow.html#ab3135faddc758530ac3e34b8973130ad" title="Displays the BreakpointDialog dialog." alt="" coords="2155,263,2316,289"/>

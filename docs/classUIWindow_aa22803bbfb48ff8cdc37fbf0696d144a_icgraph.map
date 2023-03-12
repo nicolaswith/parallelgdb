@@ -1,5 +1,5 @@
 <map id="UIWindow::stop_all" name="UIWindow::stop_all">
-<area shape="rect" id="node1" title="Stops all processes." alt="" coords="1384,13,1531,39"/>
+<area shape="rect" id="node1" title="Stops all processes for which the breakpoint is created." alt="" coords="1384,13,1531,39"/>
 <area shape="rect" id="node2" href="$classUIWindow.html#a6d9dcccd238bba0e3e967f0c852391a1" title="Searches for a stop record and extracts information from it." alt="" coords="1169,5,1336,47"/>
 <area shape="rect" id="node3" href="$classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="929,13,1121,39"/>
 <area shape="rect" id="node4" href="$classUIWindow.html#a4c13def5a6f4685ef6088c68cafc3937" title="Forwards the received data to the corresponding data handler." alt="" coords="720,13,881,39"/>

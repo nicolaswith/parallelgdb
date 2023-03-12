@@ -1,0 +1,5 @@
+<map id="UIWindow::stop_all" name="UIWindow::stop_all">
+<area shape="rect" id="node1" title="Stops all processes for which the breakpoint is created." alt="" coords="5,31,152,57"/>
+<area shape="rect" id="node2" href="$classBreakpoint.html#ab12850b9f6287dd4b98e75c093329773" title="Returns wether the breakpoint for this process is created." alt="" coords="200,5,368,32"/>
+<area shape="rect" id="node3" href="$classUIWindow.html#af7d2b8be24892c57aa9b40a3ccada1b8" title="Writes data to the TCP socket." alt="" coords="203,56,365,83"/>
+</map>
