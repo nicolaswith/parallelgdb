@@ -30,8 +30,6 @@
 
 #include <gtkmm.h>
 
-class UIWindow;
-
 /**
  * @brief Draws the processes current location in the source files on the 
  * drawing area.
@@ -47,8 +45,6 @@ class UIDrawingArea : public Gtk::DrawingArea
 	const int m_num_processes;
 	int *const m_y_offsets;
 
-	UIWindow *const m_window;
-
 public:
 	static const Gdk::RGBA s_colors[];
 	static const int NUM_COLORS;
@@ -59,7 +55,7 @@ protected:
 
 public:
 	/// Default constructor.
-	UIDrawingArea(const int num_processes, UIWindow *const window);
+	UIDrawingArea(const int num_processes);
 	/// Destructor.
 	virtual ~UIDrawingArea() {}
 

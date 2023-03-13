@@ -363,7 +363,7 @@ bool UIWindow::init(Glib::RefPtr<Gtk::Application> app)
 		.connect(sigc::mem_fun(*this, &UIWindow::on_about_clicked));
 
 	// create the drawing area
-	m_drawing_area = Gtk::manage(new UIDrawingArea(m_num_processes, this));
+	m_drawing_area = Gtk::manage(new UIDrawingArea(m_num_processes));
 	m_drawing_area->set_size_request(
 		(2 * UIDrawingArea::radius() + UIDrawingArea::spacing()) *
 			m_num_processes,

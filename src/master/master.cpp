@@ -30,7 +30,6 @@
 #include <string.h>
 #include <algorithm>
 #include <utility>
-#include <libssh/libssh.h>
 #include <unistd.h>
 #include <cstdio>
 

@@ -30,8 +30,6 @@
 #include <string>
 
 #include "canvas.hpp"
-#include "window.hpp"
-#include "mi_gdb.h"
 
 using std::string;
 
@@ -57,10 +55,9 @@ const Gdk::RGBA UIDrawingArea::s_colors[] = {
  *
  * @param[in] window The pointer to the UIWindow object.
  */
-UIDrawingArea::UIDrawingArea(const int num_processes, UIWindow *const window)
+UIDrawingArea::UIDrawingArea(const int num_processes)
 	: m_num_processes(num_processes),
-	  m_y_offsets(new int[m_num_processes]),
-	  m_window(window)
+	  m_y_offsets(new int[m_num_processes])
 {
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
@@ -82,8 +79,7 @@ bool UIDrawingArea::on_draw(const Cairo::RefPtr<Cairo::Context> &c)
 {
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
-		if (m_y_offsets[rank] > -2 * s_radius - 1 &&
-			m_window->target_state(rank) != TargetState::EXITED)
+		if (m_y_offsets[rank] > -2 * s_radius - 1)
 		{
 			int x = rank * (2 * s_radius + s_spacing);
 			int y = m_y_offsets[rank];

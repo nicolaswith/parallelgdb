@@ -30,13 +30,10 @@
 
 #include "asio.hpp"
 #include <gtkmm.h>
+#include <libssh/libssh.h>
 
 class UIWindow;
 class StartupDialog;
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-struct ssh_session_struct;
-typedef struct ssh_session_struct *ssh_session;
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 /// Holds the state of the master program.
 /**
@@ -63,7 +60,7 @@ private:
 	bool start_slaves_local();
 	/// Handles the TCP communication between socat and the master.
 	void read_data(asio::ip::tcp::socket socket,
-						 const asio::ip::port_type port);
+				   const asio::ip::port_type port);
 	/// Waits (blocking) for a TCP connection on the TCP @p port.
 	void start_acceptor(asio::ip::tcp::acceptor acceptor,
 						const asio::ip::port_type port);

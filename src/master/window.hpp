@@ -49,10 +49,14 @@ namespace Gsv
 /// The states a process can be in.
 enum TargetState
 {
-	UNKNOWN, /**< The target state has not been detected yet. */
-	STOPPED, /**< The target is stopped. */
-	RUNNING, /**< The target is running. */
-	EXITED	 /**< The target has exited. */
+	/** The target state has not been detected yet. */
+	UNKNOWN,
+	/** The target is stopped. */
+	STOPPED,
+	/** The target is running. */
+	RUNNING,
+	/** The target has exited. */
+	EXITED
 };
 
 /// Wrapper class for the GUI window.
