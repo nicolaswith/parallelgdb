@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['slave_271',['Slave',['../classSlave.html',1,'']]],
-  ['startupdialog_272',['StartupDialog',['../classStartupDialog.html',1,'']]]
+  ['slave_269',['Slave',['../classSlave.html',1,'']]],
+  ['startupdialog_270',['StartupDialog',['../classStartupDialog.html',1,'']]]
 ];

@@ -1,7 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"classUIWindow.html#aa6ab0774e00b724e8f57066dee944fac":[5,0,7,77],
-"classUIWindow.html#aa71b39d5128045ba3418612b7e8cde0f":[5,0,7,90],
 "classUIWindow.html#aa81dd64a8a95ba787c07119f14be4e18":[5,0,7,18],
 "classUIWindow.html#aacf921402728268a7ce7f822f6d4e770":[5,0,7,84],
 "classUIWindow.html#ab3135faddc758530ac3e34b8973130ad":[5,0,7,12],
@@ -41,8 +39,8 @@ var NAVTREEINDEX1 =
 "follow__dialog_8hpp.html":[6,0,0,0,7],
 "follow__dialog_8hpp.html#a7c5d78ae08a82af9308afa684d213724":[6,0,0,0,7,2],
 "follow__dialog_8hpp.html#a88ebe801c0ac9b4b76dfdeff72c57de8":[6,0,0,0,7,1],
-"functions.html":[5,3,0],
 "functions.html":[5,3,0,0],
+"functions.html":[5,3,0],
 "functions_b.html":[5,3,0,1],
 "functions_c.html":[5,3,0,2],
 "functions_d.html":[5,3,0,3],
