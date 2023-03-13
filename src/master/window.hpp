@@ -129,9 +129,9 @@ class UIWindow
 	/// Appends a source file page to the source view notebook.
 	void append_source_file(const std::string &fullpath, const int rank);
 	/// Tokenizes, parses and analyzes the received GDB output.
-	void print_data_gdb(const char *const data, const int rank);
+	void handle_data_gdb(const char *const data, const int rank);
 	/// Appends text to the target I/O text view.
-	void print_data_trgt(const char *const data, const int rank);
+	void handle_data_trgt(const char *const data, const int rank);
 	/// Sets the positions of the dots in the drawing area.
 	void update_markers(const int page_num);
 	/// Checks if the source file notebook has pages and updates the dots if so.
@@ -228,7 +228,7 @@ public:
 	/// Closes the GDB TCP sockets and thus the slaves.
 	bool on_delete(GdkEventAny *);
 	/// Forwards the received data to the corresponding data handler.
-	void print_data(const char *const data, const int port);
+	void handle_data(const char *const data, const int port);
 	/// Writes data to the TCP socket.
 	bool send_data(asio::ip::tcp::socket *const socket,
 				   const std::string &data);

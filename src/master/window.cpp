@@ -999,7 +999,7 @@ void UIWindow::clear_labels_overview(const int rank)
  * This function updates the running and exited row for a processes. If the
  * exit code is non-zero (error) it is highlighted in red.
  *
- * It is called after a GDB response has been parsed. See @ref print_data_gdb.
+ * It is called after a GDB response has been parsed. See @ref handle_data_gdb.
  */
 void UIWindow::check_overview(const int rank)
 {
@@ -1045,7 +1045,7 @@ void UIWindow::check_overview(const int rank)
  * This function updates all labels and their tooltip for a process.
  *
  * It is called after a GDB response has been parsed and a change in location
- * has been detected. See @ref print_data_gdb.
+ * has been detected. See @ref handle_data_gdb.
  *
  * @param rank The process rank.
  *
@@ -1466,7 +1466,7 @@ void UIWindow::scroll_to_line(const int rank) const
  * This function updates the current line and file for a process.
  *
  * It is called after a GDB response has been parsed and a change in location
- * has been detected. See @ref print_data_gdb.
+ * has been detected. See @ref handle_data_gdb.
  *
  * @param rank The process rank.
  *
@@ -1600,7 +1600,7 @@ void UIWindow::parse_stop_record(mi_output *first_output, const int rank)
  *
  * @param rank The process rank.
  */
-void UIWindow::print_data_gdb(const char *const data, const int rank)
+void UIWindow::handle_data_gdb(const char *const data, const int rank)
 {
 	char *token = strtok((char *)data, "\n");
 	while (nullptr != token)
@@ -1634,7 +1634,7 @@ void UIWindow::print_data_gdb(const char *const data, const int rank)
  *
  * @param rank The process rank.
  */
-void UIWindow::print_data_trgt(const char *const data, const int rank)
+void UIWindow::handle_data_trgt(const char *const data, const int rank)
 {
 	Gtk::TextBuffer *buffer = m_text_buffers_trgt[rank];
 	buffer->insert(buffer->end(), data);
@@ -1644,13 +1644,13 @@ void UIWindow::print_data_trgt(const char *const data, const int rank)
 
 /**
  * This function forwards the received data to the corresponding data handler.
- * When the data has been handled it is free'd.
+ * When the data has been handled it is freed.
  *
  * @param[in] data The received text.
  *
  * @param port The originating TCP port.
  */
-void UIWindow::print_data(const char *const data, const int port)
+void UIWindow::handle_data(const char *const data, const int port)
 {
 	const int rank = get_rank(port);
 	const bool is_gdb = src_is_gdb(port);
@@ -1659,7 +1659,7 @@ void UIWindow::print_data(const char *const data, const int port)
 
 	if (is_gdb)
 	{
-		print_data_gdb(data, rank);
+		handle_data_gdb(data, rank);
 		Gtk::ScrolledWindow *scrolled_window = m_scrolled_windows_gdb[rank];
 		if (m_scroll_connections_gdb[rank].empty())
 		{
@@ -1671,7 +1671,7 @@ void UIWindow::print_data(const char *const data, const int port)
 	}
 	else
 	{
-		print_data_trgt(data, rank);
+		handle_data_trgt(data, rank);
 		Gtk::ScrolledWindow *scrolled_window = m_scrolled_windows_trgt[rank];
 		if (m_scroll_connections_trgt[rank].empty())
 		{

@@ -87,8 +87,8 @@ Breakpoint::~Breakpoint()
  * Breakpoints are ID'd by a number which is set by GDB. It is saved in the
  * @ref m_numbers array per process. The @ref m_numbers array is set by the
  * @ref set_number function which is called by the
- * @ref UIWindow::print_data_gdb function, when the corresponding GDB output has
- * been parsed.
+ * @ref UIWindow::handle_data_gdb function, when the corresponding GDB output
+ * has been parsed.
  */
 bool Breakpoint::create_breakpoint(const int rank)
 {
@@ -120,7 +120,7 @@ bool Breakpoint::create_breakpoint(const int rank)
  * Breakpoints are ID'd by a number which is set by GDB. It is saved in the
  * @ref m_numbers array per process and used in this function to delete it.
  * The @ref m_numbers array is set by the @ref set_number function which is
- * called by the @ref UIWindow::print_data_gdb function, when the corresponding
+ * called by the @ref UIWindow::handle_data_gdb function, when the corresponding
  * GDB output has been parsed.
  */
 bool Breakpoint::delete_breakpoint(const int rank)

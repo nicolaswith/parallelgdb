@@ -262,7 +262,7 @@ void Master::read_data(tcp::socket socket, const asio::ip::port_type port)
 		data[length] = '\0';
 		// hand a copy of the data to the print function
 		Glib::signal_idle().connect_once(
-			sigc::bind(sigc::mem_fun(*m_window, &UIWindow::print_data),
+			sigc::bind(sigc::mem_fun(*m_window, &UIWindow::handle_data),
 					   strdup(data), port));
 	}
 	delete[] data;
