@@ -62,7 +62,7 @@ Breakpoint::Breakpoint(const int num_processes, const int line,
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
 		m_numbers[rank] = -1;
-		m_breakpoint_state[rank] = NO_ACTION;
+		m_breakpoint_state[rank] = NOT_EXISTING;
 	}
 }
 
@@ -133,7 +133,7 @@ bool Breakpoint::delete_breakpoint(const int rank)
 	string cmd = "-break-delete " + std::to_string(m_numbers[rank]) + "\n";
 	if (m_window->send_data(m_window->get_conns_gdb(rank), cmd))
 	{
-		m_breakpoint_state[rank] = NO_ACTION;
+		m_breakpoint_state[rank] = NOT_EXISTING;
 		return true;
 	}
 	return false;
@@ -270,7 +270,7 @@ bool Breakpoint::one_created() const
  * still existing, so reset to the @c CREATED state.
  *
  * If a breakpoint could not be set it is in the @c ERROR_CREATING state but
- * not existing, so reset to the @c NO_ACTION state.
+ * not existing, so reset to the @c NOT_EXISTING state.
  */
 void Breakpoint::update_states()
 {
@@ -282,7 +282,7 @@ void Breakpoint::update_states()
 		}
 		else if (m_breakpoint_state[rank] == ERROR_CREATING)
 		{
-			m_breakpoint_state[rank] = NO_ACTION;
+			m_breakpoint_state[rank] = NOT_EXISTING;
 		}
 	}
 }

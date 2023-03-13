@@ -36,12 +36,14 @@ class UIWindow;
 /// The states a Breakpoint can be in.
 enum BreakpointState
 {
-	NO_ACTION,		/**< breakpoint is not set. */
-	CREATE,			/**< breakpoint is marked to be created. */
-	DELETE,			/**< breakpoint is marked to be deleted. */
-	CREATED,		/**< breakpoint is set. */
-	ERROR_CREATING, /**< breakpoint could not be created. */
-	ERROR_DELETING	/**< breakpoint could not be deleted. */
+	/** GDB breakpoint is not set. */
+	NOT_EXISTING,		
+	/** GDB breakpoint is set. */
+	CREATED,		
+	/** GDB breakpoint could not be created. */
+	ERROR_CREATING, 
+	/** GDB breakpoint could not be deleted. */
+	ERROR_DELETING	
 };
 
 /// Stores information about a breakpoint on a specific source file.
