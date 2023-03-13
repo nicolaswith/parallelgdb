@@ -1,12 +1,18 @@
 var searchData=
 [
-  ['parallel_20gdb_176',['Parallel GDB',['../index.html',1,'']]],
-  ['parse_5fbreakpoint_177',['parse_breakpoint',['../classUIWindow.html#a5ae9e3856e91d22769989309f2df8ef8',1,'UIWindow']]],
-  ['parse_5fcl_5fargs_178',['parse_cl_args',['../classSlave.html#a842e443fdf7cfb25921ecc0bb8bfe673',1,'Slave']]],
-  ['parse_5fstop_5frecord_179',['parse_stop_record',['../classUIWindow.html#a6d9dcccd238bba0e3e967f0c852391a1',1,'UIWindow']]],
-  ['parse_5ftarget_5fstate_180',['parse_target_state',['../classUIWindow.html#a7a313a55f687c33ffda769786ac54ee7',1,'UIWindow']]],
-  ['print_5fdata_181',['print_data',['../classUIWindow.html#a4c13def5a6f4685ef6088c68cafc3937',1,'UIWindow']]],
-  ['print_5fdata_5fgdb_182',['print_data_gdb',['../classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145',1,'UIWindow']]],
-  ['print_5fdata_5ftrgt_183',['print_data_trgt',['../classUIWindow.html#af0ef03c9ebd1f694e7dfc9326d7104f1',1,'UIWindow']]],
-  ['print_5fhelp_184',['print_help',['../classSlave.html#a23cb3fd44e3d83317046810abb68902a',1,'Slave']]]
+  ['on_5fabout_5fclicked_164',['on_about_clicked',['../classUIWindow.html#af28cb60749093d8cd3e36426b32e5052',1,'UIWindow']]],
+  ['on_5fcustom_5flauncher_5ftoggled_165',['on_custom_launcher_toggled',['../classStartupDialog.html#a815f7b477424d9cf30880fa7b09a677f',1,'StartupDialog']]],
+  ['on_5fdelete_166',['on_delete',['../classUIWindow.html#a2cdd05512bbdfc3f1fb08111c3e0b8bc',1,'UIWindow']]],
+  ['on_5fdialog_5fresponse_167',['on_dialog_response',['../classBreakpointDialog.html#ac16b1a808758800a2dd732d510d93429',1,'BreakpointDialog::on_dialog_response()'],['../classFollowDialog.html#a9e81b2065e123616d06db1bed3ef568c',1,'FollowDialog::on_dialog_response()'],['../classStartupDialog.html#a5fd5b58e94e3b1cfe0e1d393db678e94',1,'StartupDialog::on_dialog_response()']]],
+  ['on_5fdraw_168',['on_draw',['../classUIDrawingArea.html#a267364e332ff5fe9459aa732daf4725b',1,'UIDrawingArea']]],
+  ['on_5ffollow_5fbutton_5fclicked_169',['on_follow_button_clicked',['../classUIWindow.html#ae5c481eedd36aa3da52acefdafabc57e',1,'UIWindow']]],
+  ['on_5finteraction_5fbutton_5fclicked_170',['on_interaction_button_clicked',['../classUIWindow.html#a8eb980e3513ccea5d0b9b17fcfe06ea7',1,'UIWindow']]],
+  ['on_5fkey_5fpress_171',['on_key_press',['../classUIWindow.html#a679f5db0a5c299d0252161faf114ccc5',1,'UIWindow']]],
+  ['on_5fline_5fmark_5fclicked_172',['on_line_mark_clicked',['../classUIWindow.html#aa20f683f45142300ff17e7ff445f50bc',1,'UIWindow']]],
+  ['on_5fquit_5fclicked_173',['on_quit_clicked',['../classUIWindow.html#a56c434b8be8180dd65afa0a77e830f1c',1,'UIWindow']]],
+  ['on_5fsave_5fdialog_5fresponse_174',['on_save_dialog_response',['../classStartupDialog.html#ae368fc1cded7ec90c00f5a00c2ffff06',1,'StartupDialog']]],
+  ['on_5fssh_5fbutton_5ftoggled_175',['on_ssh_button_toggled',['../classStartupDialog.html#a51d3f01fe3cb4718545d1a77edca39dd',1,'StartupDialog']]],
+  ['one_5fcreated_176',['one_created',['../classBreakpoint.html#a8336aad83387aa92aa8b21e9361096f6',1,'Breakpoint']]],
+  ['open_5ffile_177',['open_file',['../classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6',1,'UIWindow']]],
+  ['open_5fmissing_178',['open_missing',['../classUIWindow.html#a1b85f5b4298b721830e9b162a65c664e',1,'UIWindow']]]
 ];

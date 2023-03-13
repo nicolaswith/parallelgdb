@@ -1,11 +1,6 @@
 var searchData=
 [
-  ['init_45',['init',['../classUIWindow.html#a237131d5aa62c32799cf1f0d0e913110',1,'UIWindow']]],
-  ['init_5fall_5fpage_46',['init_all_page',['../classUIWindow.html#aa81dd64a8a95ba787c07119f14be4e18',1,'UIWindow']]],
-  ['init_5fgrid_47',['init_grid',['../classUIWindow.html#a90f6e11b3d717e1b45e0462499e03b8f',1,'UIWindow']]],
-  ['init_5fnotebook_48',['init_notebook',['../classUIWindow.html#a286e53c542b81365dbfcde1662899925',1,'UIWindow']]],
-  ['init_5foverview_49',['init_overview',['../classUIWindow.html#a84b9b7bc3de08ad346f4d06735fdf6ac',1,'UIWindow']]],
-  ['interact_5fwith_5fgdb_50',['interact_with_gdb',['../classUIWindow.html#a06f629dcbc6ff6c5c4eb0a1025a36496',1,'UIWindow']]],
-  ['is_5fcreated_51',['is_created',['../classBreakpoint.html#ab12850b9f6287dd4b98e75c093329773',1,'Breakpoint']]],
-  ['is_5fvalid_52',['is_valid',['../classStartupDialog.html#a92f4cf1bc14ff2c0a0daece576720ea8',1,'StartupDialog']]]
+  ['handle_5fdata_45',['handle_data',['../classUIWindow.html#a6b02b9f902043a4d74a938e765a66d10',1,'UIWindow']]],
+  ['handle_5fdata_5fgdb_46',['handle_data_gdb',['../classUIWindow.html#acd29f8323a80ab65833562c6e8cabba9',1,'UIWindow']]],
+  ['handle_5fdata_5ftrgt_47',['handle_data_trgt',['../classUIWindow.html#adede2ab7c5b822d4d9ef9fc283330b6f',1,'UIWindow']]]
 ];

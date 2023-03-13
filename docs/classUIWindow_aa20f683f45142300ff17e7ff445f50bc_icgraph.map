@@ -1,14 +1,14 @@
 <map id="UIWindow::on_line_mark_clicked" name="UIWindow::on_line_mark_clicked">
-<area shape="rect" id="node1" title="Signal handler for the Gsv::View line mark clicked signal." alt="" coords="1885,27,2068,69"/>
-<area shape="rect" id="node2" href="$classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="1384,35,1604,61"/>
-<area shape="rect" id="node13" href="$classUIWindow.html#a1b85f5b4298b721830e9b162a65c664e" title="Opens a file for a source file which was not found." alt="" coords="1652,60,1837,87"/>
-<area shape="rect" id="node3" href="$classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="1175,5,1330,32"/>
-<area shape="rect" id="node7" href="$classUIWindow.html#a6d9dcccd238bba0e3e967f0c852391a1" title="Searches for a stop record and extracts information from it." alt="" coords="1169,57,1336,98"/>
-<area shape="rect" id="node4" href="$classUIWindow.html#a237131d5aa62c32799cf1f0d0e913110" title="Loads the glade file and connects the signal handlers." alt="" coords="967,8,1083,35"/>
+<area shape="rect" id="node1" title="Signal handler for the Gsv::View line mark clicked signal." alt="" coords="1913,27,2096,69"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="1412,35,1632,61"/>
+<area shape="rect" id="node13" href="$classUIWindow.html#a1b85f5b4298b721830e9b162a65c664e" title="Opens a file for a source file which was not found." alt="" coords="1680,60,1865,87"/>
+<area shape="rect" id="node3" href="$classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="1203,5,1358,32"/>
+<area shape="rect" id="node7" href="$classUIWindow.html#a6d9dcccd238bba0e3e967f0c852391a1" title="Searches for a stop record and extracts information from it." alt="" coords="1197,57,1364,98"/>
+<area shape="rect" id="node4" href="$classUIWindow.html#a237131d5aa62c32799cf1f0d0e913110" title="Loads the glade file and connects the signal handlers." alt="" coords="988,8,1104,35"/>
 <area shape="rect" id="node5" href="$classMaster.html#a6cb4d31abc26317bccf2251edca321bb" title="Starts the GUI main window." alt="" coords="534,9,670,36"/>
 <area shape="rect" id="node6" href="$master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,35,60,61"/>
-<area shape="rect" id="node8" href="$classUIWindow.html#ad9aab2566d74ea2cb93ebcc5ba4e5145" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="929,60,1121,87"/>
-<area shape="rect" id="node9" href="$classUIWindow.html#a4c13def5a6f4685ef6088c68cafc3937" title="Forwards the received data to the corresponding data handler." alt="" coords="720,60,881,87"/>
+<area shape="rect" id="node8" href="$classUIWindow.html#acd29f8323a80ab65833562c6e8cabba9" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="943,60,1149,87"/>
+<area shape="rect" id="node9" href="$classUIWindow.html#a6b02b9f902043a4d74a938e765a66d10" title="Forwards the received data to the corresponding data handler." alt="" coords="720,60,895,87"/>
 <area shape="rect" id="node10" href="$classMaster.html#a25f8d33c802d2bede9354352e07bd3d8" title="Handles the TCP communication between socat and the master." alt="" coords="532,60,672,87"/>
 <area shape="rect" id="node11" href="$classMaster.html#ad960ade5e2ad4a42bc183f19653bf7a4" title="Waits (blocking) for a TCP connection on the TCP port." alt="" coords="316,60,484,87"/>
 <area shape="rect" id="node12" href="$classMaster.html#a5795d8ffc12cec35b9ecb6ef10dab7e3" title="Creates threads for each blocking TCP acceptor call." alt="" coords="108,60,268,87"/>

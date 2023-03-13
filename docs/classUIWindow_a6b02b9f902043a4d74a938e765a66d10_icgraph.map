@@ -1,5 +1,5 @@
-<map id="UIWindow::print_data" name="UIWindow::print_data">
-<area shape="rect" id="node1" title="Forwards the received data to the corresponding data handler." alt="" coords="720,5,881,32"/>
+<map id="UIWindow::handle_data" name="UIWindow::handle_data">
+<area shape="rect" id="node1" title="Forwards the received data to the corresponding data handler." alt="" coords="720,5,895,32"/>
 <area shape="rect" id="node2" href="$classMaster.html#a25f8d33c802d2bede9354352e07bd3d8" title="Handles the TCP communication between socat and the master." alt="" coords="532,5,672,32"/>
 <area shape="rect" id="node3" href="$classMaster.html#ad960ade5e2ad4a42bc183f19653bf7a4" title="Waits (blocking) for a TCP connection on the TCP port." alt="" coords="316,5,484,32"/>
 <area shape="rect" id="node4" href="$classMaster.html#a5795d8ffc12cec35b9ecb6ef10dab7e3" title="Creates threads for each blocking TCP acceptor call." alt="" coords="108,5,268,32"/>

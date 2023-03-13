@@ -1,6 +1,6 @@
-<map id="UIWindow::print_data_trgt" name="UIWindow::print_data_trgt">
-<area shape="rect" id="node1" title="Appends text to the target I/O text view." alt="" coords="929,5,1120,32"/>
-<area shape="rect" id="node2" href="$classUIWindow.html#a4c13def5a6f4685ef6088c68cafc3937" title="Forwards the received data to the corresponding data handler." alt="" coords="720,5,881,32"/>
+<map id="UIWindow::handle_data_trgt" name="UIWindow::handle_data_trgt">
+<area shape="rect" id="node1" title="Appends text to the target I/O text view." alt="" coords="943,5,1148,32"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#a6b02b9f902043a4d74a938e765a66d10" title="Forwards the received data to the corresponding data handler." alt="" coords="720,5,895,32"/>
 <area shape="rect" id="node3" href="$classMaster.html#a25f8d33c802d2bede9354352e07bd3d8" title="Handles the TCP communication between socat and the master." alt="" coords="532,5,672,32"/>
 <area shape="rect" id="node4" href="$classMaster.html#ad960ade5e2ad4a42bc183f19653bf7a4" title="Waits (blocking) for a TCP connection on the TCP port." alt="" coords="316,5,484,32"/>
 <area shape="rect" id="node5" href="$classMaster.html#a5795d8ffc12cec35b9ecb6ef10dab7e3" title="Creates threads for each blocking TCP acceptor call." alt="" coords="108,5,268,32"/>
