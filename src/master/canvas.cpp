@@ -52,8 +52,6 @@ const Gdk::RGBA UIDrawingArea::s_colors[] = {
  * to be out of the visible area.
  *
  * @param num_processes The total number of processes.
- *
- * @param[in] window The pointer to the UIWindow object.
  */
 UIDrawingArea::UIDrawingArea(const int num_processes)
 	: m_num_processes(num_processes),

@@ -1,6 +1,6 @@
 <map id="UIWindow" name="UIWindow">
-<area shape="rect" id="node1" title="Wrapper class for the GUI window." alt="" coords="127,5,215,32"/>
-<area shape="rect" id="node2" href="$classBreakpoint.html" title="Stores information about a breakpoint on a specific source file." alt="" coords="5,95,99,121"/>
-<area shape="rect" id="node3" href="$classUIDrawingArea.html" title="Draws the processes current location in the source files on the drawing area." alt="" coords="281,95,401,121"/>
-<area shape="rect" id="node4" title=" " alt="" coords="406,5,543,32"/>
+<area shape="rect" id="node1" title="Wrapper class for the GUI window." alt="" coords="30,171,118,197"/>
+<area shape="rect" id="node2" href="$classBreakpoint.html" title="Stores information about a breakpoint on a specific source file." alt="" coords="27,260,121,287"/>
+<area shape="rect" id="node3" href="$classUIDrawingArea.html" title="Draws the processes current location in the source files on the drawing area." alt="" coords="14,81,134,108"/>
+<area shape="rect" id="node4" title=" " alt="" coords="5,5,143,32"/>
 </map>

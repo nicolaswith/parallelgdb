@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['m_5fapp_57',['m_app',['../classUIWindow.html#aa4cfeb9f1a071663352c6efeabc35ef1',1,'UIWindow::m_app()'],['../classMaster.html#a14cd330aea4e69d1f49bc46ae4f9802b',1,'Master::m_app()']]],
+  ['m_5fapp_57',['m_app',['../classMaster.html#a14cd330aea4e69d1f49bc46ae4f9802b',1,'Master::m_app()'],['../classUIWindow.html#aa4cfeb9f1a071663352c6efeabc35ef1',1,'UIWindow::m_app()']]],
   ['m_5fargc_58',['m_argc',['../classSlave.html#a68cc3a81adbeab743a8394fb372a900c',1,'Slave']]],
   ['m_5fargs_5foffset_59',['m_args_offset',['../classSlave.html#a282d55a2149a792fdbefe620a9ab1e10',1,'Slave']]],
   ['m_5fargv_60',['m_argv',['../classSlave.html#aab7c289967a2fb21532d14f2a4166484',1,'Slave']]],
@@ -96,7 +96,7 @@ var searchData=
   ['m_5ftext_5fbuffers_5ftrgt_150',['m_text_buffers_trgt',['../classUIWindow.html#a4e523e3225e6102e8bc0d7856afc9e68',1,'UIWindow']]],
   ['m_5ftty_5fgdb_151',['m_tty_gdb',['../classSlave.html#a15e9f9d03df215a2fcedddbeb5b41825',1,'Slave']]],
   ['m_5ftty_5ftrgt_152',['m_tty_trgt',['../classSlave.html#acca21a1d8c6848782a540313ec9a8e94',1,'Slave']]],
-  ['m_5fwindow_153',['m_window',['../classBreakpoint.html#ac8c771b8f57eb4cc0b25f8004e903945',1,'Breakpoint::m_window()'],['../classUIDrawingArea.html#a5f1ac81080366ae273eece1e041dcde2',1,'UIDrawingArea::m_window()'],['../classMaster.html#a097169a330939118c115b6195d127b83',1,'Master::m_window()']]],
+  ['m_5fwindow_153',['m_window',['../classBreakpoint.html#ac8c771b8f57eb4cc0b25f8004e903945',1,'Breakpoint::m_window()'],['../classMaster.html#a097169a330939118c115b6195d127b83',1,'Master::m_window()']]],
   ['m_5fy_5foffsets_154',['m_y_offsets',['../classUIDrawingArea.html#a38741f2cb70e343efc8af7848416af0d',1,'UIDrawingArea']]],
   ['main_155',['main',['../master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438',1,'main(int, char const **):&#160;master.cpp'],['../slave_8cpp.html#aa06f5fbe915d0bf149dcf793acea47a1',1,'main(const int argc, char **argv):&#160;slave.cpp']]],
   ['master_156',['Master',['../classMaster.html#ab917c3763c181ccad46ac6da8843c6e9',1,'Master::Master()'],['../classMaster.html',1,'Master']]],
