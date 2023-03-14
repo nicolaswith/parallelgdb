@@ -42,6 +42,8 @@
 #include "follow_dialog.hpp"
 #include "canvas.hpp"
 
+#include "mi_gdb.h"
+
 using asio::ip::tcp;
 using std::string;
 

@@ -34,11 +34,12 @@
 #include <iosfwd>
 
 #include "asio.hpp"
-#include "mi_gdb.h"
 
 class Breakpoint;
 class UIDrawingArea;
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
+typedef struct mi_h_struct mi_h;
+typedef struct mi_output_struct mi_output;
 namespace Gsv
 {
 	class View;
