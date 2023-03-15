@@ -35,17 +35,17 @@ int main(int argc, char const **argv)
 			MPI_Recv(tmp_rec, SEND_LENGTH, MPI_CHAR, MPI_ANY_SOURCE, 0, MPI_COMM_WORLD, &status);
 			rec_strs[status.MPI_SOURCE] = strdup(tmp_rec);
 
-			delete tmp_rec;
+			delete[] tmp_rec;
 		}
 
 		cout << "\n";
 		for (int i = 0; i < size; ++i)
 		{
 			cout << rec_strs[i];
-			delete rec_strs[i];
+			delete[] rec_strs[i];
 		}
 
-		delete rec_strs;
+		delete[] rec_strs;
 	}
 	else
 	{
