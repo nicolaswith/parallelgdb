@@ -21,10 +21,6 @@ int main(int argc, char const **argv)
 	if (0 == rank)
 	{
 		char **rec_strs = new char *[size];
-		for (int i = 0; i < size; i++)
-		{
-			rec_strs[i] = new char[SEND_LENGTH]();
-		}
 		rec_strs[0] = strdup(send_str.c_str());
 
 		for (int i = 1; i < size; ++i)
@@ -42,7 +38,7 @@ int main(int argc, char const **argv)
 		for (int i = 0; i < size; ++i)
 		{
 			cout << rec_strs[i];
-			delete[] rec_strs[i];
+			free(rec_strs[i]);
 		}
 
 		delete[] rec_strs;
