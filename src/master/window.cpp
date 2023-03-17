@@ -59,9 +59,10 @@ const char *const open_file_id = "open-file";
  *
  * @param num_processes The total number of processes.
  */
-UIWindow::UIWindow(const int num_processes)
+UIWindow::UIWindow(const int num_processes, const int base_port)
 	: m_num_processes(num_processes),
-	  m_follow_rank(FOLLOW_ALL)
+	  m_follow_rank(FOLLOW_ALL),
+	  m_base_port(base_port)
 {
 	// allocate memory and zero-initialize values
 	m_current_line = new int[m_num_processes]();

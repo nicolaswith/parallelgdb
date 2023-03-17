@@ -43,10 +43,6 @@ class StartupDialog;
  */
 class Master
 {
-	const int m_max_length;
-	const int m_base_port_gdb;
-	const int m_base_port_trgt;
-
 	Glib::RefPtr<Gtk::Application> m_app;
 	UIWindow *m_window;
 	StartupDialog *m_dialog;

@@ -47,8 +47,9 @@ class StartupDialog
 	int m_number_of_processes;
 	int m_processes_per_node;
 	int m_num_nodes;
-	std::string m_slave_path;
 	std::string m_ip_address;
+	int m_base_port;
+	std::string m_slave_path;
 	std::string m_target_path;
 	std::string m_target_args;
 	bool m_ssh;
@@ -63,8 +64,9 @@ class StartupDialog
 	Gtk::Entry *m_entry_number_of_processes;
 	Gtk::Entry *m_entry_processes_per_node;
 	Gtk::Entry *m_entry_num_nodes;
-	Gtk::Entry *m_entry_slave_path;
 	Gtk::Entry *m_entry_ip_address;
+	Gtk::Entry *m_entry_base_port;
+	Gtk::Entry *m_entry_slave_path;
 	Gtk::Entry *m_entry_target_path;
 	Gtk::Entry *m_entry_target_args;
 	Gtk::CheckButton *m_checkbutton_ssh;
@@ -112,7 +114,7 @@ public:
 	/// Default constructor.
 	StartupDialog();
 	/// Destructor.
-	virtual ~StartupDialog();
+	~StartupDialog();
 
 	/// Returns the launcher command.
 	std::string get_cmd() const;
@@ -151,6 +153,17 @@ public:
 	inline int num_processes() const
 	{
 		return m_number_of_processes;
+	}
+
+	/// Returns the base port.
+	/**
+	 * This function returns the base port.
+	 *
+	 * @return The base port.
+	 */
+	inline int base_port() const
+	{
+		return m_base_port;
 	}
 
 	/// Returns whether SSH should be used.

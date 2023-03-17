@@ -70,6 +70,7 @@ class UIWindow
 	const int m_num_processes;
 	int m_max_buttons_per_row;
 	int m_follow_rank;
+	const int m_base_port;
 
 	int *m_current_line;
 	std::string *m_current_file;
@@ -224,9 +225,9 @@ class UIWindow
 
 public:
 	/// Default constructor.
-	UIWindow(const int num_processes);
+	UIWindow(const int num_processes, const int base_port);
 	/// Destructor.
-	virtual ~UIWindow();
+	~UIWindow();
 
 	/// Loads the glade file and connects the signal handlers.
 	bool init(Glib::RefPtr<Gtk::Application> app);
@@ -356,9 +357,9 @@ public:
 	 *
 	 * @return @c true if the port is associated with GDB, @c false otherwise.
 	 */
-	inline static bool src_is_gdb(const int port)
+	inline bool src_is_gdb(const int port)
 	{
-		return (0 == (port & 0x4000));
+		return port < m_base_port + m_num_processes;
 	}
 
 	/// Retrieves the process rank from the TCP port.
@@ -369,9 +370,16 @@ public:
 	 *
 	 * @return The process rank.
 	 */
-	inline static int get_rank(const int port)
+	inline int get_rank(const int port)
 	{
-		return (0x3FFF & port);
+		if (port < m_base_port + m_num_processes)
+		{
+			return port - m_base_port;
+		}
+		else
+		{
+			return port - m_base_port - m_num_processes;
+		}
 	}
 };
 

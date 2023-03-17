@@ -34,6 +34,7 @@
 #include "base64.hpp"
 
 using std::string;
+using std::size_t;
 
 /**
  * This function is a wrapper for the Gtk::get_widget function.
@@ -68,8 +69,9 @@ StartupDialog::StartupDialog()
 	  m_number_of_processes(-1),
 	  m_processes_per_node(-1),
 	  m_num_nodes(-1),
-	  m_slave_path(""),
 	  m_ip_address(""),
+	  m_base_port(-1),
+	  m_slave_path(""),
 	  m_target_path(""),
 	  m_target_args(""),
 	  m_ssh(false),
@@ -98,8 +100,9 @@ StartupDialog::StartupDialog()
 	m_entry_processes_per_node =
 		get_widget<Gtk::Entry>("processes-per-node-entry");
 	m_entry_num_nodes = get_widget<Gtk::Entry>("num-nodes-entry");
-	m_entry_slave_path = get_widget<Gtk::Entry>("slave-entry");
 	m_entry_ip_address = get_widget<Gtk::Entry>("ip-address-entry");
+	m_entry_base_port = get_widget<Gtk::Entry>("base-port-entry");
+	m_entry_slave_path = get_widget<Gtk::Entry>("slave-entry");
 	m_entry_target_path = get_widget<Gtk::Entry>("target-entry");
 	m_entry_target_args = get_widget<Gtk::Entry>("arguments-entry");
 	m_checkbutton_ssh = get_widget<Gtk::CheckButton>("ssh-checkbutton");
@@ -140,6 +143,9 @@ StartupDialog::StartupDialog()
 	m_dialog->signal_response().connect(
 		sigc::mem_fun(*this, &StartupDialog::on_dialog_response));
 
+	// set default value for base port
+	m_entry_base_port->set_text("32768");
+
 	m_dialog->show_all();
 }
 
@@ -177,8 +183,9 @@ void StartupDialog::clear_dialog()
 	m_entry_number_of_processes->set_text("");
 	m_entry_processes_per_node->set_text("");
 	m_entry_num_nodes->set_text("");
-	m_entry_slave_path->set_text("");
 	m_entry_ip_address->set_text("");
+	m_entry_base_port->set_text("");
+	m_entry_slave_path->set_text("");
 	m_entry_target_path->set_text("");
 	m_entry_target_args->set_text("");
 	m_checkbutton_ssh->set_active(false);
@@ -219,10 +226,12 @@ void StartupDialog::set_value(const std::string &key, const std::string &value)
 		m_entry_processes_per_node->set_text(value);
 	if ("num_nodes" == key)
 		m_entry_num_nodes->set_text(value);
-	if ("slave_path" == key)
-		m_entry_slave_path->set_text(value);
 	if ("ip_address" == key)
 		m_entry_ip_address->set_text(value);
+	if ("base_port" == key)
+		m_entry_base_port->set_text(value);
+	if ("slave_path" == key)
+		m_entry_slave_path->set_text(value);
 	if ("target_path" == key)
 		m_entry_target_path->set_text(value);
 	if ("target_args" == key)
@@ -345,12 +354,16 @@ void StartupDialog::on_save_dialog_response(const int response_id,
 	config += m_num_nodes > 0 ? std::to_string(m_num_nodes) : "";
 	config += "\n";
 
-	config += "slave_path=";
-	config += m_slave_path;
-	config += "\n";
-
 	config += "ip_address=";
 	config += m_ip_address;
+	config += "\n";
+
+	config += "base_port=";
+	config += m_base_port >= 0 ? std::to_string(m_base_port) : "";
+	config += "\n";
+
+	config += "slave_path=";
+	config += m_slave_path;
 	config += "\n";
 
 	config += "target_path=";
@@ -414,7 +427,7 @@ bool StartupDialog::read_values(const bool exporting)
 	// parse intergers
 	try
 	{
-		std::size_t pos;
+		size_t pos;
 		string text = m_entry_number_of_processes->get_text();
 		m_number_of_processes = std::stoi(text, &pos, 10);
 		if (pos != text.size() || m_number_of_processes <= 0)
@@ -429,7 +442,7 @@ bool StartupDialog::read_values(const bool exporting)
 
 	try
 	{
-		std::size_t pos;
+		size_t pos;
 		string text = m_entry_processes_per_node->get_text();
 		m_processes_per_node = std::stoi(text, &pos, 10);
 		if (pos != text.size() || m_processes_per_node <= 0)
@@ -444,7 +457,7 @@ bool StartupDialog::read_values(const bool exporting)
 
 	try
 	{
-		std::size_t pos;
+		size_t pos;
 		string text = m_entry_num_nodes->get_text();
 		m_num_nodes = std::stoi(text, &pos, 10);
 		if (pos != text.size() || m_num_nodes <= 0)
@@ -457,12 +470,49 @@ bool StartupDialog::read_values(const bool exporting)
 		m_num_nodes = -1;
 	}
 
-	if (!m_launcher_custom && !exporting)
+	try
 	{
-		if (-1 == m_number_of_processes)
+		size_t pos;
+		string text = m_entry_base_port->get_text();
+		m_base_port = std::stoi(text, &pos, 10);
+		if (pos != text.size() || m_base_port < 0 || m_base_port > 0xFFFF)
+		{
+			throw std::exception();
+		}
+	}
+	catch (const std::exception &)
+	{
+		m_base_port = -1;
+	}
+
+	if (exporting)
+	{
+		return true;
+	}
+
+	if (-1 == m_number_of_processes)
+	{
+		Gtk::MessageDialog dialog(*dynamic_cast<Gtk::Window *>(m_dialog),
+								  "Invalid Number of Processes.", false,
+								  Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
+		dialog.run();
+		return false;
+	}
+	if (-1 == m_base_port)
+	{
+		Gtk::MessageDialog dialog(*dynamic_cast<Gtk::Window *>(m_dialog),
+								  "Invalid Base Port.", false,
+								  Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
+		dialog.run();
+		return false;
+	}
+
+	if (!m_launcher_custom)
+	{
+		if ("" == m_ip_address)
 		{
 			Gtk::MessageDialog dialog(*dynamic_cast<Gtk::Window *>(m_dialog),
-									  "Invalid Number of Processes.", false,
+									  "Missing IP address.", false,
 									  Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
 			dialog.run();
 			return false;
@@ -471,14 +521,6 @@ bool StartupDialog::read_values(const bool exporting)
 		{
 			Gtk::MessageDialog dialog(*dynamic_cast<Gtk::Window *>(m_dialog),
 									  "Missing Slave Path.", false,
-									  Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
-			dialog.run();
-			return false;
-		}
-		if ("" == m_ip_address)
-		{
-			Gtk::MessageDialog dialog(*dynamic_cast<Gtk::Window *>(m_dialog),
-									  "Missing IP address.", false,
 									  Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
 			dialog.run();
 			return false;
@@ -604,6 +646,9 @@ string StartupDialog::get_cmd() const
 
 	cmd += " -i ";
 	cmd += m_ip_address;
+
+	cmd += " -p ";
+	cmd += std::to_string(m_base_port);
 
 	cmd += " ";
 	cmd += m_target_path;

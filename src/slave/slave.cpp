@@ -53,16 +53,19 @@ Slave::Slave(const int argc, char **argv)
 	  m_argv(argv),
 	  m_args_offset(-1),
 	  m_ip_addr(nullptr),
+	  m_base_port_str(nullptr),
 	  m_target(nullptr),
 	  m_rank_str(nullptr),
-	  m_env_str(nullptr),
+	  m_rank_env_str(nullptr),
+	  m_size_str(nullptr),
+	  m_size_env_str(nullptr),
 	  m_rank(-1),
+	  m_size(-1),
+	  m_base_port(-1),
 	  m_pid_socat_gdb(-1),
 	  m_pid_socat_trgt(-1),
 	  m_pid_gdb(-1)
 {
-	m_base_port_gdb = 0x8000;
-	m_base_port_trgt = 0xC000;
 }
 
 /**
@@ -73,7 +76,9 @@ Slave::~Slave()
 	free(m_target);
 	free(m_ip_addr);
 	free(m_rank_str);
-	free(m_env_str);
+	free(m_rank_env_str);
+	free(m_size_str);
+	free(m_size_env_str);
 }
 
 /**
@@ -92,8 +97,8 @@ bool Slave::wait_for_socat() const
 		exited = 0;
 		exited |= waitpid(m_pid_socat_gdb, nullptr, WNOHANG);
 		exited |= waitpid(m_pid_socat_trgt, nullptr, WNOHANG);
-		const bool found_gdb = std::filesystem::exists(m_tty_gdb);
-		const bool found_trgt = std::filesystem::exists(m_tty_trgt);
+		const bool found_gdb = filesystem::exists(m_tty_gdb);
+		const bool found_trgt = filesystem::exists(m_tty_trgt);
 		if (found_gdb && found_trgt)
 		{
 			return true;
@@ -216,7 +221,7 @@ bool Slave::parse_cl_args()
 {
 	char c;
 	opterr = 0;
-	while ((c = getopt(m_argc, m_argv, "+hi:r:e:")) != -1)
+	while ((c = getopt(m_argc, m_argv, "+hi:p:r:k:s:z:")) != -1)
 	{
 		switch (c)
 		{
@@ -224,13 +229,25 @@ bool Slave::parse_cl_args()
 			free(m_ip_addr);
 			m_ip_addr = strdup(optarg);
 			break;
+		case 'p': // port
+			free(m_base_port_str);
+			m_base_port_str = strdup(optarg);
+			break;
 		case 'r': // rank
 			free(m_rank_str);
 			m_rank_str = strdup(optarg);
 			break;
-		case 'e': // env var name
-			free(m_env_str);
-			m_env_str = strdup(optarg);
+		case 'k': // rank env var name
+			free(m_rank_env_str);
+			m_rank_env_str = strdup(optarg);
+			break;
+		case 's': // size
+			free(m_size_str);
+			m_size_str = strdup(optarg);
+			break;
+		case 'z': // size env var name
+			free(m_size_env_str);
+			m_size_env_str = strdup(optarg);
 			break;
 		case 'h': // help
 			print_help();
@@ -242,16 +259,33 @@ bool Slave::parse_cl_args()
 				fprintf(stderr,
 						"Option -%c requires the host IP address.\n", optopt);
 			}
+			else if ('p' == optopt)
+			{
+				fprintf(stderr,
+						"Option -%c requires the base port.\n", optopt);
+			}
 			else if ('r' == optopt)
 			{
 				fprintf(stderr,
 						"Option -%c requires the process rank.\n", optopt);
 			}
-			else if ('e' == optopt)
+			else if ('k' == optopt)
 			{
 				fprintf(stderr,
 						"Option -%c requires the name for the environment "
 						"variable containing the process rank.\n",
+						optopt);
+			}
+			else if ('s' == optopt)
+			{
+				fprintf(stderr,
+						"Option -%c requires the number of processes.\n", optopt);
+			}
+			else if ('z' == optopt)
+			{
+				fprintf(stderr,
+						"Option -%c requires the name for the environment "
+						"variable containing the number of processes.\n",
 						optopt);
 			}
 			else if (isprint(optopt))
@@ -284,8 +318,41 @@ bool Slave::parse_cl_args()
 		print_help();
 		return false;
 	}
+	if (nullptr == m_base_port_str)
+	{
+		fprintf(stderr, "Missing base port.\n");
+		print_help();
+		return false;
+	}
 	// store the offset of the first user argument
 	m_args_offset = optind + 1;
+	return true;
+}
+
+/**
+ * This function parses the base port string to an integer.
+ *
+ * @return @c true on success, @c false on error.
+ */
+bool Slave::set_base_port()
+{
+	try
+	{
+		size_t pos;
+		m_base_port = stoi(m_base_port_str, &pos, 10);
+		if (pos != strlen(m_base_port_str))
+		{
+			throw exception();
+		}
+	}
+	catch (const exception &)
+	{
+		fprintf(stderr,
+				"Could not parse base port to integer. String: %s\n",
+				m_base_port_str);
+		print_help();
+		return false;
+	}
 	return true;
 }
 
@@ -314,10 +381,10 @@ bool Slave::set_rank()
 		vector<const char *> env_vars = {
 			"OMPI_COMM_WORLD_RANK",
 			"PMI_RANK"};
-		if (m_env_str)
+		if (m_rank_env_str)
 		{
 			// push custom enviornment variable to front, so it is check first
-			env_vars.insert(env_vars.begin(), m_env_str);
+			env_vars.insert(env_vars.begin(), m_rank_env_str);
 		}
 		for (const char *const env_var : env_vars)
 		{
@@ -336,11 +403,71 @@ bool Slave::set_rank()
 	}
 	try
 	{
-		m_rank = stoi(rank);
+		size_t pos;
+		m_rank = stoi(rank, &pos, 10);
+		if (pos != strlen(rank))
+		{
+			throw exception();
+		}
 	}
 	catch (const exception &)
 	{
 		fprintf(stderr, "Could not parse rank to integer. String: %s\n", rank);
+		print_help();
+		return false;
+	}
+	return true;
+}
+
+/**
+ * This function obtains the number of started processes.
+ *
+ * @return @c true on success, @c false on error.
+ */
+bool Slave::set_size()
+{
+	const char *size = nullptr;
+	if (m_size_str)
+	{
+		size = m_size_str;
+	}
+	else
+	{
+		vector<const char *> env_vars = {
+			"OMPI_COMM_WORLD_SIZE",
+			"PMI_SIZE"};
+		if (m_size_env_str)
+		{
+			// push custom enviornment variable to front, so it is check first
+			env_vars.insert(env_vars.begin(), m_size_env_str);
+		}
+		for (const char *const env_var : env_vars)
+		{
+			size = getenv(env_var);
+			if (size)
+			{
+				break;
+			}
+		}
+	}
+	if (!size)
+	{
+		fprintf(stderr, "Could not read environemnt variable containing size.\n");
+		print_help();
+		return false;
+	}
+	try
+	{
+		size_t pos;
+		m_size = stoi(size, &pos, 10);
+		if (pos != strlen(size))
+		{
+			throw exception();
+		}
+	}
+	catch (const exception &)
+	{
+		fprintf(stderr, "Could not parse size to integer. String: %s\n", size);
 		print_help();
 		return false;
 	}
@@ -365,8 +492,8 @@ bool Slave::start_processes()
 	m_tty_gdb = tty_gdb_oss.str();
 	m_tty_trgt = tty_trgt_oss.str();
 
-	const int port_gdb = m_base_port_gdb + m_rank;
-	const int port_trgt = m_base_port_trgt + m_rank;
+	const int port_gdb = m_base_port + m_rank;
+	const int port_trgt = m_base_port + m_rank + m_size;
 
 	m_pid_socat_gdb = start_socat(m_tty_gdb, port_gdb);
 	m_pid_socat_trgt = start_socat(m_tty_trgt, port_trgt);
@@ -424,14 +551,17 @@ void Slave::print_help()
 {
 	fprintf(
 		stderr,
-		"Usage: ./pgdbslave -i <addr> [OPTIONS] </path/to/target>\n"
+		"Usage: ./pgdbslave -i <addr> -p <port> [OPTIONS] </path/to/target>\n"
 		"  -i <addr>\t host IP address\n"
+		"  -p <port>\t the base port\n"
 		"  -h\t\t print this help\n"
 		"\n"
 		"Options:\n"
-		"Only needed when using custom launcher command and only one at a time:\n"
+		"Only needed when using custom launcher command with unsupported launcher:\n"
 		"  -r <rank>\t rank of process\n"
-		"  -e <name>\t name of the environment variable containing the process rank\n");
+		"  -k <name>\t name of the environment variable containing the process rank\n"
+		"  -s <size>\t number of processes\n"
+		"  -z <name>\t name of the environment variable containing the number of processes\n");
 }
 
 /// Entry point for the slave program.
@@ -452,7 +582,15 @@ int main(const int argc, char **argv)
 	{
 		return EXIT_FAILURE;
 	}
+	if (!slave.set_base_port())
+	{
+		return EXIT_FAILURE;
+	}
 	if (!slave.set_rank())
+	{
+		return EXIT_FAILURE;
+	}
+	if (!slave.set_size())
 	{
 		return EXIT_FAILURE;
 	}

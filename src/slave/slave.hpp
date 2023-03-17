@@ -43,14 +43,17 @@ class Slave
 	int m_args_offset;
 
 	char *m_ip_addr;
+	char *m_base_port_str;
 	char *m_target;
 	char *m_rank_str;
-	char *m_env_str;
+	char *m_rank_env_str;
+	char *m_size_str;
+	char *m_size_env_str;
 
 	int m_rank;
+	int m_size;
 
-	int m_base_port_gdb;
-	int m_base_port_trgt;
+	int m_base_port;
 
 	int m_pid_socat_gdb;
 	int m_pid_socat_trgt;
@@ -74,8 +77,12 @@ public:
 
 	/// Parses the command line arguments.
 	bool parse_cl_args();
+	/// Parses the base port string to an integer.
+	bool set_base_port();
 	/// Obtains the rank assigned to this process.
 	bool set_rank();
+	/// Obtains the number of started processes.
+	bool set_size();
 	/// Generates the name for the PTYs and starts GDB and socat.
 	bool start_processes();
 	/// Monitors the socat and GDB instances.

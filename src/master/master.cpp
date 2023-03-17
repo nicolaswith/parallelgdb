@@ -40,6 +40,8 @@
 using asio::ip::tcp;
 using std::string;
 
+#define MAX_LENGTH 8192 // socat default
+
 static Gtk::Application *s_app;
 
 /**
@@ -48,9 +50,6 @@ static Gtk::Application *s_app;
  * display the GUI.
  */
 Master::Master()
-	: m_max_length(0x2000), // socat default
-	  m_base_port_gdb(0x8000),
-	  m_base_port_trgt(0xC000)
 {
 	m_app = Gtk::Application::create();
 	s_app = m_app.get();
@@ -218,8 +217,8 @@ bool Master::start_slaves_local()
  */
 void Master::read_data(tcp::socket socket, const asio::ip::port_type port)
 {
-	const int rank = UIWindow::get_rank(port);
-	if (UIWindow::src_is_gdb(port))
+	const int rank = m_window->get_rank(port);
+	if (m_window->src_is_gdb(port))
 	{
 		m_window->set_conns_gdb(rank, &socket);
 	}
@@ -230,7 +229,7 @@ void Master::read_data(tcp::socket socket, const asio::ip::port_type port)
 
 	// Allocate enough memory for a socat message. This memory will be
 	// overwritten without clearing it, as it is '\0'-terminated anyway.
-	char *data = new char[m_max_length + 8];
+	char *data = new char[MAX_LENGTH + 8];
 	if (nullptr == data)
 	{
 		throw std::bad_alloc();
@@ -239,10 +238,10 @@ void Master::read_data(tcp::socket socket, const asio::ip::port_type port)
 	{
 		asio::error_code error;
 		const size_t length =
-			socket.read_some(asio::buffer(data, m_max_length), error);
+			socket.read_some(asio::buffer(data, MAX_LENGTH), error);
 		if (asio::error::eof == error)
 		{
-			if (UIWindow::src_is_gdb(port))
+			if (m_window->src_is_gdb(port))
 			{
 				m_window->set_conns_gdb(rank, nullptr);
 			}
@@ -291,32 +290,27 @@ void Master::start_acceptor(tcp::acceptor acceptor,
  */
 bool Master::start_servers()
 {
-	m_window = new UIWindow{m_dialog->num_processes()};
+	m_window = new UIWindow{m_dialog->num_processes(), m_dialog->base_port()};
 
-	int base_ports[] = {m_base_port_gdb, m_base_port_trgt};
-	for (int i = 0; i < 2; ++i)
+	for (int offset = 0; offset < 2 * m_dialog->num_processes(); ++offset)
 	{
-		const int base_port = base_ports[i];
-		for (int rank = 0; rank < m_dialog->num_processes(); ++rank)
+		const int port = m_dialog->base_port() + offset;
+		try
 		{
-			const int port = base_port + rank;
-			try
-			{
-				std::thread(&Master::start_acceptor,
-							this,
-							tcp::acceptor(
-								*(new asio::io_context),
-								tcp::endpoint(tcp::v4(), port)),
-							port)
-					.detach();
-			}
-			catch (const std::exception &)
-			{
-				fprintf(stderr,
-						"Error: TCP port %d needed but already in use.\n",
-						port);
-				return false;
-			}
+			std::thread(&Master::start_acceptor,
+						this,
+						tcp::acceptor(
+							*(new asio::io_context),
+							tcp::endpoint(tcp::v4(), port)),
+						port)
+				.detach();
+		}
+		catch (const std::exception &)
+		{
+			fprintf(stderr,
+					"Error: TCP port %d needed but already in use.\n",
+					port);
+			return false;
 		}
 	}
 
