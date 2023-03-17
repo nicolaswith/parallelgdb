@@ -58,6 +58,8 @@ const char *const open_file_id = "open-file";
  * This function allocates all necessary arrays and initializes them.
  *
  * @param num_processes The total number of processes.
+ * 
+ * @param base_port The base port.
  */
 UIWindow::UIWindow(const int num_processes, const int base_port)
 	: m_num_processes(num_processes),

@@ -1,10 +1,10 @@
 <map id="UIWindow::handle_data" name="UIWindow::handle_data">
 <area shape="rect" id="node1" title="Forwards the received data to the corresponding data handler." alt="" coords="5,202,180,229"/>
-<area shape="rect" id="node2" href="$classUIWindow.html#afb01300d48a3af10ed8b08574e8d0f66" title="Retrieves the process rank from the TCP port." alt="" coords="255,101,407,127"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#ad59173c95a80c6a41d92530113dd68d0" title="Retrieves the process rank from the TCP port." alt="" coords="255,101,407,127"/>
 <area shape="rect" id="node3" href="$classUIWindow.html#acd29f8323a80ab65833562c6e8cabba9" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="228,151,435,178"/>
 <area shape="rect" id="node40" href="$classUIWindow.html#adede2ab7c5b822d4d9ef9fc283330b6f" title="Appends text to the target I/O text view." alt="" coords="229,202,434,229"/>
 <area shape="rect" id="node41" href="$classUIWindow.html#a367f6c7fc5761af2c7b9ba95a5ad6ae6" title="Scrolls a scrolled window to the bottom." alt="" coords="239,253,423,279"/>
-<area shape="rect" id="node42" href="$classUIWindow.html#adcac347655db8e31194add4d428579c2" title="Checks whether the port is associated with GDB." alt="" coords="250,303,413,330"/>
+<area shape="rect" id="node42" href="$classUIWindow.html#aeedc4296c794a08faee47217b4bbdfa3" title="Checks whether the port is associated with GDB." alt="" coords="250,303,413,330"/>
 <area shape="rect" id="node4" href="$classUIWindow.html#a280911307d72c0277043340ec513b5d4" title="Updates the running and exited row for a processes." alt="" coords="487,38,687,65"/>
 <area shape="rect" id="node6" href="$classUIWindow.html#a5ae9e3856e91d22769989309f2df8ef8" title="Searches for a breakpoint record in the GDB output." alt="" coords="483,181,691,207"/>
 <area shape="rect" id="node8" href="$classUIWindow.html#a6d9dcccd238bba0e3e967f0c852391a1" title="Searches for a stop record and extracts information from it." alt="" coords="503,115,670,156"/>

@@ -1,0 +1,4 @@
+<map id="Slave::set_base_port" name="Slave::set_base_port">
+<area shape="rect" id="node1" title="Parses the base port string to an integer." alt="" coords="5,5,163,32"/>
+<area shape="rect" id="node2" href="$classSlave.html#a23cb3fd44e3d83317046810abb68902a" title="Prints the help text." alt="" coords="211,5,341,32"/>
+</map>

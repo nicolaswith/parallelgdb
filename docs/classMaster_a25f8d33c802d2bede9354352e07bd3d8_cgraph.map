@@ -1,8 +1,8 @@
 <map id="Master::read_data" name="Master::read_data">
 <area shape="rect" id="node1" title="Handles the TCP communication between socat and the master." alt="" coords="5,253,145,279"/>
-<area shape="rect" id="node2" href="$classUIWindow.html#afb01300d48a3af10ed8b08574e8d0f66" title="Retrieves the process rank from the TCP port." alt="" coords="459,101,611,127"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#ad59173c95a80c6a41d92530113dd68d0" title="Retrieves the process rank from the TCP port." alt="" coords="459,101,611,127"/>
 <area shape="rect" id="node3" href="$classUIWindow.html#a6b02b9f902043a4d74a938e765a66d10" title="Forwards the received data to the corresponding data handler." alt="" coords="201,202,376,229"/>
-<area shape="rect" id="node43" href="$classUIWindow.html#adcac347655db8e31194add4d428579c2" title="Checks whether the port is associated with GDB." alt="" coords="454,303,617,330"/>
+<area shape="rect" id="node43" href="$classUIWindow.html#aeedc4296c794a08faee47217b4bbdfa3" title="Checks whether the port is associated with GDB." alt="" coords="454,303,617,330"/>
 <area shape="rect" id="node44" href="$classUIWindow.html#a37091955820dfb6b2c292477e14dcfb2" title="Sets the TCP socket associated to a process. (GDB)" alt="" coords="193,303,384,330"/>
 <area shape="rect" id="node45" href="$classUIWindow.html#a4332b7dab6c211ae72c06e74239f7225" title="Sets the TCP socket associated to a process. (target)" alt="" coords="193,354,384,381"/>
 <area shape="rect" id="node4" href="$classUIWindow.html#acd29f8323a80ab65833562c6e8cabba9" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="432,151,639,178"/>

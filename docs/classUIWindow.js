@@ -1,6 +1,6 @@
 var classUIWindow =
 [
-    [ "UIWindow", "classUIWindow.html#adac9a8e7758a30e16e948ee7ac1471fb", null ],
+    [ "UIWindow", "classUIWindow.html#ae7e74ea08076256f577f292b5f9ef78e", null ],
     [ "~UIWindow", "classUIWindow.html#a025d64297387ecbc4e291428f4a525e3", null ],
     [ "append_overview_row", "classUIWindow.html#a8c927adbf781e88754dcc9caabc6ae0b", null ],
     [ "append_source_file", "classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d", null ],
@@ -15,7 +15,7 @@ var classUIWindow =
     [ "edit_mark", "classUIWindow.html#ab3135faddc758530ac3e34b8973130ad", null ],
     [ "get_conns_gdb", "classUIWindow.html#a17b365bb1177f5f8e1306c5ac2d41198", null ],
     [ "get_conns_trgt", "classUIWindow.html#ad46c85636eec03da4bf3c8744d56989f", null ],
-    [ "get_rank", "classUIWindow.html#afb01300d48a3af10ed8b08574e8d0f66", null ],
+    [ "get_rank", "classUIWindow.html#ad59173c95a80c6a41d92530113dd68d0", null ],
     [ "get_widget", "classUIWindow.html#a71acff47d752a838c5a8a9bd55d486fe", null ],
     [ "handle_data", "classUIWindow.html#a6b02b9f902043a4d74a938e765a66d10", null ],
     [ "handle_data_gdb", "classUIWindow.html#acd29f8323a80ab65833562c6e8cabba9", null ],
@@ -51,7 +51,7 @@ var classUIWindow =
     [ "set_conns_gdb", "classUIWindow.html#a37091955820dfb6b2c292477e14dcfb2", null ],
     [ "set_conns_trgt", "classUIWindow.html#a4332b7dab6c211ae72c06e74239f7225", null ],
     [ "set_position", "classUIWindow.html#aa18935ac7bf79e5a10c8d536b81ca25f", null ],
-    [ "src_is_gdb", "classUIWindow.html#adcac347655db8e31194add4d428579c2", null ],
+    [ "src_is_gdb", "classUIWindow.html#aeedc4296c794a08faee47217b4bbdfa3", null ],
     [ "stop_all", "classUIWindow.html#aa22803bbfb48ff8cdc37fbf0696d144a", null ],
     [ "target_state", "classUIWindow.html#a655257a1db3090889ead987fcdffcaaa", null ],
     [ "toggle_all", "classUIWindow.html#a6a12f21b7519fae0cfaad1e698085b4f", null ],
@@ -61,6 +61,7 @@ var classUIWindow =
     [ "update_markers_timeout", "classUIWindow.html#ae369ac9ebde283b0469f363624040626", null ],
     [ "update_overview", "classUIWindow.html#adf6ab1f7b18f7ee63dbc0d2b63660949", null ],
     [ "m_app", "classUIWindow.html#aa4cfeb9f1a071663352c6efeabc35ef1", null ],
+    [ "m_base_port", "classUIWindow.html#a174e8fc8aa7d5249f1087c56df451211", null ],
     [ "m_bkptno_2_bkpt", "classUIWindow.html#a2562017e174a6b506ea3172006607026", null ],
     [ "m_breakpoints", "classUIWindow.html#a71205da7e8afab9af74a1815d97b724d", null ],
     [ "m_builder", "classUIWindow.html#afda20c1294855726bc5131e326ed543e", null ],

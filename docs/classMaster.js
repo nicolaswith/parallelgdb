@@ -12,9 +12,6 @@ var classMaster =
     [ "start_slaves_local", "classMaster.html#a5d92c75cf1ae471e47cb1cbcca6a6669", null ],
     [ "start_slaves_ssh", "classMaster.html#a375a3d5f77d5333e789276348157d61f", null ],
     [ "m_app", "classMaster.html#a14cd330aea4e69d1f49bc46ae4f9802b", null ],
-    [ "m_base_port_gdb", "classMaster.html#a2a54cf4ed4b9bef1a284aeb21cdd32ad", null ],
-    [ "m_base_port_trgt", "classMaster.html#ae974c5bea378cd483819da001ce46aaf", null ],
     [ "m_dialog", "classMaster.html#a16bc807db8b72292c8240fec480b6ae2", null ],
-    [ "m_max_length", "classMaster.html#aa7737a5bc29ca6f4314095d38ea50b93", null ],
     [ "m_window", "classMaster.html#a097169a330939118c115b6195d127b83", null ]
 ];

@@ -1,0 +1,4 @@
+<map id="Slave::set_size" name="Slave::set_size">
+<area shape="rect" id="node1" title="Obtains the number of started processes." alt="" coords="5,5,124,32"/>
+<area shape="rect" id="node2" href="$classSlave.html#a23cb3fd44e3d83317046810abb68902a" title="Prints the help text." alt="" coords="172,5,303,32"/>
+</map>

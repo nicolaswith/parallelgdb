@@ -112,9 +112,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a016c30fe4bc25cdb0fd0c3ec2c33e4a6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#a016c30fe4bc25cdb0fd0c3ec2c33e4a6">StartupDialog</a> ()</td></tr>
 <tr class="memdesc:a016c30fe4bc25cdb0fd0c3ec2c33e4a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="classStartupDialog.html#a016c30fe4bc25cdb0fd0c3ec2c33e4a6">More...</a><br /></td></tr>
 <tr class="separator:a016c30fe4bc25cdb0fd0c3ec2c33e4a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21e41329a66a0ceb4aae21baba78bd0d"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#a21e41329a66a0ceb4aae21baba78bd0d">~StartupDialog</a> ()</td></tr>
+<tr class="memitem:a21e41329a66a0ceb4aae21baba78bd0d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#a21e41329a66a0ceb4aae21baba78bd0d">~StartupDialog</a> ()</td></tr>
 <tr class="memdesc:a21e41329a66a0ceb4aae21baba78bd0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="classStartupDialog.html#a21e41329a66a0ceb4aae21baba78bd0d">More...</a><br /></td></tr>
 <tr class="separator:a21e41329a66a0ceb4aae21baba78bd0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90a8189035029118fcc6e4e22bb84dde"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#a90a8189035029118fcc6e4e22bb84dde">base_port</a> () const</td></tr>
+<tr class="memdesc:a90a8189035029118fcc6e4e22bb84dde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the base port.  <a href="classStartupDialog.html#a90a8189035029118fcc6e4e22bb84dde">More...</a><br /></td></tr>
+<tr class="separator:a90a8189035029118fcc6e4e22bb84dde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3dd518b4edebb588ba60b8b5538cc903"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#a3dd518b4edebb588ba60b8b5538cc903">get_cmd</a> () const</td></tr>
 <tr class="memdesc:a3dd518b4edebb588ba60b8b5538cc903"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the launcher command.  <a href="classStartupDialog.html#a3dd518b4edebb588ba60b8b5538cc903">More...</a><br /></td></tr>
 <tr class="separator:a3dd518b4edebb588ba60b8b5538cc903"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -188,6 +191,8 @@ Private Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
+<tr class="memitem:ade2857a950b8c6f223796b607500f85b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#ade2857a950b8c6f223796b607500f85b">m_base_port</a></td></tr>
+<tr class="separator:ade2857a950b8c6f223796b607500f85b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af79ed34950a715a9b0e4d0ed89ef7429"><td class="memItemLeft" align="right" valign="top">Glib::RefPtr&lt; Gtk::Builder &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#af79ed34950a715a9b0e4d0ed89ef7429">m_builder</a></td></tr>
 <tr class="separator:af79ed34950a715a9b0e4d0ed89ef7429"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4eafa444533c2412d46b2368e4690ae6"><td class="memItemLeft" align="right" valign="top">Gtk::CheckButton *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#a4eafa444533c2412d46b2368e4690ae6">m_checkbutton_ssh</a></td></tr>
@@ -196,6 +201,8 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a03b3802114c520b87eef033d9041a325"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09f0cdbf3f68863e48f19054f3bbbe8d"><td class="memItemLeft" align="right" valign="top">Gtk::Dialog *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#a09f0cdbf3f68863e48f19054f3bbbe8d">m_dialog</a></td></tr>
 <tr class="separator:a09f0cdbf3f68863e48f19054f3bbbe8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27dcd3ede4b5b9653100d3746e715832"><td class="memItemLeft" align="right" valign="top">Gtk::Entry *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#a27dcd3ede4b5b9653100d3746e715832">m_entry_base_port</a></td></tr>
+<tr class="separator:a27dcd3ede4b5b9653100d3746e715832"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aafa3da8df99289132be4398cd1a150f5"><td class="memItemLeft" align="right" valign="top">Gtk::Entry *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#aafa3da8df99289132be4398cd1a150f5">m_entry_ip_address</a></td></tr>
 <tr class="separator:aafa3da8df99289132be4398cd1a150f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade5c0746563e6c4fee1b21350ddd67b4"><td class="memItemLeft" align="right" valign="top">Gtk::Entry *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStartupDialog.html#ade5c0746563e6c4fee1b21350ddd67b4">m_entry_launcher_args</a></td></tr>
@@ -308,9 +315,6 @@ Here is the call graph for this function:</div>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">StartupDialog::~StartupDialog </td>
@@ -319,17 +323,49 @@ Here is the call graph for this function:</div>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 <p>This function closes the startup dialog. </p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a90a8189035029118fcc6e4e22bb84dde"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90a8189035029118fcc6e4e22bb84dde">&#9670;&nbsp;</a></span>base_port()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int StartupDialog::base_port </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function returns the base port.</p>
+<dl class="section return"><dt>Returns</dt><dd>The base port. </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classStartupDialog_a90a8189035029118fcc6e4e22bb84dde_icgraph.png" border="0" usemap="#aclassStartupDialog_a90a8189035029118fcc6e4e22bb84dde_icgraph" alt=""/></div>
+<map name="aclassStartupDialog_a90a8189035029118fcc6e4e22bb84dde_icgraph" id="aclassStartupDialog_a90a8189035029118fcc6e4e22bb84dde_icgraph">
+<area shape="rect" title="Returns the base port." alt="" coords="316,5,499,32"/>
+<area shape="rect" href="classMaster.html#a5795d8ffc12cec35b9ecb6ef10dab7e3" title="Creates threads for each blocking TCP acceptor call." alt="" coords="108,5,268,32"/>
+<area shape="rect" href="master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,5,60,32"/>
+</map>
+</div>
+
+</div>
+</div>
 <a id="a7ec3dcbd1f393f8553f6500b855057d4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7ec3dcbd1f393f8553f6500b855057d4">&#9670;&nbsp;</a></span>clear_all()</h2>
 
@@ -1282,6 +1318,28 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="ade2857a950b8c6f223796b607500f85b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade2857a950b8c6f223796b607500f85b">&#9670;&nbsp;</a></span>m_base_port</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int StartupDialog::m_base_port</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="af79ed34950a715a9b0e4d0ed89ef7429"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af79ed34950a715a9b0e4d0ed89ef7429">&#9670;&nbsp;</a></span>m_builder</h2>
 
@@ -1359,6 +1417,28 @@ Here is the caller graph for this function:</div>
       <table class="memname">
         <tr>
           <td class="memname">Gtk::Dialog* StartupDialog::m_dialog</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a27dcd3ede4b5b9653100d3746e715832"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27dcd3ede4b5b9653100d3746e715832">&#9670;&nbsp;</a></span>m_entry_base_port</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Gtk::Entry* StartupDialog::m_entry_base_port</td>
         </tr>
       </table>
   </td>

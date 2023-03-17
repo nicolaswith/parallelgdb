@@ -1,0 +1,4 @@
+<map id="Slave::set_size" name="Slave::set_size">
+<area shape="rect" id="node1" title="Obtains the number of started processes." alt="" coords="108,5,227,32"/>
+<area shape="rect" id="node2" href="$slave_8cpp.html#aa06f5fbe915d0bf149dcf793acea47a1" title="Entry point for the slave program." alt="" coords="5,5,60,32"/>
+</map>
