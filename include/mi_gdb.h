@@ -206,13 +206,6 @@ struct mi_frames_struct
 };
 typedef struct mi_frames_struct mi_frames;
 
-struct mi_aux_term_struct
-{
-	pid_t pid;
-	char *tty;
-};
-typedef struct mi_aux_term_struct mi_aux_term;
-
 struct mi_pty_struct
 {
 	char *slave;
@@ -473,7 +466,6 @@ void mi_free_output(mi_output *r);
 void mi_free_output_but(mi_output *r, mi_output *no, mi_results *no_r);
 void mi_free_frames(mi_frames *f);
 void mi_free_bkpt(mi_bkpt *b);
-void mi_free_aux_term(mi_aux_term *t);
 void mi_free_results(mi_results *r);
 void mi_free_results_but(mi_results *r, mi_results *no);
 void mi_free_gvar(mi_gvar *v);
@@ -482,7 +474,6 @@ void mi_free_wp(mi_wp *wp);
 void mi_free_stop(mi_stop *s);
 void mi_free_asm_insns(mi_asm_insns *i);
 void mi_free_asm_insn(mi_asm_insn *i);
-void mi_free_charp_list(char **l);
 void mi_free_chg_reg(mi_chg_reg *r);
 
 char *get_cstr(mi_output *o);
