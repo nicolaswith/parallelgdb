@@ -71,26 +71,29 @@ The master will start the specified number of slaves, each of which will start t
 If SSH is enabled, the master logs on to the remote cluster and starts the slaves there.
 
 ## Custom launcher command
-If you need to make specific changes to the start command, or need to use a completely different launcher, you can check the Custom Command option in the startup dialog. This command will invalidate all configurations except for the SSH options and the Number of Processes. For the master to know how many connections to open the Number of Processes still needs to be set in the startup dialog. Make SURE they match up with what you set in your custom command.
+If you need to make specific changes to the start command, or need to use a completely different launcher, you can check the "custom" launcher option in the startup dialog. This command will invalidate all configurations except for the SSH options, the Number of Processes and the Base Port. For the master to know how many connections to open the Number of Processes still needs to be set in the startup dialog. Make SURE they match up with what you set in your custom command.
 
-If Parallel GDB should not start the slaves at all, check the Custom Command option and leaf the Launcher Command blank.
+If Parallel GDB should not start the slaves at all, check the "custom" launcher option and leave the Launcher Arguments blank.
 
-The slave supports two possibilities to set its rank. Under normal conditions it will try to read the environment variables set by OpenMPI/MPICH/slurm:
+The slave supports two possibilities to set its rank and the size. Under normal conditions it will try to read the environment variables set by OpenMPI/PMI:
 
 	OMPI_COMM_WORLD_RANK
+	OMPI_COMM_WORLD_SIZE
+
 	PMI_RANK
+	PMI_SIZE
 
-If neither of those is set (NOT using OpenMPI/MPICH/slurm as launcher) there are two command line arguments which can be used to set the rank. First is 
+If the launcher you are using is not setting those environment variables, you can specify custom environment variable names for the rank and size:
 
-	-e <name>
+	-k <name> # rank
+	-z <name> # size
 
-which adds an additional environment variable name which is tried to be read before the others.
-
-Second is
+To directly pass the rank or size to the slave use:
 
 	-r <rank>
+	-s <size>
 
-which directly sets this processes rank. This must be set for every rank individually, so the launch command should probably start a shell script/etc.
+The rank must be set for every slave individually, so the launch command should probably start a shell script/etc.
 
 # Example Target
 In this project a small example target and configuration file for it is included. It can be built with:
