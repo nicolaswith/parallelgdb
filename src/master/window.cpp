@@ -1644,7 +1644,7 @@ void UIWindow::handle_data_trgt(const char *const data, const int rank)
 	Gtk::TextBuffer *buffer = m_text_buffers_trgt[rank];
 	buffer->insert(buffer->end(), data);
 	buffer = m_text_buffers_trgt[m_num_processes];
-	buffer->insert(buffer->end(), string("-----") + std::to_string(rank) + "-----\n");
+	buffer->insert(buffer->end(), "-----" + std::to_string(rank) + "-----\n");
 	buffer->insert(buffer->end(), data);
 }
 
