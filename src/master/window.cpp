@@ -58,7 +58,7 @@ const char *const open_file_id = "open-file";
  * This function allocates all necessary arrays and initializes them.
  *
  * @param num_processes The total number of processes.
- * 
+ *
  * @param base_port The base port.
  */
 UIWindow::UIWindow(const int num_processes, const int base_port)
@@ -187,8 +187,8 @@ void UIWindow::init_notebook(Gtk::Notebook *notebook,
 
 /**
  * This function adds the "All" page into the target IO notebook.
- * 
- * @param[in] notebook The target IO notebook. 
+ *
+ * @param[in] notebook The target IO notebook.
  */
 void UIWindow::init_all_page(Gtk::Notebook *notebook)
 {
@@ -1691,4 +1691,69 @@ void UIWindow::handle_data(const char *const data, const int port)
 	free((void *)data);
 
 	m_mutex_gui.unlock();
+}
+
+/**
+ * Checks how many connections are established and updates the text in the
+ * message dialog.
+ *
+ * @return @c true. The return value is used to indicate whether the event is
+ * completely handled.
+ */
+bool UIWindow::wait_slaves_timeout(Gtk::MessageDialog *dialog)
+{
+	if (nullptr == dialog)
+	{
+		return true;
+	}
+	int num_conns = 0;
+	for (int rank = 0; rank < m_num_processes; ++rank)
+	{
+		if (m_conns_gdb[rank])
+		{
+			num_conns++;
+		}
+		if (m_conns_trgt[rank])
+		{
+			num_conns++;
+		}
+	}
+	dialog->set_secondary_text(std::to_string(num_conns) + " connections of " + std::to_string(2 * m_num_processes) + " are established.");
+	// close dialog when all connections are established.
+	if (num_conns == 2 * m_num_processes)
+	{
+		delete dialog;
+		dialog = nullptr;
+	}
+	return true;
+}
+
+/**
+ * Waits for the slaves to connect.
+ *
+ * @return @c true when all connections are established, @c false, when the user
+ * cancels the waiting.
+ */
+bool UIWindow::wait_slaves()
+{
+	Gtk::MessageDialog *dialog = new Gtk::MessageDialog(
+		*root_window(), "Waiting for Processes.", false,
+		Gtk::MESSAGE_INFO, Gtk::BUTTONS_CANCEL);
+	sigc::connection timeout_connection = Glib::signal_timeout().connect(
+		sigc::bind(
+			sigc::mem_fun(*this, &UIWindow::wait_slaves_timeout),
+			dialog),
+		100);
+	int res = dialog->run();
+	timeout_connection.disconnect();
+	if (Gtk::RESPONSE_NONE == res)
+	{
+		return true;
+	}
+	else
+	{
+		delete dialog;
+		dialog = nullptr;
+		return false;
+	}
 }

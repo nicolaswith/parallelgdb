@@ -379,6 +379,11 @@ void Master::start_GUI()
 	{
 		return;
 	}
+	if (!m_window->wait_slaves())
+	{
+		m_app->quit();
+		return;
+	}
 	m_app->run(*m_window->root_window());
 }
 

@@ -218,6 +218,8 @@ class UIWindow
 	void parse_breakpoint(mi_output *first_output, const int rank);
 	/// Searches for a stop record and extracts information from it.
 	void parse_stop_record(mi_output *first_output, const int rank);
+	/// Checks how many connections are established.
+	bool wait_slaves_timeout(Gtk::MessageDialog *dialog);
 
 	/// Wrapper for the Gtk::get_widget function.
 	template <class T>
@@ -238,6 +240,8 @@ public:
 	/// Writes data to the TCP socket.
 	bool send_data(asio::ip::tcp::socket *const socket,
 				   const std::string &data);
+	/// Waits for the slaves to connect.
+	bool wait_slaves();
 
 	/// Gets the Gtk window object.
 	/**
