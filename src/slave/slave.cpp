@@ -164,7 +164,11 @@ int Slave::start_gdb() const
 
 		execvp(argv_gdb[0], argv_gdb);
 		// Only reached if exec fails
-		fprintf(stderr, "Error starting gdb. %s\n", strerror(errno));
+		fprintf(stderr,
+				"Error starting gdb.\n"
+				"Rank: %d\n"
+				"Error message: %s\n",
+				m_rank, strerror(errno));
 		_exit(127);
 	}
 
@@ -203,9 +207,11 @@ int Slave::start_socat(const string &tty_name, const int port) const
 			(char *)nullptr};
 		execvp(argv[0], argv);
 		// Only reached if exec fails
-		fprintf(stderr, "Error starting socat (%s, rank: %d). %s\n",
-				(0 == (port & 0x4000)) ? "gdb" : "target",
-				port & 0x3FFF, strerror(errno));
+		fprintf(stderr,
+				"Error starting socat.\n"
+				"Rank: %d, TCP: '%s', PTY: '%s'\n"
+				"Error message: %s\n",
+				m_rank, tcp.c_str(), tty_name.c_str(), strerror(errno));
 		_exit(127);
 	}
 	return pid;
