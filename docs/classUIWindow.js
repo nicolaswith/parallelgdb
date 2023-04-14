@@ -60,6 +60,8 @@ var classUIWindow =
     [ "update_markers", "classUIWindow.html#a8805706e8ed834473e3690ac4b5f1614", null ],
     [ "update_markers_timeout", "classUIWindow.html#ae369ac9ebde283b0469f363624040626", null ],
     [ "update_overview", "classUIWindow.html#adf6ab1f7b18f7ee63dbc0d2b63660949", null ],
+    [ "wait_slaves", "classUIWindow.html#af500e785f00920e6fdb48ff9820eca8d", null ],
+    [ "wait_slaves_timeout", "classUIWindow.html#af2e8d8fa88946a8e1a05dd54a977801e", null ],
     [ "m_app", "classUIWindow.html#aa4cfeb9f1a071663352c6efeabc35ef1", null ],
     [ "m_base_port", "classUIWindow.html#a174e8fc8aa7d5249f1087c56df451211", null ],
     [ "m_bkptno_2_bkpt", "classUIWindow.html#a2562017e174a6b506ea3172006607026", null ],

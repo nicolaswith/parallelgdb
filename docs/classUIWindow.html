@@ -159,6 +159,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a655257a1db3090889ead987fcdffcaaa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="window_8hpp.html#a2db986326a654991cce9b1c2b1670677">TargetState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUIWindow.html#a655257a1db3090889ead987fcdffcaaa">target_state</a> (const int rank) const</td></tr>
 <tr class="memdesc:a655257a1db3090889ead987fcdffcaaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the state of a process.  <a href="classUIWindow.html#a655257a1db3090889ead987fcdffcaaa">More...</a><br /></td></tr>
 <tr class="separator:a655257a1db3090889ead987fcdffcaaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af500e785f00920e6fdb48ff9820eca8d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUIWindow.html#af500e785f00920e6fdb48ff9820eca8d">wait_slaves</a> ()</td></tr>
+<tr class="memdesc:af500e785f00920e6fdb48ff9820eca8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Waits for the slaves to connect.  <a href="classUIWindow.html#af500e785f00920e6fdb48ff9820eca8d">More...</a><br /></td></tr>
+<tr class="separator:af500e785f00920e6fdb48ff9820eca8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -295,6 +298,9 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:adf6ab1f7b18f7ee63dbc0d2b63660949"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUIWindow.html#adf6ab1f7b18f7ee63dbc0d2b63660949">update_overview</a> (const int rank, const std::string &amp;fullpath, const int line)</td></tr>
 <tr class="memdesc:adf6ab1f7b18f7ee63dbc0d2b63660949"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates all labels and their tooltip for a process.  <a href="classUIWindow.html#adf6ab1f7b18f7ee63dbc0d2b63660949">More...</a><br /></td></tr>
 <tr class="separator:adf6ab1f7b18f7ee63dbc0d2b63660949"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2e8d8fa88946a8e1a05dd54a977801e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUIWindow.html#af2e8d8fa88946a8e1a05dd54a977801e">wait_slaves_timeout</a> (Gtk::MessageDialog *dialog)</td></tr>
+<tr class="memdesc:af2e8d8fa88946a8e1a05dd54a977801e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks how many connections are established.  <a href="classUIWindow.html#af2e8d8fa88946a8e1a05dd54a977801e">More...</a><br /></td></tr>
+<tr class="separator:af2e8d8fa88946a8e1a05dd54a977801e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -2779,25 +2785,26 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classUIWindow_a206ec747a9c2589eac08719d221ce218_icgraph.png" border="0" usemap="#aclassUIWindow_a206ec747a9c2589eac08719d221ce218_icgraph" alt=""/></div>
 <map name="aclassUIWindow_a206ec747a9c2589eac08719d221ce218_icgraph" id="aclassUIWindow_a206ec747a9c2589eac08719d221ce218_icgraph">
-<area shape="rect" title="Gets the Gtk window object." alt="" coords="2564,51,2743,77"/>
-<area shape="rect" href="classBreakpoint.html#aab6298c6cb7b4c1fb1e2995ccd23a32a" title="Deletes the breakpoints for all process." alt="" coords="2371,43,2514,85"/>
-<area shape="rect" href="classMaster.html#a6cb4d31abc26317bccf2251edca321bb" title="Starts the GUI main window." alt="" coords="739,43,875,69"/>
-<area shape="rect" href="classBreakpoint.html#a530ad76e3382517101cf28ce6bdabaf7" title="Modifies the breakpoints according to button_states." alt="" coords="2369,109,2516,150"/>
-<area shape="rect" href="classUIWindow.html#a19ed8774685ac8a1a223f958d6376d74" title="Deletes the breakpoint for all processes and then the mark itself." alt="" coords="2144,51,2321,77"/>
-<area shape="rect" href="classUIWindow.html#aa20f683f45142300ff17e7ff445f50bc" title="Signal handler for the Gsv::View line mark clicked signal." alt="" coords="1913,94,2096,135"/>
-<area shape="rect" href="classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="1412,89,1632,116"/>
-<area shape="rect" href="classUIWindow.html#a1b85f5b4298b721830e9b162a65c664e" title="Opens a file for a source file which was not found." alt="" coords="1680,76,1865,103"/>
-<area shape="rect" href="classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="1203,43,1358,69"/>
-<area shape="rect" href="classUIWindow.html#a6d9dcccd238bba0e3e967f0c852391a1" title="Searches for a stop record and extracts information from it." alt="" coords="1197,94,1364,135"/>
-<area shape="rect" href="classUIWindow.html#a237131d5aa62c32799cf1f0d0e913110" title="Loads the glade file and connects the signal handlers." alt="" coords="988,43,1104,69"/>
-<area shape="rect" href="master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,68,60,95"/>
-<area shape="rect" href="classUIWindow.html#acd29f8323a80ab65833562c6e8cabba9" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="943,100,1149,127"/>
-<area shape="rect" href="classUIWindow.html#a6b02b9f902043a4d74a938e765a66d10" title="Forwards the received data to the corresponding data handler." alt="" coords="720,96,895,123"/>
-<area shape="rect" href="classMaster.html#a25f8d33c802d2bede9354352e07bd3d8" title="Handles the TCP communication between socat and the master." alt="" coords="532,95,672,121"/>
-<area shape="rect" href="classMaster.html#ad960ade5e2ad4a42bc183f19653bf7a4" title="Waits (blocking) for a TCP connection on the TCP port." alt="" coords="316,93,484,120"/>
-<area shape="rect" href="classMaster.html#a5795d8ffc12cec35b9ecb6ef10dab7e3" title="Creates threads for each blocking TCP acceptor call." alt="" coords="108,93,268,120"/>
-<area shape="rect" href="classUIWindow.html#a447e57e6deef4c794c8b8da1ec50141e" title="Creates a line mark in a Gsv::View." alt="" coords="2144,152,2321,179"/>
-<area shape="rect" href="classUIWindow.html#ab3135faddc758530ac3e34b8973130ad" title="Displays the BreakpointDialog dialog." alt="" coords="2152,101,2313,128"/>
+<area shape="rect" title="Gets the Gtk window object." alt="" coords="2564,85,2743,112"/>
+<area shape="rect" href="classBreakpoint.html#aab6298c6cb7b4c1fb1e2995ccd23a32a" title="Deletes the breakpoints for all process." alt="" coords="2371,186,2514,227"/>
+<area shape="rect" href="classMaster.html#a6cb4d31abc26317bccf2251edca321bb" title="Starts the GUI main window." alt="" coords="739,60,875,87"/>
+<area shape="rect" href="classBreakpoint.html#a530ad76e3382517101cf28ce6bdabaf7" title="Modifies the breakpoints according to button_states." alt="" coords="2369,107,2516,149"/>
+<area shape="rect" href="classUIWindow.html#af500e785f00920e6fdb48ff9820eca8d" title="Waits for the slaves to connect." alt="" coords="1919,5,2091,32"/>
+<area shape="rect" href="classUIWindow.html#a19ed8774685ac8a1a223f958d6376d74" title="Deletes the breakpoint for all processes and then the mark itself." alt="" coords="2144,208,2321,235"/>
+<area shape="rect" href="classUIWindow.html#aa20f683f45142300ff17e7ff445f50bc" title="Signal handler for the Gsv::View line mark clicked signal." alt="" coords="1913,150,2096,191"/>
+<area shape="rect" href="classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="1412,151,1632,177"/>
+<area shape="rect" href="classUIWindow.html#a1b85f5b4298b721830e9b162a65c664e" title="Opens a file for a source file which was not found." alt="" coords="1680,121,1865,148"/>
+<area shape="rect" href="classUIWindow.html#abb4c1204e48678e7037dd0ea44004bd6" title="Open a source file in the source view notebook." alt="" coords="1203,107,1358,133"/>
+<area shape="rect" href="classUIWindow.html#a6d9dcccd238bba0e3e967f0c852391a1" title="Searches for a stop record and extracts information from it." alt="" coords="1197,158,1364,199"/>
+<area shape="rect" href="classUIWindow.html#a237131d5aa62c32799cf1f0d0e913110" title="Loads the glade file and connects the signal handlers." alt="" coords="988,107,1104,133"/>
+<area shape="rect" href="master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,89,60,116"/>
+<area shape="rect" href="classUIWindow.html#acd29f8323a80ab65833562c6e8cabba9" title="Tokenizes, parses and analyzes the received GDB output." alt="" coords="943,161,1149,188"/>
+<area shape="rect" href="classUIWindow.html#a6b02b9f902043a4d74a938e765a66d10" title="Forwards the received data to the corresponding data handler." alt="" coords="720,136,895,163"/>
+<area shape="rect" href="classMaster.html#a25f8d33c802d2bede9354352e07bd3d8" title="Handles the TCP communication between socat and the master." alt="" coords="532,124,672,151"/>
+<area shape="rect" href="classMaster.html#ad960ade5e2ad4a42bc183f19653bf7a4" title="Waits (blocking) for a TCP connection on the TCP port." alt="" coords="316,117,484,144"/>
+<area shape="rect" href="classMaster.html#a5795d8ffc12cec35b9ecb6ef10dab7e3" title="Creates threads for each blocking TCP acceptor call." alt="" coords="108,115,268,141"/>
+<area shape="rect" href="classUIWindow.html#a447e57e6deef4c794c8b8da1ec50141e" title="Creates a line mark in a Gsv::View." alt="" coords="2144,107,2321,133"/>
+<area shape="rect" href="classUIWindow.html#ab3135faddc758530ac3e34b8973130ad" title="Displays the BreakpointDialog dialog." alt="" coords="2152,157,2313,184"/>
 </map>
 </div>
 
@@ -3976,6 +3983,84 @@ Here is the caller graph for this function:</div>
 <area shape="rect" href="classMaster.html#a25f8d33c802d2bede9354352e07bd3d8" title="Handles the TCP communication between socat and the master." alt="" coords="532,60,672,87"/>
 <area shape="rect" href="classMaster.html#ad960ade5e2ad4a42bc183f19653bf7a4" title="Waits (blocking) for a TCP connection on the TCP port." alt="" coords="316,60,484,87"/>
 <area shape="rect" href="classMaster.html#a5795d8ffc12cec35b9ecb6ef10dab7e3" title="Creates threads for each blocking TCP acceptor call." alt="" coords="108,60,268,87"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="af500e785f00920e6fdb48ff9820eca8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af500e785f00920e6fdb48ff9820eca8d">&#9670;&nbsp;</a></span>wait_slaves()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool UIWindow::wait_slaves </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Waits for the slaves to connect.</p>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code> when all connections are established, <code>false</code>, when the user cancels the waiting. </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classUIWindow_af500e785f00920e6fdb48ff9820eca8d_cgraph.png" border="0" usemap="#aclassUIWindow_af500e785f00920e6fdb48ff9820eca8d_cgraph" alt=""/></div>
+<map name="aclassUIWindow_af500e785f00920e6fdb48ff9820eca8d_cgraph" id="aclassUIWindow_af500e785f00920e6fdb48ff9820eca8d_cgraph">
+<area shape="rect" title="Waits for the slaves to connect." alt="" coords="5,35,177,61"/>
+<area shape="rect" href="classUIWindow.html#a206ec747a9c2589eac08719d221ce218" title="Gets the Gtk window object." alt="" coords="225,5,404,32"/>
+<area shape="rect" href="classUIWindow.html#af2e8d8fa88946a8e1a05dd54a977801e" title="Checks how many connections are established." alt="" coords="229,57,401,98"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classUIWindow_af500e785f00920e6fdb48ff9820eca8d_icgraph.png" border="0" usemap="#aclassUIWindow_af500e785f00920e6fdb48ff9820eca8d_icgraph" alt=""/></div>
+<map name="aclassUIWindow_af500e785f00920e6fdb48ff9820eca8d_icgraph" id="aclassUIWindow_af500e785f00920e6fdb48ff9820eca8d_icgraph">
+<area shape="rect" title="Waits for the slaves to connect." alt="" coords="292,5,464,32"/>
+<area shape="rect" href="classMaster.html#a6cb4d31abc26317bccf2251edca321bb" title="Starts the GUI main window." alt="" coords="108,5,244,32"/>
+<area shape="rect" href="master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,5,60,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="af2e8d8fa88946a8e1a05dd54a977801e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2e8d8fa88946a8e1a05dd54a977801e">&#9670;&nbsp;</a></span>wait_slaves_timeout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool UIWindow::wait_slaves_timeout </td>
+          <td>(</td>
+          <td class="paramtype">Gtk::MessageDialog *&#160;</td>
+          <td class="paramname"><em>dialog</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Checks how many connections are established and updates the text in the message dialog.</p>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code>. The return value is used to indicate whether the event is completely handled. </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classUIWindow_af2e8d8fa88946a8e1a05dd54a977801e_icgraph.png" border="0" usemap="#aclassUIWindow_af2e8d8fa88946a8e1a05dd54a977801e_icgraph" alt=""/></div>
+<map name="aclassUIWindow_af2e8d8fa88946a8e1a05dd54a977801e_icgraph" id="aclassUIWindow_af2e8d8fa88946a8e1a05dd54a977801e_icgraph">
+<area shape="rect" title="Checks how many connections are established." alt="" coords="512,5,684,47"/>
+<area shape="rect" href="classUIWindow.html#af500e785f00920e6fdb48ff9820eca8d" title="Waits for the slaves to connect." alt="" coords="292,13,464,39"/>
+<area shape="rect" href="classMaster.html#a6cb4d31abc26317bccf2251edca321bb" title="Starts the GUI main window." alt="" coords="108,13,244,39"/>
+<area shape="rect" href="master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,13,60,39"/>
 </map>
 </div>
 

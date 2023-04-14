@@ -1,0 +1,5 @@
+<map id="UIWindow::wait_slaves" name="UIWindow::wait_slaves">
+<area shape="rect" id="node1" title="Waits for the slaves to connect." alt="" coords="5,35,177,61"/>
+<area shape="rect" id="node2" href="$classUIWindow.html#a206ec747a9c2589eac08719d221ce218" title="Gets the Gtk window object." alt="" coords="225,5,404,32"/>
+<area shape="rect" id="node3" href="$classUIWindow.html#af2e8d8fa88946a8e1a05dd54a977801e" title="Checks how many connections are established." alt="" coords="229,57,401,98"/>
+</map>
