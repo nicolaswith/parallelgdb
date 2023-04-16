@@ -1697,6 +1697,8 @@ void UIWindow::handle_data(const char *const data, const int port)
  * Checks how many connections are established and updates the text in the
  * message dialog.
  *
+ * @param[in] dialog The message dialog to be updated.
+ *
  * @return @c true. The return value is used to indicate whether the event is
  * completely handled.
  */
@@ -1706,21 +1708,18 @@ bool UIWindow::wait_slaves_timeout(Gtk::MessageDialog *dialog)
 	{
 		return true;
 	}
-	int num_conns = 0;
+	int num_slaves = 0;
 	for (int rank = 0; rank < m_num_processes; ++rank)
 	{
-		if (m_conns_gdb[rank])
+		if (m_conns_gdb[rank] && m_conns_trgt[rank])
 		{
-			num_conns++;
-		}
-		if (m_conns_trgt[rank])
-		{
-			num_conns++;
+			num_slaves++;
 		}
 	}
-	dialog->set_secondary_text(std::to_string(num_conns) + " connections of " + std::to_string(2 * m_num_processes) + " are established.");
+	dialog->set_secondary_text(std::to_string(num_slaves) + " / " +
+							   std::to_string(m_num_processes) + " slaves connected");
 	// close dialog when all connections are established.
-	if (num_conns == 2 * m_num_processes)
+	if (m_num_processes == num_slaves)
 	{
 		delete dialog;
 		dialog = nullptr;
@@ -1731,20 +1730,20 @@ bool UIWindow::wait_slaves_timeout(Gtk::MessageDialog *dialog)
 /**
  * Waits for the slaves to connect.
  *
- * @return @c true when all connections are established, @c false, when the user
+ * @return @c true when all connections are established, @c false when the user
  * cancels the waiting.
  */
 bool UIWindow::wait_slaves()
 {
 	Gtk::MessageDialog *dialog = new Gtk::MessageDialog(
-		*root_window(), "Waiting for Processes.", false,
+		*root_window(), "Waiting for Slaves...", false,
 		Gtk::MESSAGE_INFO, Gtk::BUTTONS_CANCEL);
 	sigc::connection timeout_connection = Glib::signal_timeout().connect(
 		sigc::bind(
 			sigc::mem_fun(*this, &UIWindow::wait_slaves_timeout),
 			dialog),
 		100);
-	int res = dialog->run();
+	const int res = dialog->run();
 	timeout_connection.disconnect();
 	if (Gtk::RESPONSE_NONE == res)
 	{
