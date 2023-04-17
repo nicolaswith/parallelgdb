@@ -3,7 +3,7 @@
 <area shape="rect" id="node2" href="$classBreakpoint.html#aab6298c6cb7b4c1fb1e2995ccd23a32a" title="Deletes the breakpoints for all process." alt="" coords="2371,186,2514,227"/>
 <area shape="rect" id="node8" href="$classMaster.html#a6cb4d31abc26317bccf2251edca321bb" title="Starts the GUI main window." alt="" coords="739,60,875,87"/>
 <area shape="rect" id="node17" href="$classBreakpoint.html#a530ad76e3382517101cf28ce6bdabaf7" title="Modifies the breakpoints according to button_states." alt="" coords="2369,107,2516,149"/>
-<area shape="rect" id="node20" href="$classUIWindow.html#af500e785f00920e6fdb48ff9820eca8d" title="Waits for the slaves to connect." alt="" coords="1919,5,2091,32"/>
+<area shape="rect" id="node20" href="$classUIWindow.html#af500e785f00920e6fdb48ff9820eca8d" title="Waits for the slaves to connect to the master." alt="" coords="1919,5,2091,32"/>
 <area shape="rect" id="node3" href="$classUIWindow.html#a19ed8774685ac8a1a223f958d6376d74" title="Deletes the breakpoint for all processes and then the mark itself." alt="" coords="2144,208,2321,235"/>
 <area shape="rect" id="node4" href="$classUIWindow.html#aa20f683f45142300ff17e7ff445f50bc" title="Signal handler for the Gsv::View line mark clicked signal." alt="" coords="1913,150,2096,191"/>
 <area shape="rect" id="node5" href="$classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="1412,151,1632,177"/>

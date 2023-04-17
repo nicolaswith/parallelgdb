@@ -160,7 +160,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a655257a1db3090889ead987fcdffcaaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the state of a process.  <a href="classUIWindow.html#a655257a1db3090889ead987fcdffcaaa">More...</a><br /></td></tr>
 <tr class="separator:a655257a1db3090889ead987fcdffcaaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af500e785f00920e6fdb48ff9820eca8d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUIWindow.html#af500e785f00920e6fdb48ff9820eca8d">wait_slaves</a> ()</td></tr>
-<tr class="memdesc:af500e785f00920e6fdb48ff9820eca8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Waits for the slaves to connect.  <a href="classUIWindow.html#af500e785f00920e6fdb48ff9820eca8d">More...</a><br /></td></tr>
+<tr class="memdesc:af500e785f00920e6fdb48ff9820eca8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Waits for the slaves to connect to the master.  <a href="classUIWindow.html#af500e785f00920e6fdb48ff9820eca8d">More...</a><br /></td></tr>
 <tr class="separator:af500e785f00920e6fdb48ff9820eca8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
@@ -299,7 +299,7 @@ Private Member Functions</h2></td></tr>
 <tr class="memdesc:adf6ab1f7b18f7ee63dbc0d2b63660949"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates all labels and their tooltip for a process.  <a href="classUIWindow.html#adf6ab1f7b18f7ee63dbc0d2b63660949">More...</a><br /></td></tr>
 <tr class="separator:adf6ab1f7b18f7ee63dbc0d2b63660949"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2e8d8fa88946a8e1a05dd54a977801e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUIWindow.html#af2e8d8fa88946a8e1a05dd54a977801e">wait_slaves_timeout</a> (Gtk::MessageDialog *dialog)</td></tr>
-<tr class="memdesc:af2e8d8fa88946a8e1a05dd54a977801e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks how many connections are established.  <a href="classUIWindow.html#af2e8d8fa88946a8e1a05dd54a977801e">More...</a><br /></td></tr>
+<tr class="memdesc:af2e8d8fa88946a8e1a05dd54a977801e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks how many slaves are connected.  <a href="classUIWindow.html#af2e8d8fa88946a8e1a05dd54a977801e">More...</a><br /></td></tr>
 <tr class="separator:af2e8d8fa88946a8e1a05dd54a977801e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
@@ -2789,7 +2789,7 @@ Here is the caller graph for this function:</div>
 <area shape="rect" href="classBreakpoint.html#aab6298c6cb7b4c1fb1e2995ccd23a32a" title="Deletes the breakpoints for all process." alt="" coords="2371,186,2514,227"/>
 <area shape="rect" href="classMaster.html#a6cb4d31abc26317bccf2251edca321bb" title="Starts the GUI main window." alt="" coords="739,60,875,87"/>
 <area shape="rect" href="classBreakpoint.html#a530ad76e3382517101cf28ce6bdabaf7" title="Modifies the breakpoints according to button_states." alt="" coords="2369,107,2516,149"/>
-<area shape="rect" href="classUIWindow.html#af500e785f00920e6fdb48ff9820eca8d" title="Waits for the slaves to connect." alt="" coords="1919,5,2091,32"/>
+<area shape="rect" href="classUIWindow.html#af500e785f00920e6fdb48ff9820eca8d" title="Waits for the slaves to connect to the master." alt="" coords="1919,5,2091,32"/>
 <area shape="rect" href="classUIWindow.html#a19ed8774685ac8a1a223f958d6376d74" title="Deletes the breakpoint for all processes and then the mark itself." alt="" coords="2144,208,2321,235"/>
 <area shape="rect" href="classUIWindow.html#aa20f683f45142300ff17e7ff445f50bc" title="Signal handler for the Gsv::View line mark clicked signal." alt="" coords="1913,150,2096,191"/>
 <area shape="rect" href="classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="1412,151,1632,177"/>
@@ -4002,16 +4002,16 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Waits for the slaves to connect.</p>
+<p>Waits for the slaves to connect to the master.</p>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> when all connections are established, <code>false</code> when the user cancels the waiting. </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classUIWindow_af500e785f00920e6fdb48ff9820eca8d_cgraph.png" border="0" usemap="#aclassUIWindow_af500e785f00920e6fdb48ff9820eca8d_cgraph" alt=""/></div>
 <map name="aclassUIWindow_af500e785f00920e6fdb48ff9820eca8d_cgraph" id="aclassUIWindow_af500e785f00920e6fdb48ff9820eca8d_cgraph">
-<area shape="rect" title="Waits for the slaves to connect." alt="" coords="5,35,177,61"/>
+<area shape="rect" title="Waits for the slaves to connect to the master." alt="" coords="5,35,177,61"/>
 <area shape="rect" href="classUIWindow.html#a206ec747a9c2589eac08719d221ce218" title="Gets the Gtk window object." alt="" coords="225,5,404,32"/>
-<area shape="rect" href="classUIWindow.html#af2e8d8fa88946a8e1a05dd54a977801e" title="Checks how many connections are established." alt="" coords="229,57,401,98"/>
+<area shape="rect" href="classUIWindow.html#af2e8d8fa88946a8e1a05dd54a977801e" title="Checks how many slaves are connected." alt="" coords="229,57,401,98"/>
 </map>
 </div>
 <div class="dynheader">
@@ -4019,7 +4019,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classUIWindow_af500e785f00920e6fdb48ff9820eca8d_icgraph.png" border="0" usemap="#aclassUIWindow_af500e785f00920e6fdb48ff9820eca8d_icgraph" alt=""/></div>
 <map name="aclassUIWindow_af500e785f00920e6fdb48ff9820eca8d_icgraph" id="aclassUIWindow_af500e785f00920e6fdb48ff9820eca8d_icgraph">
-<area shape="rect" title="Waits for the slaves to connect." alt="" coords="292,5,464,32"/>
+<area shape="rect" title="Waits for the slaves to connect to the master." alt="" coords="292,5,464,32"/>
 <area shape="rect" href="classMaster.html#a6cb4d31abc26317bccf2251edca321bb" title="Starts the GUI main window." alt="" coords="108,5,244,32"/>
 <area shape="rect" href="master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,5,60,32"/>
 </map>
@@ -4050,7 +4050,7 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Checks how many connections are established and updates the text in the message dialog.</p>
+<p>Checks how many slaves are connected and updates the text in the message dialog.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">dialog</td><td>The message dialog to be updated.</td></tr>
@@ -4063,8 +4063,8 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classUIWindow_af2e8d8fa88946a8e1a05dd54a977801e_icgraph.png" border="0" usemap="#aclassUIWindow_af2e8d8fa88946a8e1a05dd54a977801e_icgraph" alt=""/></div>
 <map name="aclassUIWindow_af2e8d8fa88946a8e1a05dd54a977801e_icgraph" id="aclassUIWindow_af2e8d8fa88946a8e1a05dd54a977801e_icgraph">
-<area shape="rect" title="Checks how many connections are established." alt="" coords="512,5,684,47"/>
-<area shape="rect" href="classUIWindow.html#af500e785f00920e6fdb48ff9820eca8d" title="Waits for the slaves to connect." alt="" coords="292,13,464,39"/>
+<area shape="rect" title="Checks how many slaves are connected." alt="" coords="512,5,684,47"/>
+<area shape="rect" href="classUIWindow.html#af500e785f00920e6fdb48ff9820eca8d" title="Waits for the slaves to connect to the master." alt="" coords="292,13,464,39"/>
 <area shape="rect" href="classMaster.html#a6cb4d31abc26317bccf2251edca321bb" title="Starts the GUI main window." alt="" coords="108,13,244,39"/>
 <area shape="rect" href="master_8cpp.html#a2b760810e5bb0cfb55f0c7d6d74d4438" title="Master entry point." alt="" coords="5,13,60,39"/>
 </map>

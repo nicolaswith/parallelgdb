@@ -1694,8 +1694,8 @@ void UIWindow::handle_data(const char *const data, const int port)
 }
 
 /**
- * Checks how many connections are established and updates the text in the
- * message dialog.
+ * Checks how many slaves are connected and updates the text in the message
+ * dialog.
  *
  * @param[in] dialog The message dialog to be updated.
  *
@@ -1728,7 +1728,7 @@ bool UIWindow::wait_slaves_timeout(Gtk::MessageDialog *dialog)
 }
 
 /**
- * Waits for the slaves to connect.
+ * Waits for the slaves to connect to the master.
  *
  * @return @c true when all connections are established, @c false when the user
  * cancels the waiting.

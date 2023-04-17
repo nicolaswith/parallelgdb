@@ -9,7 +9,7 @@
 <area shape="rect" id="node4" href="$classStartupDialog.html#af47f73e01a8a6450694bac12940f14de" title="Runs the startup dialog." alt="" coords="337,523,477,549"/>
 <area shape="rect" id="node7" href="$classUIWindow.html#a237131d5aa62c32799cf1f0d0e913110" title="Loads the glade file and connects the signal handlers." alt="" coords="349,573,465,600"/>
 <area shape="rect" id="node33" href="$classUIWindow.html#a206ec747a9c2589eac08719d221ce218" title="Gets the Gtk window object." alt="" coords="557,1045,736,1072"/>
-<area shape="rect" id="node34" href="$classUIWindow.html#af500e785f00920e6fdb48ff9820eca8d" title="Waits for the slaves to connect." alt="" coords="321,1045,493,1072"/>
+<area shape="rect" id="node34" href="$classUIWindow.html#af500e785f00920e6fdb48ff9820eca8d" title="Waits for the slaves to connect to the master." alt="" coords="321,1045,493,1072"/>
 <area shape="rect" id="node8" href="$classUIWindow.html#adf1424cd3dede540dd982fcf53de8ebb" title="Closes all unused source files." alt="" coords="1063,268,1281,295"/>
 <area shape="rect" id="node9" href="$classUIWindow.html#aa81dd64a8a95ba787c07119f14be4e18" title="Adds the &quot;All&quot; page into the target IO notebook." alt="" coords="557,71,736,97"/>
 <area shape="rect" id="node10" href="$classUIWindow.html#a90f6e11b3d717e1b45e0462499e03b8f" title="Attaches checkbuttons in a grid layout." alt="" coords="573,121,721,148"/>
@@ -35,7 +35,7 @@
 <area shape="rect" id="node23" href="$classUIWindow.html#a3fcd37aa1dc69913be544f5e23473e7d" title="Appends a source file page to the source view notebook." alt="" coords="795,624,1015,651"/>
 <area shape="rect" id="node26" href="$classUIWindow.html#a162a36247228bf4ca885a921f106b3b4" title="Writes the text in an entry to a TCP socket." alt="" coords="821,751,988,777"/>
 <area shape="rect" id="node30" href="$classUIWindow.html#a6a12f21b7519fae0cfaad1e698085b4f" title="Toggle all checkbuttons in a grid." alt="" coords="825,903,984,929"/>
-<area shape="rect" id="node35" href="$classUIWindow.html#af2e8d8fa88946a8e1a05dd54a977801e" title="Checks how many connections are established." alt="" coords="561,1097,733,1138"/>
+<area shape="rect" id="node35" href="$classUIWindow.html#af2e8d8fa88946a8e1a05dd54a977801e" title="Checks how many slaves are connected." alt="" coords="561,1097,733,1138"/>
 <area shape="rect" id="node37" href="$classStartupDialog.html#a90a8189035029118fcc6e4e22bb84dde" title="Returns the base port." alt="" coords="316,1096,499,1123"/>
 <area shape="rect" id="node38" href="$classStartupDialog.html#ac1b9a18530bb5ffc903f83c88448bb1d" title="Returns the total number of processes." alt="" coords="333,1147,481,1189"/>
 <area shape="rect" id="node39" href="$classMaster.html#ad960ade5e2ad4a42bc183f19653bf7a4" title="Waits (blocking) for a TCP connection on the TCP port." alt="" coords="323,1213,491,1240"/>
