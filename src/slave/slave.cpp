@@ -128,6 +128,7 @@ int Slave::start_gdb() const
 	const int pid = fork();
 	if (0 == pid)
 	{
+		char *pts = strdup(ttyname(STDOUT_FILENO));
 		const int tty_fd = open(m_tty_gdb.c_str(), O_RDWR);
 
 		// connect I/O of GDB to PTY
@@ -139,7 +140,7 @@ int Slave::start_gdb() const
 		const string tty = "--tty=" + m_tty_trgt;
 
 		const int num_args = m_argc - m_args_offset;
-		char **argv_gdb = new char *[11];
+		char **argv_gdb = new char *[11 + num_args];
 
 		int idx = 0;
 		argv_gdb[idx++] = (char *)"gdb";
@@ -163,11 +164,21 @@ int Slave::start_gdb() const
 		argv_gdb[idx] = (char *)nullptr;
 
 		execvp(argv_gdb[0], argv_gdb);
+
 		// Only reached if exec fails
+		close(tty_fd);
+
+		const int std_fd = open(pts, O_RDWR);
+		dup2(std_fd, STDIN_FILENO);
+		dup2(std_fd, STDOUT_FILENO);
+		dup2(std_fd, STDERR_FILENO);
+
+		free(pts);
+
 		fprintf(stderr,
 				"Error starting gdb.\n"
-				"Rank: %d\n"
-				"Error message: %s\n",
+				"\tRank: %d\n"
+				"\tError message: %s\n",
 				m_rank, strerror(errno));
 		_exit(127);
 	}
@@ -209,8 +220,8 @@ int Slave::start_socat(const string &tty_name, const int port) const
 		// Only reached if exec fails
 		fprintf(stderr,
 				"Error starting socat.\n"
-				"Rank: %d, TCP: '%s', PTY: '%s'\n"
-				"Error message: %s\n",
+				"\tRank: %d, TCP: '%s', PTY: '%s'\n"
+				"\tError message: %s\n",
 				m_rank, tcp.c_str(), tty_name.c_str(), strerror(errno));
 		_exit(127);
 	}
