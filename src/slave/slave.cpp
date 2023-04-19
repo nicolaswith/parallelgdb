@@ -128,7 +128,18 @@ int Slave::start_gdb() const
 	const int pid = fork();
 	if (0 == pid)
 	{
-		char *pts = strdup(ttyname(STDOUT_FILENO));
+		char *pts = nullptr;
+		int fds[] = {STDIN_FILENO, STDOUT_FILENO, STDERR_FILENO};
+		for (int i = 0; i < 3; ++i)
+		{
+			pts = ttyname(fds[i]);
+			if (pts)
+			{
+				pts = strdup(pts);
+				break;
+			}
+		}
+
 		const int tty_fd = open(m_tty_gdb.c_str(), O_RDWR);
 
 		// connect I/O of GDB to PTY
@@ -168,12 +179,15 @@ int Slave::start_gdb() const
 		// Only reached if exec fails
 		close(tty_fd);
 
-		const int std_fd = open(pts, O_RDWR);
-		dup2(std_fd, STDIN_FILENO);
-		dup2(std_fd, STDOUT_FILENO);
-		dup2(std_fd, STDERR_FILENO);
+		if (pts)
+		{
+			const int std_fd = open(pts, O_RDWR);
+			dup2(std_fd, STDIN_FILENO);
+			dup2(std_fd, STDOUT_FILENO);
+			dup2(std_fd, STDERR_FILENO);
 
-		free(pts);
+			free(pts);
+		}
 
 		fprintf(stderr,
 				"Error starting gdb.\n"
